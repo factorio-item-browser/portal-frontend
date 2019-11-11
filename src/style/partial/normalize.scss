@@ -1,0 +1,40 @@
+/**
+ * File setting up the normalize css.
+ *
+ * @author BluePsyduck <bluepsyduck@gmx.com>
+ * @license http://opensource.org/licenses/GPL-3.0 GPL v3
+ */
+
+// The font size set on the root html element.
+$base-font-size: 16px;
+
+// The base line height determines the basic unit of vertical rhythm.
+$base-line-height: (1.5 * $base-font-size);
+
+// The default font family.
+$base-font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;;
+
+@import '~normalize-scss';
+@include normalize();
+
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+// Reset some of the styles
+h1, h2, h3, h4, h5, h6, ul, p, dl, dd, dt {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+a, a:hover, a:active {
+  text-decoration: none;
+  color: inherit;
+}

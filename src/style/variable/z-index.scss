@@ -1,0 +1,16 @@
+/**
+ * File containing variables to place elements on the z-axis.
+ *
+ * @author BluePsyduck <bluepsyduck@gmx.com>
+ * @license http://opensource.org/licenses/GPL-3.0 GPL v3
+ */
+
+$zIndex-icon: 10;
+
+$zIndex-sticky-button: 500;
+
+$zIndex-overlay-clickLayer: 1000;
+$zIndex-overlay-contentLayer: 1010;
+
+$zIndex-loading-circle: 2000;
+$zIndex-tooltip: 2010;

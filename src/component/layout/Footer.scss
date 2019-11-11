@@ -1,0 +1,46 @@
+@import "../../style/variable/all.scss";
+@import "../../style/helper/all.scss";
+
+footer {
+    background-color: $color-water;
+    bottom: 0;
+    left: 0;
+    padding-top: px-to-rem(12);
+    position: absolute;
+    right: 0;
+
+    &::before {
+        content: '';
+        display: block;
+        left: 0;
+        pointer-events: none;
+        position: absolute;
+        top: px-to-rem(-24);
+        right: 0;
+    }
+}
+
+.copyright {
+  color: lighten($color-concrete, 20%);
+  font-size: $text-size-small;
+  font-weight: bold;
+  padding: $spacing-default;
+  text-align: center;
+  text-shadow: $shadow-text;
+
+  a, a:hover, a:active, a:focus {
+    text-decoration: underline;
+  }
+}
+
+//@todo Extract to separate css file
+footer {
+  background: $color-water url("../../image/layout/water.jpg") repeat;
+  background-size: px-to-rem(1024) px-to-rem(256);
+}
+
+footer::before {
+  background: url("../../image/layout/border/footer.png") repeat-x;
+  background-size: px-to-rem(512);
+  height: px-to-rem(64);
+}

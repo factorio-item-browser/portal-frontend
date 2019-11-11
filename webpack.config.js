@@ -3,6 +3,8 @@ const { HotModuleReplacementPlugin } = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+const isProduction = process.env.NODE_ENV === "production";
+
 module.exports = {
     entry: "./src/index.js",
     plugins: [
@@ -16,9 +18,6 @@ module.exports = {
             template: "./src/index.html",
         }),
     ],
-    resolve: {
-        extensions: ["*", ".css", ".js", ".jsx", ".scss"],
-    },
     module: {
         rules: [
             {
@@ -28,17 +27,28 @@ module.exports = {
             },
             {
                 test: /\.(scss|css)/,
-                exclude: /node_modules/,
                 use: [
                     {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
                             // publicPath: "../",
-                            hmr: process.env.NODE_ENV === "development",
+                            hmr: !isProduction,
                         },
                     },
                     "css-loader",
                     "sass-loader",
+                ],
+            },
+            {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: [
+                    "url-loader",
+                    {
+                        loader: 'image-webpack-loader',
+                        options: {
+                            disable: !isProduction,
+                        },
+                    },
                 ],
             },
         ],

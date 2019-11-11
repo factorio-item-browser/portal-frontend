@@ -1,0 +1,14 @@
+/**
+ * File containing the variables of media breakpoints.
+ *
+ * @author BluePsyduck <bluepsyduck@gmx.com>
+ * @license http://opensource.org/licenses/GPL-3.0 GPL v3
+ */
+
+$breakpoints: (
+    small:  0,      // Single-column layout
+    medium: 600px,  // Two column layout
+    large:  1000px, // Two column layout with sidebar
+    huge:   1500px  // Three column layout with sidebar
+);
+

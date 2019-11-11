@@ -1,0 +1,42 @@
+/**
+ * File containing variables to colors.
+ *
+ * @author BluePsyduck <bluepsyduck@gmx.com>
+ * @license http://opensource.org/licenses/GPL-3.0 GPL v3
+ */
+
+$alpha-box-content: 0.75;
+$alpha-box-content-expensive: 0.5;
+$alpha-box-content-tooltip: 0.85;
+$alpha-box-border: 0.3;
+$alpha-box-label: 0.75;
+$alpha-input-default: 0.5;
+$alpha-input-focused: 0.75;
+
+$color-box-default: hsl(0deg, 0%, 90%);
+$color-box-error: $color-box-default; //hsl(0deg, 50%, 90%);
+$color-box-mod-disabled: $color-box-default;
+$color-box-mod-enabled: hsl(120deg, 50%, 90%);
+$color-box-setting: $color-box-default;
+$color-box-setting-enabled: hsl(190deg, 57.5%, 90%);
+$color-box-sidebar: $color-box-default;
+$color-button-primary: hsl(25deg, 100%, 90%);
+$color-concrete: #656462;
+$color-message-error: hsl(0deg, 50%, 90%);
+$color-message-success: hsl(120deg, 50%, 90%);
+$color-message-warning: hsl(60deg, 50%, 90%);
+$color-recipe-expensive: hsl(0deg, 100%, 90%);
+$color-section-headline: $color-box-default;
+$color-tooltip: $color-box-setting-enabled;
+$color-water: #194c5a;
+
+$lightness-box-background: 90%;
+$lightness-box-border: 15%;
+$lightness-button-background: 65%;
+$lightness-button-background-hover: 75%;
+$lightness-button-text: 25%;
+$lightness-icon-background: 70%;
+$lightness-text-primary: 25%;
+$lightness-text-secondary: 35%;
+$lightness-shadowed-label-text: 95%;
+$lightness-shadowed-label-shadow: 5%;

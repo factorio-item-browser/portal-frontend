@@ -1,0 +1,38 @@
+/**
+ * File containing size related helpers.
+ *
+ * @author BluePsyduck <bluepsyduck@gmx.com>
+ * @license http://opensource.org/licenses/GPL-3.0 GPL v3
+ */
+
+@import "../variable/all";
+@import "breakpoint";
+
+/**
+ * Applies a dynamic spacing to the current selector, being smaller on smaller devices and larger on larger ones.
+ * @param {list} $properties The properties to apply the spacing to.
+ * @param {string} $size The size of the spacing to use for small.
+ */
+@mixin dynamic-spacing($properties, $sizes: default) {
+    $spacings-small: ();
+    $spacings-large: ();
+    @each $size in $sizes {
+        @if (map-has-key($spacings, $size)) {
+            $size: map-get($spacings, $size);
+        }
+        $spacings-small: append($spacings-small, $size * $dynamic-spacing-factor-small);
+        $spacings-large: append($spacings-large, $size);
+    }
+
+    @if (length($spacings-small) > 1 or (length($spacings-small) == 1 and nth($spacings-small, 1) != 0)) {
+        @each $property in $properties {
+            #{$property}: $spacings-small;
+        }
+
+        @include breakpoint(large) {
+            @each $property in $properties {
+                #{$property}: $spacings-large;
+            }
+        }
+    }
+}

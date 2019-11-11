@@ -1,0 +1,35 @@
+/**
+ * File containing miscellaneous helpers.
+ *
+ * @author BluePsyduck <bluepsyduck@gmx.com>
+ * @license http://opensource.org/licenses/GPL-3.0 GPL v3
+ */
+
+@import "../variable/all";
+
+/**
+ * Removes the unit of the specified number.
+ * @param {number} $number The number to remove the unit from.
+ * @return {number} The number without unit.
+ */
+@function strip-unit($number) {
+    @return $number / ($number * 0 + 1);
+}
+
+/**
+ * Converts pixel to rem.
+ * @param {number} $pixel The pixel value to convert.
+ * @return {number} The calculated rem value.
+ */
+@function px-to-rem($pixel) {
+    $rem: strip-unit($pixel) / 16;
+    @return #{$rem}rem;
+}
+
+/**
+ * Adds a default transition to the current selector.
+ * @param {list} $properties The properties to add the transition to.
+ */
+@mixin transition-default($properties: all) {
+    transition: $properties 0.25s ease;
+}

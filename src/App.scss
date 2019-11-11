@@ -1,8 +1,22 @@
-.title {
-    font-weight: bold;
-    color: red;
+@import "style/helper/all";
+@import "style/variable/all";
+@import "style/partial/normalize";
 
-    &.fancy {
-        background: yellow;
-    }
+html, body {
+    height: 100%;
+    min-width: 320px;
 }
+
+#app {
+    background-color: $color-concrete;
+    min-height: 100%;
+    position: relative;
+}
+
+
+//@todo Extract to separate css file
+#app, #sidebar {
+    background: $color-concrete url("image/layout/concrete.jpg") repeat;
+    background-size: px-to-rem(1024) px-to-rem(512);
+}
+

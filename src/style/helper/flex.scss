@@ -1,0 +1,38 @@
+/**
+ * File containing flex layout related helpers.
+ *
+ * @author BluePsyduck <bluepsyduck@gmx.com>
+ * @license http://opensource.org/licenses/GPL-3.0 GPL v3
+ */
+
+@import "../variable/all";
+
+/**
+ * Marks the current selector as a flex container.
+ * @param {string} $wrap
+ */
+@mixin flex-container($wrap: nowrap) {
+    display: flex;
+
+    @if ($wrap != nowrap) {
+        flex-wrap: $wrap;
+    }
+}
+
+/**
+ * Aligns the items of a flex container.
+ * @param {string} $horizontal
+ * @param {string} $vertical
+ */
+@mixin flex-container-align($horizontal: flex-start, $vertical: stretch) {
+    @if ($horizontal != flex-start) {
+        justify-content: $horizontal;
+    }
+    @if ($vertical != stretch) {
+        align-items: $vertical;
+    }
+}
+
+@mixin flex-item($grow: 0, $shrink: 1, $basis: auto) {
+    flex: $grow $shrink $basis;
+}
