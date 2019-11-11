@@ -2,6 +2,11 @@ import React from "react";
 
 import "./Footer.scss";
 
+/**
+ * The component representing the footer of the page.
+ * @returns {ReactNode}
+ * @constructor
+ */
 const Footer = () => {
     return (
         <footer>

@@ -1,6 +1,6 @@
-@import "style/helper/all";
-@import "style/variable/all";
-@import "style/partial/normalize";
+@import "../style/helper/all";
+@import "../style/variable/all";
+@import "../style/partial/normalize";
 
 html, body {
     height: 100%;
@@ -16,7 +16,7 @@ html, body {
 
 //@todo Extract to separate css file
 #app, #sidebar {
-    background: $color-concrete url("image/layout/concrete.jpg") repeat;
+    background: $color-concrete url("../image/layout/concrete.jpg") repeat;
     background-size: px-to-rem(1024) px-to-rem(512);
 }
 

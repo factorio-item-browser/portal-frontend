@@ -21,26 +21,26 @@ footer {
 }
 
 .copyright {
-  color: lighten($color-concrete, 20%);
-  font-size: $text-size-small;
-  font-weight: bold;
-  padding: $spacing-default;
-  text-align: center;
-  text-shadow: $shadow-text;
+    color: lighten($color-concrete, 20%);
+    font-size: $text-size-small;
+    font-weight: bold;
+    padding: $spacing-default;
+    text-align: center;
+    text-shadow: $shadow-text;
 
-  a, a:hover, a:active, a:focus {
-    text-decoration: underline;
-  }
+    a, a:hover, a:active, a:focus {
+        text-decoration: underline;
+    }
 }
 
 //@todo Extract to separate css file
 footer {
-  background: $color-water url("../../image/layout/water.jpg") repeat;
-  background-size: px-to-rem(1024) px-to-rem(256);
+    background: $color-water url("../../image/layout/water.jpg") repeat;
+    background-size: px-to-rem(1024) px-to-rem(256);
 }
 
 footer::before {
-  background: url("../../image/layout/border/footer.png") repeat-x;
-  background-size: px-to-rem(512);
-  height: px-to-rem(64);
+    background: url("../../image/layout/border/footer.png") repeat-x;
+    background-size: px-to-rem(512);
+    height: px-to-rem(64);
 }

@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const isProduction = process.env.NODE_ENV === "production";
 
 module.exports = {
-    entry: "./src/index.js",
+    entry: "./src/index.jsx",
     plugins: [
         new HotModuleReplacementPlugin(),
         new CleanWebpackPlugin(),
@@ -18,6 +18,9 @@ module.exports = {
             template: "./src/index.html",
         }),
     ],
+    resolve: {
+        extensions: ['.jpg', '.js', '.jsx', '.png', '.scss']
+    },
     module: {
         rules: [
             {

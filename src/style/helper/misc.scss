@@ -8,6 +8,16 @@
 @import "../variable/all";
 
 /**
+ * Modifies a color by changing the lightness value in the HSL color room.
+ * @param {color} $color The color to modify
+ * @param {number} $lightness The lightness value to use.
+ * @return {color} The modified color.
+ */
+@function color($color, $lightness) {
+    @return hsl(hue($color), saturation($color), $lightness);
+}
+
+/**
  * Removes the unit of the specified number.
  * @param {number} $number The number to remove the unit from.
  * @return {number} The number without unit.
@@ -32,4 +42,17 @@
  */
 @mixin transition-default($properties: all) {
     transition: $properties 0.25s ease;
+}
+
+/**
+ * Attaches the current selector as label to the parent element.
+ * @param {color} $color
+ */
+@mixin attached-label($color: $color-box-default) {
+    color: color($color, $lightness-shadowed-label-text);
+    font-size: $text-size-label;
+    font-weight: bolder;
+    pointer-events: none;
+    position: absolute;
+    text-shadow: color($color, $lightness-shadowed-label-shadow) px-to-rem(1) px-to-rem(1) px-to-rem(2);
 }
