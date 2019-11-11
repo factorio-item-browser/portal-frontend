@@ -1,0 +1,47 @@
+{
+  "name": "@factorio-item-browser/portal-frontend",
+  "description": "The frontend of the Factorio Item Browser portal, accessed by the users.",
+  "homepage": "https://github.com/factorio-item-browser/portal-frontend",
+  "keywords": [
+    "Factorio Item Browser",
+    "FIB",
+    "portal",
+    "frontend"
+  ],
+  "license": "GPL-3.0-or-later",
+  "author": {
+    "name": "BluePsyduck",
+    "email": "bluepsyduck@gmx.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/factorio-item-browser/portal-frontend.git"
+  },
+  "private": true,
+  "dependencies": {
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.2",
+    "@babel/preset-env": "^7.7.1",
+    "@babel/preset-react": "^7.7.0",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.2.0",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.8.0",
+    "node-sass": "^4.13.0",
+    "react-hot-loader": "^4.12.16",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
+  },
+  "main": "src/index.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "start": "webpack-dev-server --mode development"
+  }
+}

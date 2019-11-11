@@ -1,0 +1,8 @@
+.title {
+    font-weight: bold;
+    color: red;
+
+    &.fancy {
+        background: yellow;
+    }
+}
