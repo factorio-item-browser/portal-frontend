@@ -1,4 +1,6 @@
 import React from "react";
+import HeaderLogo from "./header/HeaderLogo";
+import HeaderSearch from "./header/HeaderSearch";
 
 import "./Header.scss";
 
@@ -10,7 +12,8 @@ import "./Header.scss";
 const Header = () => {
     return (
         <header>
-
+            <HeaderLogo />
+            <HeaderSearch />
         </header>
     );
 };

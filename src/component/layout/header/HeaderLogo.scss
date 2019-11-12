@@ -1,0 +1,16 @@
+@import "../../../style/variable/all.scss";
+@import "../../../style/mixin/all.scss";
+
+.header-logo {
+    flex-grow: 1;
+    position: relative;
+    text-align: center;
+
+    img {
+        width: $size-header-logo-width;
+    }
+
+    @include breakpoint(large) {
+        flex: 0 0 $size-sidebar-width;
+    }
+}

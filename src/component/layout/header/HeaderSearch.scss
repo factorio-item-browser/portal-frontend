@@ -1,0 +1,34 @@
+@import "../../../style/variable/all.scss";
+@import "../../../style/mixin/all.scss";
+
+.header-search {
+    @include dynamic-spacing(margin, large);
+
+    flex-grow: 1;
+    position: relative;
+
+    input[type=search] {
+        @include transition-default(opacity);
+
+        border: none;
+        border-radius: unset;
+        box-shadow: $shadow-box;
+        font-size: $text-size-header-search;
+        opacity: $alpha-input-default;
+        padding: $spacing-default (2 * $spacing-default + $text-size-header-search);
+        width: 100%;
+
+        &:hover, &:active, &:focus {
+            opacity: $alpha-input-focused;
+        }
+    }
+
+    .search-icon {
+        font-size: $text-size-header-search;
+        opacity: $alpha-input-default;
+        padding: ($spacing-default + $spacing-tiny);
+        position: absolute;
+        pointer-events: none;
+        z-index: $zIndex-icon;
+    }
+}

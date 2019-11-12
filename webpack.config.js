@@ -17,12 +17,12 @@ module.exports = (env, argv) => {
             new HotModuleReplacementPlugin(),
             new CleanWebpackPlugin(),
             new MiniCssExtractPlugin({
-                filename: "[name].css",
+                filename: isProduction ? "asset/css/[name].[hash].css" : "asset/css/[name].css",
             }),
             new HtmlWebpackPlugin({
-                title: "Hello Webpack bundled JavaScript Project",
+                title: "Factorio Item Browser",
                 template: "./src/index.html",
-                excludeAssets: [/images.js/],
+                excludeAssets: [/images\.(.*)\.js$/],
             }),
             new HtmlWebpackExcludeAssetsPlugin(),
         ],
@@ -42,7 +42,6 @@ module.exports = (env, argv) => {
                         {
                             loader: MiniCssExtractPlugin.loader,
                             options: {
-                                // publicPath: "../",
                                 hmr: !isProduction,
                             },
                         },
@@ -51,9 +50,27 @@ module.exports = (env, argv) => {
                     ],
                 },
                 {
-                    test: /\.(png|svg|jpg|gif)$/,
+                    test: /inline\/.*\.(png|svg|jpg|gif)$/,
                     use: [
                         "url-loader",
+                        {
+                            loader: 'image-webpack-loader',
+                            options: {
+                                disable: !isProduction,
+                            },
+                        },
+                    ],
+                },
+                {
+                    test: /\.(png|svg|jpg|gif)$/,
+                    exclude: /inline/,
+                    use: [
+                        {
+                            loader: "file-loader",
+                            options: {
+                                name: "asset/image/[name].[hash].[ext]",
+                            },
+                        },
                         {
                             loader: 'image-webpack-loader',
                             options: {
@@ -66,8 +83,8 @@ module.exports = (env, argv) => {
         },
         output: {
             path: __dirname + "/build",
-            publicPath: "/",
-            filename: "[name].js",
+            publicPath: isProduction ? "./" : "/",
+            filename: isProduction ? "asset/js/[name].[hash].js" : "asset/js/[name].js",
         },
         devServer: {
             contentBase: "./build",
