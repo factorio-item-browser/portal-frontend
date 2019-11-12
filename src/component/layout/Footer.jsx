@@ -1,6 +1,7 @@
 import React from "react";
 
 import "./Footer.scss";
+import {Trans} from "react-i18next";
 
 /**
  * The component representing the footer of the page.
@@ -12,7 +13,10 @@ const Footer = () => {
         <footer>
             <div className="copyright">
                 © 2019 Factorio Item Browser<br />
-                All images are owned by <a href="https://www.factorio.com/" target="_blank" rel="nofollow">Wube Software</a> and the <a href="https://mods.factorio.com/" target="_blank" rel="nofollow">mod authors</a> respectively.
+
+                <Trans i18nKey="footer.copyright-disclaimer">
+                    All images are owned by <a href="https://www.factorio.com/" target="_blank" rel="nofollow">Wube Software</a> and the <a href="https://mods.factorio.com/" target="_blank" rel="nofollow">mod authors</a> respectively.
+                </Trans>
             </div>
         </footer>
     );

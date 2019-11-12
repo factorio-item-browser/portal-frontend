@@ -1,0 +1,13 @@
+{
+    "box-label": {
+        "expensive": "expensive mode"
+    },
+    "footer": {
+        "copyright-disclaimer": "All images are owned by <1>Wube Software</1> and the <3>mod authors</3> respectively."
+    },
+    "header": {
+        "search": {
+            "placeholder": "Item, recipe, ..."
+        }
+    }
+}

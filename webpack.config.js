@@ -27,7 +27,7 @@ module.exports = (env, argv) => {
             new HtmlWebpackExcludeAssetsPlugin(),
         ],
         resolve: {
-            extensions: ['.jpg', '.js', '.jsx', '.png', '.scss']
+            extensions: ['.jpg', '.js', '.json', '.jsx', '.png', '.scss']
         },
         module: {
             rules: [

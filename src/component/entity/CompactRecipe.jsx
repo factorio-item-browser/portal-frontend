@@ -1,6 +1,8 @@
 import classNames from "classnames";
 import * as PropTypes from "prop-types";
 import React from "react";
+import {useTranslation} from "react-i18next";
+
 import CompactRecipeSeparator from "./CompactRecipeSeparator";
 import Icon from "../common/Icon";
 
@@ -31,6 +33,7 @@ function renderItem(item) {
  * @constructor
  */
 const CompactRecipe = ({recipe, isExpensive = false}) => {
+    const {t} = useTranslation();
     const classes = classNames({
         "compact-recipe": true,
         "expensive": isExpensive,
@@ -39,7 +42,7 @@ const CompactRecipe = ({recipe, isExpensive = false}) => {
     let expensiveLabel = null;
     if (isExpensive) {
         expensiveLabel = (
-            <span className="mode">expensive version</span>
+            <span className="mode">{t("box-label.expensive")}</span>
         );
     }
 

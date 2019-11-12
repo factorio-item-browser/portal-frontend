@@ -1,0 +1,13 @@
+{
+    "box-label": {
+        "expensive": "teurer Modus"
+    },
+    "footer": {
+        "copyright-disclaimer": "Alle Bilder sind Eigentum von <1>Wube Software</1> bzw. der <3>Mod-Authoren</3>."
+    },
+    "header": {
+        "search": {
+            "placeholder": "Item, Rezept, ..."
+        }
+    }
+}

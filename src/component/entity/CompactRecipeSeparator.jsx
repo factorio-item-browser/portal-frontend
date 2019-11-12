@@ -2,6 +2,7 @@ import * as PropTypes from "prop-types";
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronRight} from "@fortawesome/free-solid-svg-icons";
+
 import {formatCraftingTime} from "../../helper/format";
 
 import "./CompactRecipeSeparator.scss";

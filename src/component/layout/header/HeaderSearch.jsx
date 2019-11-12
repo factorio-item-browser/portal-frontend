@@ -1,6 +1,7 @@
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
+import {useTranslation} from "react-i18next";
 
 import "./HeaderSearch.scss";
 
@@ -10,6 +11,8 @@ import "./HeaderSearch.scss";
  * @constructor
  */
 const HeaderSearch = () => {
+    const {t} = useTranslation();
+
     return (
         <div className="header-search">
             <div className="search-icon">
@@ -18,7 +21,7 @@ const HeaderSearch = () => {
             <input
                 autoComplete="off"
                 name="query"
-                placeholder="Item, recipe, ..."
+                placeholder={t("header.search.placeholder")}
                 type="search"
             />
         </div>

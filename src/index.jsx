@@ -1,7 +1,8 @@
-import React from "react"
-import ReactDOM from "react-dom"
+import React from "react";
+import ReactDOM from "react-dom";
 
-import "./style/partial/normalize.scss"
+import "./style/partial/normalize.scss";
+import "./helper/i18n";
 
 import App from "./component/App.jsx";
 

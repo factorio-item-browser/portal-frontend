@@ -23,10 +23,12 @@
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@fortawesome/react-fontawesome": "^0.1.7",
     "classnames": "^2.2.6",
+    "i18next": "^19.0.0",
     "normalize-scss": "^7.0.1",
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
+    "react-i18next": "^11.1.0",
     "react-responsive": "^8.0.1"
   },
   "devDependencies": {
