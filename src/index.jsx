@@ -11,4 +11,6 @@ ReactDOM.render(
     document.getElementById("app")
 );
 
+/* eslint-disable no-undef */
 module.hot.accept();
+/* eslint-enable no-undef */

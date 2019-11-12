@@ -39,19 +39,12 @@ const CompactRecipe = ({recipe, isExpensive = false}) => {
         "expensive": isExpensive,
     });
 
-    let expensiveLabel = null;
-    if (isExpensive) {
-        expensiveLabel = (
-            <span className="mode">{t("box-label.expensive")}</span>
-        );
-    }
-
     return (
         <div className={classes}>
             {recipe.ingredients.map(renderItem)}
             <CompactRecipeSeparator craftingTime={recipe.craftingTime} />
             {recipe.products.map(renderItem)}
-            {expensiveLabel}
+            {isExpensive ? <span className="mode">{t("box-label.expensive")}</span> : null}
         </div>
     );
 };

@@ -34,7 +34,17 @@ module.exports = (env, argv) => {
                 {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
-                    use: ["babel-loader"],
+                    use: [
+                        {
+                            loader: "babel-loader"
+                        },
+                        {
+                            loader: "eslint-loader",
+                            options: {
+                                cache: true,
+                            },
+                        },
+                    ],
                 },
                 {
                     test: /\.(scss|css)/,
