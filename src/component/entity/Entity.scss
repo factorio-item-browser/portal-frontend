@@ -1,0 +1,8 @@
+@import "../../style/mixin/all";
+@import "../../style/variable/all";
+
+.entity {
+    box-shadow: $shadow-box;
+
+    @include dynamic-spacing(margin, default)
+}

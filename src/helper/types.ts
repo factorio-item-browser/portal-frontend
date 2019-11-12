@@ -5,14 +5,23 @@
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
 
-interface Recipe {
-    craftingTime: number,
-    ingredients: RecipeItem[]
-    products: RecipeItem[]
+interface EntityData {
+    type: string,
+    name: string,
+    label: string,
+    recipes: RecipeData[],
+    omittedRecipes: number,
 }
 
-interface RecipeItem {
-    type: string
-    name: string
-    amount: number
+interface RecipeData {
+    craftingTime: number,
+    ingredients: RecipeItemData[],
+    products: RecipeItemData[],
+    isExpensive: boolean,
+}
+
+interface RecipeItemData {
+    type: string,
+    name: string,
+    amount: number,
 }

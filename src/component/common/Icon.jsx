@@ -30,7 +30,7 @@ function renderAmount(amount) {
  * @returns {ReactNode}
  * @constructor
  */
-const Icon = ({type, name, amount = 0, transparent = true})  => {
+const Icon = ({type, name, amount = 0, transparent = false})  => {
     const classes = classNames({
         icon: true,
         [`icon-${type}-${name}`]: true,

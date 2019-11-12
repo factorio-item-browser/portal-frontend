@@ -1,0 +1,21 @@
+@import "../../style/mixin/all";
+@import "../../style/variable/all";
+
+.entity-head {
+    @include dynamic-spacing(padding, default);
+
+    background: $color-box-default;
+    color: color($color-box-default, $lightness-text-primary);
+    display: flex;
+    align-items: center;
+    font-size: $text-size-default;
+    font-weight: bold;
+
+    .icon {
+        flex-shrink: 0;
+    }
+    h3 {
+        @include dynamic-spacing(margin-left, default);
+        flex-grow: 1;
+    }
+}

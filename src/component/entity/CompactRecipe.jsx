@@ -10,7 +10,7 @@ import "./CompactRecipe.scss";
 
 /**
  * Renders a single item of the recipe.
- * @param {RecipeItem} item
+ * @param {RecipeItemData} item
  * @returns {ReactDOM}
  */
 function renderItem(item) {
@@ -27,16 +27,15 @@ function renderItem(item) {
 
 /**
  * The component representing one compact recipe of an entity.
- * @param {Recipe} recipe
- * @param {boolean} isExpensive
+ * @param {RecipeData} recipe
  * @returns {ReactNode}
  * @constructor
  */
-const CompactRecipe = ({recipe, isExpensive = false}) => {
+const CompactRecipe = ({recipe}) => {
     const {t} = useTranslation();
     const classes = classNames({
         "compact-recipe": true,
-        "expensive": isExpensive,
+        "expensive": recipe.isExpensive,
     });
 
     return (
@@ -44,14 +43,13 @@ const CompactRecipe = ({recipe, isExpensive = false}) => {
             {recipe.ingredients.map(renderItem)}
             <CompactRecipeSeparator craftingTime={recipe.craftingTime} />
             {recipe.products.map(renderItem)}
-            {isExpensive ? <span className="mode">{t("box-label.expensive")}</span> : null}
+            {recipe.isExpensive ? <span className="mode">{t("box-label.expensive")}</span> : null}
         </div>
     );
 };
 
 CompactRecipe.propTypes = {
     recipe: PropTypes.object.isRequired,
-    isExpensive: PropTypes.bool,
 };
 
 export default CompactRecipe;

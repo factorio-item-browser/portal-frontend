@@ -1,37 +1,63 @@
 import React, {Fragment} from "react";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
-import CompactRecipe from "./entity/CompactRecipe";
+import Entity from "./entity/Entity";
 
 import "./App.scss"
 
 const App = () => {
-    const recipe = {
-        craftingTime: 12.3,
-        ingredients: [
+    const entityData = {
+        type: "item",
+        name: "electronic-circuit",
+        label: "Elektronischer Schaltkreis",
+        recipes: [
             {
-                type: "item",
-                name: "iron-plate",
-                amount: 12,
+                ingredients: [
+                    {
+                        type: "item",
+                        name: "iron-plate",
+                        amount: 1,
+                    },
+                    {
+                        type: "item",
+                        name: "copper-cable",
+                        amount: 3,
+                    },
+                ],
+                products: [
+                    {
+                        type: "item",
+                        name: "electronic-circuit",
+                        amount: 1,
+                    },
+                ],
+                craftingTime: 0.5,
+                isExpensive: false,
             },
             {
-                type: "fluid",
-                name: "light-oil",
-                amount: 13.5,
+                ingredients: [
+                    {
+                        type: "item",
+                        name: "iron-plate",
+                        amount: 2,
+                    },
+                    {
+                        type: "item",
+                        name: "copper-cable",
+                        amount: 10,
+                    },
+                ],
+                products: [
+                    {
+                        type: "item",
+                        name: "electronic-circuit",
+                        amount: 1,
+                    },
+                ],
+                craftingTime: 0.5,
+                isExpensive: true,
             },
-            {
-                type: "item",
-                name: "light-oil-barrel",
-                amount: 1234,
-            }
         ],
-        products: [
-            {
-                type: "item",
-                name: "rocket-fuel",
-                amount: 1,
-            }
-        ]
     };
 
 
@@ -40,8 +66,8 @@ const App = () => {
             <Header />
             <div id="content-wrapper">
                 <div id="content" style={{padding: 200}}>
-                    <CompactRecipe recipe={recipe} />
-                    <CompactRecipe recipe={recipe} isExpensive={true} />
+                    <Entity entity={entityData} />
+                    <Entity entity={entityData} />
                 </div>
             </div>
             <Footer />
