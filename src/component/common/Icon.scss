@@ -24,7 +24,7 @@
         left: px-to-rem(-6);
         pointer-events: none;
         position: absolute;
-        text-shadow: color($color-box-default, $lightness-shadowed-label-shadow) 1px 1px 2px; // @todo use $shadow-text instead?
+        text-shadow: $shadow-label;
         top: px-to-rem(-5);
 
         @include breakpoint(large) {

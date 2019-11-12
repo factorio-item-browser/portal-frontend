@@ -1,0 +1,35 @@
+@import "../../style/mixin/all";
+@import "../../style/variable/all";
+
+.compact-recipe {
+    align-items: center;
+    background: rgba(color($color-box-default, $lightness-box-background), $alpha-box-content);
+    border-top: px-to-rem(1) solid rgba(color($color-box-default, $lightness-box-border), $alpha-box-border);
+    color: color($color-box-default, $lightness-text-primary);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+
+    .mode {
+        bottom: 0;
+        font-size: $text-size-small;
+        padding: $spacing-tiny $spacing-small;
+        position: absolute;
+        right: 0;
+        text-transform: uppercase;
+    }
+
+    .icon {
+        @include dynamic-spacing(margin, default);
+    }
+
+    &.expensive {
+        background-color: rgba(color($color-recipe-expensive, $lightness-box-background), $alpha-box-content);
+        color: color($color-recipe-expensive, $lightness-text-primary);
+
+        &:before {
+            background: rgba(color($color-recipe-expensive, $lightness-box-border), $alpha-box-border);
+        }
+    }
+}

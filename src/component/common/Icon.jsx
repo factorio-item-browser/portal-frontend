@@ -1,16 +1,16 @@
 import classNames from "classnames";
 import React from "react";
-import PropTypes from "prop-types";
+import * as PropTypes from "prop-types";
 import {formatAmount} from "../../helper/format";
 
 import "./Icon.scss";
 
 /**
- * Creates the label for the amount.
+ * Renders the element for the amount.
  * @param {number} amount
  * @returns {ReactNode}
  */
-function createLabel(amount) {
+function renderAmount(amount) {
     if (amount <= 0) {
         return null;
     }
@@ -36,7 +36,7 @@ const Icon = ({type, name, amount = 0, transparent = true})  => {
         [`icon-${type}-${name}`]: true,
         "with-background": !transparent,
     });
-    const label = createLabel(amount);
+    const label = renderAmount(amount);
 
     return (
         <div className={classes}>{label}</div>

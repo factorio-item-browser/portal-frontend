@@ -30,7 +30,7 @@ export function formatCraftingSpeed(craftingSpeed) {
  * @param {number} craftingTime
  * @returns {string}
  */
-export function craftingTime(craftingTime) {
+export function formatCraftingTime(craftingTime) {
     return (Math.round(craftingTime * 100) / 100) + "s";
 }
 
