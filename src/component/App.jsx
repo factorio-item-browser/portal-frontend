@@ -1,5 +1,6 @@
 import React, {Fragment} from "react";
 import Footer from "./layout/Footer";
+import Header from "./layout/Header";
 import Icon from "./common/Icon";
 
 import "./App.scss"
@@ -7,6 +8,7 @@ import "./App.scss"
 const App = () => {
     return (
         <Fragment>
+            <Header />
             <div id="content-wrapper">
                 <div id="content" style={{padding: 200}}>
                     <Icon type="item" name="iron-plate" />

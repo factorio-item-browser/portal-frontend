@@ -1,0 +1,31 @@
+/**
+ * File for generating a separate CSS file containing the images.
+ *
+ * @author BluePsyduck <bluepsyduck@gmx.com>
+ * @license http://opensource.org/licenses/GPL-3.0 GPL v3
+ */
+
+@import "../../style/mixin/all.scss";
+@import "../../style/variable/all.scss";
+
+header, footer {
+    background: $color-water url("../../image/layout/water.jpg") repeat;
+    background-size: px-to-rem(1024) px-to-rem(256);
+}
+
+header::after {
+    background: url("../../image/layout/border/header.png") repeat-x;
+    background-size: px-to-rem(512);
+    height: px-to-rem(24);
+}
+
+footer::before {
+    background: url("../../image/layout/border/footer.png") repeat-x;
+    background-size: px-to-rem(512);
+    height: px-to-rem(64);
+}
+
+#app, #sidebar {
+    background: $color-concrete url("../../image/layout/concrete.jpg") repeat;
+    background-size: px-to-rem(1024) px-to-rem(512);
+}

@@ -1,9 +1,9 @@
-import classNames from 'classnames';
+import classNames from "classnames";
 import React from "react";
 import PropTypes from "prop-types";
+import {formatAmount} from "../../helper/format";
 
 import "./Icon.scss";
-import {formatAmount} from "../../helper/format";
 
 /**
  * Creates the label for the amount.

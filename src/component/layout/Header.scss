@@ -1,0 +1,25 @@
+@import "../../style/variable/all.scss";
+@import "../../style/mixin/all.scss";
+
+header {
+    @include flex-container();
+    @include flex-container-align(center, center);
+
+    background-color: $color-water;
+    min-height: 5rem;
+    position: relative;
+
+    &::after {
+        bottom: px-to-rem(-12);
+        content: '';
+        display: block;
+        pointer-events: none;
+        position: absolute;
+        left: 0;
+        right: 0;
+    }
+
+    @include breakpoint(large) {
+        min-height: 6rem;
+    }
+}

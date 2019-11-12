@@ -1,8 +1,5 @@
-@import "../../style/helper/all";
+@import "../../style/mixin/all";
 @import "../../style/variable/all";
-
-$icon-border-width: px-to-rem(1);
-$icon-text-color: white;
 
 .icon {
     background-size: cover;
@@ -15,16 +12,21 @@ $icon-text-color: white;
     width: $icon-size-default;
 
     &.with-background {
-        border: $icon-border-width solid color($color-box-default, $lightness-box-border);
+        border: px-to-rem(1) solid color($color-box-default, $lightness-box-border);
         background-color: color($color-box-default, $lightness-icon-background);
         box-shadow: $shadow-box;
     }
 
     .amount {
-        @include attached-label($color-box-default);
-
+        color: color($color-box-default, $lightness-shadowed-label-text);
+        font-size: $text-size-label;
+        font-weight: bolder;
         left: px-to-rem(-6);
+        pointer-events: none;
+        position: absolute;
+        text-shadow: color($color-box-default, $lightness-shadowed-label-shadow) 1px 1px 2px; // @todo use $shadow-text instead?
         top: px-to-rem(-5);
+
         @include breakpoint(large) {
             left: px-to-rem(-12);
             top: px-to-rem(-10);

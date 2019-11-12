@@ -1,5 +1,5 @@
 @import "../../style/variable/all.scss";
-@import "../../style/helper/all.scss";
+@import "../../style/mixin/all.scss";
 
 footer {
     background-color: $color-water;
@@ -31,16 +31,4 @@ footer {
     a, a:hover, a:active, a:focus {
         text-decoration: underline;
     }
-}
-
-//@todo Extract to separate css file
-footer {
-    background: $color-water url("../../image/layout/water.jpg") repeat;
-    background-size: px-to-rem(1024) px-to-rem(256);
-}
-
-footer::before {
-    background: url("../../image/layout/border/footer.png") repeat-x;
-    background-size: px-to-rem(512);
-    height: px-to-rem(64);
 }
