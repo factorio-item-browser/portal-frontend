@@ -64,13 +64,16 @@ function renderUnpinAction(entity) {
  */
 const SidebarEntity = ({entity}) => {
     const { t } = useTranslation();
+    const sidebarStore = useContext(SidebarStore);
 
     return (
-        <div className="sidebar-entity">
+        <div
+            className="sidebar-entity"
+            draggable={true}
+            data-id={sidebarStore.getIdForEntity(entity)}
+        >
             <Icon type={entity.type} name={entity.name} transparent={true} />
-            <span className="label">{entity.label}
-                <span style={{fontSize: 12}}> {entity.pinnedPosition} | {entity.lastViewTime} </span>
-            </span>
+            <span className="label">{entity.label}</span>
 
             {entity.pinnedPosition > 0 ? renderUnpinAction(entity) : renderPinAction(entity)}
             <div className="type">{t(`box-label.${entity.type}`)}</div>

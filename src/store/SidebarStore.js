@@ -7,21 +7,28 @@ import {action, computed, observable} from "mobx";
 class SidebarStore {
     /**
      * The entities of the sidebar.
-     * @type {SidebarEntityData[]}
+     * @type {Object<string,SidebarEntityData>}
      */
     @observable
-    entities = [
-        {type: "recipe", name: "copper-plate", label: "Kupferplatte", pinnedPosition: 0, lastViewTime: "2019-01-01"},
-        {type: "item", name: "iron-plate", label: "Eisenplatte", pinnedPosition: 13, lastViewTime: "2020-01-01"},
-        {type: "fluid", name: "light-oil", label: "Leichtöl", pinnedPosition: 1, lastViewTime: new Date().toISOString()},
-    ];
+    entities = {
+        "recipe-copper-plate": {type: "recipe", name: "copper-plate", label: "Kupferplatte", pinnedPosition: 0, lastViewTime: "2019-01-01"},
+        "item-iron-plate": {type: "item", name: "iron-plate", label: "Eisenplatte", pinnedPosition: 13, lastViewTime: "2020-01-01"},
+        "fluid-light-oil": {type: "fluid", name: "light-oil", label: "Leichtöl", pinnedPosition: 1, lastViewTime: new Date().toISOString()},
+    };
 
     /**
      * The entities pinned to the sidebar.
      */
     @computed
     get pinnedEntities() {
-        const entities = this.entities.filter(entity => entity.pinnedPosition > 0);
+        const entities = [];
+        Object.keys(this.entities).forEach((id) => {
+            const entity = this.entities[id];
+            if (entity.pinnedPosition > 0) {
+                entities.push(entity);
+            }
+        });
+
         entities.sort((left, right) => left.pinnedPosition - right.pinnedPosition);
         return entities;
     }
@@ -31,7 +38,14 @@ class SidebarStore {
      */
     @computed
     get unpinnedEntities() {
-        const entities = this.entities.filter(entity => !entity.pinnedPosition);
+        const entities = [];
+        Object.keys(this.entities).forEach((id) => {
+            const entity = this.entities[id];
+            if (entity.pinnedPosition === 0) {
+                entities.push(entity);
+            }
+        });
+
         entities.sort((left, right) => right.lastViewTime.localeCompare(left.lastViewTime));
         return entities;
     }
@@ -66,35 +80,43 @@ class SidebarStore {
      */
     @action
     addViewedEntity(type, name, label) {
-        let entity = this.findEntity(type, name);
-        if (entity) {
-            entity.label = label;
-            entity.lastViewTime = (new Date()).toISOString();
+        const newEntity = {
+            type: type,
+            name: name,
+            label: label,
+            pinnedPosition: 0,
+            lastViewTime: (new Date()).toISOString(),
+        };
+        const id = this.getIdForEntity(newEntity);
+
+        if (this.entities[id]) {
+            this.entities[id].label = newEntity.label;
+            this.entities[id].lastViewTime = newEntity.lastViewTime;
         } else {
-            this.entities.push({
-                type: type,
-                name: name,
-                label: label,
-                pinnedPosition: 0,
-                lastViewTime: (new Date()).toISOString(),
-            });
+            this.entities[id] = newEntity;
         }
     }
 
     /**
-     * Finds the entity with the specified type and name.
-     * @param {string} type
-     * @param {string} name
-     * @returns {SidebarEntityData|null}
+     * Updates the order of the pinned entities.
+     * @param {string[]} order
      */
-    findEntity(type, name) {
-        for (let i = 0; i < this.entities.length; i++) {
-            let entity = this.entities[i];
-            if (entity.type === type && entity.name === name) {
-                return entity;
+    @action
+    updatePinnedOrder(order) {
+        order.forEach((id, index) => {
+            if (this.entities[id]) {
+                this.entities[id].pinnedPosition = index + 1;
             }
-        }
-        return null;
+        });
+    }
+
+    /**
+     * Returns the id used for the entity.
+     * @param {SidebarEntityData} entity
+     * @returns {string}
+     */
+    getIdForEntity(entity) {
+        return `${entity.type}-${entity.name}`;
     }
 }
 
