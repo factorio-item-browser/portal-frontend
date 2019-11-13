@@ -1,11 +1,16 @@
-import React, {Fragment} from "react";
+import React, {Fragment, useContext} from "react";
+import {observer} from "mobx-react-lite";
+import RootStore from "../store/RootStore";
+import Entity from "./entity/Entity";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
-import Entity from "./entity/Entity";
+import Sidebar from "./layout/Sidebar";
 
 import "./App.scss"
 
 const App = () => {
+    const rootStore = useContext(RootStore);
+
     const entityData = {
         type: "item",
         name: "electronic-circuit",
@@ -64,15 +69,17 @@ const App = () => {
     return (
         <Fragment>
             <Header />
-            <div id="content-wrapper">
-                <div id="content" style={{padding: 200}}>
+            <div className="content-wrapper">
+                <Sidebar />
+                <div className="content">
                     <Entity entity={entityData} />
                     <Entity entity={entityData} />
                 </div>
             </div>
+            <h1>{rootStore.searchQuery}</h1>
             <Footer />
         </Fragment>
     );
 };
 
-export default App;
+export default observer(App);

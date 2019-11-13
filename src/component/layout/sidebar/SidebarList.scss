@@ -1,0 +1,25 @@
+@import "../../../style/variable/all.scss";
+@import "../../../style/mixin/all.scss";
+
+.sidebar-list {
+    margin-top: $spacing-default;
+
+    h3 {
+        color: $color-section-headline;
+        font-size: $text-size-headline-small;
+        font-weight: bold;
+        position: relative;
+        text-shadow: $shadow-text;
+
+        &::after {
+            background: $color-section-headline;
+            box-shadow: $shadow-text;
+            content: '';
+            display: block;
+            height: $size-section-headline-underline;
+            left: 0;
+            position: absolute;
+            right: 0;
+        }
+    }
+}

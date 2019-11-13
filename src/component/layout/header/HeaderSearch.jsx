@@ -1,9 +1,12 @@
-import React from "react";
+import React, {useContext} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import {useTranslation} from "react-i18next";
 
+import RootStore from "../../../store/RootStore";
+
 import "./HeaderSearch.scss";
+import {observer} from "mobx-react-lite";
 
 /**
  * The component representing the header search element.
@@ -11,7 +14,8 @@ import "./HeaderSearch.scss";
  * @constructor
  */
 const HeaderSearch = () => {
-    const {t} = useTranslation();
+    const rootStore = useContext(RootStore);
+    const { t } = useTranslation();
 
     return (
         <div className="header-search">
@@ -23,9 +27,13 @@ const HeaderSearch = () => {
                 name="query"
                 placeholder={t("header.search.placeholder")}
                 type="search"
+                value={rootStore.searchQuery}
+                onChange={(event) => {
+                    rootStore.setSearchQuery(event.target.value);
+                }}
             />
         </div>
     )
 };
 
-export default HeaderSearch;
+export default observer(HeaderSearch);

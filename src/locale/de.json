@@ -1,6 +1,10 @@
 {
     "box-label": {
-        "expensive": "teurer Modus"
+        "expensive": "teurer Modus",
+        "fluid": "Flüssigkeit",
+        "item": "Item",
+        "machine": "Maschine",
+        "recipe": "Rezept"
     },
     "footer": {
         "copyright-disclaimer": "Alle Bilder sind Eigentum von <1>Wube Software</1> bzw. der <3>Mod-Authoren</3>."
@@ -9,5 +13,11 @@
         "search": {
             "placeholder": "Item, Rezept, ..."
         }
+    },
+    "sidebar": {
+        "action-pin": "Element oben anheften",
+        "action-unpin": "Element von oben lösen",
+        "headline-last-viewed": "Zuletzt angesehen",
+        "headline-pinned": "Angeheftet"
     }
 }

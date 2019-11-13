@@ -25,3 +25,11 @@ interface RecipeItemData {
     name: string,
     amount: number,
 }
+
+interface SidebarEntityData {
+    type: string,
+    name: string,
+    label: string,
+    pinnedPosition: number,
+    lastViewTime: string,
+}

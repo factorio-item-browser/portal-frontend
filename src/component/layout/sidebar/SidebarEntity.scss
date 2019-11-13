@@ -1,0 +1,53 @@
+@import "../../../style/variable/all.scss";
+@import "../../../style/mixin/all.scss";
+
+.sidebar-entity {
+    @include transition-default(background);
+    @include dynamic-spacing(padding, small default);
+
+    align-items: center;
+    background: rgba(color($color-box-sidebar, $lightness-box-background), $alpha-box-content);
+    box-shadow: $shadow-box;
+    color: color($color-box-sidebar, $lightness-text-primary);
+    display: flex;
+    margin: $spacing-default 0;
+    position: relative;
+
+    &:hover {
+        background: color($color-box-sidebar, $lightness-box-background);
+    }
+
+    .icon {
+        flex-shrink: 0;
+    }
+
+    .label {
+        @include dynamic-spacing(margin-left, default);
+
+        flex-grow: 1;
+        font-weight: bold;
+        padding-right: $spacing-large;
+    }
+
+    .action {
+        color: color($color-box-sidebar, $lightness-text-secondary);
+        cursor: pointer;
+        height: $icon-size-small;
+        margin: $spacing-tiny;
+        position: absolute;
+        width: $icon-size-small;
+        right: 0;
+        text-align: center;
+        top: 0;
+    }
+
+    .type {
+        bottom: 0;
+        color: rgba(color($color-box-sidebar, $lightness-text-primary), $alpha-box-label);
+        font-size: $text-size-small;
+        padding: $spacing-tiny $spacing-small;
+        position: absolute;
+        right: 0;
+        text-transform: uppercase;
+    }
+}

@@ -11,3 +11,17 @@ html, body {
     min-height: 100%;
     position: relative;
 }
+
+.content-wrapper {
+    display: flex;
+    padding-top: $spacing-default;
+    padding-bottom: 6rem;
+
+    @include breakpoint(medium) {
+        padding-bottom: 5rem;
+    }
+}
+
+.content {
+    flex-grow: 1;
+}

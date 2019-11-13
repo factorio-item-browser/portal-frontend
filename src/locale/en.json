@@ -1,6 +1,10 @@
 {
     "box-label": {
-        "expensive": "expensive mode"
+        "expensive": "expensive mode",
+        "fluid": "fluid",
+        "item": "item",
+        "machine": "machine",
+        "recipe": "recipe"
     },
     "footer": {
         "copyright-disclaimer": "All images are owned by <1>Wube Software</1> and the <3>mod authors</3> respectively."
@@ -9,5 +13,11 @@
         "search": {
             "placeholder": "Item, recipe, ..."
         }
+    },
+    "sidebar": {
+        "action-pin": "Pin element to the top",
+        "action-unpin": "Unpin element from the top",
+        "headline-last-viewed": "Last viewed",
+        "headline-pinned": "Pinned"
     }
 }

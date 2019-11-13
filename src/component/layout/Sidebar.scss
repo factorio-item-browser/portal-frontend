@@ -1,0 +1,10 @@
+@import "../../style/variable/all.scss";
+@import "../../style/mixin/all.scss";
+
+.sidebar {
+    flex-shrink: 0;
+
+    max-width: $size-sidebar-width;
+    padding: $spacing-large $spacing-default;
+    width: $size-sidebar-width;
+}
