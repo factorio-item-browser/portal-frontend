@@ -1,0 +1,18 @@
+@import "../../../style/variable/all.scss";
+@import "../../../style/mixin/all.scss";
+
+.header-icon {
+    @include transition-default(color);
+
+    color: rgba($color-header-text, $alpha-input-default);
+    cursor: pointer;
+    padding: $spacing-default;
+    position: relative;
+    font-size: $icon-size-default;
+    text-align: center;
+    text-shadow: $shadow-text;
+
+    &:hover, &:active, &:focus {
+        color: rgba($color-header-text, $alpha-input-focused);
+    }
+}

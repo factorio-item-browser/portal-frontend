@@ -49,6 +49,7 @@ function renderUnpinAction(entity) {
             onClick={(event) => {
                 sidebarStore.unpinEntity(entity);
                 event.preventDefault();
+                event.stopPropagation();
             }}
         >
             <FontAwesomeIcon icon={faTrash} />

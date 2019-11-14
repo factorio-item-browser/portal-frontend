@@ -2,6 +2,7 @@ import classNames from "classnames";
 import React from "react";
 import * as PropTypes from "prop-types";
 import {observer} from "mobx-react-lite";
+
 import {formatAmount} from "../../helper/format";
 
 import "./Icon.scss";

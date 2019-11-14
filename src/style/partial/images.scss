@@ -25,7 +25,13 @@ footer::before {
     height: px-to-rem(64);
 }
 
-#app, #sidebar {
+#app, .sidebar {
     background: $color-concrete url("../../image/inline/layout/concrete.jpg") repeat;
     background-size: px-to-rem(1024) px-to-rem(512);
+}
+
+@include breakpoint(large) {
+    .sidebar {
+        background: none;
+    }
 }

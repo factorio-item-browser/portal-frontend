@@ -1,0 +1,12 @@
+@import "../../../style/variable/all.scss";
+@import "../../../style/mixin/all.scss";
+
+.sidebar-close-overlay {
+    background: $color-overlay;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: $zIndex-overlay-clickLayer;
+}

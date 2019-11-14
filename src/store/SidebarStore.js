@@ -17,6 +17,21 @@ class SidebarStore {
     };
 
     /**
+     * Whether the sidebar has been opened on mobile.
+     * @type {boolean}
+     */
+    @observable
+    isOpened = false;
+
+    /**
+     * Sets whether the sidebar is currently opened.
+     * @param {boolean} isOpened
+     */
+    @action setIsOpened(isOpened) {
+        this.isOpened = isOpened;
+    }
+
+    /**
      * The entities pinned to the sidebar.
      */
     @computed

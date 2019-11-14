@@ -13,7 +13,6 @@ const Footer = () => {
         <footer>
             <div className="copyright">
                 © 2019 Factorio Item Browser<br />
-
                 <Trans i18nKey="footer.copyright-disclaimer">
                     All images are owned by
                     <a href="https://www.factorio.com/" target="_blank" rel="noopener noreferrer nofollow">Wube Software</a>

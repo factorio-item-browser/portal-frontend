@@ -1,0 +1,14 @@
+@import "../../../style/variable/all.scss";
+@import "../../../style/mixin/all.scss";
+
+.sidebar-close-icon {
+    color: $color-section-headline;
+    cursor: pointer;
+    font-size: $text-size-headline-small;
+    padding: 0 $spacing-default;
+    position: absolute;
+    right: 0;
+    text-shadow: $shadow-text;
+    top: 0;
+    z-index: $zIndex-icon;
+}

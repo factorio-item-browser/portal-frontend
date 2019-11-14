@@ -7,4 +7,23 @@
     max-width: $size-sidebar-width;
     padding: $spacing-large $spacing-default;
     width: $size-sidebar-width;
+
+    @include breakpoint-until(large) {
+        @include transition-default(transform);
+
+        bottom: 0;
+        box-shadow: $shadow-box-tooltip;
+        left: 0;
+        max-width: 100%;
+        padding-top: $spacing-huge;
+        position: fixed;
+        overflow-y: auto;
+        transform: translate(-110%, 0);
+        top: 0;
+        z-index: $zIndex-overlay-contentLayer;
+
+        &.is-open {
+            transform: translate(0, 0);
+        }
+    }
 }
