@@ -24,11 +24,19 @@ class SidebarStore {
     isOpened = false;
 
     /**
-     * Sets whether the sidebar is currently opened.
-     * @param {boolean} isOpened
+     * Opens the sidebar on the mobile view.
      */
-    @action setIsOpened(isOpened) {
-        this.isOpened = isOpened;
+    @action
+    open() {
+        this.isOpened = true;
+    }
+
+    /**
+     * Closes the sidebar on the mobile view.
+     */
+    @action
+    close() {
+        this.isOpened = false;
     }
 
     /**

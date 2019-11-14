@@ -21,8 +21,8 @@ const SidebarCloseOverlay = () => {
         <div
             className="sidebar-close-overlay"
             onClick={() => {
-                sidebarStore.setIsOpened(false)}
-            }
+                sidebarStore.close()
+            }}
         />
     );
 };

@@ -1,7 +1,10 @@
-import React from "react";
+import {observer} from "mobx-react-lite";
+import React, {useContext} from "react";
 import {useMediaQuery} from "react-responsive";
 
 import {breakpointLarge} from "../../helper/const";
+import SearchStore from "../../store/SearchStore";
+
 import HeaderLogo from "./header/HeaderLogo";
 import HeaderSearch from "./header/HeaderSearch";
 import SidebarIcon from "./header/SidebarIcon";
@@ -16,8 +19,17 @@ import "./Header.scss";
  */
 const Header = () => {
     const isMobile = useMediaQuery({maxWidth: breakpointLarge});
+    const searchStore = useContext(SearchStore);
 
     if (isMobile) {
+        if (searchStore.isOpened) {
+            return (
+                <header>
+                    <HeaderSearch />
+                </header>
+            );
+        }
+
         return (
             <header>
                 <SidebarIcon />
@@ -35,4 +47,4 @@ const Header = () => {
     );
 };
 
-export default Header;
+export default observer(Header);

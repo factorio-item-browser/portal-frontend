@@ -17,7 +17,7 @@ const SidebarCloseIcon = () => {
 
     return (
         <div className="sidebar-close-icon" onClick={() => {
-            sidebarStore.setIsOpened(false);
+            sidebarStore.close();
         }}>
             <FontAwesomeIcon icon={faTimes} />
         </div>

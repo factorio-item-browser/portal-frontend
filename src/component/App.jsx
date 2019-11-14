@@ -1,6 +1,6 @@
-import React, {Fragment, useContext} from "react";
 import {observer} from "mobx-react-lite";
-import RootStore from "../store/RootStore";
+import React, {Fragment} from "react";
+
 import Entity from "./entity/Entity";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
@@ -9,7 +9,6 @@ import Sidebar from "./layout/Sidebar";
 import "./App.scss"
 
 const App = () => {
-    const rootStore = useContext(RootStore);
 
     const entityData = {
         type: "item",
@@ -76,7 +75,6 @@ const App = () => {
                     <Entity entity={entityData} />
                 </div>
             </div>
-            <h1>{rootStore.searchQuery}</h1>
             <Footer />
         </Fragment>
     );

@@ -25,10 +25,29 @@
 
     .search-icon {
         font-size: $text-size-header-search;
+        left: 0;
         opacity: $alpha-input-default;
         padding: ($spacing-default + $spacing-tiny);
         position: absolute;
         pointer-events: none;
+        top: 0;
         z-index: $zIndex-icon;
+    }
+
+    .close-icon {
+        @include transition-default(opacity);
+
+        cursor: pointer;
+        font-size: $text-size-header-search;
+        opacity: $alpha-input-default;
+        padding: ($spacing-default + $spacing-tiny);
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: $zIndex-icon;
+
+        &:hover {
+            opacity: $alpha-input-focused;
+        }
     }
 }

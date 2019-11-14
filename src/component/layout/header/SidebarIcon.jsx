@@ -16,9 +16,12 @@ const SidebarIcon = () => {
     const sidebarStore = useContext(SidebarStore);
 
     return (
-        <div className="header-icon" onClick={() => {
-            sidebarStore.setIsOpened(true);
-        }}>
+        <div
+            className="header-icon"
+            onClick={() => {
+                sidebarStore.open();
+            }}
+        >
             <FontAwesomeIcon icon={faBars} />
         </div>
     );
