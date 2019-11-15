@@ -26,7 +26,7 @@ const HeaderSearch = () => {
             <div
                 className="close-icon"
                 onClick={() => {
-                    searchStore.close();
+                    searchStore.closeSearch();
                 }}
             >
                 <FontAwesomeIcon icon={faTimes} />
@@ -45,9 +45,9 @@ const HeaderSearch = () => {
                 name="query"
                 placeholder={t("header.search.placeholder")}
                 type="search"
-                value={searchStore.query}
+                value={searchStore.searchQuery}
                 onChange={(event) => {
-                    searchStore.setQuery(event.target.value);
+                    searchStore.setSearchQuery(event.target.value);
                 }}
             />
             {closeIcon}

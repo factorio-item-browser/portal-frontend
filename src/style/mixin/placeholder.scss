@@ -1,0 +1,27 @@
+/**
+ * File containing placeholder selectors to be extended.
+ *
+ * @author BluePsyduck <bluepsyduck@gmx.com>
+ * @license http://opensource.org/licenses/GPL-3.0 GPL v3
+ */
+
+@import "../variable/all";
+
+%underlined-headline {
+    color: $color-section-headline;
+    font-size: $text-size-large;
+    font-weight: bold;
+    position: relative;
+    text-shadow: $shadow-text;
+
+    &::after {
+        background: $color-section-headline;
+        box-shadow: $shadow-text;
+        content: "";
+        display: block;
+        height: $size-section-headline-underline;
+        left: 0;
+        position: absolute;
+        right: 0;
+    }
+}

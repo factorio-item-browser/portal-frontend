@@ -10,6 +10,7 @@
     position: relative;
     text-decoration: none;
     width: $icon-size-default;
+    z-index: $zIndex-icon;
 
     &.with-background {
         border: px-to-rem(1) solid color($color-box-default, $lightness-box-border);

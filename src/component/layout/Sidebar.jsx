@@ -22,8 +22,8 @@ const Sidebar = () => {
     const isMobile = useMediaQuery({maxWidth: breakpointLarge});
 
     const classes = classNames({
-        sidebar: true,
-        "is-open": sidebarStore.isOpened,
+        "sidebar": true,
+        "is-open": sidebarStore.isSidebarOpened,
     });
 
     return (

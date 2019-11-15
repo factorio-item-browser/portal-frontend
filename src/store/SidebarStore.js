@@ -21,22 +21,22 @@ class SidebarStore {
      * @type {boolean}
      */
     @observable
-    isOpened = false;
+    isSidebarOpened = false;
 
     /**
      * Opens the sidebar on the mobile view.
      */
     @action
-    open() {
-        this.isOpened = true;
+    openSidebar() {
+        this.isSidebarOpened = true;
     }
 
     /**
      * Closes the sidebar on the mobile view.
      */
     @action
-    close() {
-        this.isOpened = false;
+    closeSidebar() {
+        this.isSidebarOpened = false;
     }
 
     /**

@@ -21,28 +21,28 @@ const Header = () => {
     const isMobile = useMediaQuery({maxWidth: breakpointLarge});
     const searchStore = useContext(SearchStore);
 
-    if (isMobile) {
-        if (searchStore.isOpened) {
-            return (
-                <header>
-                    <HeaderSearch />
-                </header>
-            );
-        }
-
+    if (!isMobile) {
         return (
             <header>
-                <SidebarIcon />
                 <HeaderLogo />
-                <SearchIcon />
+                <HeaderSearch />
+            </header>
+        );
+    }
+
+    if (searchStore.isSearchOpened) {
+        return (
+            <header>
+                <HeaderSearch />
             </header>
         );
     }
 
     return (
         <header>
+            <SidebarIcon />
             <HeaderLogo />
-            <HeaderSearch />
+            <SearchIcon />
         </header>
     );
 };

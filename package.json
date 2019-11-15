@@ -58,6 +58,7 @@
     "node-sass": "^4.13.0",
     "react-hot-loader": "^4.12.16",
     "sass-loader": "^8.0.0",
+    "source-map-explorer": "^2.1.1",
     "url-loader": "^2.2.0",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
@@ -65,6 +66,7 @@
   },
   "main": "src/index.jsx",
   "scripts": {
+    "analyze": "source-map-explorer build/asset/js/main.*",
     "build": "webpack --mode production",
     "start": "webpack-dev-server --mode development"
   }

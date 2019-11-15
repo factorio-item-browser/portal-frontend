@@ -18,7 +18,7 @@ const SearchIcon = () => {
         <div
             className="header-icon"
             onClick={() => {
-                searchStore.open();
+                searchStore.openSearch();
             }}
         >
             <FontAwesomeIcon icon={faSearch} />

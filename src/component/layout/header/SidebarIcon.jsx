@@ -19,7 +19,7 @@ const SidebarIcon = () => {
         <div
             className="header-icon"
             onClick={() => {
-                sidebarStore.open();
+                sidebarStore.openSidebar();
             }}
         >
             <FontAwesomeIcon icon={faBars} />

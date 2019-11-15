@@ -14,6 +14,10 @@
             "placeholder": "Item, recipe, ..."
         }
     },
+    "search-results": {
+        "headline": "{{count}} search result for \"{{query}}\"",
+        "headline_plural": "{{count}} search results for \"{{query}}\""
+    },
     "sidebar": {
         "action-pin": "Pin element to the top",
         "action-unpin": "Unpin element from the top",

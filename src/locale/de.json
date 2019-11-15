@@ -14,6 +14,10 @@
             "placeholder": "Item, Rezept, ..."
         }
     },
+    "search-results": {
+        "headline": "{{count}} Suchergebnis für \"{{query}}\"",
+        "headline_plural": "{{count}} Suchergebnisse für \"{{query}}\""
+    },
     "sidebar": {
         "action-pin": "Element oben anheften",
         "action-unpin": "Element von oben lösen",

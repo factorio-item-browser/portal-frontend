@@ -33,3 +33,12 @@ interface SidebarEntityData {
     pinnedPosition: number,
     lastViewTime: string,
 }
+
+
+
+
+interface SearchResultPageData {
+    query: string,
+    results: EntityData[],
+    count: number,
+}

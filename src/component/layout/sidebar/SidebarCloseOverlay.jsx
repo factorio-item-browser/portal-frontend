@@ -13,7 +13,7 @@ import "./SidebarCloseOverlay.scss";
 const SidebarCloseOverlay = () => {
     const sidebarStore = useContext(SidebarStore);
 
-    if (!sidebarStore.isOpened) {
+    if (!sidebarStore.isSidebarOpened) {
         return null;
     }
 
@@ -21,7 +21,7 @@ const SidebarCloseOverlay = () => {
         <div
             className="sidebar-close-overlay"
             onClick={() => {
-                sidebarStore.close()
+                sidebarStore.closeSidebar()
             }}
         />
     );

@@ -1,0 +1,8 @@
+@import "../../style/mixin/all";
+@import "../../style/variable/all";
+
+section h2 {
+    @extend %underlined-headline;
+
+    @include dynamic-spacing(margin, large);
+}

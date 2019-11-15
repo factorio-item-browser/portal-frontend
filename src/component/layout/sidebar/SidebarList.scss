@@ -5,21 +5,8 @@
     margin-top: $spacing-default;
 
     h3 {
-        color: $color-section-headline;
-        font-size: $text-size-headline-small;
-        font-weight: bold;
-        position: relative;
-        text-shadow: $shadow-text;
+        @extend %underlined-headline;
 
-        &::after {
-            background: $color-section-headline;
-            box-shadow: $shadow-text;
-            content: '';
-            display: block;
-            height: $size-section-headline-underline;
-            left: 0;
-            position: absolute;
-            right: 0;
-        }
+        font-size: $text-size-headline-small;
     }
 }

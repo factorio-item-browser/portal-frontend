@@ -6,42 +6,42 @@ import {createContext} from "react";
  */
 class SearchStore {
     /**
-     * The current query entered into the search field.
+     * The current search query entered into the search field.
      * @type {string}
      */
     @observable
-    query = "";
+    searchQuery = "";
 
     /**
      * Whether the search bar has been opened on mobile.
      * @type {boolean}
      */
     @observable
-    isOpened = false;
+    isSearchOpened = false;
 
     /**
-     * Sets the query.
-     * @param query
+     * Sets the searchQuery.
+     * @param searchQuery
      */
     @action
-    setQuery(query) {
-        this.query = query;
+    setSearchQuery(searchQuery) {
+        this.searchQuery = searchQuery;
     }
 
     /**
      * Opens the search bar on the mobile view.
      */
     @action
-    open() {
-        this.isOpened = true;
+    openSearch() {
+        this.isSearchOpened = true;
     }
 
     /**
      * Closes the search bar on the mobile view.
      */
     @action
-    close() {
-        this.isOpened = false;
+    closeSearch() {
+        this.isSearchOpened = false;
     }
 }
 
