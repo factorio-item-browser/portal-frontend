@@ -1,9 +1,9 @@
-import * as PropTypes from "prop-types";
-import React, {useContext} from "react";
-import {observer} from "mobx-react-lite";
-import {useTranslation} from "react-i18next";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faThumbtack, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {observer} from "mobx-react-lite";
+import * as PropTypes from "prop-types";
+import React, {useContext} from "react";
+import {useTranslation} from "react-i18next";
 
 import Icon from "../../common/Icon";
 import SidebarStore from "../../../store/SidebarStore";

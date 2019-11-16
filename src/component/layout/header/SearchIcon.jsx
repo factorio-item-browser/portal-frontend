@@ -1,5 +1,6 @@
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {observer} from "mobx-react-lite";
 import React, {useContext} from "react";
 
 import SearchStore from "../../../store/SearchStore";
@@ -26,4 +27,4 @@ const SearchIcon = () => {
     );
 };
 
-export default SearchIcon;
+export default observer(SearchIcon);

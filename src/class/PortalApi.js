@@ -74,6 +74,60 @@ class PortalApi {
             }
         );
     }
+
+    /**
+     *
+     * @param {string} type
+     * @param {string} name
+     * @returns {Promise<ItemDetailsData>}
+     */
+    requestItemDetails(type, name) {
+        const data = {
+            type: type,
+            name: name,
+            label: "Kupferkabel",
+            description: "Kann mit Linke Maustaste zum Verbinden und Trennen von Strommasten und Stromschaltern verwendet werden.",
+            ingredientRecipes: [
+                {
+                    type: "recipe",
+                    name: "copper-cable",
+                    label: "Kupferkabel",
+                    recipes: [
+                        {
+                            ingredients: [
+                                {
+                                    type: "item",
+                                    name: "copper-plate",
+                                    amount: 1,
+                                },
+                            ],
+                            products: [
+                                {
+                                    type: "item",
+                                    name: "copper-cable",
+                                    amount: 2,
+                                }
+                            ],
+                            craftingTime: 0.5,
+                            isExpensive: false,
+                        }
+                    ],
+                    omittedRecipes: 0,
+                }
+            ],
+            ingredientRecipeCount: 1,
+            productRecipes: [],
+            productRecipeCount: 0,
+        };
+
+        return new window.Promise(
+            (resolve) => {
+                window.setTimeout(() => {
+                    resolve(data);
+                }, 1000);
+            }
+        );
+    }
 }
 
 export const portalApi = new PortalApi();

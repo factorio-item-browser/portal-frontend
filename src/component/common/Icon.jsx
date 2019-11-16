@@ -1,7 +1,7 @@
 import classNames from "classnames";
-import React from "react";
-import * as PropTypes from "prop-types";
 import {observer} from "mobx-react-lite";
+import * as PropTypes from "prop-types";
+import React from "react";
 
 import {formatAmount} from "../../helper/format";
 

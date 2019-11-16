@@ -22,4 +22,17 @@ header {
     @include breakpoint(large) {
         min-height: 6rem;
     }
+
+    &.big {
+        display: block;
+        padding: 4rem 1rem;
+        text-align: center;
+
+        @include breakpoint(medium) {
+            padding: 6rem 1rem;
+        }
+        @include breakpoint(large) {
+            padding: 8rem 1rem;
+        }
+    }
 }

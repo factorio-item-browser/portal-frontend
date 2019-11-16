@@ -1,0 +1,17 @@
+@import "../../style/mixin/all";
+@import "../../style/variable/all";
+
+.copy-template {
+    cursor: pointer;
+
+    .label {
+        font-weight: bold;
+    }
+
+    .template {
+        margin: 0 $spacing-default;
+
+        font-family: monospace;
+        font-size: 1rem;
+    }
+}

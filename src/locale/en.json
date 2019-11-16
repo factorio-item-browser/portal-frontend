@@ -6,6 +6,16 @@
         "machine": "machine",
         "recipe": "recipe"
     },
+    "copy-template": {
+        "rich-text-icon": {
+            "label": "Rich text icon:",
+            "description": "Copy&Paste this tag into the text in-game to get the icon instead."
+        },
+        "cheat-command": {
+            "label": "Cheat command:",
+            "description": "Execute this command in the in-game console to cheat the item into your inventory. This will disable achievements!"
+        }
+    },
     "footer": {
         "copyright-disclaimer": "All images are owned by <1>Wube Software</1> and the <3>mod authors</3> respectively."
     },
@@ -13,6 +23,14 @@
         "search": {
             "placeholder": "Item, recipe, ..."
         }
+    },
+    "item-details": {
+        "headline-item": "Item: {{label}}",
+        "headline-fluid": "Fluid: {{label}}",
+        "ingredient-in": "Ingredient in {{count}} recipe",
+        "ingredient-in_plural": "Ingredient in {{count}} recipes",
+        "product-of": "Result of {{count}} recipe",
+        "product-of_plural": "Result of {{count}} recipes"
     },
     "search-results": {
         "headline": "{{count}} search result for \"{{query}}\"",

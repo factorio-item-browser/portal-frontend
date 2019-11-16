@@ -1,3 +1,4 @@
+import {observer} from "mobx-react-lite";
 import React from "react";
 
 import logo from "../../../image/logo.png"
@@ -17,4 +18,4 @@ const HeaderLogo = () => {
     );
 };
 
-export default HeaderLogo;
+export default observer(HeaderLogo);

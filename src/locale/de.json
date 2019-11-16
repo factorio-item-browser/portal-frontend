@@ -6,6 +6,16 @@
         "machine": "Maschine",
         "recipe": "Rezept"
     },
+    "copy-template": {
+        "rich-text-icon": {
+            "label": "Rich-Text-Symbol:",
+            "description": "Füge diesen Code in den Text im Spiel ein, um das Symbol zu erhalten."
+        },
+        "cheat-command": {
+            "label": "Cheat-Kommando:",
+            "description": "Führe dieses Kommando in der Spiele-Konsole aus um das Item in dein Inventar zu cheaten. Das wird Errungenschaften deaktivieren!"
+        }
+    },
     "footer": {
         "copyright-disclaimer": "Alle Bilder sind Eigentum von <1>Wube Software</1> bzw. der <3>Mod-Authoren</3>."
     },
@@ -13,6 +23,14 @@
         "search": {
             "placeholder": "Item, Rezept, ..."
         }
+    },
+    "item-details": {
+        "headline-item": "Item: {{label}}",
+        "headline-fluid": "Flüssigkeit: {{label}}",
+        "ingredient-in": "Zutat in {{count}} Rezept",
+        "ingredient-in_plural": "Zutat in {{count}} Rezepten",
+        "product-of": "Ergebnis von {{count}} Rezept",
+        "product-of_plural": "Ergebnis von {{count}} Rezepten"
     },
     "search-results": {
         "headline": "{{count}} Suchergebnis für \"{{query}}\"",

@@ -1,7 +1,7 @@
-import React, {useContext} from "react";
 import {observer} from "mobx-react-lite";
-import Sortable from "react-sortablejs";
+import React, {useContext} from "react";
 import {useTranslation} from "react-i18next";
+import Sortable from "react-sortablejs";
 
 import SidebarStore from "../../../store/SidebarStore";
 import SidebarEntity from "./SidebarEntity";

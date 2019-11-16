@@ -40,3 +40,14 @@ interface SearchResultsPageData {
     results: EntityData[],
     count: number,
 }
+
+interface ItemDetailsData {
+    type: string,
+    name: string,
+    label: string,
+    description: string,
+    ingredientRecipes: EntityData[],
+    ingredientRecipeCount: number,
+    productRecipes: EntityData[],
+    productRecipeCount: number,
+}

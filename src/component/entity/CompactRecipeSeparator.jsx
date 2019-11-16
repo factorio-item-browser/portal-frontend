@@ -1,3 +1,4 @@
+import {observer} from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -42,4 +43,4 @@ CompactRecipeSeparator.propTypes = {
     craftingTime: PropTypes.number,
 };
 
-export default CompactRecipeSeparator;
+export default observer(CompactRecipeSeparator);

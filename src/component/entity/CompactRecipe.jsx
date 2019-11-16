@@ -1,3 +1,4 @@
+import {observer} from "mobx-react-lite";
 import classNames from "classnames";
 import * as PropTypes from "prop-types";
 import React from "react";
@@ -52,4 +53,4 @@ CompactRecipe.propTypes = {
     recipe: PropTypes.object.isRequired,
 };
 
-export default CompactRecipe;
+export default observer(CompactRecipe);

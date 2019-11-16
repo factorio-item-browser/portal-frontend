@@ -1,3 +1,4 @@
+import {observer} from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 
@@ -30,4 +31,4 @@ EntityList.propTypes = {
     entities: PropTypes.array.isRequired,
 };
 
-export default EntityList;
+export default observer(EntityList);

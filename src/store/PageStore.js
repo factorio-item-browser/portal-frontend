@@ -1,9 +1,9 @@
-import {observable} from "mobx";
+import {computed, observable} from "mobx";
 import {createContext} from "react";
 import {createRouter} from "router5";
 import browserPluginFactory from "router5-plugin-browser";
 
-import {routeIndex, routeSearch} from "../helper/const";
+import {routeFluidDetails, routeIndex, routeItemDetails, routeSearch} from "../helper/const";
 
 /**
  * The configuration of the routes.
@@ -13,6 +13,14 @@ const routeConfig = [
     {
         name: routeIndex,
         path: "/",
+    },
+    {
+        name: routeFluidDetails,
+        path: "/fluid/:name",
+    },
+    {
+        name: routeItemDetails,
+        path: "/item/:name",
     },
     {
         name: routeSearch,
@@ -89,10 +97,19 @@ class PageStore {
     /**
      * Navigates to the specified route.
      * @param {string} route
-     * @param {Object} params
+     * @param {Object} [params]
      */
     navigateTo(route, params) {
         this._router.navigate(route, params);
+    }
+
+    /**
+     * Whether to use the big version of the header.
+     * @returns {boolean}
+     */
+    @computed
+    get useBigHeader() {
+        return this.currentPage === routeIndex;
     }
 }
 

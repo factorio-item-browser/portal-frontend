@@ -1,3 +1,4 @@
+import {observer} from "mobx-react-lite";
 import React from "react";
 
 import "./Footer.scss";
@@ -25,4 +26,4 @@ const Footer = () => {
     );
 };
 
-export default Footer;
+export default observer(Footer);

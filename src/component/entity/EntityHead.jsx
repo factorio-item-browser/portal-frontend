@@ -1,3 +1,4 @@
+import {observer} from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 import Icon from "../common/Icon";
@@ -27,4 +28,4 @@ EntityHead.propTypes = {
     label: PropTypes.string.isRequired,
 };
 
-export default EntityHead;
+export default observer(EntityHead);

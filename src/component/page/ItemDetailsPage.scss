@@ -1,0 +1,42 @@
+@import "../../style/mixin/all";
+@import "../../style/variable/all";
+
+.item-details-head {
+    @include dynamic-spacing(margin, large);
+
+    box-shadow: $shadow-box;
+
+    .head {
+        @include dynamic-spacing(padding, default);
+
+        background: $color-box-default;
+        color: color($color-box-default, $lightness-text-primary);
+        display: flex;
+        align-items: center;
+
+        .icon {
+            @include breakpoint(large) {
+                height: $icon-size-large;
+                width: $icon-size-large;
+            }
+        }
+
+        h1 {
+            @include dynamic-spacing(margin-left, default);
+
+            font-size: $text-size-headline-small;
+            font-weight: bold;
+
+            @include breakpoint(large) {
+                font-size: $text-size-headline;
+            }
+        }
+    }
+
+    .details {
+        @include dynamic-spacing(padding, default);
+
+        background: rgba($color-box-default, $alpha-box-content);
+        border-top: px-to-rem(1) solid rgba(color($color-box-default, $lightness-box-border), $alpha-box-border);
+    }
+}

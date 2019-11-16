@@ -1,12 +1,13 @@
 import {observer} from "mobx-react-lite";
 import React, {Fragment, useContext} from "react";
 
-import {routeSearch} from "../helper/const";
+import {routeFluidDetails, routeItemDetails, routeSearch} from "../helper/const";
 import PageStore from "../store/PageStore";
 
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Sidebar from "./layout/Sidebar";
+import ItemDetailsPage from "./page/ItemDetailsPage";
 import SearchResultsPage from "./page/SearchResultsPage";
 
 import "./App.scss"
@@ -21,6 +22,13 @@ const App = () => {
 
     let page = null;
     switch (pageStore.currentPage) {
+        case routeFluidDetails:
+        case routeItemDetails:
+            page = (
+                <ItemDetailsPage />
+            );
+            break;
+
         case routeSearch:
             page = (
                 <SearchResultsPage />

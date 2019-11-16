@@ -1,3 +1,4 @@
+import {observer} from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 
@@ -24,4 +25,4 @@ Section.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-export default Section;
+export default observer(Section);

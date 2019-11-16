@@ -91,9 +91,9 @@ class SearchStore {
     constructor(cache, pageStore, portalApi) {
         this._cache = cache;
         this._pageStore = pageStore;
-        this._pageStore.addRouteListener(this._handleRouteChange.bind(this));
         this._portalApi = portalApi;
 
+        this._pageStore.addRouteListener(this._handleRouteChange.bind(this));
         this._debounceHandleQueryChange = debounce(this._handleQueryChange, 500, this);
     }
 
@@ -128,6 +128,10 @@ class SearchStore {
      */
     @action
     async _handleQueryChange(searchQuery) {
+        if (searchQuery.length < 2) {
+            return;
+        }
+
         this.isLoading = true;
 
         const data = await this._fetchData(searchQuery);

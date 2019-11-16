@@ -11,6 +11,8 @@ import SidebarCloseOverlay from "./sidebar/SidebarCloseOverlay";
 import UnpinnedEntityList from "./sidebar/UnpinnedEntityList";
 
 import "./Sidebar.scss";
+import PageStore from "../../store/PageStore";
+import ItemStore from "../../store/ItemStore";
 
 /**
  * The component representing the sidebar of the page.
@@ -18,13 +20,20 @@ import "./Sidebar.scss";
  * @constructor
  */
 const Sidebar = () => {
+    const pageStore = useContext(PageStore);
     const sidebarStore = useContext(SidebarStore);
     const isMobile = useMediaQuery({maxWidth: breakpointLarge});
+
+    const itemSore = useContext(ItemStore);
 
     const classes = classNames({
         "sidebar": true,
         "is-open": sidebarStore.isSidebarOpened,
     });
+
+    if (pageStore.useBigHeader) {
+        return null;
+    }
 
     return (
         <Fragment>
@@ -43,6 +52,16 @@ const Sidebar = () => {
                         sidebarStore.addViewedEntity("item", "stone-brick", "Steine-Dinger");
                     }}
                 >Press me too</button>
+                <button
+                    onClick={async () => {
+                        await itemSore.showItemDetails("item", "copper-cable");
+                    }}
+                >Item Details</button>
+                <button
+                    onClick={async () => {
+                        await itemSore.showItemDetails("fluid", "light-oil");
+                    }}
+                >Item Details 2</button>
             </div>
             {isMobile ? <SidebarCloseOverlay /> : null}
         </Fragment>

@@ -1,5 +1,7 @@
+import {observer} from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
+
 import EntityHead from "./EntityHead";
 import CompactRecipe from "./CompactRecipe";
 
@@ -26,4 +28,4 @@ Entity.propTypes = {
     entity: PropTypes.object.isRequired,
 };
 
-export default Entity;
+export default observer(Entity);

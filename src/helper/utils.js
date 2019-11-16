@@ -20,3 +20,15 @@ export function debounce(callback, delay, context) {
         }, delay);
     };
 }
+
+/**
+ * Selects all the text of the element.
+ * @param {Node} element
+ */
+export function selectText(element) {
+    const selection = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(element);
+    selection.removeAllRanges();
+    selection.addRange(range);
+}
