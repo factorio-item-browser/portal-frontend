@@ -1,5 +1,8 @@
-import React from "react";
+import {observer} from "mobx-react-lite";
+import React, {useContext} from "react";
 import {useTranslation} from "react-i18next";
+
+import SearchStore from "../../store/SearchStore";
 
 import Section from "../common/Section";
 import EntityList from "../entity/EntityList";
@@ -10,76 +13,19 @@ import EntityList from "../entity/EntityList";
  * @constructor
  */
 const SearchResultsPage = () => {
-    const entityData = {
-        type: "item",
-        name: "electronic-circuit",
-        label: "Elektronischer Schaltkreis",
-        recipes: [
-            {
-                ingredients: [
-                    {
-                        type: "item",
-                        name: "iron-plate",
-                        amount: 1,
-                    },
-                    {
-                        type: "item",
-                        name: "copper-cable",
-                        amount: 3,
-                    },
-                ],
-                products: [
-                    {
-                        type: "item",
-                        name: "electronic-circuit",
-                        amount: 1,
-                    },
-                ],
-                craftingTime: 0.5,
-                isExpensive: false,
-            },
-            {
-                ingredients: [
-                    {
-                        type: "item",
-                        name: "iron-plate",
-                        amount: 2,
-                    },
-                    {
-                        type: "item",
-                        name: "copper-cable",
-                        amount: 10,
-                    },
-                ],
-                products: [
-                    {
-                        type: "item",
-                        name: "electronic-circuit",
-                        amount: 1,
-                    },
-                ],
-                craftingTime: 0.5,
-                isExpensive: true,
-            },
-        ],
-    };
-    const data = {
-        query: "foo",
-        results: [entityData, entityData, entityData, entityData, entityData, entityData, entityData],
-        count: 7,
-    };
-
-
-
     const { t } = useTranslation();
+    const searchStore = useContext(SearchStore);
 
     return (
         <Section
-            headline={t("search-results.headline", {count: data.count, query: data.query})}
+            headline={t("search-results.headline", {
+                count: searchStore.currentSearchResultCount,
+                query: searchStore.currentSearchQuery,
+            })}
         >
-            <EntityList entities={data.results} />
+            <EntityList entities={searchStore.currentSearchResults} />
         </Section>
     );
 };
 
-export default SearchResultsPage;
+export default observer(SearchResultsPage);

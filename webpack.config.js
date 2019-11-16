@@ -100,6 +100,7 @@ module.exports = (env, argv) => {
             contentBase: "./build",
             host: "0.0.0.0",
             hot: true,
+            historyApiFallback: true
         },
         devtool: "source-map",
     }

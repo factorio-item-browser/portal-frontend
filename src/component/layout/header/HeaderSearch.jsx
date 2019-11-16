@@ -1,5 +1,5 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSearch, faTimes} from "@fortawesome/free-solid-svg-icons";
+import {faSearch, faSpinner, faTimes} from "@fortawesome/free-solid-svg-icons";
 import {observer} from "mobx-react-lite";
 import React, {useContext} from "react";
 import {useTranslation} from "react-i18next";
@@ -37,7 +37,7 @@ const HeaderSearch = () => {
     return (
         <div className="header-search">
             <div className="search-icon">
-                <FontAwesomeIcon icon={faSearch} />
+                {searchStore.isLoading ? <FontAwesomeIcon icon={faSpinner} spin /> : <FontAwesomeIcon icon={faSearch} />}
             </div>
             <input
                 autoComplete="off"
