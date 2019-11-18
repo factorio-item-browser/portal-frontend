@@ -4,7 +4,7 @@ import {createContext} from "react";
 import Cache from "../class/Cache";
 import {debounce} from "../helper/utils";
 
-import {pageStore} from "./PageStore";
+import {routeStore} from "./RouteStore";
 import {routeSearch} from "../helper/const";
 import {portalApi} from "../class/PortalApi";
 
@@ -20,11 +20,11 @@ class SearchStore {
     _cache;
 
     /**
-     * The page store.
-     * @type {PageStore}
+     * The route store.
+     * @type {RouteStore}
      * @private
      */
-    _pageStore;
+    _routeStore;
 
     /**
      * The Portal API instance.
@@ -85,15 +85,15 @@ class SearchStore {
     /**
      * Initializes the store.
      * @param {Cache<SearchResultsPageData>} cache
-     * @param {PageStore} pageStore
+     * @param {RouteStore} routeStore
      * @param {PortalApi} portalApi
      */
-    constructor(cache, pageStore, portalApi) {
+    constructor(cache, routeStore, portalApi) {
         this._cache = cache;
-        this._pageStore = pageStore;
+        this._routeStore = routeStore;
         this._portalApi = portalApi;
 
-        this._pageStore.addRouteListener(this._handleRouteChange.bind(this));
+        this._routeStore.addRouteListener(this._handleRouteChange.bind(this));
         this._debounceHandleQueryChange = debounce(this._handleQueryChange, 500, this);
     }
 
@@ -142,7 +142,7 @@ class SearchStore {
             this.currentSearchResultCount = data.count;
             this.isLoading = false;
 
-            this._pageStore.navigateTo(routeSearch, {query: searchQuery});
+            this._routeStore.navigateTo(routeSearch, {query: searchQuery});
         });
     }
 
@@ -182,5 +182,5 @@ class SearchStore {
 
 const cache = new Cache("search", 68400000);
 
-export const searchStore = new SearchStore(cache, pageStore, portalApi);
+export const searchStore = new SearchStore(cache, routeStore, portalApi);
 export default createContext(searchStore);

@@ -3,11 +3,11 @@ import React, {useContext} from "react";
 import {useMediaQuery} from "react-responsive";
 
 import {breakpointLarge} from "../../helper/const";
+import RouteStore from "../../store/RouteStore";
 import SearchStore from "../../store/SearchStore";
 
 import HeaderLogo from "./header/HeaderLogo";
 import HeaderSearch from "./header/HeaderSearch";
-import PageStore from "../../store/PageStore";
 import SidebarIcon from "./header/SidebarIcon";
 import SearchIcon from "./header/SearchIcon";
 
@@ -19,11 +19,11 @@ import "./Header.scss";
  * @constructor
  */
 const Header = () => {
-    const pageStore = useContext(PageStore);
+    const routeStore = useContext(RouteStore);
     const searchStore = useContext(SearchStore);
     const isMobile = useMediaQuery({maxWidth: breakpointLarge});
 
-    if (pageStore.useBigHeader) {
+    if (routeStore.useBigHeader) {
         return (
             <header className="big">
                 <HeaderLogo />

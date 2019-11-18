@@ -2,7 +2,7 @@ import {observer} from "mobx-react-lite";
 import React, {Fragment, useContext} from "react";
 
 import {routeFluidDetails, routeItemDetails, routeSearch} from "../helper/const";
-import PageStore from "../store/PageStore";
+import RouteStore from "../store/RouteStore";
 
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
@@ -18,10 +18,10 @@ import "./App.scss"
  * @constructor
  */
 const App = () => {
-    const pageStore = useContext(PageStore);
+    const routeStore = useContext(RouteStore);
 
     let page = null;
-    switch (pageStore.currentPage) {
+    switch (routeStore.currentRoute) {
         case routeFluidDetails:
         case routeItemDetails:
             page = (

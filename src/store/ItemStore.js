@@ -1,7 +1,7 @@
 import {createContext} from "react";
 import Cache from "../class/Cache";
 import {action, observable} from "mobx";
-import {pageStore} from "./PageStore";
+import {routeStore} from "./RouteStore";
 import {portalApi} from "../class/PortalApi";
 import {routeFluidDetails, routeItemDetails} from "../helper/const";
 
@@ -17,11 +17,11 @@ class ItemStore {
     _cache;
 
     /**
-     * The page store.
-     * @type {PageStore}
+     * The route store.
+     * @type {RouteStore}
      * @private
      */
-    _pageStore;
+    _routeStore;
 
     /**
      * The Portal API instance.
@@ -49,15 +49,15 @@ class ItemStore {
     /**
      * Initializes the store.
      * @param {Cache<ItemDetailsData>} cache
-     * @param {PageStore} pageStore
+     * @param {RouteStore} routeStore
      * @param {PortalApi} portalApi
      */
-    constructor(cache, pageStore, portalApi) {
+    constructor(cache, routeStore, portalApi) {
         this._cache = cache;
-        this._pageStore = pageStore;
+        this._routeStore = routeStore;
         this._portalApi = portalApi;
 
-        this._pageStore.addRouteListener(this._handleRouteChange.bind(this));
+        this._routeStore.addRouteListener(this._handleRouteChange.bind(this));
     }
 
     /**
@@ -91,9 +91,9 @@ class ItemStore {
 
         this.currentItemDetails = await this._fetchData(type, name);
         if (type === "fluid") {
-            this._pageStore.navigateTo(routeFluidDetails, {name: name});
+            this._routeStore.navigateTo(routeFluidDetails, {name: name});
         } else {
-            this._pageStore.navigateTo(routeItemDetails, {name: name});
+            this._routeStore.navigateTo(routeItemDetails, {name: name});
         }
     }
 
@@ -119,5 +119,5 @@ class ItemStore {
 
 const cache = new Cache("item", 86400000);
 
-export const itemStore = new ItemStore(cache, pageStore, portalApi);
+export const itemStore = new ItemStore(cache, routeStore, portalApi);
 export default createContext(itemStore);

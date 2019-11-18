@@ -31,9 +31,9 @@ const routeConfig = [
 /**
  * The store handling the pages, including routing between them.
  */
-class PageStore {
+class RouteStore {
     /**
-     * The router of the page store.
+     * The router of the store.
      * @type {Router}
      */
     _router;
@@ -46,11 +46,11 @@ class PageStore {
     _routeListeners = [];
 
     /**
-     * The current page which is displayed.
+     * The current route which is displayed.
      * @type {string}
      */
     @observable
-    currentPage = routeIndex;
+    currentRoute = routeIndex;
 
     /**
      * The portal API instance.
@@ -83,7 +83,7 @@ class PageStore {
         this._routeListeners.forEach((handler) => {
             handler(state.route, state.previousRoute);
         });
-        this.currentPage = state.route.name;
+        this.currentRoute = state.route.name;
     }
 
     /**
@@ -109,9 +109,9 @@ class PageStore {
      */
     @computed
     get useBigHeader() {
-        return this.currentPage === routeIndex;
+        return this.currentRoute === routeIndex;
     }
 }
 
-export const pageStore = new PageStore(routeConfig);
-export default createContext(pageStore);
+export const routeStore = new RouteStore(routeConfig);
+export default createContext(routeStore);

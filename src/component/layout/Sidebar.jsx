@@ -4,15 +4,16 @@ import React, {Fragment, useContext} from "react";
 import {useMediaQuery} from 'react-responsive'
 
 import {breakpointLarge} from "../../helper/const";
+import ItemStore from "../../store/ItemStore";
+import RouteStore from "../../store/RouteStore";
 import SidebarStore from "../../store/SidebarStore";
+
 import PinnedEntityList from "./sidebar/PinnedEntityList";
 import SidebarCloseIcon from "./sidebar/SidebarCloseIcon";
 import SidebarCloseOverlay from "./sidebar/SidebarCloseOverlay";
 import UnpinnedEntityList from "./sidebar/UnpinnedEntityList";
 
 import "./Sidebar.scss";
-import PageStore from "../../store/PageStore";
-import ItemStore from "../../store/ItemStore";
 
 /**
  * The component representing the sidebar of the page.
@@ -20,7 +21,7 @@ import ItemStore from "../../store/ItemStore";
  * @constructor
  */
 const Sidebar = () => {
-    const pageStore = useContext(PageStore);
+    const routeStore = useContext(RouteStore);
     const sidebarStore = useContext(SidebarStore);
     const isMobile = useMediaQuery({maxWidth: breakpointLarge});
 
@@ -31,7 +32,7 @@ const Sidebar = () => {
         "is-open": sidebarStore.isSidebarOpened,
     });
 
-    if (pageStore.useBigHeader) {
+    if (routeStore.useBigHeader) {
         return null;
     }
 
