@@ -34,7 +34,6 @@ interface SidebarEntityData {
     lastViewTime: string,
 }
 
-
 interface SearchResultsData {
     query: string,
     results: EntityData[],
@@ -50,4 +49,10 @@ interface ItemDetailsData {
     ingredientRecipeCount: number,
     productRecipes: EntityData[],
     productRecipeCount: number,
+}
+
+interface RecipeDetailsData {
+    name: string,
+    label: string,
+    description: string,
 }

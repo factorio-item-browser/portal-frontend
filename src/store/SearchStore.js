@@ -2,11 +2,10 @@ import {action, observable, runInAction} from "mobx";
 import {createContext} from "react";
 
 import Cache from "../class/Cache";
-import {debounce} from "../helper/utils";
-
-import {routeStore} from "./RouteStore";
-import {routeSearch} from "../helper/const";
 import {portalApi} from "../class/PortalApi";
+import {routeSearch} from "../helper/const";
+import {debounce} from "../helper/utils";
+import {routeStore} from "./RouteStore";
 
 /**
  * The store managing everything related to the search.

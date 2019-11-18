@@ -3,7 +3,7 @@ import {createContext} from "react";
 import {createRouter} from "router5";
 import browserPluginFactory from "router5-plugin-browser";
 
-import {routeFluidDetails, routeIndex, routeItemDetails, routeSearch} from "../helper/const";
+import {routeFluidDetails, routeIndex, routeItemDetails, routeRecipeDetails, routeSearch} from "../helper/const";
 
 /**
  * The configuration of the routes.
@@ -21,6 +21,10 @@ const routeConfig = [
     {
         name: routeItemDetails,
         path: "/item/:name",
+    },
+    {
+        name: routeRecipeDetails,
+        path: "/recipe/:name",
     },
     {
         name: routeSearch,

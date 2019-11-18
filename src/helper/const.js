@@ -13,4 +13,5 @@ export const breakpointHuge = 1500;
 export const routeFluidDetails = "fluidDetails";
 export const routeIndex = "index";
 export const routeItemDetails = "itemDetails";
+export const routeRecipeDetails = "recipeDetails";
 export const routeSearch = "search";

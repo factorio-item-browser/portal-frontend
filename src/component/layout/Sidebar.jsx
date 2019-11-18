@@ -5,6 +5,7 @@ import {useMediaQuery} from 'react-responsive'
 
 import {breakpointLarge} from "../../helper/const";
 import ItemStore from "../../store/ItemStore";
+import RecipeStore from "../../store/RecipeStore";
 import RouteStore from "../../store/RouteStore";
 import SidebarStore from "../../store/SidebarStore";
 
@@ -26,6 +27,7 @@ const Sidebar = () => {
     const isMobile = useMediaQuery({maxWidth: breakpointLarge});
 
     const itemSore = useContext(ItemStore);
+    const recipeStore = useContext(RecipeStore);
 
     const classes = classNames({
         "sidebar": true,
@@ -63,6 +65,11 @@ const Sidebar = () => {
                         await itemSore.showItemDetails("fluid", "light-oil");
                     }}
                 >Item Details 2</button>
+                <button
+                    onClick={async () => {
+                        await recipeStore.showRecipeDetails("advanced-oil-processing");
+                    }}
+                >Recipe Details</button>
             </div>
             {isMobile ? <SidebarCloseOverlay /> : null}
         </Fragment>

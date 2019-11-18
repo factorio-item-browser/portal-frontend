@@ -1,9 +1,10 @@
-import {createContext} from "react";
-import Cache from "../class/Cache";
 import {action, observable, runInAction} from "mobx";
-import {routeStore} from "./RouteStore";
+import {createContext} from "react";
+
+import Cache from "../class/Cache";
 import {portalApi} from "../class/PortalApi";
 import {routeFluidDetails, routeItemDetails} from "../helper/const";
+import {routeStore} from "./RouteStore";
 import {sidebarStore} from "./SidebarStore";
 
 /**
@@ -77,13 +78,9 @@ class ItemStore {
      */
     async _handleRouteChange(route) {
         if (route.name === routeItemDetails) {
-            if (this.currentItemDetails.type !== "item" || this.currentItemDetails.name !== route.params.name) {
-                await this.showItemDetails("item", route.params.name);
-            }
+            await this.showItemDetails("item", route.params.name);
         } else if (route.name === routeFluidDetails) {
-            if (this.currentItemDetails.type !== "fluid" || this.currentItemDetails.name !== route.params.name) {
-                await this.showItemDetails("fluid", route.params.name);
-            }
+            await this.showItemDetails("fluid", route.params.name);
         }
     }
 
@@ -95,10 +92,6 @@ class ItemStore {
      */
     @action
     async showItemDetails(type, name) {
-        if (this.currentItemDetails.type === type && this.currentItemDetails.name === name) {
-            return;
-        }
-
         const data = await this._fetchData(type, name);
         runInAction(() => {
             this.currentItemDetails = data;

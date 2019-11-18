@@ -1,13 +1,14 @@
 import {observer} from "mobx-react-lite";
 import React, {Fragment, useContext} from "react";
 
-import {routeFluidDetails, routeItemDetails, routeSearch} from "../helper/const";
+import {routeFluidDetails, routeItemDetails, routeRecipeDetails, routeSearch} from "../helper/const";
 import RouteStore from "../store/RouteStore";
 
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Sidebar from "./layout/Sidebar";
 import ItemDetailsPage from "./page/ItemDetailsPage";
+import RecipeDetailsPage from "./page/RecipeDetailsPage";
 import SearchResultsPage from "./page/SearchResultsPage";
 
 import "./App.scss"
@@ -24,15 +25,15 @@ const App = () => {
     switch (routeStore.currentRoute) {
         case routeFluidDetails:
         case routeItemDetails:
-            page = (
-                <ItemDetailsPage />
-            );
+            page = <ItemDetailsPage />;
+            break;
+
+        case routeRecipeDetails:
+            page = <RecipeDetailsPage />;
             break;
 
         case routeSearch:
-            page = (
-                <SearchResultsPage />
-            );
+            page = <SearchResultsPage />;
             break;
     }
 

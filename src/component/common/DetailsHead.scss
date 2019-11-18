@@ -1,7 +1,7 @@
 @import "../../style/mixin/all";
 @import "../../style/variable/all";
 
-.item-details-head {
+.details-head {
     @include dynamic-spacing(margin, large);
 
     box-shadow: $shadow-box;
@@ -33,7 +33,7 @@
         }
     }
 
-    .details {
+    .detail {
         @include dynamic-spacing(padding, default);
 
         background: rgba($color-box-default, $alpha-box-content);

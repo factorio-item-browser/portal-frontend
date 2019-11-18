@@ -1,5 +1,5 @@
-import {createContext} from "react";
 import {action, computed, observable} from "mobx";
+import {createContext} from "react";
 
 /**
  * The store managing all the data of the sidebar.

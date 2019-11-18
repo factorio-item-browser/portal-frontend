@@ -128,6 +128,23 @@ class PortalApi {
             }
         );
     }
+
+
+    requestRecipeDetails(name) {
+        const data = {
+            name: name,
+            label: "Some fancy shit",
+            description: "Lorem ipsum dolor sit amet.",
+        };
+
+        return new window.Promise(
+            (resolve) => {
+                window.setTimeout(() => {
+                    resolve(data);
+                }, 1000);
+            }
+        );
+    }
 }
 
 export const portalApi = new PortalApi();
