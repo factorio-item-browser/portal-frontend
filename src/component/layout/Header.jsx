@@ -23,6 +23,7 @@ const Header = () => {
     const searchStore = useContext(SearchStore);
     const isMobile = useMediaQuery({maxWidth: breakpointLarge});
 
+    // Index page with big logo and search box.
     if (routeStore.useBigHeader) {
         return (
             <header className="big">
@@ -32,6 +33,7 @@ const Header = () => {
         );
     }
 
+    // Desktop version with logo and search.
     if (!isMobile) {
         return (
             <header>
@@ -41,6 +43,7 @@ const Header = () => {
         );
     }
 
+    // Opened search replaces header on mobile.
     if (searchStore.isSearchOpened) {
         return (
             <header>
@@ -49,6 +52,7 @@ const Header = () => {
         );
     }
 
+    // Closed search means icons and logo on mobile.
     return (
         <header>
             <SidebarIcon />

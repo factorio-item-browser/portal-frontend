@@ -35,7 +35,7 @@ interface SidebarEntityData {
 }
 
 
-interface SearchResultsPageData {
+interface SearchResultsData {
     query: string,
     results: EntityData[],
     count: number,

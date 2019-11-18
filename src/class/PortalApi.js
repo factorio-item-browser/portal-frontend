@@ -4,7 +4,7 @@ class PortalApi {
     /**
      *
      * @param searchQuery
-     * @returns {Promise<SearchResultsPageData>}
+     * @returns {Promise<SearchResultsData>}
      */
     async searchQuery(searchQuery) {
         const entityData = {

@@ -14,17 +14,10 @@ import {portalApi} from "../class/PortalApi";
 class SearchStore {
     /**
      * The cache holding the search results.
-     * @type {Cache<SearchResultsPageData>}
+     * @type {Cache<SearchResultsData>}
      * @private
      */
     _cache;
-
-    /**
-     * The route store.
-     * @type {RouteStore}
-     * @private
-     */
-    _routeStore;
 
     /**
      * The Portal API instance.
@@ -32,6 +25,13 @@ class SearchStore {
      * @private
      */
     _portalApi;
+
+    /**
+     * The route store.
+     * @type {RouteStore}
+     * @private
+     */
+    _routeStore;
 
     /**
      * The debounce handler for handling the query change.
@@ -62,36 +62,26 @@ class SearchStore {
     isLoading = false;
 
     /**
-     * The current search query which has been executed.
-     * @type {string}
-     */
-    @observable
-    currentSearchQuery = "";
-
-    /**
      * The current search results.
-     * @type {EntityData[]}
+     * @type {SearchResultsData}
      */
     @observable
-    currentSearchResults = [];
-
-    /**
-     * The current count of search results.
-     * @type {number}
-     */
-    @observable
-    currentSearchResultCount = 0;
+    currentSearchResults = {
+        query: "",
+        results: [],
+        count: 0,
+    };
 
     /**
      * Initializes the store.
-     * @param {Cache<SearchResultsPageData>} cache
-     * @param {RouteStore} routeStore
+     * @param {Cache<SearchResultsData>} cache
      * @param {PortalApi} portalApi
+     * @param {RouteStore} routeStore
      */
-    constructor(cache, routeStore, portalApi) {
+    constructor(cache, portalApi, routeStore) {
         this._cache = cache;
-        this._routeStore = routeStore;
         this._portalApi = portalApi;
+        this._routeStore = routeStore;
 
         this._routeStore.addRouteListener(this._handleRouteChange.bind(this));
         this._debounceHandleQueryChange = debounce(this._handleQueryChange, 500, this);
@@ -103,10 +93,8 @@ class SearchStore {
      * @private
      */
     async _handleRouteChange(route) {
-        if (route.name === routeSearch) {
-            if (this.currentSearchQuery !== route.params.query) {
-                await this._handleQueryChange(route.params.query);
-            }
+        if (route.name === routeSearch && this.currentSearchResults.query !== route.params.query) {
+            await this._handleQueryChange(route.params.query);
         }
     }
 
@@ -135,11 +123,8 @@ class SearchStore {
         this.isLoading = true;
 
         const data = await this._fetchData(searchQuery);
-
         runInAction(() => {
-            this.currentSearchQuery = data.query;
-            this.currentSearchResults = data.results;
-            this.currentSearchResultCount = data.count;
+            this.currentSearchResults = data;
             this.isLoading = false;
 
             this._routeStore.navigateTo(routeSearch, {query: searchQuery});
@@ -149,7 +134,7 @@ class SearchStore {
     /**
      * Fetches the data to the search query.
      * @param {string} searchQuery
-     * @returns {Promise<SearchResultsPageData>}
+     * @returns {Promise<SearchResultsData>}
      * @private
      */
     async _fetchData(searchQuery) {
@@ -182,5 +167,5 @@ class SearchStore {
 
 const cache = new Cache("search", 68400000);
 
-export const searchStore = new SearchStore(cache, routeStore, portalApi);
+export const searchStore = new SearchStore(cache, portalApi, routeStore);
 export default createContext(searchStore);

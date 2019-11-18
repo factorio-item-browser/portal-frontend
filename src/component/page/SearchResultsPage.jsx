@@ -15,15 +15,16 @@ import EntityList from "../entity/EntityList";
 const SearchResultsPage = () => {
     const { t } = useTranslation();
     const searchStore = useContext(SearchStore);
+    const data = searchStore.currentSearchResults;
 
     return (
         <Section
             headline={t("search-results.headline", {
-                count: searchStore.currentSearchResultCount,
-                query: searchStore.currentSearchQuery,
+                count: data.count,
+                query: data.query,
             })}
         >
-            <EntityList entities={searchStore.currentSearchResults} />
+            <EntityList entities={data.results} />
         </Section>
     );
 };

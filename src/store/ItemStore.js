@@ -1,9 +1,10 @@
 import {createContext} from "react";
 import Cache from "../class/Cache";
-import {action, observable} from "mobx";
+import {action, observable, runInAction} from "mobx";
 import {routeStore} from "./RouteStore";
 import {portalApi} from "../class/PortalApi";
 import {routeFluidDetails, routeItemDetails} from "../helper/const";
+import {sidebarStore} from "./SidebarStore";
 
 /**
  * The store for the items. And fluids.
@@ -17,6 +18,13 @@ class ItemStore {
     _cache;
 
     /**
+     * The Portal API instance.
+     * @type {PortalApi}
+     * @private
+     */
+    _portalApi;
+
+    /**
      * The route store.
      * @type {RouteStore}
      * @private
@@ -24,11 +32,11 @@ class ItemStore {
     _routeStore;
 
     /**
-     * The Portal API instance.
-     * @type {PortalApi}
+     * The sidebar store.
+     * @type {SidebarStore}
      * @private
      */
-    _portalApi;
+    _sidebarStore;
 
     /**
      * The current item details to be displayed.
@@ -49,13 +57,15 @@ class ItemStore {
     /**
      * Initializes the store.
      * @param {Cache<ItemDetailsData>} cache
-     * @param {RouteStore} routeStore
      * @param {PortalApi} portalApi
+     * @param {RouteStore} routeStore
+     * @param {SidebarStore} sidebarStore
      */
-    constructor(cache, routeStore, portalApi) {
+    constructor(cache, portalApi, routeStore, sidebarStore) {
         this._cache = cache;
-        this._routeStore = routeStore;
         this._portalApi = portalApi;
+        this._routeStore = routeStore;
+        this._sidebarStore = sidebarStore;
 
         this._routeStore.addRouteListener(this._handleRouteChange.bind(this));
     }
@@ -89,12 +99,16 @@ class ItemStore {
             return;
         }
 
-        this.currentItemDetails = await this._fetchData(type, name);
-        if (type === "fluid") {
-            this._routeStore.navigateTo(routeFluidDetails, {name: name});
-        } else {
-            this._routeStore.navigateTo(routeItemDetails, {name: name});
-        }
+        const data = await this._fetchData(type, name);
+        runInAction(() => {
+            this.currentItemDetails = data;
+            this._sidebarStore.addViewedEntity(data.type, data.name, data.label);
+            if (type === "fluid") {
+                this._routeStore.navigateTo(routeFluidDetails, {name: data.name});
+            } else {
+                this._routeStore.navigateTo(routeItemDetails, {name: data.name});
+            }
+        });
     }
 
     /**
@@ -119,5 +133,5 @@ class ItemStore {
 
 const cache = new Cache("item", 86400000);
 
-export const itemStore = new ItemStore(cache, routeStore, portalApi);
+export const itemStore = new ItemStore(cache, portalApi, routeStore, sidebarStore);
 export default createContext(itemStore);
