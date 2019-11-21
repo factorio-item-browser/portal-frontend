@@ -8,6 +8,7 @@ import CopyTemplate from "../common/CopyTemplate";
 import Detail from "../common/Detail";
 import DetailsHead from "../common/DetailsHead";
 import Section from "../common/Section";
+import Entity from "../entity/Entity";
 import EntityList from "../entity/EntityList";
 
 /**
@@ -45,11 +46,19 @@ const ItemDetailsPage = () => {
             </DetailsHead>
 
             <Section headline={t("item-details.ingredient-in", {count: data.ingredientRecipeCount})}>
-                <EntityList entities={data.ingredientRecipes} />
+                <EntityList>
+                    {data.ingredientRecipes.map((recipe) => {
+                        return <Entity key={recipe.name} entity={recipe} />
+                    })}
+                </EntityList>
             </Section>
 
             <Section headline={t("item-details.product-of", {count: data.productRecipeCount})}>
-                <EntityList entities={data.productRecipes} />
+                <EntityList>
+                    {data.productRecipes.map((recipe) => {
+                        return <Entity key={recipe.name} entity={recipe} />
+                    })}
+                </EntityList>
             </Section>
         </Fragment>
     );

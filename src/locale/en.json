@@ -32,6 +32,12 @@
         "product-of": "Result of {{count}} recipe",
         "product-of_plural": "Result of {{count}} recipes"
     },
+    "recipe-details": {
+        "machine": {
+            "headline": "Producible in {{count}} machine",
+            "headline_plural": "Producible in {{count}} machines"
+        }
+    },
     "search-results": {
         "headline": "{{count}} search result for \"{{query}}\"",
         "headline_plural": "{{count}} search results for \"{{query}}\""

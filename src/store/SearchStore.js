@@ -1,11 +1,10 @@
-import {action, observable, runInAction} from "mobx";
+import {action, observable} from "mobx";
 import {createContext} from "react";
 
 import Cache from "../class/Cache";
 import {portalApi} from "../class/PortalApi";
 import {routeSearch} from "../helper/const";
 import {debounce} from "../helper/utils";
-import {routeStore} from "./RouteStore";
 
 /**
  * The store managing everything related to the search.
@@ -75,59 +74,24 @@ class SearchStore {
      * Initializes the store.
      * @param {Cache<SearchResultsData>} cache
      * @param {PortalApi} portalApi
-     * @param {RouteStore} routeStore
      */
-    constructor(cache, portalApi, routeStore) {
+    constructor(cache, portalApi) {
         this._cache = cache;
         this._portalApi = portalApi;
-        this._routeStore = routeStore;
 
-        this._routeStore.addRouteListener(this._handleRouteChange.bind(this));
         this._debounceHandleQueryChange = debounce(this._handleQueryChange, 500, this);
     }
 
     /**
-     * Handles the change of the route.
-     * @param {State} route
-     * @private
+     * Injects the route store.
+     * @param {RouteStore} routeStore
      */
-    async _handleRouteChange(route) {
-        if (route.name === routeSearch && this.currentSearchResults.query !== route.params.query) {
-            await this._handleQueryChange(route.params.query);
-        }
+    injectRouteStore(routeStore) {
+        this._routeStore = routeStore;
     }
 
-    /**
-     * Sets the searchQuery.
-     * @param searchQuery
-     */
-    @action
-    setSearchQuery(searchQuery) {
-        this.searchQuery = searchQuery;
-        this._debounceHandleQueryChange(searchQuery);
-    }
-
-    /**
-     * Handles the (debounced) change of the query, triggering the search.
-     * @param {string} searchQuery
-     * @returns {Promise<void>}
-     * @private
-     */
-    @action
-    async _handleQueryChange(searchQuery) {
-        if (searchQuery.length < 2) {
-            return;
-        }
-
-        this.isLoading = true;
-
-        const data = await this._fetchData(searchQuery);
-        runInAction(() => {
-            this.currentSearchResults = data;
-            this.isLoading = false;
-
-            this._routeStore.navigateTo(routeSearch, {query: searchQuery});
-        });
+    async handleRouteChange(query) {
+        return this._fetchData(query).then(this._applySearchResults.bind(this));
     }
 
     /**
@@ -145,6 +109,38 @@ class SearchStore {
         const requestedData = await this._portalApi.searchQuery(searchQuery);
         this._cache.write(searchQuery, requestedData);
         return requestedData;
+    }
+
+    @action
+    _applySearchResults(searchResults) {
+        this.currentSearchResults = searchResults;
+        this.isLoading = false;
+    }
+
+    /**
+     * Sets the searchQuery.
+     * @param searchQuery
+     */
+    @action
+    setSearchQuery(searchQuery) {
+        this.searchQuery = searchQuery;
+        this._debounceHandleQueryChange(searchQuery);
+    }
+
+    /**
+     * Handles the (debounced) change of the query, triggering the search.
+     * @param {string} query
+     * @returns {Promise<void>}
+     * @private
+     */
+    @action
+    async _handleQueryChange(query) {
+        if (query.length < 2) {
+            return;
+        }
+
+        this.isLoading = true;
+        this._routeStore.navigateTo(routeSearch, {query: query});
     }
 
     /**
@@ -166,5 +162,5 @@ class SearchStore {
 
 const cache = new Cache("search", 68400000);
 
-export const searchStore = new SearchStore(cache, portalApi, routeStore);
+export const searchStore = new SearchStore(cache, portalApi);
 export default createContext(searchStore);

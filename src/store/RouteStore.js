@@ -4,38 +4,74 @@ import {createRouter} from "router5";
 import browserPluginFactory from "router5-plugin-browser";
 
 import {routeFluidDetails, routeIndex, routeItemDetails, routeRecipeDetails, routeSearch} from "../helper/const";
+import {itemStore} from "./ItemStore";
+import {recipeStore} from "./RecipeStore";
+import {searchStore} from "./SearchStore";
 
 /**
  * The configuration of the routes.
  * @type {Route[]}
  */
-const routeConfig = [
+const routes = [
     {
         name: routeIndex,
         path: "/",
     },
     {
-        name: routeFluidDetails,
-        path: "/fluid/:name",
-    },
-    {
         name: routeItemDetails,
         path: "/item/:name",
+        handleChange: (routeStore, params) => {
+            return routeStore._itemStore.handleRouteChange("item", params.name);
+        },
+    },
+    {
+        name: routeFluidDetails,
+        path: "/fluid/:name",
+        handleChange: (routeStore, params) => {
+            return routeStore._itemStore.handleRouteChange("fluid", params.name);
+        },
     },
     {
         name: routeRecipeDetails,
         path: "/recipe/:name",
+        handleChange: (routeStore, params) => {
+            return routeStore._recipeStore.handleRouteChange(params.name);
+        },
     },
     {
         name: routeSearch,
         path: "/search/*query",
-    }
+        handleChange: (routeStore, params) => {
+            return routeStore._searchStore.handleRouteChange(params.query);
+        },
+    },
 ];
 
 /**
  * The store handling the pages, including routing between them.
  */
 class RouteStore {
+    /**
+     * The item store.
+     * @type {ItemStore}
+     * @private
+     */
+    _itemStore;
+
+    /**
+     * The recipe store.
+     * @type {RecipeStore}
+     * @private
+     */
+    _recipeStore;
+
+    /**
+     * The search store.
+     * @type {SearchStore}
+     * @private
+     */
+    _searchStore;
+
     /**
      * The router of the store.
      * @type {Router}
@@ -54,28 +90,55 @@ class RouteStore {
      * @type {string}
      */
     @observable
-    currentRoute = routeIndex;
+    currentRoute = "";
 
     /**
      * The portal API instance.
-     * @param {Route[]} routeConfig
+     * @param {Route[]} routes
+     * @param {ItemStore} itemStore
+     * @param {RecipeStore} recipeStore
+     * @param {SearchStore} searchStore
      */
-    constructor(routeConfig) {
-        this._router = this._createRouter(routeConfig);
+    constructor(routes, itemStore, recipeStore, searchStore) {
+        this._itemStore = itemStore;
+        this._recipeStore = recipeStore;
+        this._searchStore = searchStore;
+        this._searchStore.injectRouteStore(this);
+
+        this._router = this._createRouter(routes);
         this._router.start();
     }
 
     /**
      * Creates the router to use.
-     * @param {Route[]} routeConfig
+     * @param {Route[]} routes
      * @returns {Router}
      * @private
      */
-    _createRouter(routeConfig) {
-        const router = createRouter(routeConfig);
+    _createRouter(routes) {
+        const router = createRouter(routes);
         router.usePlugin(browserPluginFactory());
+        router.useMiddleware(this._getFetchDataHandlerMiddleware(routes).bind(this));
         router.subscribe(this._handleChangeEvent.bind(this));
         return router;
+    }
+
+    /**
+     * The middleware for handling the route changes.
+     * @param {Route[]} routes
+     * @returns {function(): function(State): boolean | Promise<any>}
+     * @private
+     */
+    _getFetchDataHandlerMiddleware(routes) {
+        return () => (toState) => {
+            let result = true;
+            routes.forEach((route) => {
+                if (route.name === toState.name && route.handleChange) {
+                    result = route.handleChange(this, toState.params);
+                }
+            });
+            return result;
+        }
     }
 
     /**
@@ -117,5 +180,5 @@ class RouteStore {
     }
 }
 
-export const routeStore = new RouteStore(routeConfig);
+export const routeStore = new RouteStore(routes, itemStore, recipeStore, searchStore);
 export default createContext(routeStore);

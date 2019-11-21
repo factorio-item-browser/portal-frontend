@@ -1,10 +1,8 @@
-import {action, observable, runInAction} from "mobx";
+import {action, observable} from "mobx";
 import {createContext} from "react";
 
 import Cache from "../class/Cache";
 import {portalApi} from "../class/PortalApi";
-import {routeFluidDetails, routeItemDetails} from "../helper/const";
-import {routeStore} from "./RouteStore";
 import {sidebarStore} from "./SidebarStore";
 
 /**
@@ -24,13 +22,6 @@ class ItemStore {
      * @private
      */
     _portalApi;
-
-    /**
-     * The route store.
-     * @type {RouteStore}
-     * @private
-     */
-    _routeStore;
 
     /**
      * The sidebar store.
@@ -59,49 +50,22 @@ class ItemStore {
      * Initializes the store.
      * @param {Cache<ItemDetailsData>} cache
      * @param {PortalApi} portalApi
-     * @param {RouteStore} routeStore
      * @param {SidebarStore} sidebarStore
      */
-    constructor(cache, portalApi, routeStore, sidebarStore) {
+    constructor(cache, portalApi, sidebarStore) {
         this._cache = cache;
         this._portalApi = portalApi;
-        this._routeStore = routeStore;
         this._sidebarStore = sidebarStore;
-
-        this._routeStore.addRouteListener(this._handleRouteChange.bind(this));
     }
 
     /**
      * Handles the change of the route.
-     * @param {State} route
-     * @private
-     */
-    async _handleRouteChange(route) {
-        if (route.name === routeItemDetails) {
-            await this.showItemDetails("item", route.params.name);
-        } else if (route.name === routeFluidDetails) {
-            await this.showItemDetails("fluid", route.params.name);
-        }
-    }
-
-    /**
-     * Shows the item details of the specified item or fluid.
      * @param {string} type
      * @param {string} name
-     * @returns {Promise<void>}
+     * @returns {Promise<ItemDetailsData>}
      */
-    @action
-    async showItemDetails(type, name) {
-        const data = await this._fetchData(type, name);
-        runInAction(() => {
-            this.currentItemDetails = data;
-            this._sidebarStore.addViewedEntity(data.type, data.name, data.label);
-            if (type === "fluid") {
-                this._routeStore.navigateTo(routeFluidDetails, {name: data.name});
-            } else {
-                this._routeStore.navigateTo(routeItemDetails, {name: data.name});
-            }
-        });
+    async handleRouteChange(type, name) {
+        return this._fetchData(type, name).then(this._applyItemDetails.bind(this));
     }
 
     /**
@@ -118,13 +82,25 @@ class ItemStore {
             return cachedData;
         }
 
-        const requestedData = await this._portalApi.requestItemDetails(type, name);
-        this._cache.write(cacheKey, requestedData);
-        return requestedData;
+        return this._portalApi.requestItemDetails(type, name).then((itemDetails) => {
+            this._cache.write(cacheKey, itemDetails);
+            return itemDetails;
+        });
+    }
+
+    /**
+     * Updates the received item details.
+     * @param {ItemDetailsData} itemDetails
+     * @private
+     */
+    @action
+    _applyItemDetails(itemDetails) {
+        this.currentItemDetails = itemDetails;
+        this._sidebarStore.addViewedEntity(itemDetails.type, itemDetails.name, itemDetails.label);
     }
 }
 
 const cache = new Cache("item", 86400000);
 
-export const itemStore = new ItemStore(cache, portalApi, routeStore, sidebarStore);
+export const itemStore = new ItemStore(cache, portalApi, sidebarStore);
 export default createContext(itemStore);

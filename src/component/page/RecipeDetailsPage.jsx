@@ -1,11 +1,14 @@
 import {observer} from "mobx-react-lite";
 import React, {Fragment, useContext} from "react";
+import {useTranslation} from "react-i18next";
 
 import RecipeStore from "../../store/RecipeStore";
 import DetailsHead from "../common/DetailsHead";
 import Detail from "../common/Detail";
 import CopyTemplate from "../common/CopyTemplate";
-import {useTranslation} from "react-i18next";
+import Section from "../common/Section";
+import EntityList from "../entity/EntityList";
+import MachineEntity from "../entity/MachineEntity";
 
 /**
  * The component representing the details page of a recipe.
@@ -33,6 +36,16 @@ const RecipeDetailsPage = () => {
                     />
                 </Detail>
             </DetailsHead>
+
+            <Section
+                headline={t("recipe-details.machine.headline", {count: data.machines.length})}
+            >
+                <EntityList>
+                    {data.machines.map((machine) => {
+                        return <MachineEntity key={machine.name} machine={machine} />
+                    })}
+                </EntityList>
+            </Section>
         </Fragment>
     );
 };

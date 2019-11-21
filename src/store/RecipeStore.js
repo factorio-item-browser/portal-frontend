@@ -1,10 +1,8 @@
-import {action, observable, runInAction} from "mobx";
+import {action, observable} from "mobx";
 import {createContext} from "react";
 
 import Cache from "../class/Cache";
 import {portalApi} from "../class/PortalApi";
-import {routeRecipeDetails} from "../helper/const";
-import {routeStore} from "./RouteStore";
 import {sidebarStore} from "./SidebarStore";
 
 /**
@@ -26,13 +24,6 @@ class RecipeStore {
     _portalApi;
 
     /**
-     * The route store.
-     * @type {RouteStore}
-     * @private
-     */
-    _routeStore;
-
-    /**
      * The sidebar store.
      * @type {SidebarStore}
      * @private
@@ -48,48 +39,28 @@ class RecipeStore {
         name: "",
         label: "",
         description: "",
+        machines: [],
     };
 
     /**
      * Initializes the store.
      * @param {Cache<RecipeDetailsData>} cache
      * @param {PortalApi} portalApi
-     * @param {RouteStore} routeStore
      * @param {SidebarStore} sidebarStore
      */
-    constructor(cache, portalApi, routeStore, sidebarStore) {
+    constructor(cache, portalApi, sidebarStore) {
         this._cache = cache;
         this._portalApi = portalApi;
-        this._routeStore = routeStore;
         this._sidebarStore = sidebarStore;
-
-        this._routeStore.addRouteListener(this._handleRouteChange.bind(this));
     }
 
     /**
      * Handles the change of the route.
-     * @param {State} route
-     * @private
-     */
-    async _handleRouteChange(route) {
-        if (route.name === routeRecipeDetails) {
-            await this.showRecipeDetails(route.params.name);
-        }
-    }
-
-    /**
-     * Shows the details of the recipe with the specified name.
      * @param {string} name
-     * @returns {Promise<void>}
+     * @returns {Promise<RecipeDetailsData>}
      */
-    @action
-    async showRecipeDetails(name) {
-        const data = await this._fetchData(name);
-        runInAction(() => {
-            this.currentRecipeDetails = data;
-            this._sidebarStore.addViewedEntity("recipe", data.name, data.label);
-            this._routeStore.navigateTo(routeRecipeDetails, {name: data.name});
-        });
+    async handleRouteChange(name) {
+        return this._fetchData(name).then(this._applyRecipeDetails.bind(this));
     }
 
     /**
@@ -108,9 +79,21 @@ class RecipeStore {
         this._cache.write(name, requestedData);
         return requestedData;
     }
+
+    /**
+     * Applies the recipe details to the store.
+     * @param {RecipeDetailsData} recipeDetails
+     * @private
+     */
+    @action
+    _applyRecipeDetails(recipeDetails) {
+        this.currentRecipeDetails = recipeDetails;
+        this._sidebarStore.addViewedEntity("recipe", recipeDetails.name, recipeDetails.label);
+    }
+
 }
 
 const cache = new Cache('recipe', 86400000);
 
-export const recipeStore = new RecipeStore(cache, portalApi, routeStore, sidebarStore);
+export const recipeStore = new RecipeStore(cache, portalApi, sidebarStore);
 export default createContext(recipeStore);

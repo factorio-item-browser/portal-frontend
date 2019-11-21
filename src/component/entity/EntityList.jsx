@@ -2,8 +2,6 @@ import {observer} from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 
-import Entity from "./Entity";
-
 import "./EntityList.scss";
 
 /**
@@ -12,23 +10,16 @@ import "./EntityList.scss";
  * @returns {ReactDOM}
  * @constructor
  */
-const EntityList = ({entities}) => {
+const EntityList = ({children}) => {
     return (
         <div className="entity-list">
-            {entities.map((entity, index) => {
-                return (
-                    <Entity
-                        key={index}
-                        entity={entity}
-                    />
-                );
-            })}
+            {children}
         </div>
     );
 };
 
 EntityList.propTypes = {
-    entities: PropTypes.array.isRequired,
+    children: PropTypes.node,
 };
 
 export default observer(EntityList);

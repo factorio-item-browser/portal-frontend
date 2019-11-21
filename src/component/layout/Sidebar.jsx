@@ -3,9 +3,7 @@ import {observer} from "mobx-react-lite";
 import React, {Fragment, useContext} from "react";
 import {useMediaQuery} from 'react-responsive'
 
-import {breakpointLarge} from "../../helper/const";
-import ItemStore from "../../store/ItemStore";
-import RecipeStore from "../../store/RecipeStore";
+import {breakpointLarge, routeFluidDetails, routeItemDetails, routeRecipeDetails} from "../../helper/const";
 import RouteStore from "../../store/RouteStore";
 import SidebarStore from "../../store/SidebarStore";
 
@@ -25,9 +23,6 @@ const Sidebar = () => {
     const routeStore = useContext(RouteStore);
     const sidebarStore = useContext(SidebarStore);
     const isMobile = useMediaQuery({maxWidth: breakpointLarge});
-
-    const itemSore = useContext(ItemStore);
-    const recipeStore = useContext(RecipeStore);
 
     const classes = classNames({
         "sidebar": true,
@@ -57,17 +52,17 @@ const Sidebar = () => {
                 >Press me too</button>
                 <button
                     onClick={async () => {
-                        await itemSore.showItemDetails("item", "copper-cable");
+                        await routeStore.navigateTo(routeItemDetails, {name: "copper-cable"});
                     }}
                 >Item Details</button>
                 <button
                     onClick={async () => {
-                        await itemSore.showItemDetails("fluid", "light-oil");
+                        await routeStore.navigateTo(routeFluidDetails, {name: "light-oil"});
                     }}
                 >Item Details 2</button>
                 <button
                     onClick={async () => {
-                        await recipeStore.showRecipeDetails("advanced-oil-processing");
+                        await routeStore.navigateTo(routeRecipeDetails, {name: "advanced-oil-processing"});
                     }}
                 >Recipe Details</button>
             </div>

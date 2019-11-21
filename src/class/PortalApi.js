@@ -129,12 +129,23 @@ class PortalApi {
         );
     }
 
-
     requestRecipeDetails(name) {
         const data = {
             name: name,
             label: "Some fancy shit",
             description: "Lorem ipsum dolor sit amet.",
+            machines: [
+                {
+                    name: "player",
+                    label: "Character",
+                    craftingSpeed: 1,
+                },
+                {
+                    name: "assembling-machine-1",
+                    label: "Assembling Machine 1",
+                    craftingSpeed: 0.5,
+                },
+            ],
         };
 
         return new window.Promise(

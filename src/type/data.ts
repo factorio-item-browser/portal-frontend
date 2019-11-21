@@ -13,6 +13,12 @@ interface EntityData {
     omittedRecipes: number,
 }
 
+interface MachineData {
+    name: string,
+    label: string,
+    craftingSpeed: number,
+}
+
 interface RecipeData {
     craftingTime: number,
     ingredients: RecipeItemData[],
@@ -55,4 +61,5 @@ interface RecipeDetailsData {
     name: string,
     label: string,
     description: string,
+    machines: MachineData[],
 }
