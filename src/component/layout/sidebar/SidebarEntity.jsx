@@ -9,6 +9,8 @@ import Icon from "../../common/Icon";
 import SidebarStore from "../../../store/SidebarStore";
 
 import "./SidebarEntity.scss";
+import RouteStore from "../../../store/RouteStore";
+import EntityLink from "../../link/EntityLink";
 
 /**
  * Renders the action to pin the entity.
@@ -65,20 +67,26 @@ function renderUnpinAction(entity) {
  */
 const SidebarEntity = ({entity}) => {
     const { t } = useTranslation();
+    const routeStore = useContext(RouteStore);
     const sidebarStore = useContext(SidebarStore);
 
     return (
-        <div
+        <EntityLink
+            type={entity.type}
+            name={entity.name}
             className="sidebar-entity"
             draggable={true}
             data-id={sidebarStore.getIdForEntity(entity)}
+            onClick={() => {
+                routeStore.navigateToEntity(entity.type, entity.name);
+            }}
         >
             <Icon type={entity.type} name={entity.name} transparent={true} />
             <span className="label">{entity.label}</span>
 
             {entity.pinnedPosition > 0 ? renderUnpinAction(entity) : renderPinAction(entity)}
             <div className="type">{t(`box-label.${entity.type}`)}</div>
-        </div>
+        </EntityLink>
     );
 };
 

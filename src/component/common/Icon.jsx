@@ -4,6 +4,7 @@ import * as PropTypes from "prop-types";
 import React from "react";
 
 import {formatAmount} from "../../helper/format";
+import EntityLink from "../link/EntityLink";
 
 import "./Icon.scss";
 
@@ -29,16 +30,23 @@ function renderAmount(amount) {
  * @param {string} name
  * @param {number} amount
  * @param {boolean} transparent
+ * @param {boolean} linked
  * @returns {ReactNode}
  * @constructor
  */
-const Icon = ({type, name, amount = 0, transparent = false})  => {
+const Icon = ({type, name, amount = 0, transparent = false, linked = false}) => {
     const classes = classNames({
         icon: true,
         [`icon-${type}-${name}`]: true,
         "with-background": !transparent,
     });
     const label = renderAmount(amount);
+
+    if (linked) {
+        return (
+            <EntityLink type={type} name={name} className={classes}>{label}</EntityLink>
+        );
+    }
 
     return (
         <div className={classes}>{label}</div>
@@ -50,6 +58,7 @@ Icon.propTypes = {
     name: PropTypes.string.isRequired,
     amount: PropTypes.number,
     transparent: PropTypes.bool,
+    linked: PropTypes.bool,
 };
 
 export default observer(Icon);

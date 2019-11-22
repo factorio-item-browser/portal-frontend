@@ -1,4 +1,4 @@
-import {computed, observable} from "mobx";
+import {action, computed, observable} from "mobx";
 import {createContext} from "react";
 import {createRouter} from "router5";
 import browserPluginFactory from "router5-plugin-browser";
@@ -48,6 +48,16 @@ const routes = [
 ];
 
 /**
+ * The map from the entity types to their corresponding routes.
+ * @type {Object<string, string>}
+ */
+const entityTypeToRouteMap = {
+    item: routeItemDetails,
+    fluid: routeFluidDetails,
+    recipe: routeRecipeDetails,
+};
+
+/**
  * The store handling the pages, including routing between them.
  */
 class RouteStore {
@@ -77,13 +87,6 @@ class RouteStore {
      * @type {Router}
      */
     _router;
-
-    /**
-     * The change handlers for the router.
-     * @type {Function[]|SubscribeFn[]}
-     * @private
-     */
-    _routeListeners = [];
 
     /**
      * The current route which is displayed.
@@ -146,19 +149,9 @@ class RouteStore {
      * @param {SubscribeState} state
      * @private
      */
+    @action
     _handleChangeEvent(state) {
-        this._routeListeners.forEach((handler) => {
-            handler(state.route, state.previousRoute);
-        });
         this.currentRoute = state.route.name;
-    }
-
-    /**
-     * Adds a listener which gets triggered whenever the route changes.
-     * @param {Function|SubscribeFn} callback
-     */
-    addRouteListener(callback) {
-        this._routeListeners.push(callback);
     }
 
     /**
@@ -168,6 +161,43 @@ class RouteStore {
      */
     navigateTo(route, params) {
         this._router.navigate(route, params);
+    }
+
+    /**
+     * Builds the path to the specified route.
+     * @param {string} route
+     * @param {Object} [params]
+     * @returns {string}
+     */
+    buildPath(route, params) {
+        return this._router.buildPath(route, params);
+    }
+
+    /**
+     * Navigates to the specified entity.
+     * @param {string} type
+     * @param {string} name
+     */
+    navigateToEntity(type, name) {
+        const route = entityTypeToRouteMap[type];
+        if (route) {
+            this.navigateTo(route, {name: name});
+        }
+    }
+
+    /**
+     * Builds the path to the specified entity.
+     * @param {string} type
+     * @param {string} name
+     * @returns {string}
+     */
+    buildPathToEntity(type, name) {
+        const route = entityTypeToRouteMap[type];
+        if (route) {
+            return this.buildPath(route, {name: name});
+        }
+
+        return this.buildPath(routeIndex);
     }
 
     /**

@@ -4,6 +4,7 @@ import React from "react";
 import Icon from "../common/Icon";
 
 import "./EntityHead.scss";
+import EntityLink from "../link/EntityLink";
 
 /**
  * The component representing the head of an entity box.
@@ -15,10 +16,10 @@ import "./EntityHead.scss";
  */
 const EntityHead = ({type, name, label}) => {
     return (
-        <div className="entity-head">
+        <EntityLink type={type} name={name} className="entity-head">
             <Icon type={type} name={name} transparent={true} />
             <h3>{label}</h3>
-        </div>
+        </EntityLink>
     );
 };
 

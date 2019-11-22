@@ -22,6 +22,7 @@ function renderItem(item) {
             name={item.name}
             amount={item.amount}
             transparent={false}
+            linked={true}
         />
     );
 }

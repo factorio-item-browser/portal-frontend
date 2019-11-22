@@ -4,6 +4,7 @@ import React from "react";
 import logo from "../../../image/logo.png"
 
 import "./HeaderLogo.scss";
+import IndexLink from "../../link/IndexLink";
 
 /**
  * The component representing the main header logo.
@@ -12,9 +13,9 @@ import "./HeaderLogo.scss";
  */
 const HeaderLogo = () => {
     return (
-        <div className="header-logo">
+        <IndexLink className="header-logo">
             <img src={logo} alt="Factorio Item Browser" />
-        </div>
+        </IndexLink>
     );
 };
 
