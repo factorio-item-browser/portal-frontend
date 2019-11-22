@@ -1,8 +1,8 @@
-import {observer} from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
-import React, {createRef} from "react";
+import React, { createRef } from "react";
 
-import {selectText} from "../../helper/utils";
+import { selectText } from "../../helper/utils";
 
 import "./CopyTemplate.scss";
 
@@ -14,7 +14,7 @@ import "./CopyTemplate.scss";
  * @returns {ReactDOM}
  * @constructor
  */
-const CopyTemplate = ({label, template, description}) => {
+const CopyTemplate = ({ label, template, description }) => {
     const templateRef = createRef();
 
     return (
@@ -26,7 +26,9 @@ const CopyTemplate = ({label, template, description}) => {
             }}
         >
             <span className="label">{label}</span>
-            <span className="template" ref={templateRef}>{template}</span>
+            <span className="template" ref={templateRef}>
+                {template}
+            </span>
         </div>
     );
 };

@@ -1,10 +1,10 @@
-import {action, observable} from "mobx";
-import {createContext} from "react";
+import { action, observable } from "mobx";
+import { createContext } from "react";
 
 import Cache from "../class/Cache";
-import {portalApi} from "../class/PortalApi";
-import {routeSearch} from "../helper/const";
-import {debounce} from "../helper/utils";
+import { portalApi } from "../class/PortalApi";
+import { routeSearch } from "../helper/const";
+import { debounce } from "../helper/utils";
 
 /**
  * The store managing everything related to the search.
@@ -140,7 +140,7 @@ class SearchStore {
         }
 
         this.isLoading = true;
-        this._routeStore.navigateTo(routeSearch, {query: query});
+        this._routeStore.navigateTo(routeSearch, { query: query });
     }
 
     /**

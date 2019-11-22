@@ -1,8 +1,8 @@
-import {observer} from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import classNames from "classnames";
 import * as PropTypes from "prop-types";
 import React from "react";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import CompactRecipeSeparator from "./CompactRecipeSeparator";
 import Icon from "../common/Icon";
@@ -33,8 +33,8 @@ function renderItem(item) {
  * @returns {ReactNode}
  * @constructor
  */
-const CompactRecipe = ({recipe}) => {
-    const {t} = useTranslation();
+const CompactRecipe = ({ recipe }) => {
+    const { t } = useTranslation();
     const classes = classNames({
         "compact-recipe": true,
         "expensive": recipe.isExpensive,

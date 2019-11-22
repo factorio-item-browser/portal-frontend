@@ -1,7 +1,7 @@
-import {observer} from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import React from "react";
 
-import logo from "../../../image/logo.png"
+import logo from "../../../image/logo.png";
 
 import "./HeaderLogo.scss";
 import IndexLink from "../../link/IndexLink";

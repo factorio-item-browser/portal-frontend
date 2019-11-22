@@ -1,6 +1,6 @@
-import {observer} from "mobx-react-lite";
-import React, {Fragment, useContext} from "react";
-import {useTranslation} from "react-i18next";
+import { observer } from "mobx-react-lite";
+import React, { Fragment, useContext } from "react";
+import { useTranslation } from "react-i18next";
 
 import ItemStore from "../../store/ItemStore";
 
@@ -26,7 +26,7 @@ const ItemDetailsPage = () => {
             <DetailsHead
                 type={data.type}
                 name={data.name}
-                title={t(`item-details.headline-${data.type}`, {label: data.label})}
+                title={t(`item-details.headline-${data.type}`, { label: data.label })}
             >
                 <Detail hidden={!data.description}>{data.description}</Detail>
                 <Detail>
@@ -45,18 +45,18 @@ const ItemDetailsPage = () => {
                 </Detail>
             </DetailsHead>
 
-            <Section headline={t("item-details.ingredient-in", {count: data.ingredientRecipeCount})}>
+            <Section headline={t("item-details.ingredient-in", { count: data.ingredientRecipeCount })}>
                 <EntityList>
                     {data.ingredientRecipes.map((recipe) => {
-                        return <Entity key={recipe.name} entity={recipe} />
+                        return <Entity key={recipe.name} entity={recipe} />;
                     })}
                 </EntityList>
             </Section>
 
-            <Section headline={t("item-details.product-of", {count: data.productRecipeCount})}>
+            <Section headline={t("item-details.product-of", { count: data.productRecipeCount })}>
                 <EntityList>
                     {data.productRecipes.map((recipe) => {
-                        return <Entity key={recipe.name} entity={recipe} />
+                        return <Entity key={recipe.name} entity={recipe} />;
                     })}
                 </EntityList>
             </Section>

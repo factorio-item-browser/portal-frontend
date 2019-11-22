@@ -1,4 +1,4 @@
-import {observer} from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 import Icon from "../common/Icon";
@@ -14,7 +14,7 @@ import EntityLink from "../link/EntityLink";
  * @returns {ReactDOM}
  * @constructor
  */
-const EntityHead = ({type, name, label}) => {
+const EntityHead = ({ type, name, label }) => {
     return (
         <EntityLink type={type} name={name} className="entity-head">
             <Icon type={type} name={name} transparent={true} />

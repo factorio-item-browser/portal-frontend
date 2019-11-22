@@ -1,4 +1,4 @@
-import {observer} from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 
@@ -15,7 +15,7 @@ import "./DetailsHead.scss";
  * @returns {ReactDOM}
  * @constructor
  */
-const DetailsHead = ({type, name, title, children}) => {
+const DetailsHead = ({ type, name, title, children }) => {
     return (
         <div className="details-head">
             <div className="head">

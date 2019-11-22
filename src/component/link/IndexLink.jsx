@@ -1,8 +1,8 @@
 import * as PropTypes from "prop-types";
-import React, {useContext} from "react";
-import {observer} from "mobx-react-lite";
+import React, { useContext } from "react";
+import { observer } from "mobx-react-lite";
 
-import {routeIndex} from "../../helper/const";
+import { routeIndex } from "../../helper/const";
 import RouteStore from "../../store/RouteStore";
 
 /**
@@ -12,7 +12,7 @@ import RouteStore from "../../store/RouteStore";
  * @returns {ReactDOM}
  * @constructor
  */
-const IndexLink = ({children, ...props}) => {
+const IndexLink = ({ children, ...props }) => {
     const routeStore = useContext(RouteStore);
 
     return (

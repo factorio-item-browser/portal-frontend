@@ -1,7 +1,7 @@
-import {observer} from "mobx-react-lite";
-import React, {Fragment, useContext} from "react";
+import { observer } from "mobx-react-lite";
+import React, { Fragment, useContext } from "react";
 
-import {routeFluidDetails, routeItemDetails, routeRecipeDetails, routeSearch} from "../helper/const";
+import { routeFluidDetails, routeItemDetails, routeRecipeDetails, routeSearch } from "../helper/const";
 import RouteStore from "../store/RouteStore";
 
 import Footer from "./layout/Footer";
@@ -11,7 +11,7 @@ import ItemDetailsPage from "./page/ItemDetailsPage";
 import RecipeDetailsPage from "./page/RecipeDetailsPage";
 import SearchResultsPage from "./page/SearchResultsPage";
 
-import "./App.scss"
+import "./App.scss";
 
 /**
  * The component representing the whole application.
@@ -42,9 +42,7 @@ const App = () => {
             <Header />
             <div className="content-wrapper">
                 <Sidebar />
-                <div className="content">
-                    {page}
-                </div>
+                <div className="content">{page}</div>
             </div>
             <Footer />
         </Fragment>

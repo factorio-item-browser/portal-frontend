@@ -1,10 +1,10 @@
-import {observer} from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faChevronRight} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
-import {formatCraftingTime} from "../../helper/format";
+import { formatCraftingTime } from "../../helper/format";
 
 import "./CompactRecipeSeparator.scss";
 
@@ -19,9 +19,7 @@ function renderCraftingTime(craftingTime) {
     }
 
     const formattedTime = formatCraftingTime(craftingTime);
-    return (
-        <span className="time">{formattedTime}</span>
-    );
+    return <span className="time">{formattedTime}</span>;
 }
 
 /**
@@ -30,7 +28,7 @@ function renderCraftingTime(craftingTime) {
  * @returns {ReactDOM}
  * @constructor
  */
-const CompactRecipeSeparator = ({craftingTime = 0}) => {
+const CompactRecipeSeparator = ({ craftingTime = 0 }) => {
     return (
         <div className="compact-recipe-separator">
             <FontAwesomeIcon icon={faChevronRight} />

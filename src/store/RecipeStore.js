@@ -1,9 +1,9 @@
-import {action, observable} from "mobx";
-import {createContext} from "react";
+import { action, observable } from "mobx";
+import { createContext } from "react";
 
 import Cache from "../class/Cache";
-import {portalApi} from "../class/PortalApi";
-import {sidebarStore} from "./SidebarStore";
+import { portalApi } from "../class/PortalApi";
+import { sidebarStore } from "./SidebarStore";
 
 /**
  * The store managing the recipes.
@@ -90,10 +90,9 @@ class RecipeStore {
         this.currentRecipeDetails = recipeDetails;
         this._sidebarStore.addViewedEntity("recipe", recipeDetails.name, recipeDetails.label);
     }
-
 }
 
-const cache = new Cache('recipe', 86400000);
+const cache = new Cache("recipe", 86400000);
 
 export const recipeStore = new RecipeStore(cache, portalApi, sidebarStore);
 export default createContext(recipeStore);

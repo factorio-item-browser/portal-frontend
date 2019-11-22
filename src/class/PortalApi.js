@@ -1,5 +1,3 @@
-
-
 class PortalApi {
     /**
      *
@@ -66,13 +64,11 @@ class PortalApi {
             count: 42,
         };
 
-        return new window.Promise(
-            (resolve) => {
-                window.setTimeout(() => {
-                    resolve(data);
-                }, 1000);
-            }
-        );
+        return new window.Promise((resolve) => {
+            window.setTimeout(() => {
+                resolve(data);
+            }, 1000);
+        });
     }
 
     /**
@@ -86,7 +82,8 @@ class PortalApi {
             type: type,
             name: name,
             label: "Kupferkabel",
-            description: "Kann mit Linke Maustaste zum Verbinden und Trennen von Strommasten und Stromschaltern verwendet werden.",
+            description:
+                "Kann mit Linke Maustaste zum Verbinden und Trennen von Strommasten und Stromschaltern verwendet werden.",
             ingredientRecipes: [
                 {
                     type: "recipe",
@@ -106,27 +103,25 @@ class PortalApi {
                                     type: "item",
                                     name: "copper-cable",
                                     amount: 2,
-                                }
+                                },
                             ],
                             craftingTime: 0.5,
                             isExpensive: false,
-                        }
+                        },
                     ],
                     omittedRecipes: 0,
-                }
+                },
             ],
             ingredientRecipeCount: 1,
             productRecipes: [],
             productRecipeCount: 0,
         };
 
-        return new window.Promise(
-            (resolve) => {
-                window.setTimeout(() => {
-                    resolve(data);
-                }, 1000);
-            }
-        );
+        return new window.Promise((resolve) => {
+            window.setTimeout(() => {
+                resolve(data);
+            }, 1000);
+        });
     }
 
     requestRecipeDetails(name) {
@@ -148,13 +143,11 @@ class PortalApi {
             ],
         };
 
-        return new window.Promise(
-            (resolve) => {
-                window.setTimeout(() => {
-                    resolve(data);
-                }, 1000);
-            }
-        );
+        return new window.Promise((resolve) => {
+            window.setTimeout(() => {
+                resolve(data);
+            }, 1000);
+        });
     }
 }
 

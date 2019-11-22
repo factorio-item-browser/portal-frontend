@@ -1,4 +1,4 @@
-import {observer} from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 
@@ -9,16 +9,12 @@ import React from "react";
  * @returns {ReactDOM|null}
  * @constructor
  */
-const Detail = ({children, hidden}) => {
+const Detail = ({ children, hidden }) => {
     if (hidden) {
         return null;
     }
 
-    return (
-        <div className="detail">
-            {children}
-        </div>
-    )
+    return <div className="detail">{children}</div>;
 };
 
 Detail.propTypes = {

@@ -1,6 +1,6 @@
-import {observer} from "mobx-react-lite";
-import React, {Fragment, useContext} from "react";
-import {useTranslation} from "react-i18next";
+import { observer } from "mobx-react-lite";
+import React, { Fragment, useContext } from "react";
+import { useTranslation } from "react-i18next";
 
 import RecipeStore from "../../store/RecipeStore";
 import DetailsHead from "../common/DetailsHead";
@@ -22,11 +22,7 @@ const RecipeDetailsPage = () => {
 
     return (
         <Fragment>
-            <DetailsHead
-                type="recipe"
-                name={data.name}
-                title={data.label}
-            >
+            <DetailsHead type="recipe" name={data.name} title={data.label}>
                 <Detail hidden={!data.description}>{data.description}</Detail>
                 <Detail>
                     <CopyTemplate
@@ -37,12 +33,10 @@ const RecipeDetailsPage = () => {
                 </Detail>
             </DetailsHead>
 
-            <Section
-                headline={t("recipe-details.machine.headline", {count: data.machines.length})}
-            >
+            <Section headline={t("recipe-details.machine.headline", { count: data.machines.length })}>
                 <EntityList>
                     {data.machines.map((machine) => {
-                        return <MachineEntity key={machine.name} machine={machine} />
+                        return <MachineEntity key={machine.name} machine={machine} />;
                     })}
                 </EntityList>
             </Section>

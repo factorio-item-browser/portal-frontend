@@ -1,6 +1,6 @@
-import {observer} from "mobx-react-lite";
-import React, {useContext} from "react";
-import {useTranslation} from "react-i18next";
+import { observer } from "mobx-react-lite";
+import React, { useContext } from "react";
+import { useTranslation } from "react-i18next";
 
 import SearchStore from "../../store/SearchStore";
 
@@ -27,7 +27,7 @@ const SearchResultsPage = () => {
         >
             <EntityList>
                 {data.results.map((result) => {
-                    return <Entity key={`${result.type}.${result.name}`} entity={result} />
+                    return <Entity key={`${result.type}.${result.name}`} entity={result} />;
                 })}
             </EntityList>
         </Section>

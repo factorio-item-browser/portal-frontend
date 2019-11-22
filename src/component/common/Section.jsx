@@ -1,4 +1,4 @@
-import {observer} from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 
@@ -11,7 +11,7 @@ import "./Section.scss";
  * @returns {ReactDOM}
  * @constructor
  */
-const Section = ({headline, children}) => {
+const Section = ({ headline, children }) => {
     return (
         <section>
             <h2>{headline}</h2>

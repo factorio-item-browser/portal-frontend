@@ -1,6 +1,6 @@
-import {observer} from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 
 import RouteStore from "../../store/RouteStore";
 
@@ -13,7 +13,7 @@ import RouteStore from "../../store/RouteStore";
  * @returns {ReactDOM}
  * @constructor
  */
-const EntityLink = ({type, name, children, ...props}) => {
+const EntityLink = ({ type, name, children, ...props }) => {
     const routeStore = useContext(RouteStore);
 
     return (

@@ -1,6 +1,6 @@
-import {observer} from "mobx-react-lite";
-import React, {useContext} from "react";
-import {useTranslation} from "react-i18next";
+import { observer } from "mobx-react-lite";
+import React, { useContext } from "react";
+import { useTranslation } from "react-i18next";
 import Sortable from "react-sortablejs";
 
 import SidebarStore from "../../../store/SidebarStore";
@@ -32,17 +32,16 @@ const PinnedEntityList = () => {
     }
 
     return (
-        <Sortable className="sidebar-list" options={sortableOptions} onChange={(order) => {
-            sidebarStore.updatePinnedOrder(order);
-        }}>
+        <Sortable
+            className="sidebar-list"
+            options={sortableOptions}
+            onChange={(order) => {
+                sidebarStore.updatePinnedOrder(order);
+            }}
+        >
             <h3>{t("sidebar.headline-pinned")}</h3>
             {entities.map((entity) => {
-                return (
-                    <SidebarEntity
-                        key={sidebarStore.getIdForEntity(entity)}
-                        entity={entity}
-                    />
-                );
+                return <SidebarEntity key={sidebarStore.getIdForEntity(entity)} entity={entity} />;
             })}
         </Sortable>
     );

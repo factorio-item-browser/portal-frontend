@@ -54,8 +54,8 @@ class Cache {
         this._storage.setItem(
             this._buildCacheKey(key),
             JSON.stringify({
-                "data": data,
-                "time": Date.now(),
+                data: data,
+                time: Date.now(),
             })
         );
     }
@@ -71,11 +71,11 @@ class Cache {
         let cacheItem;
         try {
             cacheItem = JSON.parse(this._storage.getItem(cacheKey));
-        } catch(e) {
+        } catch (e) {
             return null;
         }
 
-        if (typeof(cacheItem) !== "object" || cacheItem === null || !cacheItem.time || !cacheItem.data) {
+        if (typeof cacheItem !== "object" || cacheItem === null || !cacheItem.time || !cacheItem.data) {
             return null;
         }
         if (cacheItem.time + this._maxAge < Date.now()) {

@@ -5,15 +5,15 @@
  */
 export function formatAmount(amount) {
     if (amount > 1000000) {
-        return (Math.round(amount / 100000) / 10) + "M";
+        return Math.round(amount / 100000) / 10 + "M";
     }
     if (amount > 1000) {
-        return (Math.round(amount / 100) / 10) + "k";
+        return Math.round(amount / 100) / 10 + "k";
     }
     if (amount < 1) {
-        return (Math.round(amount * 1000) / 10) + "%";
+        return Math.round(amount * 1000) / 10 + "%";
     }
-    return (Math.round(amount * 10) / 10) + "x";
+    return Math.round(amount * 10) / 10 + "x";
 }
 
 /**
@@ -22,7 +22,7 @@ export function formatAmount(amount) {
  * @returns {string}
  */
 export function formatCraftingSpeed(craftingSpeed) {
-    return (Math.round(craftingSpeed * 100) / 100) + "x";
+    return Math.round(craftingSpeed * 100) / 100 + "x";
 }
 
 /**
@@ -31,7 +31,7 @@ export function formatCraftingSpeed(craftingSpeed) {
  * @returns {string}
  */
 export function formatCraftingTime(craftingTime) {
-    return (Math.round(craftingTime * 100) / 100) + "s";
+    return Math.round(craftingTime * 100) / 100 + "s";
 }
 
 /**
@@ -41,5 +41,5 @@ export function formatCraftingTime(craftingTime) {
  * @returns {string}
  */
 export function formatEnergyUsage(energyUsage, energyUsageUnit) {
-    return (Math.round(energyUsage * 1000) / 1000) + energyUsageUnit;
+    return Math.round(energyUsage * 1000) / 1000 + energyUsageUnit;
 }

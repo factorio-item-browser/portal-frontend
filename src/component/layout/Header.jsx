@@ -1,8 +1,8 @@
-import {observer} from "mobx-react-lite";
-import React, {useContext} from "react";
-import {useMediaQuery} from "react-responsive";
+import { observer } from "mobx-react-lite";
+import React, { useContext } from "react";
+import { useMediaQuery } from "react-responsive";
 
-import {breakpointLarge} from "../../helper/const";
+import { breakpointLarge } from "../../helper/const";
 import RouteStore from "../../store/RouteStore";
 import SearchStore from "../../store/SearchStore";
 
@@ -21,7 +21,7 @@ import "./Header.scss";
 const Header = () => {
     const routeStore = useContext(RouteStore);
     const searchStore = useContext(SearchStore);
-    const isMobile = useMediaQuery({maxWidth: breakpointLarge});
+    const isMobile = useMediaQuery({ maxWidth: breakpointLarge });
 
     // Index page with big logo and search box.
     if (routeStore.useBigHeader) {

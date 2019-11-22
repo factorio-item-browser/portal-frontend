@@ -1,4 +1,4 @@
-import {observer} from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 
@@ -10,12 +10,8 @@ import "./EntityList.scss";
  * @returns {ReactDOM}
  * @constructor
  */
-const EntityList = ({children}) => {
-    return (
-        <div className="entity-list">
-            {children}
-        </div>
-    );
+const EntityList = ({ children }) => {
+    return <div className="entity-list">{children}</div>;
 };
 
 EntityList.propTypes = {

@@ -1,5 +1,5 @@
-import {action, computed, observable} from "mobx";
-import {createContext} from "react";
+import { action, computed, observable } from "mobx";
+import { createContext } from "react";
 
 /**
  * The store managing all the data of the sidebar.
@@ -11,9 +11,27 @@ class SidebarStore {
      */
     @observable
     entities = {
-        "recipe-copper-plate": {type: "recipe", name: "copper-plate", label: "Kupferplatte", pinnedPosition: 0, lastViewTime: "2019-01-01"},
-        "item-iron-plate": {type: "item", name: "iron-plate", label: "Eisenplatte", pinnedPosition: 13, lastViewTime: "2020-01-01"},
-        "fluid-light-oil": {type: "fluid", name: "light-oil", label: "Leichtöl", pinnedPosition: 1, lastViewTime: new Date().toISOString()},
+        "recipe-copper-plate": {
+            type: "recipe",
+            name: "copper-plate",
+            label: "Kupferplatte",
+            pinnedPosition: 0,
+            lastViewTime: "2019-01-01",
+        },
+        "item-iron-plate": {
+            type: "item",
+            name: "iron-plate",
+            label: "Eisenplatte",
+            pinnedPosition: 13,
+            lastViewTime: "2020-01-01",
+        },
+        "fluid-light-oil": {
+            type: "fluid",
+            name: "light-oil",
+            label: "Leichtöl",
+            pinnedPosition: 1,
+            lastViewTime: new Date().toISOString(),
+        },
     };
 
     /**
@@ -108,7 +126,7 @@ class SidebarStore {
             name: name,
             label: label,
             pinnedPosition: 0,
-            lastViewTime: (new Date()).toISOString(),
+            lastViewTime: new Date().toISOString(),
         };
         const id = this.getIdForEntity(newEntity);
 

@@ -1,11 +1,11 @@
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSearch, faSpinner, faTimes} from "@fortawesome/free-solid-svg-icons";
-import {observer} from "mobx-react-lite";
-import React, {useContext} from "react";
-import {useTranslation} from "react-i18next";
-import {useMediaQuery} from "react-responsive";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch, faSpinner, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { observer } from "mobx-react-lite";
+import React, { useContext } from "react";
+import { useTranslation } from "react-i18next";
+import { useMediaQuery } from "react-responsive";
 
-import {breakpointLarge} from "../../../helper/const";
+import { breakpointLarge } from "../../../helper/const";
 import SearchStore from "../../../store/SearchStore";
 
 import "./HeaderSearch.scss";
@@ -16,7 +16,7 @@ import "./HeaderSearch.scss";
  * @constructor
  */
 const HeaderSearch = () => {
-    const isMobile = useMediaQuery({maxWidth: breakpointLarge});
+    const isMobile = useMediaQuery({ maxWidth: breakpointLarge });
     const searchStore = useContext(SearchStore);
     const { t } = useTranslation();
 
@@ -37,7 +37,11 @@ const HeaderSearch = () => {
     return (
         <div className="header-search">
             <div className="search-icon">
-                {searchStore.isLoading ? <FontAwesomeIcon icon={faSpinner} spin /> : <FontAwesomeIcon icon={faSearch} />}
+                {searchStore.isLoading ? (
+                    <FontAwesomeIcon icon={faSpinner} spin />
+                ) : (
+                    <FontAwesomeIcon icon={faSearch} />
+                )}
             </div>
             <input
                 autoComplete="off"
@@ -52,7 +56,7 @@ const HeaderSearch = () => {
             />
             {closeIcon}
         </div>
-    )
+    );
 };
 
 export default observer(HeaderSearch);

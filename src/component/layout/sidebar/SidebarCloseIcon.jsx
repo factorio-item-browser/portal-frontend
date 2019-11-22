@@ -1,7 +1,7 @@
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTimes} from "@fortawesome/free-solid-svg-icons";
-import {observer} from "mobx-react-lite";
-import React, {useContext} from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { observer } from "mobx-react-lite";
+import React, { useContext } from "react";
 
 import SidebarStore from "../../../store/SidebarStore";
 
@@ -16,9 +16,12 @@ const SidebarCloseIcon = () => {
     const sidebarStore = useContext(SidebarStore);
 
     return (
-        <div className="sidebar-close-icon" onClick={() => {
-            sidebarStore.closeSidebar();
-        }}>
+        <div
+            className="sidebar-close-icon"
+            onClick={() => {
+                sidebarStore.closeSidebar();
+            }}
+        >
             <FontAwesomeIcon icon={faTimes} />
         </div>
     );

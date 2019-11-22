@@ -1,4 +1,4 @@
-import {observer} from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 
@@ -13,12 +13,12 @@ import "./Entity.scss";
  * @returns {ReactDOM}
  * @constructor
  */
-const Entity = ({entity}) => {
+const Entity = ({ entity }) => {
     return (
         <div className="entity">
             <EntityHead type={entity.type} name={entity.name} label={entity.label} />
             {entity.recipes.map((recipe, index) => {
-                return <CompactRecipe recipe={recipe} key={index} />
+                return <CompactRecipe recipe={recipe} key={index} />;
             })}
         </div>
     );

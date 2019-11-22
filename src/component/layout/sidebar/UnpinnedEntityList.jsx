@@ -1,7 +1,7 @@
-import {observer} from "mobx-react-lite";
-import React, {useContext} from "react";
+import { observer } from "mobx-react-lite";
+import React, { useContext } from "react";
 import Sortable from "react-sortablejs";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import SidebarStore from "../../../store/SidebarStore";
 import SidebarEntity from "./SidebarEntity";
@@ -36,12 +36,7 @@ const UnpinnedEntityList = () => {
         <Sortable className="sidebar-list" options={sortableOptions} onChange={() => {}}>
             <h3>{t("sidebar.headline-last-viewed")}</h3>
             {sidebarStore.unpinnedEntities.map((entity) => {
-                return (
-                    <SidebarEntity
-                        key={sidebarStore.getIdForEntity(entity)}
-                        entity={entity}
-                    />
-                );
+                return <SidebarEntity key={sidebarStore.getIdForEntity(entity)} entity={entity} />;
             })}
         </Sortable>
     );

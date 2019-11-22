@@ -1,5 +1,5 @@
-import {observer} from "mobx-react-lite";
-import React, {useContext} from "react";
+import { observer } from "mobx-react-lite";
+import React, { useContext } from "react";
 
 import SidebarStore from "../../../store/SidebarStore";
 
@@ -21,7 +21,7 @@ const SidebarCloseOverlay = () => {
         <div
             className="sidebar-close-overlay"
             onClick={() => {
-                sidebarStore.closeSidebar()
+                sidebarStore.closeSidebar();
             }}
         />
     );

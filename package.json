@@ -51,7 +51,11 @@
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.2.0",
     "eslint": "^6.6.0",
-    "eslint-loader": "^3.0.2",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-import-resolver-webpack": "^0.11.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.16.0",
     "file-loader": "^4.2.0",
     "html-webpack-exclude-assets-plugin": "0.0.7",
@@ -59,6 +63,7 @@
     "image-webpack-loader": "^6.0.0",
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.13.0",
+    "prettier": "^1.19.1",
     "react-hot-loader": "^4.12.16",
     "sass-loader": "^8.0.0",
     "source-map-explorer": "^2.1.1",
@@ -71,6 +76,8 @@
   "scripts": {
     "analyze": "source-map-explorer build/asset/js/main.*",
     "build": "webpack --mode production",
+    "check": "eslint src --ext js,jsx",
+    "fix": "eslint src --ext js,jsx --fix",
     "start": "webpack-dev-server --mode development"
   }
 }

@@ -1,12 +1,12 @@
-import {action, computed, observable} from "mobx";
-import {createContext} from "react";
-import {createRouter} from "router5";
+import { action, computed, observable } from "mobx";
+import { createContext } from "react";
+import { createRouter } from "router5";
 import browserPluginFactory from "router5-plugin-browser";
 
-import {routeFluidDetails, routeIndex, routeItemDetails, routeRecipeDetails, routeSearch} from "../helper/const";
-import {itemStore} from "./ItemStore";
-import {recipeStore} from "./RecipeStore";
-import {searchStore} from "./SearchStore";
+import { routeFluidDetails, routeIndex, routeItemDetails, routeRecipeDetails, routeSearch } from "../helper/const";
+import { itemStore } from "./ItemStore";
+import { recipeStore } from "./RecipeStore";
+import { searchStore } from "./SearchStore";
 
 /**
  * The configuration of the routes.
@@ -141,7 +141,7 @@ class RouteStore {
                 }
             });
             return result;
-        }
+        };
     }
 
     /**
@@ -181,7 +181,7 @@ class RouteStore {
     navigateToEntity(type, name) {
         const route = entityTypeToRouteMap[type];
         if (route) {
-            this.navigateTo(route, {name: name});
+            this.navigateTo(route, { name: name });
         }
     }
 
@@ -194,7 +194,7 @@ class RouteStore {
     buildPathToEntity(type, name) {
         const route = entityTypeToRouteMap[type];
         if (route) {
-            return this.buildPath(route, {name: name});
+            return this.buildPath(route, { name: name });
         }
 
         return this.buildPath(routeIndex);

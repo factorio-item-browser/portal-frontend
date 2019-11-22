@@ -1,9 +1,9 @@
-import {action, observable} from "mobx";
-import {createContext} from "react";
+import { action, observable } from "mobx";
+import { createContext } from "react";
 
 import Cache from "../class/Cache";
-import {portalApi} from "../class/PortalApi";
-import {sidebarStore} from "./SidebarStore";
+import { portalApi } from "../class/PortalApi";
+import { sidebarStore } from "./SidebarStore";
 
 /**
  * The store for the items. And fluids.

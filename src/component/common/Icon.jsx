@@ -1,9 +1,9 @@
 import classNames from "classnames";
-import {observer} from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 
-import {formatAmount} from "../../helper/format";
+import { formatAmount } from "../../helper/format";
 import EntityLink from "../link/EntityLink";
 
 import "./Icon.scss";
@@ -19,9 +19,7 @@ function renderAmount(amount) {
     }
 
     const formattedAmount = formatAmount(amount);
-    return (
-        <span className="amount">{formattedAmount}</span>
-    );
+    return <span className="amount">{formattedAmount}</span>;
 }
 
 /**
@@ -34,9 +32,9 @@ function renderAmount(amount) {
  * @returns {ReactNode}
  * @constructor
  */
-const Icon = ({type, name, amount = 0, transparent = false, linked = false}) => {
+const Icon = ({ type, name, amount = 0, transparent = false, linked = false }) => {
     const classes = classNames({
-        icon: true,
+        "icon": true,
         [`icon-${type}-${name}`]: true,
         "with-background": !transparent,
     });
@@ -44,13 +42,13 @@ const Icon = ({type, name, amount = 0, transparent = false, linked = false}) => 
 
     if (linked) {
         return (
-            <EntityLink type={type} name={name} className={classes}>{label}</EntityLink>
+            <EntityLink type={type} name={name} className={classes}>
+                {label}
+            </EntityLink>
         );
     }
 
-    return (
-        <div className={classes}>{label}</div>
-    );
+    return <div className={classes}>{label}</div>;
 };
 
 Icon.propTypes = {
