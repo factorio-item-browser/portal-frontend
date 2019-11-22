@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
+import { Trans } from "react-i18next";
 
 import "./Footer.scss";
-import { Trans } from "react-i18next";
 
 /**
  * The component representing the footer of the page.

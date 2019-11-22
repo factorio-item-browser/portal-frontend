@@ -38,12 +38,6 @@ module.exports = (env, argv) => {
                         {
                             loader: "babel-loader"
                         },
-                        // {
-                        //     loader: "eslint-loader",
-                        //     options: {
-                        //         cache: true,
-                        //     },
-                        // },
                     ],
                 },
                 {
