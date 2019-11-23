@@ -29,8 +29,8 @@ interface RecipeData {
 interface RecipeItemData {
     type: string,
     name: string,
+    label: string,
     amount: number,
-    // label for all?
 }
 
 interface SidebarEntityData {
@@ -62,5 +62,7 @@ interface RecipeDetailsData {
     name: string,
     label: string,
     description: string,
+    recipe: RecipeData,
+    expensiveRecipe?: RecipeData,
     machines: MachineData[],
 }

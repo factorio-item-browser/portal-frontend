@@ -2,7 +2,9 @@
 @import "../../../style/mixin/all.scss";
 
 .recipe-item-list {
-    @include dynamic-spacing(margin-bottom, large);
+    @include breakpoint-until(medium) {
+        margin-bottom: $spacing-default;
+    }
 
     box-shadow: $shadow-box;
     color: color($color-box-default, $lightness-text-primary);
@@ -11,5 +13,12 @@
         @include dynamic-spacing(padding, default large);
 
         background: $color-box-default;
+    }
+}
+
+.recipe-details.expensive .recipe-item-list {
+    color: color($color-recipe-expensive, $lightness-text-primary);
+    h3 {
+        background: color($color-recipe-expensive, $lightness-box-background);
     }
 }

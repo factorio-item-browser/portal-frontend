@@ -15,11 +15,13 @@ class PortalApi {
                         {
                             type: "item",
                             name: "iron-plate",
+                            label: "Eisenplatte",
                             amount: 1,
                         },
                         {
                             type: "item",
                             name: "copper-cable",
+                            label: "Kupferkabel",
                             amount: 3,
                         },
                     ],
@@ -27,6 +29,7 @@ class PortalApi {
                         {
                             type: "item",
                             name: "electronic-circuit",
+                            label: "Elektronischer Schaltkreis",
                             amount: 1,
                         },
                     ],
@@ -38,11 +41,13 @@ class PortalApi {
                         {
                             type: "item",
                             name: "iron-plate",
+                            label: "Eisenplatte",
                             amount: 2,
                         },
                         {
                             type: "item",
                             name: "copper-cable",
+                            label: "Kupferkabel",
                             amount: 10,
                         },
                     ],
@@ -50,6 +55,7 @@ class PortalApi {
                         {
                             type: "item",
                             name: "electronic-circuit",
+                            label: "Elektronischer Schaltkreis",
                             amount: 1,
                         },
                     ],
@@ -95,6 +101,7 @@ class PortalApi {
                                 {
                                     type: "item",
                                     name: "copper-plate",
+                                    label: "Kupferplatte",
                                     amount: 1,
                                 },
                             ],
@@ -102,6 +109,7 @@ class PortalApi {
                                 {
                                     type: "item",
                                     name: "copper-cable",
+                                    label: "Kupferkabel",
                                     amount: 2,
                                 },
                             ],
@@ -129,6 +137,82 @@ class PortalApi {
             name: name,
             label: "Some fancy shit",
             description: "Lorem ipsum dolor sit amet.",
+            recipe: {
+                craftingTime: 0.5,
+                ingredients: [
+                    {
+                        type: "item",
+                        name: "iron-plate",
+                        label: "Eisenplatte",
+                        amount: 9,
+                    },
+                    {
+                        type: "item",
+                        name: "iron-gear-wheel",
+                        label: "Eisenzahnrad",
+                        amount: 5,
+                    },
+                    {
+                        type: "item",
+                        name: "electronic-circuit",
+                        label: "Elektronischer Schaltkreis",
+                        amount: 3,
+                    },
+                    {
+                        type: "item",
+                        name: "assembling-machine-1",
+                        label: "Montagemaschine 1",
+                        amount: 1,
+                    },
+                ],
+                products: [
+                    {
+                        type: "item",
+                        name: "assembling-machine-2",
+                        label: "Montagemaschine 2",
+                        amount: 1,
+                    },
+                ],
+                isExpensive: false,
+            },
+            expensiveRecipe: {
+                craftingTime: 0.5,
+                    ingredients: [
+                    {
+                        type: "item",
+                        name: "iron-plate",
+                        label: "Eisenplatte",
+                        amount: 20,
+                    },
+                    {
+                        type: "item",
+                        name: "iron-gear-wheel",
+                        label: "Eisenzahnrad",
+                        amount: 10,
+                    },
+                    {
+                        type: "item",
+                        name: "electronic-circuit",
+                        label: "Elektronischer Schaltkreis",
+                        amount: 5,
+                    },
+                    {
+                        type: "item",
+                        name: "assembling-machine-1",
+                        label: "Montagemaschine 1",
+                        amount: 1,
+                    },
+                ],
+                    products: [
+                    {
+                        type: "item",
+                        name: "assembling-machine-2",
+                        label: "Montagemaschine 2",
+                        amount: 1,
+                    },
+                ],
+                isExpensive: true,
+            },
             machines: [
                 {
                     name: "player",

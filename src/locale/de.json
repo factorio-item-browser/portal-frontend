@@ -39,7 +39,8 @@
             "headline": "Herstellbar in {{count}} Maschine",
             "headline_plural": "Herstellbar in {{count}} Maschinen"
         },
-        "products": "Ergebnisse"
+        "products": "Ergebnisse",
+        "time": "Zeit"
     },
     "search-results": {
         "headline": "{{count}} Suchergebnis für \"{{query}}\"",

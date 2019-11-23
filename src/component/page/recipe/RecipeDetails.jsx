@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
@@ -12,27 +13,33 @@ import "./RecipeDetails.scss";
 
 /**
  * The component representing the recipe details.
- * @param {RecipeItemData[]} ingredients
- * @param {RecipeItemData[]} products
+ * @param {RecipeData} recipe
  * @returns {ReactDOM}
  * @constructor
  */
-const RecipeDetails = ({ ingredients, products }) => {
+const RecipeDetails = ({ recipe }) => {
     const isMedium = useMediaQuery({ minWidth: breakpointMedium });
     const { t } = useTranslation();
+    const classes = classNames({
+        "recipe-details": true,
+        "expensive": recipe.isExpensive,
+    });
 
     return (
-        <section className="recipe-details">
-            <RecipeItemList headline={t("recipe-details.ingredients")} items={ingredients} />
+        <section className={classes}>
+            <RecipeItemList
+                headline={t("recipe-details.ingredients")}
+                items={recipe.ingredients}
+                craftingTime={recipe.craftingTime}
+            />
             {isMedium ? <RecipeItemSeparator /> : null}
-            <RecipeItemList headline={t("recipe-details.products")} items={products} />
+            <RecipeItemList headline={t("recipe-details.products")} items={recipe.products} />
         </section>
     );
 };
 
 RecipeDetails.propTypes = {
-    ingredients: PropTypes.array.isRequired,
-    products: PropTypes.array.isRequired,
+    recipe: PropTypes.object.isRequired,
 };
 
 export default observer(RecipeDetails);

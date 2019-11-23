@@ -8,3 +8,7 @@
     display: block;
     font-size: $text-size-recipe-separator;
 }
+
+.recipe-details.expensive .recipe-item-separator {
+    color: color($color-recipe-expensive, $lightness-box-background);
+}

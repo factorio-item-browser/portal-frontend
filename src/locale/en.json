@@ -39,7 +39,8 @@
             "headline": "Producible in {{count}} machine",
             "headline_plural": "Producible in {{count}} machines"
         },
-        "products": "Results"
+        "products": "Results",
+        "time": "Time"
     },
     "search-results": {
         "headline": "{{count}} search result for \"{{query}}\"",

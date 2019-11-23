@@ -19,9 +19,7 @@ const RecipeItem = ({ item }) => {
         <EntityLink className="recipe-item" type={item.type} name={item.name}>
             <div className="amount">{formatAmount(item.amount)}</div>
             <Icon type={item.type} name={item.name} transparent={true} />
-            <div className="label">
-                {item.type}/{item.name}
-            </div>
+            <div className="label">{item.label}</div>
         </EntityLink>
     );
 };

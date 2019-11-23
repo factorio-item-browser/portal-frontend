@@ -26,3 +26,8 @@
         padding-left: $spacing-default;
     }
 }
+
+.recipe-details.expensive .recipe-item {
+    background: rgba(color($color-recipe-expensive, $lightness-box-background), $alpha-box-content);
+    border-top-color: rgba(color($color-recipe-expensive, $lightness-box-border), $alpha-box-border);
+}
