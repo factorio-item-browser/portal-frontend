@@ -1,0 +1,19 @@
+@import "../../../style/variable/all.scss";
+@import "../../../style/mixin/all.scss";
+
+.recipe-details {
+    @include dynamic-spacing(margin, large);
+
+    @include breakpoint(medium) {
+        display: flex;
+        align-items: center;
+
+        .recipe-item-list {
+            flex-grow: 1;
+        }
+
+        .recipe-item-separator {
+            flex-shrink: 0;
+        }
+    }
+}

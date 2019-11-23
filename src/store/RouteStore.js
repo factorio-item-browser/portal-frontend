@@ -174,30 +174,24 @@ class RouteStore {
     }
 
     /**
-     * Navigates to the specified entity.
+     * Returns the route and params used to link to the entity.
      * @param {string} type
      * @param {string} name
+     * @returns {{route: string, params: Object<string,any>}}
      */
-    navigateToEntity(type, name) {
+    getRouteAndParamsForEntity(type, name) {
         const route = entityTypeToRouteMap[type];
         if (route) {
-            this.navigateTo(route, { name: name });
-        }
-    }
-
-    /**
-     * Builds the path to the specified entity.
-     * @param {string} type
-     * @param {string} name
-     * @returns {string}
-     */
-    buildPathToEntity(type, name) {
-        const route = entityTypeToRouteMap[type];
-        if (route) {
-            return this.buildPath(route, { name: name });
+            return {
+                route: route,
+                params: { name: name },
+            };
         }
 
-        return this.buildPath(routeIndex);
+        return {
+            route: routeIndex,
+            params: {},
+        };
     }
 
     /**

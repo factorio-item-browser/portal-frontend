@@ -1,0 +1,10 @@
+@import "../../../style/variable/all.scss";
+@import "../../../style/mixin/all.scss";
+
+.recipe-item-separator {
+    @include dynamic-spacing(margin, 0 large);
+
+    color: color($color-box-default, $lightness-box-background);
+    display: block;
+    font-size: $text-size-recipe-separator;
+}

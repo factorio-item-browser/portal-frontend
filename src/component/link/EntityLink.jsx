@@ -3,6 +3,7 @@ import * as PropTypes from "prop-types";
 import React, { useContext } from "react";
 
 import RouteStore from "../../store/RouteStore";
+import Link from "./Link";
 
 /**
  * The component representing a link to an entity.
@@ -15,18 +16,12 @@ import RouteStore from "../../store/RouteStore";
  */
 const EntityLink = ({ type, name, children, ...props }) => {
     const routeStore = useContext(RouteStore);
+    const { route, params } = routeStore.getRouteAndParamsForEntity(type, name);
 
     return (
-        <a
-            href={routeStore.buildPathToEntity(type, name)}
-            {...props}
-            onClick={(event) => {
-                event.preventDefault();
-                routeStore.navigateToEntity(type, name);
-            }}
-        >
+        <Link route={route} params={params} {...props}>
             {children}
-        </a>
+        </Link>
     );
 };
 

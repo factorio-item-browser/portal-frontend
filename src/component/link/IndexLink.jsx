@@ -1,9 +1,9 @@
 import * as PropTypes from "prop-types";
-import React, { useContext } from "react";
+import React from "react";
 import { observer } from "mobx-react-lite";
 
 import { routeIndex } from "../../helper/const";
-import RouteStore from "../../store/RouteStore";
+import Link from "./Link";
 
 /**
  * The component representing a link to the index page.
@@ -13,19 +13,10 @@ import RouteStore from "../../store/RouteStore";
  * @constructor
  */
 const IndexLink = ({ children, ...props }) => {
-    const routeStore = useContext(RouteStore);
-
     return (
-        <a
-            href={routeStore.buildPath(routeIndex)}
-            {...props}
-            onClick={(event) => {
-                event.preventDefault();
-                routeStore.navigateTo(routeIndex);
-            }}
-        >
+        <Link route={routeIndex} {...props}>
             {children}
-        </a>
+        </Link>
     );
 };
 

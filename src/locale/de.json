@@ -32,6 +32,15 @@
         "product-of": "Ergebnis von {{count}} Rezept",
         "product-of_plural": "Ergebnis von {{count}} Rezepten"
     },
+    "recipe-details": {
+        "headline": "Rezept: {{label}}",
+        "ingredients": "Zutaten",
+        "machine": {
+            "headline": "Herstellbar in {{count}} Maschine",
+            "headline_plural": "Herstellbar in {{count}} Maschinen"
+        },
+        "products": "Ergebnisse"
+    },
     "search-results": {
         "headline": "{{count}} Suchergebnis für \"{{query}}\"",
         "headline_plural": "{{count}} Suchergebnisse für \"{{query}}\""

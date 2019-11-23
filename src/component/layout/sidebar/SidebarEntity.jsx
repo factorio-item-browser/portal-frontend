@@ -9,7 +9,6 @@ import Icon from "../../common/Icon";
 import SidebarStore from "../../../store/SidebarStore";
 
 import "./SidebarEntity.scss";
-import RouteStore from "../../../store/RouteStore";
 import EntityLink from "../../link/EntityLink";
 
 /**
@@ -67,7 +66,6 @@ function renderUnpinAction(entity) {
  */
 const SidebarEntity = ({ entity }) => {
     const { t } = useTranslation();
-    const routeStore = useContext(RouteStore);
     const sidebarStore = useContext(SidebarStore);
 
     return (
@@ -77,9 +75,6 @@ const SidebarEntity = ({ entity }) => {
             className="sidebar-entity"
             draggable={true}
             data-id={sidebarStore.getIdForEntity(entity)}
-            onClick={() => {
-                routeStore.navigateToEntity(entity.type, entity.name);
-            }}
         >
             <Icon type={entity.type} name={entity.name} transparent={true} />
             <span className="label">{entity.label}</span>

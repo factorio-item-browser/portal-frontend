@@ -30,6 +30,7 @@ interface RecipeItemData {
     type: string,
     name: string,
     amount: number,
+    // label for all?
 }
 
 interface SidebarEntityData {

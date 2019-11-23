@@ -1,0 +1,15 @@
+@import "../../../style/variable/all.scss";
+@import "../../../style/mixin/all.scss";
+
+.recipe-item-list {
+    @include dynamic-spacing(margin-bottom, large);
+
+    box-shadow: $shadow-box;
+    color: color($color-box-default, $lightness-text-primary);
+
+    h3 {
+        @include dynamic-spacing(padding, default large);
+
+        background: $color-box-default;
+    }
+}

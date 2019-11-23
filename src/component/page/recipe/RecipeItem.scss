@@ -1,0 +1,28 @@
+@import "../../../style/variable/all.scss";
+@import "../../../style/mixin/all.scss";
+
+.recipe-item {
+    @include dynamic-spacing(padding, small);
+
+    align-items: center;
+    background: rgba($color-box-default, $alpha-box-content);
+    border-top: px-to-rem(1) solid rgba(color($color-box-default, $lightness-box-border), $alpha-box-border);
+    display: flex;
+    font-weight: bold;
+
+    .amount {
+        flex-basis: 4rem;
+        flex-shrink: 0;
+        padding-right: $spacing-default;
+        text-align: right;
+    }
+
+    .icon {
+        flex-shrink: 0;
+    }
+
+    .label {
+        flex-grow: 1;
+        padding-left: $spacing-default;
+    }
+}
