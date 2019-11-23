@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 
-import { breakpointLarge, routeFluidDetails, routeItemDetails, routeRecipeDetails } from "../../helper/const";
+import { breakpointLarge } from "../../helper/const";
 import RouteStore from "../../store/RouteStore";
 import SidebarStore from "../../store/SidebarStore";
 
@@ -22,7 +22,7 @@ import "./Sidebar.scss";
 const Sidebar = () => {
     const routeStore = useContext(RouteStore);
     const sidebarStore = useContext(SidebarStore);
-    const isMobile = useMediaQuery({ maxWidth: breakpointLarge });
+    const isLarge = useMediaQuery({ minWidth: breakpointLarge });
 
     const classes = classNames({
         "sidebar": true,
@@ -36,47 +36,11 @@ const Sidebar = () => {
     return (
         <Fragment>
             <div className={classes}>
-                {isMobile ? <SidebarCloseIcon /> : null}
+                {isLarge ? null : <SidebarCloseIcon />}
                 <PinnedEntityList />
                 <UnpinnedEntityList />
-
-                <button
-                    onClick={() => {
-                        sidebarStore.addViewedEntity("fluid", "heavy-oil", "Schweröl");
-                    }}
-                >
-                    Press me
-                </button>
-                <button
-                    onClick={() => {
-                        sidebarStore.addViewedEntity("item", "stone-brick", "Steine-Dinger");
-                    }}
-                >
-                    Press me too
-                </button>
-                <button
-                    onClick={async () => {
-                        await routeStore.navigateTo(routeItemDetails, { name: "copper-cable" });
-                    }}
-                >
-                    Item Details
-                </button>
-                <button
-                    onClick={async () => {
-                        await routeStore.navigateTo(routeFluidDetails, { name: "light-oil" });
-                    }}
-                >
-                    Item Details 2
-                </button>
-                <button
-                    onClick={async () => {
-                        await routeStore.navigateTo(routeRecipeDetails, { name: "advanced-oil-processing" });
-                    }}
-                >
-                    Recipe Details
-                </button>
             </div>
-            {isMobile ? <SidebarCloseOverlay /> : null}
+            {isLarge ? null : <SidebarCloseOverlay />}
         </Fragment>
     );
 };

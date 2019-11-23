@@ -16,12 +16,12 @@ import "./HeaderSearch.scss";
  * @constructor
  */
 const HeaderSearch = () => {
-    const isMobile = useMediaQuery({ maxWidth: breakpointLarge });
+    const isLarge = useMediaQuery({ minWidth: breakpointLarge });
     const searchStore = useContext(SearchStore);
     const { t } = useTranslation();
 
     let closeIcon = null;
-    if (isMobile) {
+    if (!isLarge) {
         closeIcon = (
             <div
                 className="close-icon"
@@ -45,7 +45,7 @@ const HeaderSearch = () => {
             </div>
             <input
                 autoComplete="off"
-                autoFocus={isMobile}
+                autoFocus={!isLarge}
                 name="query"
                 placeholder={t("header.search.placeholder")}
                 type="search"

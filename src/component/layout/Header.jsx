@@ -21,7 +21,7 @@ import "./Header.scss";
 const Header = () => {
     const routeStore = useContext(RouteStore);
     const searchStore = useContext(SearchStore);
-    const isMobile = useMediaQuery({ maxWidth: breakpointLarge });
+    const isLarge = useMediaQuery({ minWidth: breakpointLarge });
 
     // Index page with big logo and search box.
     if (routeStore.useBigHeader) {
@@ -34,7 +34,7 @@ const Header = () => {
     }
 
     // Desktop version with logo and search.
-    if (!isMobile) {
+    if (isLarge) {
         return (
             <header>
                 <HeaderLogo />
