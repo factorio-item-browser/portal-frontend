@@ -21,7 +21,7 @@ const SearchResultsPage = () => {
     return (
         <Section
             headline={t("search-results.headline", {
-                count: data.count,
+                count: data.numberOfResults,
                 query: data.query,
             })}
         >

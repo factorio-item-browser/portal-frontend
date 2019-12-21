@@ -15,3 +15,5 @@ export const routeIndex = "index";
 export const routeItemDetails = "itemDetails";
 export const routeRecipeDetails = "recipeDetails";
 export const routeSearch = "search";
+
+export const portalApiUrl = process.env.PORTAL_API_URI;

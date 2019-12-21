@@ -1,80 +1,20 @@
+import {portalApiUrl} from "../helper/const";
+
 class PortalApi {
     /**
-     *
-     * @param searchQuery
+     * Executes a search with the specified query.
+     * @param {string} query
+     * @param {number} page
      * @returns {Promise<SearchResultsData>}
      */
-    async searchQuery(searchQuery) {
-        const entityData = {
-            type: "item",
-            name: "electronic-circuit",
-            label: "Elektronischer Schaltkreis",
-            recipes: [
-                {
-                    ingredients: [
-                        {
-                            type: "item",
-                            name: "iron-plate",
-                            label: "Eisenplatte",
-                            amount: 1,
-                        },
-                        {
-                            type: "item",
-                            name: "copper-cable",
-                            label: "Kupferkabel",
-                            amount: 3,
-                        },
-                    ],
-                    products: [
-                        {
-                            type: "item",
-                            name: "electronic-circuit",
-                            label: "Elektronischer Schaltkreis",
-                            amount: 1,
-                        },
-                    ],
-                    craftingTime: 0.5,
-                    isExpensive: false,
-                },
-                {
-                    ingredients: [
-                        {
-                            type: "item",
-                            name: "iron-plate",
-                            label: "Eisenplatte",
-                            amount: 2,
-                        },
-                        {
-                            type: "item",
-                            name: "copper-cable",
-                            label: "Kupferkabel",
-                            amount: 10,
-                        },
-                    ],
-                    products: [
-                        {
-                            type: "item",
-                            name: "electronic-circuit",
-                            label: "Elektronischer Schaltkreis",
-                            amount: 1,
-                        },
-                    ],
-                    craftingTime: 0.5,
-                    isExpensive: true,
-                },
-            ],
-        };
-        const data = {
-            query: searchQuery,
-            results: [entityData, entityData, entityData, entityData, entityData, entityData],
-            count: 42,
+    async search(query, page) {
+        const params = {
+            query: query,
+            indexOfFirstResult: (page - 1) * 24,
+            numberOfResults: 24,
         };
 
-        return new window.Promise((resolve) => {
-            window.setTimeout(() => {
-                resolve(data);
-            }, 1000);
-        });
+        return this.sendRequest("/search", params);
     }
 
     /**
@@ -177,7 +117,7 @@ class PortalApi {
             },
             expensiveRecipe: {
                 craftingTime: 0.5,
-                    ingredients: [
+                ingredients: [
                     {
                         type: "item",
                         name: "iron-plate",
@@ -203,7 +143,7 @@ class PortalApi {
                         amount: 1,
                     },
                 ],
-                    products: [
+                products: [
                     {
                         type: "item",
                         name: "assembling-machine-2",
@@ -232,6 +172,17 @@ class PortalApi {
                 resolve(data);
             }, 1000);
         });
+    }
+
+
+    async sendRequest(route, params) {
+        const queryParams = Object.keys(params).map((name) => {
+            return encodeURIComponent(name) + '=' + encodeURIComponent(params[name]);
+        }).join('&');
+        const url = portalApiUrl + route + '?' + queryParams;
+
+        const response = await fetch(url);
+        return response.json();
     }
 }
 

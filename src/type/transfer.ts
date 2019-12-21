@@ -1,5 +1,5 @@
 /**
- * File including type definitions for the object structures received from the backend.
+ * File including type definitions for the transfer object structures received from the Portal API.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
@@ -44,7 +44,7 @@ interface SidebarEntityData {
 interface SearchResultsData {
     query: string,
     results: EntityData[],
-    count: number,
+    numberOfResults: number,
 }
 
 interface ItemDetailsData {

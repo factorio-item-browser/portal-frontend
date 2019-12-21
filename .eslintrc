@@ -12,6 +12,9 @@
         "browser": true,
         "es6": true
     },
+    "globals": {
+        "process": true
+    },
     "rules": {
         "prettier/prettier": "error"
     },

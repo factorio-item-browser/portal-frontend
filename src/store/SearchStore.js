@@ -106,7 +106,7 @@ class SearchStore {
             return cachedData;
         }
 
-        const requestedData = await this._portalApi.searchQuery(searchQuery);
+        const requestedData = await this._portalApi.search(searchQuery, 1);
         this._cache.write(searchQuery, requestedData);
         return requestedData;
     }

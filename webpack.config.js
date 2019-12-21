@@ -1,15 +1,24 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const { HotModuleReplacementPlugin } = require("webpack");
-const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin');
+const { DefinePlugin, HotModuleReplacementPlugin } = require("webpack");
+const HtmlWebpackExcludeAssetsPlugin = require("html-webpack-exclude-assets-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const dotenv = require("dotenv");
+const path = require("path");
 
 module.exports = (env, argv) => {
+    const currentPath = path.join(__dirname);
     const isProduction = argv.mode === "production";
     const entryPoints = {
-        main: "./src/index.jsx",
-        images: "./src/style/partial/images.scss",
+        main: `${currentPath}/src/index.jsx`,
+        images: `${currentPath}/src/style/partial/images.scss`,
     };
+
+    const envFile = dotenv.config({ path: isProduction ? `${currentPath}/.env` : `${currentPath}/.env.development`}).parsed;
+    const envVars = {};
+    Object.keys(envFile).forEach((name) => {
+        envVars[`process.env.${name}`] = JSON.stringify(envFile[name]);
+    });
 
     return {
         entry: isProduction ? entryPoints : [entryPoints.main, entryPoints.images],
@@ -21,13 +30,14 @@ module.exports = (env, argv) => {
             }),
             new HtmlWebpackPlugin({
                 title: "Factorio Item Browser",
-                template: "./src/index.html",
+                template: `${currentPath}/src/index.html`,
                 excludeAssets: [/images\.(.*)\.js$/],
             }),
             new HtmlWebpackExcludeAssetsPlugin(),
+            new DefinePlugin(envVars),
         ],
         resolve: {
-            extensions: ['.jpg', '.js', '.json', '.jsx', '.png', '.scss']
+            extensions: [".jpg", ".js", ".json", ".jsx", ".png", ".scss"]
         },
         module: {
             rules: [
@@ -58,7 +68,7 @@ module.exports = (env, argv) => {
                     use: [
                         "url-loader",
                         {
-                            loader: 'image-webpack-loader',
+                            loader: "image-webpack-loader",
                             options: {
                                 disable: !isProduction,
                             },
@@ -76,7 +86,7 @@ module.exports = (env, argv) => {
                             },
                         },
                         {
-                            loader: 'image-webpack-loader',
+                            loader: "image-webpack-loader",
                             options: {
                                 disable: !isProduction,
                             },
