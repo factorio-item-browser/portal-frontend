@@ -90,27 +90,38 @@ class SearchStore {
         this._routeStore = routeStore;
     }
 
+    /**
+     * Handles the change of the route.
+     * @param {string} query
+     * @returns {Promise<void>}
+     */
     async handleRouteChange(query) {
-        return this._fetchData(query).then(this._applySearchResults.bind(this));
+        const searchResults = await this._fetchData(query);
+        this._applySearchResults(searchResults);
     }
 
     /**
      * Fetches the data to the search query.
-     * @param {string} searchQuery
+     * @param {string} query
      * @returns {Promise<SearchResultsData>}
      * @private
      */
-    async _fetchData(searchQuery) {
-        const cachedData = this._cache.read(searchQuery);
+    async _fetchData(query) {
+        const cachedData = this._cache.read(query);
         if (cachedData) {
             return cachedData;
         }
 
-        const requestedData = await this._portalApi.search(searchQuery, 1);
-        this._cache.write(searchQuery, requestedData);
+        const requestedData = await this._portalApi.search(query, 1);
+        this._cache.write(query, requestedData);
         return requestedData;
     }
 
+    /**
+     * Applies the search results to the store.
+     * @param {SearchResultsData} searchResults
+     * @private
+     */
     @action
     _applySearchResults(searchResults) {
         this.currentSearchResults = searchResults;

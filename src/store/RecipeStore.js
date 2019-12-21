@@ -57,10 +57,11 @@ class RecipeStore {
     /**
      * Handles the change of the route.
      * @param {string} name
-     * @returns {Promise<RecipeDetailsData>}
+     * @returns {Promise<void>}
      */
     async handleRouteChange(name) {
-        return this._fetchData(name).then(this._applyRecipeDetails.bind(this));
+        const recipeDetails = await this._fetchData(name);
+        this._applyRecipeDetails(recipeDetails);
     }
 
     /**

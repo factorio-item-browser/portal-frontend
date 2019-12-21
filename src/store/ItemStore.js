@@ -62,10 +62,11 @@ class ItemStore {
      * Handles the change of the route.
      * @param {string} type
      * @param {string} name
-     * @returns {Promise<ItemDetailsData>}
+     * @returns {Promise<void>}
      */
     async handleRouteChange(type, name) {
-        return this._fetchData(type, name).then(this._applyItemDetails.bind(this));
+        const itemDetails = await this._fetchData(type, name);
+        this._applyItemDetails(itemDetails);
     }
 
     /**
@@ -82,10 +83,9 @@ class ItemStore {
             return cachedData;
         }
 
-        return this._portalApi.requestItemDetails(type, name).then((itemDetails) => {
-            this._cache.write(cacheKey, itemDetails);
-            return itemDetails;
-        });
+        const requestedData = await this._portalApi.requestItemDetails(type, name);
+        this._cache.write(cacheKey, requestedData);
+        return requestedData;
     }
 
     /**
