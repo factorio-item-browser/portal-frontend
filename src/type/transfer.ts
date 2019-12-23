@@ -13,10 +13,19 @@ interface EntityData {
     omittedRecipes: number,
 }
 
+interface IconsStyleData {
+    processedEntities: NamesByTypes,
+    style: string,
+}
+
 interface MachineData {
     name: string,
     label: string,
     craftingSpeed: number,
+}
+
+interface NamesByTypes {
+    [key: string]: string[],
 }
 
 interface RecipeData {
@@ -33,18 +42,22 @@ interface RecipeItemData {
     amount: number,
 }
 
+interface SearchResultsData {
+    query: string,
+    results: EntityData[],
+    numberOfResults: number,
+}
+
+
+
+
+
 interface SidebarEntityData {
     type: string,
     name: string,
     label: string,
     pinnedPosition: number,
     lastViewTime: string,
-}
-
-interface SearchResultsData {
-    query: string,
-    results: EntityData[],
-    numberOfResults: number,
 }
 
 interface ItemDetailsData {

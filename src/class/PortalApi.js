@@ -1,5 +1,11 @@
-import {portalApiUrl} from "../helper/const";
+import { portalApiUrl } from "../helper/const";
 
+/**
+ * The class functioning as interface to the Portal API server.
+ *
+ * @author BluePsyduck <bluepsyduck@gmx.com>
+ * @license http://opensource.org/licenses/GPL-3.0 GPL v3
+ */
 class PortalApi {
     /**
      * Executes a search with the specified query.
@@ -14,7 +20,16 @@ class PortalApi {
             numberOfResults: 24,
         };
 
-        return this.sendRequest("/search", params);
+        return this.sendSimpleRequest("/search", params);
+    }
+
+    /**
+     * Fetches the style of the icons with the specified types and names.
+     * @param {NamesByTypes} namesByTypes
+     * @returns {Promise<IconsStyleData>}
+     */
+    async getIconsStyle(namesByTypes) {
+        return this.sendPostRequest("/style/icons", namesByTypes);
     }
 
     /**
@@ -155,7 +170,7 @@ class PortalApi {
             },
             machines: [
                 {
-                    name: "player",
+                    name: "character",
                     label: "Character",
                     craftingSpeed: 1,
                 },
@@ -163,6 +178,11 @@ class PortalApi {
                     name: "assembling-machine-1",
                     label: "Assembling Machine 1",
                     craftingSpeed: 0.5,
+                },
+                {
+                    name: "test machine",
+                    label: "Test Machine",
+                    craftingSpeed: 1,
                 },
             ],
         };
@@ -174,14 +194,30 @@ class PortalApi {
         });
     }
 
-
-    async sendRequest(route, params) {
-        const queryParams = Object.keys(params).map((name) => {
-            return encodeURIComponent(name) + '=' + encodeURIComponent(params[name]);
-        }).join('&');
-        const url = portalApiUrl + route + '?' + queryParams;
+    /**
+     * Sends a simple request to the Portal API server.
+     * @param {string} route
+     * @param {object} params
+     * @returns {Promise<any>}
+     */
+    async sendSimpleRequest(route, params) {
+        const queryParams = Object.keys(params)
+            .map((name) => {
+                return encodeURIComponent(name) + "=" + encodeURIComponent(params[name]);
+            })
+            .join("&");
+        const url = portalApiUrl + route + "?" + queryParams;
 
         const response = await fetch(url);
+        return response.json();
+    }
+
+    async sendPostRequest(route, requestBody) {
+        const url = portalApiUrl + route;
+        const response = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(requestBody),
+        });
         return response.json();
     }
 }

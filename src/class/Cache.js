@@ -1,6 +1,11 @@
+import { enableCache } from "../helper/const";
+
 /**
  * The class managing the local cache.
  * @template T
+ *
+ * @author BluePsyduck <bluepsyduck@gmx.com>
+ * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
 class Cache {
     /**
@@ -87,4 +92,30 @@ class Cache {
     }
 }
 
-export default Cache;
+/**
+ * The class voiding all data instead of actually caching them.
+ * @template T
+ *
+ * @author BluePsyduck <bluepsyduck@gmx.com>
+ * @license http://opensource.org/licenses/GPL-3.0 GPL v3
+ */
+class VoidCache extends Cache {
+    /**
+     * Writes data to the cache.
+     * @param {string} key
+     * @param {T} data
+     */
+    write(key, data) {}
+
+    /**
+     * Tries to read data from the cache.
+     * @param {string} key
+     * @return {T|null}
+     */
+    read(key) {
+        return null;
+    }
+}
+
+const cacheClass = enableCache ? Cache : VoidCache;
+export default cacheClass;

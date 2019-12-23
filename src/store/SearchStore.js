@@ -67,7 +67,7 @@ class SearchStore {
     currentSearchResults = {
         query: "",
         results: [],
-        count: 0,
+        numberOfResults: 0,
     };
 
     /**

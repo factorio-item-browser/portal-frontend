@@ -7,6 +7,7 @@ import { formatAmount } from "../../helper/format";
 import EntityLink from "../link/EntityLink";
 
 import "./Icon.scss";
+import { iconManager } from "../../class/IconManager";
 
 /**
  * Renders the element for the amount.
@@ -35,10 +36,12 @@ function renderAmount(amount) {
 const Icon = ({ type, name, amount = 0, transparent = false, linked = false }) => {
     const classes = classNames({
         "icon": true,
-        [`icon-${type}-${name}`]: true,
+        [`icon-${type}-${name}`.replace(" ", "_")]: true,
         "with-background": !transparent,
     });
     const label = renderAmount(amount);
+
+    iconManager.requestIcon(type, name);
 
     if (linked) {
         return (
