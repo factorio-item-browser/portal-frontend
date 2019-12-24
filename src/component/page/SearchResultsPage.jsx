@@ -7,6 +7,7 @@ import SearchStore from "../../store/SearchStore";
 import Section from "../common/Section";
 import Entity from "../entity/Entity";
 import EntityList from "../entity/EntityList";
+import PaginatedListButton from "../common/PaginatedListButton";
 
 /**
  * The component representing the page listing search results.
@@ -16,20 +17,24 @@ import EntityList from "../entity/EntityList";
 const SearchResultsPage = () => {
     const { t } = useTranslation();
     const searchStore = useContext(SearchStore);
-    const data = searchStore.currentSearchResults;
 
     return (
         <Section
             headline={t("search-results.headline", {
-                count: data.numberOfResults,
-                query: data.query,
+                count: searchStore.paginatedSearchResults.numberOfResults,
+                query: searchStore.currentlyExecutedQuery,
             })}
         >
             <EntityList>
-                {data.results.map((result) => {
+                {searchStore.paginatedSearchResults.results.map((result) => {
                     return <Entity key={`${result.type}.${result.name}`} entity={result} />;
                 })}
             </EntityList>
+
+            <PaginatedListButton
+                paginatedList={searchStore.paginatedSearchResults}
+                localePrefix="search-results.more-results"
+            />
         </Section>
     );
 };

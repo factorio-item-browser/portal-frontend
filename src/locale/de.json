@@ -44,7 +44,11 @@
     },
     "search-results": {
         "headline": "{{count}} Suchergebnis für \"{{query}}\"",
-        "headline_plural": "{{count}} Suchergebnisse für \"{{query}}\""
+        "headline_plural": "{{count}} Suchergebnisse für \"{{query}}\"",
+        "more-results": {
+            "load": "Weitere Ergebnisse laden",
+            "loading": "Lade weitere Ergebnisse..."
+        }
     },
     "sidebar": {
         "action-pin": "Element oben anheften",

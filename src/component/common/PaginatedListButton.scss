@@ -1,0 +1,11 @@
+@import "../../style/mixin/all";
+@import "../../style/variable/all";
+
+.paginated-list-button {
+    @include button();
+    @include dynamic-spacing(margin, $spacing-default $spacing-large);
+
+    svg {
+        margin: 0 $spacing-small;
+    }
+}

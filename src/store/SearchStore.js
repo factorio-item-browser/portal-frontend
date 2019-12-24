@@ -1,7 +1,8 @@
-import { action, observable } from "mobx";
+import {action, observable, runInAction} from "mobx";
 import { createContext } from "react";
 
 import Cache from "../class/Cache";
+import PaginatedList from "../class/PaginatedList";
 import { portalApi } from "../class/PortalApi";
 import { routeSearch } from "../helper/const";
 import { debounce } from "../helper/utils";
@@ -71,6 +72,20 @@ class SearchStore {
     };
 
     /**
+     * The currently executed search query.
+     * @type {string}
+     */
+    @observable
+    currentlyExecutedQuery = "";
+
+    /**
+     * The paginated search results.
+     * @type {PaginatedList<EntityData>|null}
+     */
+    @observable
+    paginatedSearchResults;
+
+    /**
      * Initializes the store.
      * @param {Cache<SearchResultsData>} cache
      * @param {PortalApi} portalApi
@@ -96,36 +111,32 @@ class SearchStore {
      * @returns {Promise<void>}
      */
     async handleRouteChange(query) {
-        const searchResults = await this._fetchData(query);
-        this._applySearchResults(searchResults);
+        const newPaginatedList = new PaginatedList(page => this._fetchData(query, page));
+        const searchResultsData = await newPaginatedList.requestNextPage();
+        runInAction(() => {
+            this.paginatedSearchResults = newPaginatedList;
+            this.currentlyExecutedQuery = searchResultsData.query;
+            this.isLoading = false;
+        });
     }
 
     /**
      * Fetches the data to the search query.
      * @param {string} query
+     * @param {int} page
      * @returns {Promise<SearchResultsData>}
      * @private
      */
-    async _fetchData(query) {
-        const cachedData = this._cache.read(query);
+    async _fetchData(query, page) {
+        const cacheKey = `${query}-${page}`;
+        const cachedData = this._cache.read(cacheKey);
         if (cachedData) {
             return cachedData;
         }
 
-        const requestedData = await this._portalApi.search(query, 1);
-        this._cache.write(query, requestedData);
+        const requestedData = await this._portalApi.search(query, page);
+        this._cache.write(cacheKey, requestedData);
         return requestedData;
-    }
-
-    /**
-     * Applies the search results to the store.
-     * @param {SearchResultsData} searchResults
-     * @private
-     */
-    @action
-    _applySearchResults(searchResults) {
-        this.currentSearchResults = searchResults;
-        this.isLoading = false;
     }
 
     /**

@@ -18,12 +18,6 @@ interface IconsStyleData {
     style: string,
 }
 
-interface MachineData {
-    name: string,
-    label: string,
-    craftingSpeed: number,
-}
-
 interface NamesByTypes {
     [key: string]: string[],
 }
@@ -51,6 +45,13 @@ interface SearchResultsData {
 
 
 
+
+
+interface MachineData {
+    name: string,
+    label: string,
+    craftingSpeed: number,
+}
 
 interface SidebarEntityData {
     type: string,
