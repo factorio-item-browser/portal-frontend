@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
-import React from "react";
+import React, {useEffect} from "react";
 
 import { formatAmount } from "../../helper/format";
 import EntityLink from "../link/EntityLink";
@@ -19,8 +19,7 @@ function renderAmount(amount) {
         return null;
     }
 
-    const formattedAmount = formatAmount(amount);
-    return <span className="amount">{formattedAmount}</span>;
+    return <span className="amount">{formatAmount(amount)}</span>;
 }
 
 /**
@@ -41,7 +40,9 @@ const Icon = ({ type, name, amount = 0, transparent = false, linked = false }) =
     });
     const label = renderAmount(amount);
 
-    iconManager.requestIcon(type, name);
+    useEffect(() => {
+        iconManager.requestIcon(type, name);
+    }, [type, name]);
 
     if (linked) {
         return (

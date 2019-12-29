@@ -34,6 +34,7 @@ const SearchResultsPage = () => {
             <PaginatedListButton
                 paginatedList={searchStore.paginatedSearchResults}
                 localePrefix="search-results.more-results"
+                loadOnScroll={true}
             />
         </Section>
     );

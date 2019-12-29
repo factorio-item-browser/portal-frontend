@@ -2,20 +2,52 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 import {observer} from "mobx-react-lite";
 import * as PropTypes from "prop-types";
-import React from "react";
+import React, {createRef, useEffect} from "react";
 import {useTranslation} from "react-i18next";
 
+import {debounce} from "../../helper/utils";
+
 import "./PaginatedListButton.scss";
+
+/**
+ *
+ * @param element
+ * @param {PaginatedList} paginatedList
+ */
+async function handleScroll(element, paginatedList) {
+    if (
+        paginatedList.hasNextPage
+        && !paginatedList.isLoading
+        && window.scrollY + window.innerHeight > element.current.offsetTop - (window.innerHeight * 0.1)
+    ) {
+        await paginatedList.requestNextPage();
+    }
+}
 
 /**
  * The button loading more pages for a paginated list.
  * @param {PaginatedList} paginatedList
  * @param {string} localePrefix
+ * @param {boolean} [loadOnScroll]
  * @returns {ReactDOM|null}
  * @constructor
  */
-const PaginatedListButton = ({ paginatedList, localePrefix }) => {
+const PaginatedListButton = ({ paginatedList, localePrefix, loadOnScroll = false }) => {
     const { t } = useTranslation();
+    const element = createRef();
+
+    useEffect(() => {
+        if (loadOnScroll) {
+            const debounceHandleScroll = debounce(async () => {
+                await handleScroll(element, paginatedList);
+            }, 100, this);
+
+            window.addEventListener('scroll', debounceHandleScroll);
+            return () => {
+                window.removeEventListener('scroll', debounceHandleScroll);
+            }
+        }
+    });
 
     // We have no additional pages, so do not display the button at all.
     if (!paginatedList.hasNextPage) {
@@ -34,9 +66,13 @@ const PaginatedListButton = ({ paginatedList, localePrefix }) => {
 
     // Show the default button, waiting to be clicked.
     return (
-        <div className="paginated-list-button" onClick={async () => {
-            await paginatedList.requestNextPage();
-        }}>
+        <div
+            className="paginated-list-button"
+            ref={element}
+            onClick={async () => {
+                await paginatedList.requestNextPage();
+            }}
+        >
             {t(`${localePrefix}.load`)}
         </div>
     );
@@ -45,6 +81,7 @@ const PaginatedListButton = ({ paginatedList, localePrefix }) => {
 PaginatedListButton.propTypes = {
     paginatedList: PropTypes.object.isRequired,
     localePrefix: PropTypes.string.isRequired,
+    loadOnScroll: PropTypes.bool,
 };
 
 export default observer(PaginatedListButton);
