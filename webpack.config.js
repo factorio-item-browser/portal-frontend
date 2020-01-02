@@ -29,8 +29,7 @@ module.exports = (env, argv) => {
                 filename: isProduction ? "asset/css/[name].[hash].css" : "asset/css/[name].css",
             }),
             new HtmlWebpackPlugin({
-                title: "Factorio Item Browser",
-                template: `${currentPath}/src/index.html`,
+                template: `${currentPath}/src/index.ejs`,
                 excludeAssets: [/images\.(.*)\.js$/],
             }),
             new HtmlWebpackExcludeAssetsPlugin(),
@@ -83,6 +82,7 @@ module.exports = (env, argv) => {
                             loader: "file-loader",
                             options: {
                                 name: "asset/image/[name].[hash].[ext]",
+                                esModule: false,
                             },
                         },
                         {

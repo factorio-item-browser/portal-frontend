@@ -7,10 +7,7 @@ import ItemStore from "../../store/ItemStore";
 import CopyTemplate from "../common/CopyTemplate";
 import Detail from "../common/Detail";
 import DetailsHead from "../common/DetailsHead";
-import Section from "../common/Section";
-import Entity from "../entity/Entity";
-import EntityList from "../entity/EntityList";
-import PaginatedListButton from "../common/PaginatedListButton";
+import ItemRecipesList from "./item/ItemRecipesList";
 
 /**
  * The component representing the item and fluid details page.
@@ -45,37 +42,14 @@ const ItemDetailsPage = () => {
                 </Detail>
             </DetailsHead>
 
-            <Section
-                headline={t("item-details.ingredient-in", {
-                    count: itemStore.paginatedProductRecipesList.numberOfResults,
-                })}
-            >
-                <EntityList>
-                    {itemStore.paginatedProductRecipesList.results.map((recipe) => {
-                        return <Entity key={recipe.name} entity={recipe} />;
-                    })}
-                </EntityList>
-                <PaginatedListButton
-                    paginatedList={itemStore.paginatedProductRecipesList}
-                    localePrefix="item-details.more-recipes"
-                />
-            </Section>
-
-            <Section
-                headline={t("item-details.product-of", {
-                    count: itemStore.paginatedIngredientRecipesList.numberOfResults,
-                })}
-            >
-                <EntityList>
-                    {itemStore.paginatedIngredientRecipesList.results.map((recipe) => {
-                        return <Entity key={recipe.name} entity={recipe} />;
-                    })}
-                </EntityList>
-                <PaginatedListButton
-                    paginatedList={itemStore.paginatedIngredientRecipesList}
-                    localePrefix="item-details.more-recipes"
-                />
-            </Section>
+            <ItemRecipesList
+                paginatedList={itemStore.paginatedProductRecipesList}
+                headlineLocaleKey={"item-details.product-of"}
+            />
+            <ItemRecipesList
+                paginatedList={itemStore.paginatedIngredientRecipesList}
+                headlineLocaleKey={"item-details.ingredient-in"}
+            />
         </Fragment>
     );
 };
