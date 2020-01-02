@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { useContext } from "react";
+import React, {useContext, useEffect} from "react";
 import { useTranslation } from "react-i18next";
 
 import SearchStore from "../../store/SearchStore";
@@ -17,6 +17,10 @@ import PaginatedListButton from "../common/PaginatedListButton";
 const SearchResultsPage = () => {
     const { t } = useTranslation();
     const searchStore = useContext(SearchStore);
+
+    useEffect(() => {
+        document.title = t("search-results.title", { query: searchStore.currentlyExecutedQuery });
+    }, [searchStore.currentlyExecutedQuery]);
 
     if (!searchStore.paginatedSearchResults) {
         return null;

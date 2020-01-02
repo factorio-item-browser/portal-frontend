@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { Fragment, useContext } from "react";
+import React, { Fragment, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import ItemStore from "../../store/ItemStore";
@@ -18,12 +18,16 @@ const ItemDetailsPage = () => {
     const itemStore = useContext(ItemStore);
     const { t } = useTranslation();
 
+    useEffect(() => {
+        document.title = t(`item-details.title.${itemStore.currentItem.type}`, { label: itemStore.currentItem.label });
+    }, [itemStore.currentItem.type, itemStore.currentItem.label]);
+
     return (
         <Fragment>
             <DetailsHead
                 type={itemStore.currentItem.type}
                 name={itemStore.currentItem.name}
-                title={t(`item-details.headline-${itemStore.currentItem.type}`, { label: itemStore.currentItem.label })}
+                title={t(`item-details.headline.${itemStore.currentItem.type}`, { label: itemStore.currentItem.label })}
             >
                 <Detail hidden={!itemStore.currentItem.description}>{itemStore.currentItem.description}</Detail>
                 <Detail>

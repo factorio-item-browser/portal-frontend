@@ -25,8 +25,10 @@
         }
     },
     "item-details": {
-        "headline-item": "Item: {{label}}",
-        "headline-fluid": "Fluid: {{label}}",
+        "headline": {
+            "item": "Item: {{label}}",
+            "fluid": "Fluid: {{label}}"
+        },
         "ingredient-in": "Ingredient in {{count}} recipe",
         "ingredient-in_plural": "Ingredient in {{count}} recipes",
         "more-recipes": {
@@ -34,7 +36,11 @@
             "loading": "Loading more recipes..."
         },
         "product-of": "Result of {{count}} recipe",
-        "product-of_plural": "Result of {{count}} recipes"
+        "product-of_plural": "Result of {{count}} recipes",
+        "title": {
+            "item": "Item: {{label}} - Factorio Item Browser",
+            "fluid": "Fluid: {{label}} - Factorio Item Browser"
+        }
     },
     "recipe-details": {
         "headline": "Recipe: {{label}}",
@@ -44,7 +50,8 @@
             "headline_plural": "Producible in {{count}} machines"
         },
         "products": "Results",
-        "time": "Time"
+        "time": "Time",
+        "title": "Recipe: {{label}} - Factorio Item Browser"
     },
     "search-results": {
         "headline": "{{count}} search result for \"{{query}}\"",
@@ -52,7 +59,8 @@
         "more-results": {
             "load": "Load more results",
             "loading": "Loading more results..."
-        }
+        },
+        "title": "Search: {{query}} - Factorio Item Browser"
     },
     "sidebar": {
         "action-pin": "Pin element to the top",

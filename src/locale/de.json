@@ -25,8 +25,10 @@
         }
     },
     "item-details": {
-        "headline-item": "Item: {{label}}",
-        "headline-fluid": "Flüssigkeit: {{label}}",
+        "headline": {
+            "item": "Item: {{label}}",
+            "fluid": "Flüssigkeit: {{label}}"
+        },
         "ingredient-in": "Zutat in {{count}} Rezept",
         "ingredient-in_plural": "Zutat in {{count}} Rezepten",
         "more-recipes": {
@@ -34,7 +36,11 @@
             "loading": "Lade weitere Rezepte..."
         },
         "product-of": "Ergebnis von {{count}} Rezept",
-        "product-of_plural": "Ergebnis von {{count}} Rezepten"
+        "product-of_plural": "Ergebnis von {{count}} Rezepten",
+        "title": {
+            "item": "Item: {{label}} - Factorio Item Browser",
+            "fluid": "Flüssigkeit: {{label}} - Factorio Item Browser"
+        }
     },
     "recipe-details": {
         "headline": "Rezept: {{label}}",
@@ -44,7 +50,8 @@
             "headline_plural": "Herstellbar in {{count}} Maschinen"
         },
         "products": "Ergebnisse",
-        "time": "Zeit"
+        "time": "Zeit",
+        "title": "Rezept: {{label}} - Factorio Item Browser"
     },
     "search-results": {
         "headline": "{{count}} Suchergebnis für \"{{query}}\"",
@@ -52,7 +59,8 @@
         "more-results": {
             "load": "Weitere Ergebnisse laden",
             "loading": "Lade weitere Ergebnisse..."
-        }
+        },
+        "title": "Suche: {{query}} - Factorio Item Browser"
     },
     "sidebar": {
         "action-pin": "Element oben anheften",

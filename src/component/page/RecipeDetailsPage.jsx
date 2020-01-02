@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { Fragment, useContext } from "react";
+import React, {Fragment, useContext, useEffect} from "react";
 import { useTranslation } from "react-i18next";
 
 import RecipeStore from "../../store/RecipeStore";
@@ -17,9 +17,13 @@ import RecipeDetails from "./recipe/RecipeDetails";
  * @constructor
  */
 const RecipeDetailsPage = () => {
-    const { t } = useTranslation();
     const recipeStore = useContext(RecipeStore);
+    const { t } = useTranslation();
     const data = recipeStore.currentRecipeDetails;
+
+    useEffect(() => {
+        document.title = t("recipe-details.title", { label: data.label });
+    }, [data.label]);
 
     return (
         <Fragment>
