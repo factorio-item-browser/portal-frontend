@@ -14,13 +14,11 @@ class PortalApi {
      * @returns {Promise<SearchResultsData>}
      */
     async search(query, page) {
-        const params = {
+        return this.sendSimpleRequest("/search", {
             query: query,
             indexOfFirstResult: (page - 1) * 24,
             numberOfResults: 24,
-        };
-
-        return this.sendSimpleRequest("/search", params);
+        });
     }
 
     /**
@@ -33,57 +31,30 @@ class PortalApi {
     }
 
     /**
-     *
+     * Fetches the recipes having the specified item as an ingredient.
      * @param {string} type
      * @param {string} name
-     * @returns {Promise<ItemDetailsData>}
+     * @param {number} page
+     * @returns {Promise<ItemRecipesData>}
      */
-    requestItemDetails(type, name) {
-        const data = {
-            type: type,
-            name: name,
-            label: "Kupferkabel",
-            description:
-                "Kann mit Linke Maustaste zum Verbinden und Trennen von Strommasten und Stromschaltern verwendet werden.",
-            ingredientRecipes: [
-                {
-                    type: "recipe",
-                    name: "copper-cable",
-                    label: "Kupferkabel",
-                    recipes: [
-                        {
-                            ingredients: [
-                                {
-                                    type: "item",
-                                    name: "copper-plate",
-                                    label: "Kupferplatte",
-                                    amount: 1,
-                                },
-                            ],
-                            products: [
-                                {
-                                    type: "item",
-                                    name: "copper-cable",
-                                    label: "Kupferkabel",
-                                    amount: 2,
-                                },
-                            ],
-                            craftingTime: 0.5,
-                            isExpensive: false,
-                        },
-                    ],
-                    omittedRecipes: 0,
-                },
-            ],
-            ingredientRecipeCount: 1,
-            productRecipes: [],
-            productRecipeCount: 0,
-        };
+    async getItemIngredientRecipes(type, name, page) {
+        return this.sendSimpleRequest("/" + encodeURI(type) + "/" + encodeURI(name) + "/ingredients", {
+            indexOfFirstResult: (page - 1) * 24,
+            numberOfResults: 24,
+        });
+    }
 
-        return new window.Promise((resolve) => {
-            window.setTimeout(() => {
-                resolve(data);
-            }, 1000);
+    /**
+     * Fetches the recipes having the specified item as a product.
+     * @param {string} type
+     * @param {string} name
+     * @param {number} page
+     * @returns {Promise<ItemRecipesData>}
+     */
+    async getItemProductRecipes(type, name, page) {
+        return this.sendSimpleRequest("/" + encodeURI(type) + "/" + encodeURI(name) + "/products", {
+            indexOfFirstResult: (page - 1) * 24,
+            numberOfResults: 24,
         });
     }
 

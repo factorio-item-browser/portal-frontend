@@ -1,11 +1,11 @@
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSpinner} from "@fortawesome/free-solid-svg-icons";
-import {observer} from "mobx-react-lite";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
-import React, {createRef, useEffect} from "react";
-import {useTranslation} from "react-i18next";
+import React, { createRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
-import {debounce} from "../../helper/utils";
+import { debounce } from "../../helper/utils";
 
 import "./PaginatedListButton.scss";
 
@@ -16,9 +16,9 @@ import "./PaginatedListButton.scss";
  */
 async function handleScroll(element, paginatedList) {
     if (
-        paginatedList.hasNextPage
-        && !paginatedList.isLoading
-        && window.scrollY + window.innerHeight > element.current.offsetTop - (window.innerHeight * 0.1)
+        paginatedList.hasNextPage &&
+        !paginatedList.isLoading &&
+        window.scrollY + window.innerHeight > element.current.offsetTop - window.innerHeight * 0.1
     ) {
         await paginatedList.requestNextPage();
     }
@@ -38,14 +38,18 @@ const PaginatedListButton = ({ paginatedList, localePrefix, loadOnScroll = false
 
     useEffect(() => {
         if (loadOnScroll) {
-            const debounceHandleScroll = debounce(async () => {
-                await handleScroll(element, paginatedList);
-            }, 100, this);
+            const debounceHandleScroll = debounce(
+                async () => {
+                    await handleScroll(element, paginatedList);
+                },
+                100,
+                this
+            );
 
-            window.addEventListener('scroll', debounceHandleScroll);
+            window.addEventListener("scroll", debounceHandleScroll);
             return () => {
-                window.removeEventListener('scroll', debounceHandleScroll);
-            }
+                window.removeEventListener("scroll", debounceHandleScroll);
+            };
         }
     });
 

@@ -29,6 +29,10 @@
         "headline-fluid": "Fluid: {{label}}",
         "ingredient-in": "Ingredient in {{count}} recipe",
         "ingredient-in_plural": "Ingredient in {{count}} recipes",
+        "more-recipes": {
+            "load": "Load more recipes",
+            "loading": "Loading more recipes..."
+        },
         "product-of": "Result of {{count}} recipe",
         "product-of_plural": "Result of {{count}} recipes"
     },

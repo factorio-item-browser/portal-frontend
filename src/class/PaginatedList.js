@@ -1,4 +1,4 @@
-import {action, computed, observable, runInAction} from "mobx";
+import { action, computed, observable, runInAction } from "mobx";
 
 /**
  * The class representing a paginated list of results.
@@ -6,12 +6,13 @@ import {action, computed, observable, runInAction} from "mobx";
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @template T
+ * @template TData
+ * @template TEntity
  */
 class PaginatedList {
     /**
      * The results of the list.
-     * @type {T[]}
+     * @type {TEntity[]}
      */
     @observable
     results = [];
@@ -63,7 +64,7 @@ class PaginatedList {
 
     /**
      * Requests the next page of data.
-     * @returns {Promise<SearchResultsData>}
+     * @returns {Promise<TData>}
      */
     @action
     async requestNextPage() {
@@ -82,6 +83,5 @@ class PaginatedList {
         });
     }
 }
-
 
 export default PaginatedList;

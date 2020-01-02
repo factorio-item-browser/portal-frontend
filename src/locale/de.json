@@ -29,6 +29,10 @@
         "headline-fluid": "Flüssigkeit: {{label}}",
         "ingredient-in": "Zutat in {{count}} Rezept",
         "ingredient-in_plural": "Zutat in {{count}} Rezepten",
+        "more-recipes": {
+            "load": "Weitere Rezepte laden",
+            "loading": "Lade weitere Rezepte..."
+        },
         "product-of": "Ergebnis von {{count}} Rezept",
         "product-of_plural": "Ergebnis von {{count}} Rezepten"
     },

@@ -1,9 +1,10 @@
-import { action, observable } from "mobx";
+import { observable, runInAction } from "mobx";
 import { createContext } from "react";
 
 import Cache from "../class/Cache";
 import { portalApi } from "../class/PortalApi";
 import { sidebarStore } from "./SidebarStore";
+import PaginatedList from "../class/PaginatedList";
 
 /**
  * The store for the items. And fluids.
@@ -11,7 +12,7 @@ import { sidebarStore } from "./SidebarStore";
 class ItemStore {
     /**
      * The cache of the item store.
-     * @type {Cache<ItemDetailsData>}
+     * @type {Cache<ItemRecipesData>}
      * @private
      */
     _cache;
@@ -31,24 +32,34 @@ class ItemStore {
     _sidebarStore;
 
     /**
-     * The current item details to be displayed.
-     * @type {ItemDetailsData}
+     * The paginated list of product recipes.
+     * @type {PaginatedList<ItemRecipesData,EntityData>}
      */
     @observable
-    currentItemDetails = {
+    paginatedProductRecipesList;
+
+    /**
+     * The paginated list of ingredient recipes.
+     * @type {PaginatedList<ItemRecipesData,EntityData>}
+     */
+    @observable
+    paginatedIngredientRecipesList;
+
+    /**
+     * The current item details.
+     * @type {{name: string, description: string, label: string, type: string}}
+     */
+    @observable
+    currentItem = {
         type: "",
         name: "",
         label: "",
         description: "",
-        ingredientRecipes: [],
-        ingredientRecipeCount: 0,
-        productRecipes: [],
-        productRecipeCount: 0,
     };
 
     /**
      * Initializes the store.
-     * @param {Cache<ItemDetailsData>} cache
+     * @param {Cache<ItemRecipesData>} cache
      * @param {PortalApi} portalApi
      * @param {SidebarStore} sidebarStore
      */
@@ -65,38 +76,66 @@ class ItemStore {
      * @returns {Promise<void>}
      */
     async handleRouteChange(type, name) {
-        const itemDetails = await this._fetchData(type, name);
-        this._applyItemDetails(itemDetails);
+        const newProductsList = new PaginatedList((page) => this._fetchProductData(type, name, page));
+        const newIngredientsList = new PaginatedList((page) => this._fetchIngredientData(type, name, page));
+
+        const [productsData] = await Promise.all([
+            newProductsList.requestNextPage(),
+            newIngredientsList.requestNextPage(),
+        ]);
+        runInAction(() => {
+            this.paginatedProductRecipesList = newProductsList;
+            this.paginatedIngredientRecipesList = newIngredientsList;
+
+            this.currentItem = {
+                type: productsData.type,
+                name: productsData.name,
+                label: productsData.label,
+                description: productsData.description,
+            };
+
+            this._sidebarStore.addViewedEntity(productsData.type, productsData.name, productsData.label);
+        });
     }
 
     /**
-     * Fetches the data to display.
+     * Fetches the product recipes data from the API.
      * @param {string} type
      * @param {string} name
-     * @returns {Promise<ItemDetailsData>}
+     * @param {number} page
+     * @returns {Promise<ItemRecipesData>}
      * @private
      */
-    async _fetchData(type, name) {
-        const cacheKey = `${type}-${name}`;
+    async _fetchProductData(type, name, page) {
+        const cacheKey = "${type}-${name}-products-${page}";
         const cachedData = this._cache.read(cacheKey);
         if (cachedData) {
             return cachedData;
         }
 
-        const requestedData = await this._portalApi.requestItemDetails(type, name);
+        const requestedData = await this._portalApi.getItemProductRecipes(type, name, page);
         this._cache.write(cacheKey, requestedData);
         return requestedData;
     }
 
     /**
-     * Updates the received item details.
-     * @param {ItemDetailsData} itemDetails
+     * Fetches the ingredient recipes data from the API.
+     * @param {string} type
+     * @param {string} name
+     * @param {number} page
+     * @returns {Promise<ItemRecipesData>}
      * @private
      */
-    @action
-    _applyItemDetails(itemDetails) {
-        this.currentItemDetails = itemDetails;
-        this._sidebarStore.addViewedEntity(itemDetails.type, itemDetails.name, itemDetails.label);
+    async _fetchIngredientData(type, name, page) {
+        const cacheKey = "${type}-${name}-ingredients-${page}";
+        const cachedData = this._cache.read(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
+
+        const requestedData = await this._portalApi.getItemIngredientRecipes(type, name, page);
+        this._cache.write(cacheKey, requestedData);
+        return requestedData;
     }
 }
 

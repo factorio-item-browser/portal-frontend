@@ -18,6 +18,15 @@ interface IconsStyleData {
     style: string,
 }
 
+interface ItemRecipesData {
+    type: string,
+    name: string,
+    label: string,
+    description: string,
+    results: EntityData[],
+    numberOfResults: number,
+}
+
 interface NamesByTypes {
     [key: string]: string[],
 }

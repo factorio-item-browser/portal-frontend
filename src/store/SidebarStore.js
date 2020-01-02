@@ -88,7 +88,7 @@ class SidebarStore {
         });
 
         entities.sort((left, right) => right.lastViewTime.localeCompare(left.lastViewTime));
-        return entities;
+        return entities.slice(0, 10);
     }
 
     /**

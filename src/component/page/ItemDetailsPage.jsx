@@ -10,6 +10,7 @@ import DetailsHead from "../common/DetailsHead";
 import Section from "../common/Section";
 import Entity from "../entity/Entity";
 import EntityList from "../entity/EntityList";
+import PaginatedListButton from "../common/PaginatedListButton";
 
 /**
  * The component representing the item and fluid details page.
@@ -19,46 +20,61 @@ import EntityList from "../entity/EntityList";
 const ItemDetailsPage = () => {
     const itemStore = useContext(ItemStore);
     const { t } = useTranslation();
-    const data = itemStore.currentItemDetails;
 
     return (
         <Fragment>
             <DetailsHead
-                type={data.type}
-                name={data.name}
-                title={t(`item-details.headline-${data.type}`, { label: data.label })}
+                type={itemStore.currentItem.type}
+                name={itemStore.currentItem.name}
+                title={t(`item-details.headline-${itemStore.currentItem.type}`, { label: itemStore.currentItem.label })}
             >
-                <Detail hidden={!data.description}>{data.description}</Detail>
+                <Detail hidden={!itemStore.currentItem.description}>{itemStore.currentItem.description}</Detail>
                 <Detail>
                     <CopyTemplate
                         label={t("copy-template.rich-text-icon.label")}
-                        template={`[img=${data.type}/${data.name}]`}
+                        template={`[img=${itemStore.currentItem.type}/${itemStore.currentItem.name}]`}
                         description={t("copy-template.rich-text-icon.description")}
                     />
                 </Detail>
-                <Detail hidden={data.type !== "item"}>
+                <Detail hidden={itemStore.currentItem.type !== "item"}>
                     <CopyTemplate
                         label={t("copy-template.cheat-command.label")}
-                        template={`/c game.player.insert{ name="${data.name}", count=10 }`}
+                        template={`/c game.player.insert{ name="${itemStore.currentItem.name}", count=10 }`}
                         description={t("copy-template.cheat-command.description")}
                     />
                 </Detail>
             </DetailsHead>
 
-            <Section headline={t("item-details.ingredient-in", { count: data.ingredientRecipeCount })}>
+            <Section
+                headline={t("item-details.ingredient-in", {
+                    count: itemStore.paginatedProductRecipesList.numberOfResults,
+                })}
+            >
                 <EntityList>
-                    {data.ingredientRecipes.map((recipe) => {
+                    {itemStore.paginatedProductRecipesList.results.map((recipe) => {
                         return <Entity key={recipe.name} entity={recipe} />;
                     })}
                 </EntityList>
+                <PaginatedListButton
+                    paginatedList={itemStore.paginatedProductRecipesList}
+                    localePrefix="item-details.more-recipes"
+                />
             </Section>
 
-            <Section headline={t("item-details.product-of", { count: data.productRecipeCount })}>
+            <Section
+                headline={t("item-details.product-of", {
+                    count: itemStore.paginatedIngredientRecipesList.numberOfResults,
+                })}
+            >
                 <EntityList>
-                    {data.productRecipes.map((recipe) => {
+                    {itemStore.paginatedIngredientRecipesList.results.map((recipe) => {
                         return <Entity key={recipe.name} entity={recipe} />;
                     })}
                 </EntityList>
+                <PaginatedListButton
+                    paginatedList={itemStore.paginatedIngredientRecipesList}
+                    localePrefix="item-details.more-recipes"
+                />
             </Section>
         </Fragment>
     );

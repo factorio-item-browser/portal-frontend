@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 
 import { formatAmount } from "../../helper/format";
 import EntityLink from "../link/EntityLink";

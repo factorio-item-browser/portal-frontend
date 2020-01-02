@@ -18,6 +18,10 @@ const SearchResultsPage = () => {
     const { t } = useTranslation();
     const searchStore = useContext(SearchStore);
 
+    if (!searchStore.paginatedSearchResults) {
+        return null;
+    }
+
     return (
         <Section
             headline={t("search-results.headline", {

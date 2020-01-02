@@ -1,4 +1,4 @@
-import {action, observable, runInAction} from "mobx";
+import { action, observable, runInAction } from "mobx";
 import { createContext } from "react";
 
 import Cache from "../class/Cache";
@@ -61,17 +61,6 @@ class SearchStore {
     isLoading = false;
 
     /**
-     * The current search results.
-     * @type {SearchResultsData}
-     */
-    @observable
-    currentSearchResults = {
-        query: "",
-        results: [],
-        numberOfResults: 0,
-    };
-
-    /**
      * The currently executed search query.
      * @type {string}
      */
@@ -80,7 +69,7 @@ class SearchStore {
 
     /**
      * The paginated search results.
-     * @type {PaginatedList<EntityData>|null}
+     * @type {PaginatedList<SearchResultsData,EntityData>|null}
      */
     @observable
     paginatedSearchResults;
@@ -111,7 +100,7 @@ class SearchStore {
      * @returns {Promise<void>}
      */
     async handleRouteChange(query) {
-        const newPaginatedList = new PaginatedList(page => this._fetchData(query, page));
+        const newPaginatedList = new PaginatedList((page) => this._fetchData(query, page));
         const searchResultsData = await newPaginatedList.requestNextPage();
         runInAction(() => {
             this.paginatedSearchResults = newPaginatedList;
