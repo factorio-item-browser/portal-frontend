@@ -107,7 +107,7 @@ class ItemStore {
      * @private
      */
     async _fetchProductData(type, name, page) {
-        const cacheKey = "${type}-${name}-products-${page}";
+        const cacheKey = `${type}-${name}-products-${page}`;
         const cachedData = this._cache.read(cacheKey);
         if (cachedData) {
             return cachedData;
@@ -127,7 +127,7 @@ class ItemStore {
      * @private
      */
     async _fetchIngredientData(type, name, page) {
-        const cacheKey = "${type}-${name}-ingredients-${page}";
+        const cacheKey = `${type}-${name}-ingredients-${page}`;
         const cachedData = this._cache.read(cacheKey);
         if (cachedData) {
             return cachedData;
