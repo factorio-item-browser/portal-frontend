@@ -27,6 +27,17 @@ interface ItemRecipesData {
     numberOfResults: number,
 }
 
+interface MachineData {
+    name: string,
+    label: string,
+    craftingSpeed: number,
+    numberOfItems: number,
+    numberOfFluids: number,
+    numberOfModules: number,
+    energyUsage: number,
+    energyUsageUnit: string,
+}
+
 interface NamesByTypes {
     [key: string]: string[],
 }
@@ -38,11 +49,24 @@ interface RecipeData {
     isExpensive: boolean,
 }
 
+interface RecipeDetailsData {
+    name: string,
+    label: string,
+    description: string,
+    recipe?: RecipeData,
+    expensiveRecipe?: RecipeData,
+}
+
 interface RecipeItemData {
     type: string,
     name: string,
     label: string,
     amount: number,
+}
+
+interface RecipeMachinesData {
+    results: MachineData[],
+    numberOfResults: number,
 }
 
 interface SearchResultsData {
@@ -56,11 +80,6 @@ interface SearchResultsData {
 
 
 
-interface MachineData {
-    name: string,
-    label: string,
-    craftingSpeed: number,
-}
 
 interface SidebarEntityData {
     type: string,
@@ -68,24 +87,4 @@ interface SidebarEntityData {
     label: string,
     pinnedPosition: number,
     lastViewTime: string,
-}
-
-interface ItemDetailsData {
-    type: string,
-    name: string,
-    label: string,
-    description: string,
-    ingredientRecipes: EntityData[],
-    ingredientRecipeCount: number,
-    productRecipes: EntityData[],
-    productRecipeCount: number,
-}
-
-interface RecipeDetailsData {
-    name: string,
-    label: string,
-    description: string,
-    recipe: RecipeData,
-    expensiveRecipe?: RecipeData,
-    machines: MachineData[],
 }

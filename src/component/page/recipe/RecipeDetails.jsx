@@ -20,6 +20,11 @@ import "./RecipeDetails.scss";
 const RecipeDetails = ({ recipe }) => {
     const isMedium = useMediaQuery({ minWidth: breakpointMedium });
     const { t } = useTranslation();
+
+    if (!recipe) {
+        return null;
+    }
+
     const classes = classNames({
         "recipe-details": true,
         "expensive": recipe.isExpensive,
@@ -39,7 +44,7 @@ const RecipeDetails = ({ recipe }) => {
 };
 
 RecipeDetails.propTypes = {
-    recipe: PropTypes.object.isRequired,
+    recipe: PropTypes.object,
 };
 
 export default observer(RecipeDetails);

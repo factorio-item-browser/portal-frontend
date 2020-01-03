@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, {useContext, useEffect} from "react";
+import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import SearchStore from "../../store/SearchStore";

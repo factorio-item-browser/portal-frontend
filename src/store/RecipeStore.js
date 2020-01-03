@@ -1,9 +1,10 @@
-import { action, observable } from "mobx";
+import { observable, runInAction } from "mobx";
 import { createContext } from "react";
 
 import Cache from "../class/Cache";
 import { portalApi } from "../class/PortalApi";
 import { sidebarStore } from "./SidebarStore";
+import PaginatedList from "../class/PaginatedList";
 
 /**
  * The store managing the recipes.
@@ -14,7 +15,14 @@ class RecipeStore {
      * @type {Cache<RecipeDetailsData>}
      * @private
      */
-    _cache;
+    _detailsCache;
+
+    /**
+     * The cache of the recipe machines.
+     * @type {Cache<RecipeMachinesData>}
+     * @private
+     */
+    _machinesCache;
 
     /**
      * The Portal API instance.
@@ -39,17 +47,27 @@ class RecipeStore {
         name: "",
         label: "",
         description: "",
-        machines: [],
+        recipe: null,
+        expensiveRecipe: null,
     };
 
     /**
+     * The paginated list of machines able to craft the current recipe.
+     * @type PaginatedList<RecipeMachinesData,MachineData>
+     */
+    @observable
+    paginatedMachinesList;
+
+    /**
      * Initializes the store.
-     * @param {Cache<RecipeDetailsData>} cache
+     * @param {Cache<RecipeDetailsData>} detailsCache
+     * @param {Cache<RecipeMachinesData>} machinesCache
      * @param {PortalApi} portalApi
      * @param {SidebarStore} sidebarStore
      */
-    constructor(cache, portalApi, sidebarStore) {
-        this._cache = cache;
+    constructor(detailsCache, machinesCache, portalApi, sidebarStore) {
+        this._detailsCache = detailsCache;
+        this._machinesCache = machinesCache;
         this._portalApi = portalApi;
         this._sidebarStore = sidebarStore;
     }
@@ -60,8 +78,15 @@ class RecipeStore {
      * @returns {Promise<void>}
      */
     async handleRouteChange(name) {
-        const recipeDetails = await this._fetchData(name);
-        this._applyRecipeDetails(recipeDetails);
+        const newMachinesList = new PaginatedList((page) => this._fetchMachinesData(name, page));
+        const [recipeDetails] = await Promise.all([this._fetchDetailsData(name), newMachinesList.requestNextPage()]);
+
+        runInAction(() => {
+            this.currentRecipeDetails = recipeDetails;
+            this.paginatedMachinesList = newMachinesList;
+
+            this._sidebarStore.addViewedEntity("recipe", recipeDetails.name, recipeDetails.label);
+        });
     }
 
     /**
@@ -70,30 +95,40 @@ class RecipeStore {
      * @returns {Promise<RecipeDetailsData>}
      * @private
      */
-    async _fetchData(name) {
-        const cachedData = this._cache.read(name);
+    async _fetchDetailsData(name) {
+        const cacheKey = name;
+        const cachedData = this._detailsCache.read(cacheKey);
         if (cachedData) {
             return cachedData;
         }
 
-        const requestedData = await this._portalApi.requestRecipeDetails(name);
-        this._cache.write(name, requestedData);
+        const requestedData = await this._portalApi.getRecipeDetails(name);
+        this._detailsCache.write(cacheKey, requestedData);
         return requestedData;
     }
 
     /**
-     * Applies the recipe details to the store.
-     * @param {RecipeDetailsData} recipeDetails
+     * Fetches the machines able to craft the recipe.
+     * @param {string} name
+     * @param {number} page
+     * @returns {Promise<RecipeMachinesData>}
      * @private
      */
-    @action
-    _applyRecipeDetails(recipeDetails) {
-        this.currentRecipeDetails = recipeDetails;
-        this._sidebarStore.addViewedEntity("recipe", recipeDetails.name, recipeDetails.label);
+    async _fetchMachinesData(name, page) {
+        const cacheKey = `${name}-${page}`;
+        const cachedData = this._machinesCache.read(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
+
+        const requestedData = await this._portalApi.getRecipeMachines(name, page);
+        this._machinesCache.write(cacheKey, requestedData);
+        return requestedData;
     }
 }
 
-const cache = new Cache("recipe", 86400000);
+const detailsCache = new Cache("recipe", 86400000);
+const machinesCache = new Cache("recipe-machines", 86400000);
 
-export const recipeStore = new RecipeStore(cache, portalApi, sidebarStore);
+export const recipeStore = new RecipeStore(detailsCache, machinesCache, portalApi, sidebarStore);
 export default createContext(recipeStore);

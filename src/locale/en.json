@@ -47,7 +47,11 @@
         "ingredients": "Ingredients",
         "machine": {
             "headline": "Producible in {{count}} machine",
-            "headline_plural": "Producible in {{count}} machines"
+            "headline_plural": "Producible in {{count}} machines",
+            "more-machines": {
+                "load": "Load more machines",
+                "loading": "Loading more machines..."
+            }
         },
         "products": "Results",
         "time": "Time",

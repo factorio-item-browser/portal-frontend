@@ -12,7 +12,7 @@
             "description": "Füge diesen Code in den Text im Spiel ein, um das Symbol zu erhalten."
         },
         "cheat-command": {
-            "label": "Cheat-Kommando:",
+            "label": "Cheat-Befehl:",
             "description": "Führe dieses Kommando in der Spiele-Konsole aus um das Item in dein Inventar zu cheaten. Das wird Errungenschaften deaktivieren!"
         }
     },
@@ -47,7 +47,11 @@
         "ingredients": "Zutaten",
         "machine": {
             "headline": "Herstellbar in {{count}} Maschine",
-            "headline_plural": "Herstellbar in {{count}} Maschinen"
+            "headline_plural": "Herstellbar in {{count}} Maschinen",
+            "more-machines": {
+                "load": "Weitere Maschinen laden",
+                "loading": "Lade weitere Maschinen..."
+            }
         },
         "products": "Ergebnisse",
         "time": "Zeit",
