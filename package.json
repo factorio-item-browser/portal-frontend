@@ -35,7 +35,7 @@
     "react-sortablejs": "^1.5.1",
     "router5": "^7.0.2",
     "router5-plugin-browser": "^7.0.2",
-    "sortablejs": "^1.10.1"
+    "sortablejs": "^1.10.2"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
@@ -50,10 +50,10 @@
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.1.1",
-    "css-loader": "^3.4.0",
+    "css-loader": "^3.4.1",
     "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.7.0",
+    "eslint-config-prettier": "^6.9.0",
     "eslint-import-resolver-webpack": "^0.12.0",
     "eslint-plugin-import": "^2.19.1",
     "eslint-plugin-jsx-a11y": "^6.2.3",
@@ -68,9 +68,9 @@
     "prettier": "^1.19.1",
     "react-hot-loader": "^4.12.18",
     "sass-loader": "^8.0.0",
-    "source-map-explorer": "^2.1.2",
+    "source-map-explorer": "^2.2.1",
     "url-loader": "^3.0.0",
-    "webpack": "^4.41.4",
+    "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1"
   },

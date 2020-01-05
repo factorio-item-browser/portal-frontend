@@ -56,6 +56,10 @@ class Cache {
      * @param {T} data
      */
     write(key, data) {
+        if (!enableCache) {
+            return;
+        }
+
         this._storage.setItem(
             this._buildCacheKey(key),
             JSON.stringify({
@@ -71,6 +75,10 @@ class Cache {
      * @return {T|null}
      */
     read(key) {
+        if (!enableCache) {
+            return null;
+        }
+
         const cacheKey = this._buildCacheKey(key);
 
         let cacheItem;
@@ -92,30 +100,4 @@ class Cache {
     }
 }
 
-/**
- * The class voiding all data instead of actually caching them.
- * @template T
- *
- * @author BluePsyduck <bluepsyduck@gmx.com>
- * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- */
-class VoidCache extends Cache {
-    /**
-     * Writes data to the cache.
-     * @param {string} key
-     * @param {T} data
-     */
-    write(key, data) {}
-
-    /**
-     * Tries to read data from the cache.
-     * @param {string} key
-     * @return {T|null}
-     */
-    read(key) {
-        return null;
-    }
-}
-
-const cacheClass = enableCache ? Cache : VoidCache;
-export default cacheClass;
+export default Cache;
