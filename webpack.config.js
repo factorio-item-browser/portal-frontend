@@ -1,5 +1,6 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const { DefinePlugin, HotModuleReplacementPlugin } = require("webpack");
+const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackExcludeAssetsPlugin = require("html-webpack-exclude-assets-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -34,6 +35,9 @@ module.exports = (env, argv) => {
             }),
             new HtmlWebpackExcludeAssetsPlugin(),
             new DefinePlugin(envVars),
+            new CopyPlugin([
+                { from: `${currentPath}/src/root/.htaccess` }
+            ]),
         ],
         resolve: {
             extensions: [".jpg", ".js", ".json", ".jsx", ".png", ".scss"]
