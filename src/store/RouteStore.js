@@ -3,49 +3,8 @@ import { createContext } from "react";
 import { createRouter } from "router5";
 import browserPluginFactory from "router5-plugin-browser";
 
-import { routeFluidDetails, routeIndex, routeItemDetails, routeRecipeDetails, routeSearch } from "../helper/const";
-import { itemStore } from "./ItemStore";
-import { recipeStore } from "./RecipeStore";
-import { searchStore } from "./SearchStore";
-
-/**
- * The configuration of the routes.
- * @type {Route[]}
- */
-const routes = [
-    {
-        name: routeIndex,
-        path: "/",
-    },
-    {
-        name: routeItemDetails,
-        path: "/item/:name",
-        handleChange: (routeStore, params) => {
-            return routeStore._itemStore.handleRouteChange("item", params.name);
-        },
-    },
-    {
-        name: routeFluidDetails,
-        path: "/fluid/:name",
-        handleChange: (routeStore, params) => {
-            return routeStore._itemStore.handleRouteChange("fluid", params.name);
-        },
-    },
-    {
-        name: routeRecipeDetails,
-        path: "/recipe/:name",
-        handleChange: (routeStore, params) => {
-            return routeStore._recipeStore.handleRouteChange(params.name);
-        },
-    },
-    {
-        name: routeSearch,
-        path: "/search/*query",
-        handleChange: (routeStore, params) => {
-            return routeStore._searchStore.handleRouteChange(params.query);
-        },
-    },
-];
+import { portalApi } from "../class/PortalApi";
+import { routeIndex, routeItemDetails, routeRecipeDetails } from "../helper/const";
 
 /**
  * The map from the entity types to their corresponding routes.
@@ -53,7 +12,7 @@ const routes = [
  */
 const entityTypeToRouteMap = {
     item: routeItemDetails,
-    fluid: routeFluidDetails,
+    fluid: routeItemDetails,
     recipe: routeRecipeDetails,
 };
 
@@ -62,25 +21,18 @@ const entityTypeToRouteMap = {
  */
 class RouteStore {
     /**
-     * The item store.
-     * @type {ItemStore}
+     * The change handlers of the routes.
+     * @type {object<string,Function>}
      * @private
      */
-    _itemStore;
+    _changeHandlers = {};
 
     /**
-     * The recipe store.
-     * @type {RecipeStore}
+     * The handlers for initialising the session.
+     * @type {(function(SessionInitData): void)[]}
      * @private
      */
-    _recipeStore;
-
-    /**
-     * The search store.
-     * @type {SearchStore}
-     * @private
-     */
-    _searchStore;
+    _initializeSessionHandlers = [];
 
     /**
      * The router of the store.
@@ -97,49 +49,36 @@ class RouteStore {
 
     /**
      * The portal API instance.
-     * @param {Route[]} routes
-     * @param {ItemStore} itemStore
-     * @param {RecipeStore} recipeStore
-     * @param {SearchStore} searchStore
      */
-    constructor(routes, itemStore, recipeStore, searchStore) {
-        this._itemStore = itemStore;
-        this._recipeStore = recipeStore;
-        this._searchStore = searchStore;
-        this._searchStore.injectRouteStore(this);
-
-        this._router = this._createRouter(routes);
-        this._router.start();
+    constructor() {
+        this._router = this._createRouter();
+        this.addRoute(routeIndex, "/");
     }
 
     /**
      * Creates the router to use.
-     * @param {Route[]} routes
      * @returns {Router}
      * @private
      */
-    _createRouter(routes) {
-        const router = createRouter(routes);
+    _createRouter() {
+        const router = createRouter();
         router.usePlugin(browserPluginFactory());
-        router.useMiddleware(this._getFetchDataHandlerMiddleware(routes).bind(this));
+        router.useMiddleware(this._getFetchDataHandlerMiddleware.bind(this));
         router.subscribe(this._handleChangeEvent.bind(this));
         return router;
     }
 
     /**
      * The middleware for handling the route changes.
-     * @param {Route[]} routes
-     * @returns {function(): function(State): boolean | Promise<any>}
+     * @returns {function(State): boolean | Promise<any>}
      * @private
      */
-    _getFetchDataHandlerMiddleware(routes) {
-        return () => (toState) => {
+    _getFetchDataHandlerMiddleware() {
+        return (toState) => {
             let result = true;
-            routes.forEach((route) => {
-                if (route.name === toState.name && route.handleChange) {
-                    result = route.handleChange(this, toState.params);
-                }
-            });
+            if (this._changeHandlers[toState.name]) {
+                result = this._changeHandlers[toState.name](toState.params);
+            }
             return result;
         };
     }
@@ -152,6 +91,46 @@ class RouteStore {
     @action
     _handleChangeEvent(state) {
         this.currentRoute = state.route.name;
+    }
+
+    /**
+     * Adds a route to be handled.
+     * @param {string} name
+     * @param {string} path
+     * @param {Function} [changeHandler]
+     */
+    addRoute(name, path, changeHandler) {
+        console.log(`ADD ROUTE ${name}`);
+
+        this._router.add([{ name, path }]);
+
+        if (changeHandler) {
+            this._changeHandlers[name] = changeHandler;
+        }
+    }
+
+    /**
+     * Adds a handler for initializing the session.
+     * @param {function(SessionInitData): void} handler
+     */
+    addInitializeSessionHandler(handler) {
+        this._initializeSessionHandlers.push(handler);
+    }
+
+    /**
+     * Initializes the session.
+     * @returns {Promise<void>}
+     */
+    async initializeSession() {
+        console.log("Initialize Session");
+
+        const session = await portalApi.initializeSession();
+        console.log("Initialize Session COMPLETE, running handlers.");
+        this._initializeSessionHandlers.forEach((handler) => {
+            handler(session);
+        });
+        console.log("Starting router");
+        this._router.start();
     }
 
     /**
@@ -184,7 +163,7 @@ class RouteStore {
         if (route) {
             return {
                 route: route,
-                params: { name: name },
+                params: { type: type, name: name },
             };
         }
 
@@ -204,5 +183,5 @@ class RouteStore {
     }
 }
 
-export const routeStore = new RouteStore(routes, itemStore, recipeStore, searchStore);
+export const routeStore = new RouteStore();
 export default createContext(routeStore);

@@ -3,8 +3,11 @@ import { createContext } from "react";
 
 import Cache from "../class/Cache";
 import { portalApi } from "../class/PortalApi";
-import { sidebarStore } from "./SidebarStore";
 import PaginatedList from "../class/PaginatedList";
+import { routeRecipeDetails } from "../helper/const";
+
+import { routeStore } from "./RouteStore";
+import { sidebarStore } from "./SidebarStore";
 
 /**
  * The store managing the recipes.
@@ -30,6 +33,13 @@ class RecipeStore {
      * @private
      */
     _portalApi;
+
+    /**
+     * The route store.
+     * @type {RouteStore}
+     * @private
+     */
+    _routeStore;
 
     /**
      * The sidebar store.
@@ -63,21 +73,34 @@ class RecipeStore {
      * @param {Cache<RecipeDetailsData>} detailsCache
      * @param {Cache<RecipeMachinesData>} machinesCache
      * @param {PortalApi} portalApi
+     * @param {RouteStore} routeStore
      * @param {SidebarStore} sidebarStore
      */
-    constructor(detailsCache, machinesCache, portalApi, sidebarStore) {
+    constructor(detailsCache, machinesCache, portalApi, routeStore, sidebarStore) {
         this._detailsCache = detailsCache;
         this._machinesCache = machinesCache;
         this._portalApi = portalApi;
+        this._routeStore = routeStore;
         this._sidebarStore = sidebarStore;
+
+        this._initializeRoutes();
+    }
+
+    /**
+     * Initializes the routes of the store.
+     * @private
+     */
+    _initializeRoutes() {
+        this._routeStore.addRoute(routeRecipeDetails, "/recipe/:name", this._handleRouteChange.bind(this));
     }
 
     /**
      * Handles the change of the route.
      * @param {string} name
      * @returns {Promise<void>}
+     * @private
      */
-    async handleRouteChange(name) {
+    async _handleRouteChange({ name }) {
         const newMachinesList = new PaginatedList((page) => this._fetchMachinesData(name, page));
         const [recipeDetails] = await Promise.all([this._fetchDetailsData(name), newMachinesList.requestNextPage()]);
 
@@ -130,5 +153,5 @@ class RecipeStore {
 const detailsCache = new Cache("recipe", 86400000);
 const machinesCache = new Cache("recipe-machines", 86400000);
 
-export const recipeStore = new RecipeStore(detailsCache, machinesCache, portalApi, sidebarStore);
+export const recipeStore = new RecipeStore(detailsCache, machinesCache, portalApi, routeStore, sidebarStore);
 export default createContext(recipeStore);

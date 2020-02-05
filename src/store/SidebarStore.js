@@ -1,38 +1,34 @@
 import { action, computed, observable } from "mobx";
 import { createContext } from "react";
 
+import { portalApi } from "../class/PortalApi";
+
+import { routeStore } from "./RouteStore";
+
 /**
  * The store managing all the data of the sidebar.
  */
 class SidebarStore {
     /**
+     * The Portal API instance.
+     * @type {PortalApi}
+     * @private
+     */
+    _portalApi;
+
+    /**
+     * The route store.
+     * @type {RouteStore}
+     * @private
+     */
+    _routeStore;
+
+    /**
      * The entities of the sidebar.
      * @type {Object<string,SidebarEntityData>}
      */
     @observable
-    entities = {
-        "recipe-copper-plate": {
-            type: "recipe",
-            name: "copper-plate",
-            label: "Kupferplatte",
-            pinnedPosition: 0,
-            lastViewTime: "2019-01-01",
-        },
-        "item-iron-plate": {
-            type: "item",
-            name: "iron-plate",
-            label: "Eisenplatte",
-            pinnedPosition: 13,
-            lastViewTime: "2020-01-01",
-        },
-        "fluid-light-oil": {
-            type: "fluid",
-            name: "light-oil",
-            label: "Leichtöl",
-            pinnedPosition: 1,
-            lastViewTime: new Date().toISOString(),
-        },
-    };
+    entities = {};
 
     /**
      * Whether the sidebar has been opened on mobile.
@@ -40,6 +36,32 @@ class SidebarStore {
      */
     @observable
     isSidebarOpened = false;
+
+    /**
+     * Initializes the store.
+     * @param {PortalApi} portalApi
+     * @param {RouteStore} routeStore
+     */
+    constructor(portalApi, routeStore) {
+        this._portalApi = portalApi;
+        this._routeStore = routeStore;
+
+        this._routeStore.addInitializeSessionHandler(this._initializeSession.bind(this));
+    }
+
+    /**
+     * Initializes the sidebar from the session.
+     * @param {SidebarEntityData[]} sidebarEntities
+     * @private
+     */
+    @action
+    _initializeSession({ sidebarEntities }) {
+        const x = {};
+        sidebarEntities.forEach((sidebarEntity) => {
+            x[this.getIdForEntity(sidebarEntity)] = sidebarEntity;
+        });
+        this.entities = x;
+    }
 
     /**
      * Opens the sidebar on the mobile view.
@@ -120,7 +142,7 @@ class SidebarStore {
      * @param {string} label
      */
     @action
-    addViewedEntity(type, name, label) {
+    async addViewedEntity(type, name, label) {
         const newEntity = {
             type: type,
             name: name,
@@ -136,6 +158,8 @@ class SidebarStore {
         } else {
             this.entities[id] = newEntity;
         }
+
+        await this._sendEntities();
     }
 
     /**
@@ -143,12 +167,14 @@ class SidebarStore {
      * @param {string[]} order
      */
     @action
-    updatePinnedOrder(order) {
+    async updatePinnedOrder(order) {
         order.forEach((id, index) => {
             if (this.entities[id]) {
                 this.entities[id].pinnedPosition = index + 1;
             }
         });
+
+        await this._sendEntities();
     }
 
     /**
@@ -159,7 +185,19 @@ class SidebarStore {
     getIdForEntity(entity) {
         return `${entity.type}-${entity.name}`;
     }
+
+    /**
+     * Sends the current entities to the Portal API.
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _sendEntities() {
+        const entities = [];
+        entities.push(...this.pinnedEntities, ...this.unpinnedEntities);
+
+        await this._portalApi.sendSidebarEntities(entities);
+    }
 }
 
-export const sidebarStore = new SidebarStore();
+export const sidebarStore = new SidebarStore(portalApi, routeStore);
 export default createContext(sidebarStore);

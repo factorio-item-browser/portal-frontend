@@ -3,8 +3,11 @@ import { createContext } from "react";
 
 import Cache from "../class/Cache";
 import { portalApi } from "../class/PortalApi";
-import { sidebarStore } from "./SidebarStore";
 import PaginatedList from "../class/PaginatedList";
+import { routeItemDetails } from "../helper/const";
+
+import { routeStore } from "./RouteStore";
+import { sidebarStore } from "./SidebarStore";
 
 /**
  * The store for the items. And fluids.
@@ -61,12 +64,26 @@ class ItemStore {
      * Initializes the store.
      * @param {Cache<ItemRecipesData>} cache
      * @param {PortalApi} portalApi
+     * @param {RouteStore} routeStore
      * @param {SidebarStore} sidebarStore
      */
-    constructor(cache, portalApi, sidebarStore) {
+    constructor(cache, portalApi, routeStore, sidebarStore) {
+        console.log("CREATE ITEM STORE");
+
         this._cache = cache;
         this._portalApi = portalApi;
+        this._routeStore = routeStore;
         this._sidebarStore = sidebarStore;
+
+        this._initializeRoutes();
+    }
+
+    /**
+     * Initializes the routes of the store.
+     * @private
+     */
+    _initializeRoutes() {
+        this._routeStore.addRoute(routeItemDetails, "/:type<item|fluid>/:name", this._handleRouteChange.bind(this));
     }
 
     /**
@@ -74,8 +91,11 @@ class ItemStore {
      * @param {string} type
      * @param {string} name
      * @returns {Promise<void>}
+     * @private
      */
-    async handleRouteChange(type, name) {
+    async _handleRouteChange({ type, name }) {
+        console.log("ITEM ROUTE", type, name);
+
         const newProductsList = new PaginatedList((page) => this._fetchProductData(type, name, page));
         const newIngredientsList = new PaginatedList((page) => this._fetchIngredientData(type, name, page));
 
@@ -141,5 +161,5 @@ class ItemStore {
 
 const cache = new Cache("item", 86400000);
 
-export const itemStore = new ItemStore(cache, portalApi, sidebarStore);
+export const itemStore = new ItemStore(cache, portalApi, routeStore, sidebarStore);
 export default createContext(itemStore);

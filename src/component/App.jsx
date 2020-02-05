@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
-import React, { Fragment, useContext } from "react";
+import React, { Fragment, useContext, useEffect } from "react";
 
-import { routeFluidDetails, routeItemDetails, routeRecipeDetails, routeSearch } from "../helper/const";
+import { routeItemDetails, routeRecipeDetails, routeSearch } from "../helper/const";
 import RouteStore from "../store/RouteStore";
 
 import Footer from "./layout/Footer";
@@ -21,9 +21,14 @@ import "./App.scss";
 const App = () => {
     const routeStore = useContext(RouteStore);
 
+    useEffect(() => {
+        (async () => {
+            await routeStore.initializeSession();
+        })();
+    }, []);
+
     let page = null;
     switch (routeStore.currentRoute) {
-        case routeFluidDetails:
         case routeItemDetails:
             page = <ItemDetailsPage />;
             break;

@@ -10,7 +10,6 @@ export const breakpointMedium = 600;
 export const breakpointLarge = 1000;
 export const breakpointHuge = 1500;
 
-export const routeFluidDetails = "fluidDetails";
 export const routeIndex = "index";
 export const routeItemDetails = "itemDetails";
 export const routeRecipeDetails = "recipeDetails";

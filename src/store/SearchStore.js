@@ -7,6 +7,8 @@ import { portalApi } from "../class/PortalApi";
 import { routeSearch } from "../helper/const";
 import { debounce } from "../helper/utils";
 
+import { routeStore } from "./RouteStore";
+
 /**
  * The store managing everything related to the search.
  */
@@ -78,28 +80,32 @@ class SearchStore {
      * Initializes the store.
      * @param {Cache<SearchResultsData>} cache
      * @param {PortalApi} portalApi
+     * @param {RouteStore} routeStore
      */
-    constructor(cache, portalApi) {
+    constructor(cache, portalApi, routeStore) {
         this._cache = cache;
         this._portalApi = portalApi;
+        this._routeStore = routeStore;
 
         this._debounceHandleQueryChange = debounce(this._handleQueryChange, 500, this);
+        this._initializeRoutes();
     }
 
     /**
-     * Injects the route store.
-     * @param {RouteStore} routeStore
+     * Initializes the routes of the store.
+     * @private
      */
-    injectRouteStore(routeStore) {
-        this._routeStore = routeStore;
+    _initializeRoutes() {
+        this._routeStore.addRoute(routeSearch, "/search/*query", this._handleRouteChange.bind(this));
     }
 
     /**
      * Handles the change of the route.
      * @param {string} query
      * @returns {Promise<void>}
+     * @private
      */
-    async handleRouteChange(query) {
+    async _handleRouteChange({ query }) {
         const newPaginatedList = new PaginatedList((page) => this._fetchData(query, page));
         const searchResultsData = await newPaginatedList.requestNextPage();
         runInAction(() => {
@@ -173,5 +179,5 @@ class SearchStore {
 
 const cache = new Cache("search", 68400000);
 
-export const searchStore = new SearchStore(cache, portalApi);
+export const searchStore = new SearchStore(cache, portalApi, routeStore);
 export default createContext(searchStore);

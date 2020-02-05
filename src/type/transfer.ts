@@ -75,11 +75,9 @@ interface SearchResultsData {
     numberOfResults: number,
 }
 
-
-
-
-
-
+interface SessionInitData {
+    sidebarEntities: SidebarEntityData[],
+}
 
 interface SidebarEntityData {
     type: string,

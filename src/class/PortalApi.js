@@ -14,8 +14,8 @@ class PortalApi {
      * @returns {Promise<SearchResultsData>}
      */
     async search(query, page) {
-        return this.sendSimpleRequest("/search", {
-            query: query,
+        return this._executeRequest("/search", {
+            query,
             indexOfFirstResult: (page - 1) * 24,
             numberOfResults: 24,
         });
@@ -27,7 +27,7 @@ class PortalApi {
      * @returns {Promise<IconsStyleData>}
      */
     async getIconsStyle(namesByTypes) {
-        return this.sendPostRequest("/style/icons", namesByTypes);
+        return this._executeRequest("/style/icons", {}, namesByTypes);
     }
 
     /**
@@ -38,7 +38,7 @@ class PortalApi {
      * @returns {Promise<ItemRecipesData>}
      */
     async getItemIngredientRecipes(type, name, page) {
-        return this.sendSimpleRequest("/" + encodeURI(type) + "/" + encodeURI(name) + "/ingredients", {
+        return this._executeRequest(`/${encodeURI(type)}/${encodeURI(name)}/ingredients`, {
             indexOfFirstResult: (page - 1) * 24,
             numberOfResults: 24,
         });
@@ -52,7 +52,7 @@ class PortalApi {
      * @returns {Promise<ItemRecipesData>}
      */
     async getItemProductRecipes(type, name, page) {
-        return this.sendSimpleRequest("/" + encodeURI(type) + "/" + encodeURI(name) + "/products", {
+        return this._executeRequest(`/${encodeURI(type)}/${encodeURI(name)}/products`, {
             indexOfFirstResult: (page - 1) * 24,
             numberOfResults: 24,
         });
@@ -64,7 +64,7 @@ class PortalApi {
      * @returns {Promise<RecipeDetailsData>}
      */
     async getRecipeDetails(name) {
-        return this.sendSimpleRequest("/recipe/" + encodeURI(name), {});
+        return this._executeRequest(`/recipe/${encodeURI(name)}`);
     }
 
     /**
@@ -74,37 +74,90 @@ class PortalApi {
      * @returns {Promise<RecipeMachinesData>}
      */
     async getRecipeMachines(name, page) {
-        return this.sendSimpleRequest("/recipe/" + encodeURI(name) + "/machines", {
+        return this._executeRequest(`/recipe/${encodeURI(name)}/machines`, {
             indexOfFirstResult: (page - 1) * 12,
             numberOfResults: 12,
         });
     }
 
     /**
-     * Sends a simple request to the Portal API server.
-     * @param {string} route
-     * @param {object} params
-     * @returns {Promise<any>}
+     * Initializes the current session.
+     * @returns {Promise<SessionInitData>}
      */
-    async sendSimpleRequest(route, params) {
-        const queryParams = Object.keys(params)
-            .map((name) => {
-                return encodeURIComponent(name) + "=" + encodeURIComponent(params[name]);
-            })
-            .join("&");
-        const url = portalApiUrl + route + "?" + queryParams;
-
-        const response = await fetch(url);
-        return response.json();
+    async initializeSession() {
+        return this._executeRequest("/session/init");
     }
 
-    async sendPostRequest(route, requestBody) {
-        const url = portalApiUrl + route;
-        const response = await fetch(url, {
-            method: "POST",
-            body: JSON.stringify(requestBody),
-        });
-        return response.json();
+    /**
+     * Sends the sidebar entities to the Portal API for persisting.
+     * @param {array<SidebarEntityData>} sidebarEntities
+     * @returns {Promise<void>}
+     */
+    async sendSidebarEntities(sidebarEntities) {
+        this._executeRequest("/sidebar/entities", {}, sidebarEntities);
+    }
+
+    /**
+     * Executes a request.
+     * @param {string} route
+     * @param {object} [queryParams]
+     * @param {object} [requestData]
+     * @returns {Promise<string|object>}
+     * @private
+     */
+    async _executeRequest(route, queryParams, requestData) {
+        const response = await fetch(this._buildRequestUrl(route, queryParams), this._buildRequestOptions(requestData));
+        if (response.headers.get("Content-Type") === "application/json") {
+            return response.json();
+        } else {
+            return response.text();
+        }
+    }
+
+    /**
+     * Builds the full URL to request.
+     * @param {string} route
+     * @param {object} queryParams
+     * @returns {string}
+     * @private
+     */
+    _buildRequestUrl(route, queryParams) {
+        let result = portalApiUrl + route;
+        const encodedParams = Object.keys(queryParams || {})
+            .map((name) => {
+                return `${encodeURIComponent(name)}=${encodeURIComponent(queryParams[name])}`;
+            })
+            .join("&");
+
+        if (encodedParams !== "") {
+            result += `?${encodedParams}`;
+        }
+        return result;
+    }
+
+    /**
+     * Builds the options to use for the request,
+     * @param {object} [requestData]
+     * @returns {object}
+     * @private
+     */
+    _buildRequestOptions(requestData) {
+        let options = {
+            method: "GET",
+            credentials: "include",
+        };
+
+        if (typeof requestData === "object") {
+            options = {
+                ...options,
+                method: "POST",
+                body: JSON.stringify(requestData),
+                // headers: { // @todo Send correct header when the CORS preflight is handled correctly by the API.
+                //     "Content-Type": "application/json",
+                // }
+            };
+        }
+        return options;
     }
 }
 
