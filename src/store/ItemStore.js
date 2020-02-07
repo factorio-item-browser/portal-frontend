@@ -68,8 +68,6 @@ class ItemStore {
      * @param {SidebarStore} sidebarStore
      */
     constructor(cache, portalApi, routeStore, sidebarStore) {
-        console.log("CREATE ITEM STORE");
-
         this._cache = cache;
         this._portalApi = portalApi;
         this._routeStore = routeStore;
@@ -94,8 +92,6 @@ class ItemStore {
      * @private
      */
     async _handleRouteChange({ type, name }) {
-        console.log("ITEM ROUTE", type, name);
-
         const newProductsList = new PaginatedList((page) => this._fetchProductData(type, name, page));
         const newIngredientsList = new PaginatedList((page) => this._fetchIngredientData(type, name, page));
 

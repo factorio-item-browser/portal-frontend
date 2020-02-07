@@ -25,10 +25,10 @@ class SidebarStore {
 
     /**
      * The entities of the sidebar.
-     * @type {Object<string,SidebarEntityData>}
+     * @type {Map<string,SidebarEntityData>}
      */
     @observable
-    entities = {};
+    entities = new Map();
 
     /**
      * Whether the sidebar has been opened on mobile.
@@ -47,6 +47,7 @@ class SidebarStore {
         this._routeStore = routeStore;
 
         this._routeStore.addInitializeSessionHandler(this._initializeSession.bind(this));
+        window.addEventListener("storage", this._handleStorage.bind(this));
     }
 
     /**
@@ -54,13 +55,23 @@ class SidebarStore {
      * @param {SidebarEntityData[]} sidebarEntities
      * @private
      */
-    @action
     _initializeSession({ sidebarEntities }) {
-        const x = {};
-        sidebarEntities.forEach((sidebarEntity) => {
-            x[this.getIdForEntity(sidebarEntity)] = sidebarEntity;
-        });
-        this.entities = x;
+        this._assignEntities(sidebarEntities);
+    }
+
+    /**
+     * Handles the storage events.
+     * @param {StorageEvent} event
+     * @private
+     */
+    _handleStorage(event) {
+        if (event.key === "sidebarEntities") {
+            try {
+                this._assignEntities(JSON.parse(event.newValue));
+            } catch (e) {
+                // Ignore any errors.
+            }
+        }
     }
 
     /**
@@ -80,37 +91,55 @@ class SidebarStore {
     }
 
     /**
+     * Assigns the entities to the store.
+     * @param {SidebarEntityData[]} entities
+     * @private
+     */
+    @action
+    _assignEntities(entities) {
+        this.entities.clear();
+        for (const entity of entities) {
+            this.entities.set(this.getIdForEntity(entity), entity);
+        }
+        this._validateEntities();
+    }
+
+    /**
      * The entities pinned to the sidebar.
+     * @return {SidebarEntityData[]}
      */
     @computed
     get pinnedEntities() {
-        const entities = [];
-        Object.keys(this.entities).forEach((id) => {
-            const entity = this.entities[id];
-            if (entity.pinnedPosition > 0) {
-                entities.push(entity);
-            }
-        });
-
+        const entities = this._filterEntities((entity) => entity.pinnedPosition > 0);
         entities.sort((left, right) => left.pinnedPosition - right.pinnedPosition);
         return entities;
     }
 
     /**
      * The entities currently not pinned to the sidebar.
+     * @return {SidebarEntityData[]}
      */
     @computed
     get unpinnedEntities() {
-        const entities = [];
-        Object.keys(this.entities).forEach((id) => {
-            const entity = this.entities[id];
-            if (entity.pinnedPosition === 0) {
-                entities.push(entity);
-            }
-        });
-
+        const entities = this._filterEntities((entity) => entity.pinnedPosition === 0);
         entities.sort((left, right) => right.lastViewTime.localeCompare(left.lastViewTime));
-        return entities.slice(0, 10);
+        return entities;
+    }
+
+    /**
+     * Filters the entities using the predicate.
+     * @param {function(SidebarEntityData): boolean} predicate
+     * @return {SidebarEntityData[]}
+     * @private
+     */
+    _filterEntities(predicate) {
+        const result = [];
+        for (const entity of this.entities.values()) {
+            if (predicate(entity)) {
+                result.push(entity);
+            }
+        }
+        return result;
     }
 
     /**
@@ -120,6 +149,9 @@ class SidebarStore {
     @action
     pinEntity(entity) {
         entity.pinnedPosition = this.pinnedEntities.length + 1;
+
+        this._validateEntities();
+        this._sendEntities();
     }
 
     /**
@@ -130,9 +162,8 @@ class SidebarStore {
     unpinEntity(entity) {
         entity.pinnedPosition = 0;
 
-        this.pinnedEntities.forEach((entity, index) => {
-            entity.pinnedPosition = index + 1;
-        });
+        this._validateEntities();
+        this._sendEntities();
     }
 
     /**
@@ -142,24 +173,24 @@ class SidebarStore {
      * @param {string} label
      */
     @action
-    async addViewedEntity(type, name, label) {
-        const newEntity = {
-            type: type,
-            name: name,
-            label: label,
-            pinnedPosition: 0,
-            lastViewTime: new Date().toISOString(),
-        };
-        const id = this.getIdForEntity(newEntity);
-
-        if (this.entities[id]) {
-            this.entities[id].label = newEntity.label;
-            this.entities[id].lastViewTime = newEntity.lastViewTime;
+    addViewedEntity(type, name, label) {
+        const id = `${type}-${name}`;
+        if (this.entities.has(id)) {
+            const entity = this.entities.get(id);
+            entity.label = label;
+            entity.lastViewTime = new Date().toISOString();
         } else {
-            this.entities[id] = newEntity;
+            this.entities.set(id, {
+                type,
+                name,
+                label,
+                pinnedPosition: 0,
+                lastViewTime: new Date().toISOString(),
+            });
         }
 
-        await this._sendEntities();
+        this._validateEntities();
+        this._sendEntities();
     }
 
     /**
@@ -167,14 +198,14 @@ class SidebarStore {
      * @param {string[]} order
      */
     @action
-    async updatePinnedOrder(order) {
+    updatePinnedOrder(order) {
         order.forEach((id, index) => {
-            if (this.entities[id]) {
-                this.entities[id].pinnedPosition = index + 1;
+            if (this.entities.has(id)) {
+                this.entities.get(id).pinnedPosition = index + 1;
             }
         });
 
-        await this._sendEntities();
+        this._sendEntities();
     }
 
     /**
@@ -187,15 +218,33 @@ class SidebarStore {
     }
 
     /**
-     * Sends the current entities to the Portal API.
-     * @returns {Promise<void>}
+     * Validates all entities of the sidebar.
      * @private
      */
-    async _sendEntities() {
-        const entities = [];
-        entities.push(...this.pinnedEntities, ...this.unpinnedEntities);
+    @action
+    _validateEntities() {
+        // Renumber pinned entities.
+        this.pinnedEntities.forEach((entity, index) => {
+            entity.pinnedPosition = index + 1;
+        });
 
-        await this._portalApi.sendSidebarEntities(entities);
+        // Cut off excessive unpinned entities.
+        this.unpinnedEntities.slice(10).forEach((entity) => {
+            this.entities.delete(this.getIdForEntity(entity));
+        });
+    }
+
+    /**
+     * Sends the current entities to the Portal API.
+     * @private
+     */
+    _sendEntities() {
+        const entities = [...this.pinnedEntities, ...this.unpinnedEntities];
+
+        localStorage.setItem("sidebarEntities", JSON.stringify(entities));
+        (async () => {
+            await this._portalApi.sendSidebarEntities(entities);
+        })();
     }
 }
 

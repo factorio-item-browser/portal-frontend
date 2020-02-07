@@ -100,8 +100,6 @@ class RouteStore {
      * @param {Function} [changeHandler]
      */
     addRoute(name, path, changeHandler) {
-        console.log(`ADD ROUTE ${name}`);
-
         this._router.add([{ name, path }]);
 
         if (changeHandler) {
@@ -122,14 +120,10 @@ class RouteStore {
      * @returns {Promise<void>}
      */
     async initializeSession() {
-        console.log("Initialize Session");
-
         const session = await portalApi.initializeSession();
-        console.log("Initialize Session COMPLETE, running handlers.");
         this._initializeSessionHandlers.forEach((handler) => {
             handler(session);
         });
-        console.log("Starting router");
         this._router.start();
     }
 
