@@ -1,5 +1,8 @@
 import { portalApi } from "./PortalApi";
+import NamesByTypesSet from "./NamesByTypesSet";
 import { debounce } from "../helper/utils";
+
+const NUMBER_OF_ICONS_PER_REQUEST = 128;
 
 /**
  * The class managing the icons, requesting them from the Portal API as required.
@@ -29,18 +32,25 @@ class IconManager {
     _styleElement;
 
     /**
-     * The already processed entities. These entities do not need to be requested from the backend anymore.
-     * @type {object<string, object<string, true>>}
+     * The requested entities. These entities must be loaded with the next request.
+     * @type {NamesByTypesSet}
      * @private
      */
-    _processedEntities = {};
+    _requestedEntities = new NamesByTypesSet();
 
     /**
-     * The requested entities. These entities must be loaded with the next request.
-     * @type {object<string, object<string, true>>}
+     * The entities already requested from the server, but still pending.
+     * @type {NamesByTypesSet}
      * @private
      */
-    _requestedEntities = {};
+    _pendingEntities = new NamesByTypesSet();
+
+    /**
+     * The already processed entities. These entities do not need to be requested from the backend anymore.
+     * @type {NamesByTypesSet}
+     * @private
+     */
+    _processedEntities = new NamesByTypesSet();
 
     /**
      * Initializes the icon manager.
@@ -61,89 +71,42 @@ class IconManager {
      */
     requestIcon(type, name) {
         if (
-            !this._hasValue(this._processedEntities, type, name) &&
-            !this._hasValue(this._requestedEntities, type, name)
+            !this._requestedEntities.has(type, name) &&
+            !this._pendingEntities.has(type, name) &&
+            !this._processedEntities.has(type, name)
         ) {
-            this._addValue(this._requestedEntities, type, name);
+            this._requestedEntities.add(type, name);
+
+            if (this._requestedEntities.size >= NUMBER_OF_ICONS_PER_REQUEST) {
+                this._requestStyle();
+            }
         }
 
         this._debounceRequestStyle();
     }
 
     /**
-     * Checks whether the value is present in the object structure.
-     * @param {object<string, object<string, true>>} entities
-     * @param {string} type
-     * @param {string} name
-     * @returns {boolean}
-     * @private
-     */
-    _hasValue(entities, type, name) {
-        return typeof entities[type] === "object" && !!entities[type][name];
-    }
-
-    /**
-     * Adds a value to the object structure.
-     * @param {object<string, object<string, true>>} entities
-     * @param {string} type
-     * @param {string} name
-     * @private
-     */
-    _addValue(entities, type, name) {
-        if (!entities[type]) {
-            entities[type] = {};
-        }
-        entities[type][name] = true;
-    }
-
-    /**
      * Requests the style of the entities marked as to be requested.
-     * @returns {Promise<void>}
      * @private
      */
-    async _requestStyle() {
-        const namesByTypes = this._extractNamesByTypes(this._requestedEntities);
+    _requestStyle() {
+        if (this._requestedEntities.size > 0) {
+            const namesByTypes = this._requestedEntities.getData();
+            this._pendingEntities.merge(namesByTypes);
+            this._requestedEntities.clear();
 
-        try {
-            const response = await this._portalApi.getIconsStyle(namesByTypes);
-            this._appendStyle(response.style);
+            (async () => {
+                try {
+                    const response = await this._portalApi.getIconsStyle(namesByTypes);
+                    this._appendStyle(response.style);
 
-            this._addToProcessedEntities(namesByTypes); // If entities do not have icons, don't try to re-request.
-            this._addToProcessedEntities(response.processedEntities);
-            this._requestedEntities = {};
-        } catch (e) {
-            // Ignore any failures to to failed style requests.
+                    this._processedEntities.merge(response.processedEntities);
+                } catch (e) {
+                    // Ignore any failures to to failed style requests.
+                }
+                this._pendingEntities.diff(namesByTypes);
+            })();
         }
-    }
-
-    /**
-     * Extracts the types and names from the entity object structure.
-     * @param {object<string, object<string, true>>} entities
-     * @returns {NamesByTypes}
-     * @private
-     */
-    _extractNamesByTypes(entities) {
-        const namesByTypes = {};
-        Object.keys(entities).forEach((type) => {
-            namesByTypes[type] = [];
-            Object.keys(entities[type]).forEach((name) => {
-                namesByTypes[type].push(name);
-            });
-        });
-        return namesByTypes;
-    }
-
-    /**
-     *
-     * @param {NamesByTypes} processedEntities
-     * @private
-     */
-    _addToProcessedEntities(processedEntities) {
-        Object.keys(processedEntities).forEach((type) => {
-            processedEntities[type].forEach((name) => {
-                this._addValue(this._processedEntities, type, name);
-            });
-        });
     }
 
     /**
