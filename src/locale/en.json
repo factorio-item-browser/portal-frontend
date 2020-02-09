@@ -46,12 +46,20 @@
         "headline": "Recipe: {{label}}",
         "ingredients": "Ingredients",
         "machine": {
+            "character-notice": "This recipe can be crafted by hand without additional machines as long as the required items are in the inventory.",
+            "crafting-speed": "Crafting speed",
+            "energy-usage": "Energy usage",
+            "fluids": "Fluids",
             "headline": "Producible in {{count}} machine",
             "headline_plural": "Producible in {{count}} machines",
+            "items": "Items",
+            "modules": "Modules",
             "more-machines": {
                 "load": "Load more machines",
                 "loading": "Loading more machines..."
-            }
+            },
+            "none": "none",
+            "unlimited": "unlimited"
         },
         "products": "Results",
         "time": "Time",

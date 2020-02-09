@@ -46,12 +46,20 @@
         "headline": "Rezept: {{label}}",
         "ingredients": "Zutaten",
         "machine": {
+            "character-notice": "Dieses Rezept kann ohne zusätzliche Maschinen direkt in der Hand hergestellt werden, solange sich die benötigten Items im Inventar befinden. ",
+            "crafting-speed": "Geschwindigkeit",
+            "energy-usage": "Energieverbrauch",
+            "fluids": "Flüssigkeiten",
             "headline": "Herstellbar in {{count}} Maschine",
             "headline_plural": "Herstellbar in {{count}} Maschinen",
+            "items": "Items",
+            "modules": "Modul-Slots",
             "more-machines": {
                 "load": "Weitere Maschinen laden",
                 "loading": "Lade weitere Maschinen..."
-            }
+            },
+            "none": "keine",
+            "unlimited": "unbegrenzt"
         },
         "products": "Ergebnisse",
         "time": "Zeit",

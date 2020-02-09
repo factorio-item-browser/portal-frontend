@@ -27,6 +27,8 @@ function renderPinAction(entity) {
             onClick={(event) => {
                 sidebarStore.pinEntity(entity);
                 event.preventDefault();
+                event.stopPropagation();
+                return false;
             }}
         >
             <FontAwesomeIcon icon={faThumbtack} />
@@ -51,6 +53,7 @@ function renderUnpinAction(entity) {
                 sidebarStore.unpinEntity(entity);
                 event.preventDefault();
                 event.stopPropagation();
+                return false;
             }}
         >
             <FontAwesomeIcon icon={faTrash} />
