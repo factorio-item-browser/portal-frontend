@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
-import React, { useContext } from "react";
+import React, { createRef, useContext } from "react";
 
 import RouteStore from "../../store/RouteStore";
 
@@ -17,13 +17,20 @@ const Link = ({ route, params, children, ...props }) => {
     const routeStore = useContext(RouteStore);
     const path = routeStore.buildPath(route, params);
 
+    const x = createRef();
+
     return (
         <a
+            ref={x}
             href={path}
             {...props}
             onClick={(event) => {
+                routeStore.showLoadingCircle(x);
+
                 event.preventDefault();
+                event.stopPropagation();
                 routeStore.navigateTo(route, params);
+                return false;
             }}
         >
             {children}

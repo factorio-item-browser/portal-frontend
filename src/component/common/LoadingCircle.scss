@@ -1,0 +1,13 @@
+@import "../../style/mixin/all";
+@import "../../style/variable/all";
+
+.loading-circle {
+    align-items: center;
+    background: rgba(color($color-box-default, $lightness-box-background), 0.5);
+    display: flex;
+    font-size: $icon-size-default;
+    justify-content: center;
+    pointer-events: none;
+    position: absolute;
+    z-index: $zIndex-loading-circle;
+}

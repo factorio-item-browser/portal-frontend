@@ -48,6 +48,13 @@ class RouteStore {
     currentRoute = "";
 
     /**
+     * The target which currently have the loading circle.
+     * @type {React.RefObject<HTMLElement>}
+     */
+    @observable
+    loadingCircleTarget = null;
+
+    /**
      * The portal API instance.
      */
     constructor() {
@@ -133,7 +140,9 @@ class RouteStore {
      * @param {Object} [params]
      */
     navigateTo(route, params) {
-        this._router.navigate(route, params);
+        this._router.navigate(route, params, () => {
+            this.loadingCircleTarget = null;
+        });
     }
 
     /**
@@ -174,6 +183,15 @@ class RouteStore {
     @computed
     get useBigHeader() {
         return this.currentRoute === routeIndex;
+    }
+
+    /**
+     * Shows the loading circle overlaying the passed reference object.
+     * @param {React.RefObject<HTMLElement>} ref
+     */
+    @action
+    showLoadingCircle(ref) {
+        this.loadingCircleTarget = ref;
     }
 }
 

@@ -12,6 +12,7 @@ import RecipeDetailsPage from "./page/RecipeDetailsPage";
 import SearchResultsPage from "./page/SearchResultsPage";
 
 import "./App.scss";
+import LoadingCircle from "./common/LoadingCircle";
 
 /**
  * The component representing the whole application.
@@ -50,6 +51,7 @@ const App = () => {
                 <div className="content">{page}</div>
             </div>
             <Footer />
+            <LoadingCircle />
         </Fragment>
     );
 };
