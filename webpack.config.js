@@ -1,11 +1,11 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const { DefinePlugin, HotModuleReplacementPlugin } = require("webpack");
 const CopyPlugin = require("copy-webpack-plugin");
+const dotenv = require("dotenv");
 const HtmlWebpackExcludeAssetsPlugin = require("html-webpack-exclude-assets-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const dotenv = require("dotenv");
 const path = require("path");
+const { DefinePlugin, HotModuleReplacementPlugin } = require("webpack");
 
 module.exports = (env, argv) => {
     const currentPath = path.join(__dirname);
@@ -15,46 +15,34 @@ module.exports = (env, argv) => {
         images: `${currentPath}/src/style/partial/images.scss`,
     };
 
-    const envFile = dotenv.config({ path: isProduction ? `${currentPath}/.env` : `${currentPath}/.env.development`}).parsed;
+    const envFilePath = isProduction ? `${currentPath}/.env` : `${currentPath}/.env.development`;
+    const envFile = dotenv.config({ path: envFilePath }).parsed;
     const envVars = {};
-    Object.keys(envFile).forEach((name) => {
-        envVars[`process.env.${name}`] = JSON.stringify(envFile[name]);
-    });
+    for (const [name, value] of Object.entries(envFile)) {
+        envVars[`process.env.${name}`] = JSON.stringify(value);
+    }
 
     return {
         entry: isProduction ? entryPoints : [entryPoints.main, entryPoints.images],
-        plugins: [
-            new HotModuleReplacementPlugin(),
-            new CleanWebpackPlugin(),
-            new MiniCssExtractPlugin({
-                filename: isProduction ? "asset/css/[name].[hash].css" : "asset/css/[name].css",
-            }),
-            new HtmlWebpackPlugin({
-                template: `${currentPath}/src/index.ejs`,
-                excludeAssets: [/images\.(.*)\.js$/],
-            }),
-            new HtmlWebpackExcludeAssetsPlugin(),
-            new DefinePlugin(envVars),
-            new CopyPlugin([
-                { from: `${currentPath}/src/root/.htaccess` }
-            ]),
-        ],
+        output: {
+            path: `${currentPath}/build`,
+            publicPath: isProduction ? "./" : "/",
+            filename: isProduction ? "asset/js/[name].[hash].js" : "asset/js/[name].js",
+        },
         resolve: {
             extensions: [".jpg", ".js", ".json", ".jsx", ".png", ".scss"]
         },
         module: {
             rules: [
                 {
-                    test: /\.(js|jsx)$/,
+                    test: /\.jsx?$/,
                     exclude: /node_modules/,
                     use: [
-                        {
-                            loader: "babel-loader"
-                        },
+                        "babel-loader",
                     ],
                 },
                 {
-                    test: /\.(scss|css)/,
+                    test: /\.scss/,
                     use: [
                         {
                             loader: MiniCssExtractPlugin.loader,
@@ -99,11 +87,22 @@ module.exports = (env, argv) => {
                 },
             ],
         },
-        output: {
-            path: __dirname + "/build",
-            publicPath: isProduction ? "./" : "/",
-            filename: isProduction ? "asset/js/[name].[hash].js" : "asset/js/[name].js",
-        },
+        plugins: [
+            new HotModuleReplacementPlugin(),
+            new CleanWebpackPlugin(),
+            new CopyPlugin([
+                { from: `${currentPath}/src/root/.htaccess` }
+            ]),
+            new DefinePlugin(envVars),
+            new HtmlWebpackPlugin({
+                template: `${currentPath}/src/index.ejs`,
+                excludeAssets: [/images\.(.*)\.js$/],
+            }),
+            new HtmlWebpackExcludeAssetsPlugin(),
+            new MiniCssExtractPlugin({
+                filename: isProduction ? "asset/css/[name].[hash].css" : "asset/css/[name].css",
+            }),
+        ],
         devServer: {
             contentBase: "./build",
             host: "0.0.0.0",
