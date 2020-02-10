@@ -1,0 +1,51 @@
+@import "../../style/mixin/all";
+@import "../../style/variable/all";
+
+.loading-box-wrapper {
+    bottom: 0;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.loading-box {
+    @include dynamic-spacing(margin, large);
+    @include dynamic-spacing(padding, default);
+
+    align-items: center;
+    background: color($color-box-default, $lightness-box-background);
+    box-shadow: $shadow-box;
+    color: color($color-box-error, $lightness-text-primary);
+    display: flex;
+    flex-basis: 40rem;
+
+    .loading-icon {
+        animation: loading-animation 0.8s steps(8) infinite;
+        background: transparent no-repeat 0 0;
+        height: 128px;
+        position: relative;
+        width: 128px;
+    }
+
+    .loading-message {
+        flex-grow: 1;
+        font-weight: bold;
+
+        h2 {
+            border-bottom: 2px solid color($color-box-error, $lightness-text-primary);
+            font-size: $text-size-headline;
+            margin-bottom: $spacing-default;
+            position: relative;
+        }
+    }
+}
+
+@keyframes loading-animation {
+    100% {
+        background-position: 0 -1024px;
+    }
+}

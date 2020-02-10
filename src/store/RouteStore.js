@@ -1,4 +1,4 @@
-import { action, computed, observable } from "mobx";
+import {action, computed, observable, runInAction} from "mobx";
 import { createContext } from "react";
 import { createRouter } from "router5";
 import browserPluginFactory from "router5-plugin-browser";
@@ -120,6 +120,15 @@ class RouteStore {
      */
     addInitializeSessionHandler(handler) {
         this._initializeSessionHandlers.push(handler);
+    }
+
+    /**
+     * Whether we are still initially loading all the things.
+     * @return {boolean}
+     */
+    @computed
+    get isInitiallyLoading() {
+        return this.currentRoute === "";
     }
 
     /**

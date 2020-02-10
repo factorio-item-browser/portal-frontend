@@ -6,13 +6,14 @@ import RouteStore from "../store/RouteStore";
 
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
+import LoadingBox from "./layout/LoadingBox";
+import LoadingCircle from "./common/LoadingCircle";
 import Sidebar from "./layout/Sidebar";
 import ItemDetailsPage from "./page/ItemDetailsPage";
 import RecipeDetailsPage from "./page/RecipeDetailsPage";
 import SearchResultsPage from "./page/SearchResultsPage";
 
 import "./App.scss";
-import LoadingCircle from "./common/LoadingCircle";
 
 /**
  * The component representing the whole application.
@@ -27,6 +28,12 @@ const App = () => {
             await routeStore.initializeSession();
         })();
     }, []);
+
+    if (routeStore.isInitiallyLoading) {
+        return (
+            <LoadingBox />
+        );
+    }
 
     let page = null;
     switch (routeStore.currentRoute) {
