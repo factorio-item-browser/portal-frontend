@@ -10,7 +10,7 @@ interface EntityData {
     name: string,
     label: string,
     recipes: RecipeData[],
-    omittedRecipes: number,
+    numberOfRecipes: number,
 }
 
 interface IconsStyleData {

@@ -15,6 +15,8 @@ export const routeItemDetails = "itemDetails";
 export const routeRecipeDetails = "recipeDetails";
 export const routeSearch = "search";
 
+export const numberOfRecipesPerEntity = 3;
+
 // Environment variables
 export const enableCache = process.env.ENABLE_CACHE === "1";
 export const portalApiUrl = process.env.PORTAL_API_URI;

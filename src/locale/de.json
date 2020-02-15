@@ -16,6 +16,10 @@
             "description": "Führe dieses Kommando in der Spiele-Konsole aus um das Item in dein Inventar zu cheaten. Das wird Errungenschaften deaktivieren!"
         }
     },
+    "entity": {
+        "more-recipes": "{{count}} weiteres Rezept",
+        "more-recipes_plural": "{{count}} weitere Rezepte"
+    },
     "footer": {
         "copyright-disclaimer": "Alle Bilder sind Eigentum von <1>Wube Software</1> bzw. der <3>Mod-Authoren</3>."
     },

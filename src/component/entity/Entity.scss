@@ -2,7 +2,18 @@
 @import "../../style/variable/all";
 
 .entity {
+    @include dynamic-spacing(margin, default);
+
     box-shadow: $shadow-box;
 
-    @include dynamic-spacing(margin, default)
+    .more-recipes {
+        background: rgba(color($color-box-default, $lightness-box-background), $alpha-box-content);
+        border-top: px-to-rem(1) solid rgba(color($color-box-default, $lightness-box-border), $alpha-box-border);
+        color: color($color-box-default, $lightness-text-primary);
+        display: block;
+        font-size: $text-size-small;
+        font-weight: bold;
+        padding: $spacing-tiny;
+        text-align: center;
+    }
 }

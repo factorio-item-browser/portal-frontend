@@ -36,7 +36,6 @@ function renderAmount(amount) {
  * @constructor
  */
 const Icon = ({ type, name, amount = 0, transparent = false, linked = false }, ref) => {
-    console.log("ICON REF", ref);
     const tooltipStore = useContext(TooltipStore);
 
     const classes = classNames({

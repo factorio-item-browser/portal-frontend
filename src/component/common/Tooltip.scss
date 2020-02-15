@@ -11,6 +11,12 @@
         max-width: $tooltip-content-width;
         margin: 0;
         width: $tooltip-content-width;
+
+        .more-recipes {
+            background: rgba(color($color-tooltip, $lightness-box-background), $alpha-box-content-tooltip);
+            border-top: px-to-rem(1) solid rgba(color($color-tooltip, $lightness-box-border), $alpha-box-border);
+            color: color($color-tooltip, $lightness-text-primary);
+        }
     }
 
     .entity-head {
