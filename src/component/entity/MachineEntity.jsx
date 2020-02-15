@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
-import React from "react";
+import React, { createRef, useContext } from "react";
 import { useTranslation } from "react-i18next";
 
 import { formatCraftingSpeed, formatEnergyUsage } from "../../helper/format";
@@ -10,6 +10,7 @@ import Icon from "../common/Icon";
 import MachineDetail from "./MachineDetail";
 
 import "./MachineEntity.scss";
+import TooltipStore from "../../store/TooltipStore";
 
 /**
  * Formats the number.
@@ -35,12 +36,15 @@ function formatNumber(number, t) {
  */
 const MachineEntity = ({ machine }) => {
     const { t } = useTranslation();
+    const tooltipStore = useContext(TooltipStore);
+
+    const iconRef = createRef();
 
     if (machine.name === "character") {
         return (
             <div className="entity machine-entity">
                 <div className="entity-head">
-                    <Icon type="machine" name={machine.name} transparent={true} />
+                    <Icon type="machine" name={machine.name} transparent={true} ref={iconRef} />
                     <h3>{machine.label}</h3>
                 </div>
                 <div className="machine-details">
@@ -64,8 +68,18 @@ const MachineEntity = ({ machine }) => {
 
     return (
         <div className="entity machine-entity">
-            <EntityLink type="item" name={machine.name} className="entity-head">
-                <Icon type="machine" name={machine.name} transparent={true} />
+            <EntityLink
+                type="item"
+                name={machine.name}
+                className="entity-head"
+                onMouseEnter={async () => {
+                    await tooltipStore.showTooltip(iconRef, "item", machine.name);
+                }}
+                onMouseLeave={() => {
+                    tooltipStore.hideTooltip();
+                }}
+            >
+                <Icon type="machine" name={machine.name} transparent={true} ref={iconRef} />
                 <h3>{machine.label}</h3>
             </EntityLink>
             <div className="machine-details">

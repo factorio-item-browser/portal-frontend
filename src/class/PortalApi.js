@@ -81,6 +81,16 @@ class PortalApi {
     }
 
     /**
+     * Fetches the tooltip data for the specified type and name.
+     * @param {string} type
+     * @param {string} name
+     * @return {Promise<EntityData>}
+     */
+    async getTooltip(type, name) {
+        return this._executeRequest(`/tooltip/${type}/${name}`);
+    }
+
+    /**
      * Initializes the current session.
      * @returns {Promise<SessionInitData>}
      */

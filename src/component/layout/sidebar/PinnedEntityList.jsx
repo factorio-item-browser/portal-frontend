@@ -7,6 +7,7 @@ import SidebarStore from "../../../store/SidebarStore";
 import SidebarEntity from "./SidebarEntity";
 
 import "./SidebarList.scss";
+import TooltipStore from "../../../store/TooltipStore";
 
 /**
  * The component representing the list of pinned entities in the sidebar.
@@ -16,6 +17,8 @@ import "./SidebarList.scss";
 const PinnedEntityList = () => {
     const { t } = useTranslation();
     const sidebarStore = useContext(SidebarStore);
+    const tooltipStore = useContext(TooltipStore);
+
     const sortableOptions = {
         group: {
             name: "sidebar-entities",
@@ -24,6 +27,12 @@ const PinnedEntityList = () => {
         },
         draggable: ".sidebar-entity",
         animation: 100,
+        onStart: () => {
+            tooltipStore.setDisableFlag("sidebar-pinned", true);
+        },
+        onEnd: () => {
+            tooltipStore.setDisableFlag("sidebar-pinned", false);
+        },
     };
     const entities = sidebarStore.pinnedEntities;
 

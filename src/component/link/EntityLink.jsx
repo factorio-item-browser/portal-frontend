@@ -11,15 +11,16 @@ import Link from "./Link";
  * @param {string} name
  * @param {ReactDOM} children
  * @param {any} props
+ * @param {React.RefObject<HTMLElement>} ref
  * @returns {ReactDOM}
  * @constructor
  */
-const EntityLink = ({ type, name, children, ...props }) => {
+const EntityLink = ({ type, name, children, ...props }, ref) => {
     const routeStore = useContext(RouteStore);
     const { route, params } = routeStore.getRouteAndParamsForEntity(type, name);
 
     return (
-        <Link route={route} params={params} {...props}>
+        <Link route={route} params={params} {...props} ref={ref}>
             {children}
         </Link>
     );
@@ -31,4 +32,4 @@ EntityLink.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-export default observer(EntityLink);
+export default observer(EntityLink, { forwardRef: true });

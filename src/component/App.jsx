@@ -4,6 +4,7 @@ import React, { Fragment, useContext, useEffect } from "react";
 import { routeItemDetails, routeRecipeDetails, routeSearch } from "../helper/const";
 import RouteStore from "../store/RouteStore";
 
+import Tooltip from "./common/Tooltip";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import LoadingBox from "./layout/LoadingBox";
@@ -30,9 +31,7 @@ const App = () => {
     }, []);
 
     if (routeStore.isInitiallyLoading) {
-        return (
-            <LoadingBox />
-        );
+        return <LoadingBox />;
     }
 
     let page = null;
@@ -58,7 +57,9 @@ const App = () => {
                 <div className="content">{page}</div>
             </div>
             <Footer />
+
             <LoadingCircle />
+            <Tooltip />
         </Fragment>
     );
 };

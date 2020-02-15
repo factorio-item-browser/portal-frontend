@@ -10,22 +10,23 @@ import RouteStore from "../../store/RouteStore";
  * @param {Object} params
  * @param {ReactDOM} children
  * @param {any} props
+ * @param {React.RefObject<HTMLElement>} ref
  * @returns {ReactDOM}
  * @constructor
  */
-const Link = ({ route, params, children, ...props }) => {
+const Link = ({ route, params, children, ...props }, ref) => {
     const routeStore = useContext(RouteStore);
     const path = routeStore.buildPath(route, params);
 
-    const x = createRef();
+    ref = ref || createRef();
 
     return (
         <a
-            ref={x}
+            ref={ref}
             href={path}
             {...props}
             onClick={(event) => {
-                routeStore.showLoadingCircle(x);
+                routeStore.showLoadingCircle(ref);
 
                 event.preventDefault();
                 event.stopPropagation();
@@ -44,4 +45,4 @@ Link.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-export default observer(Link);
+export default observer(Link, { forwardRef: true });

@@ -2,14 +2,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbtack, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
-import React, { useContext } from "react";
+import React, { createRef, useContext } from "react";
 import { useTranslation } from "react-i18next";
 
 import Icon from "../../common/Icon";
 import SidebarStore from "../../../store/SidebarStore";
+import EntityLink from "../../link/EntityLink";
+import TooltipStore from "../../../store/TooltipStore";
 
 import "./SidebarEntity.scss";
-import EntityLink from "../../link/EntityLink";
 
 /**
  * Renders the action to pin the entity.
@@ -70,6 +71,9 @@ function renderUnpinAction(entity) {
 const SidebarEntity = ({ entity }) => {
     const { t } = useTranslation();
     const sidebarStore = useContext(SidebarStore);
+    const tooltipStore = useContext(TooltipStore);
+
+    const iconRef = createRef();
 
     return (
         <EntityLink
@@ -78,8 +82,14 @@ const SidebarEntity = ({ entity }) => {
             className="sidebar-entity"
             draggable={true}
             data-id={sidebarStore.getIdForEntity(entity)}
+            onMouseEnter={async () => {
+                await tooltipStore.showTooltip(iconRef, entity.type, entity.name);
+            }}
+            onMouseLeave={() => {
+                tooltipStore.hideTooltip();
+            }}
         >
-            <Icon type={entity.type} name={entity.name} transparent={true} />
+            <Icon type={entity.type} name={entity.name} transparent={true} ref={iconRef} />
             <span className="label">{entity.label}</span>
 
             {entity.pinnedPosition > 0 ? renderUnpinAction(entity) : renderPinAction(entity)}

@@ -7,6 +7,7 @@ import SidebarStore from "../../../store/SidebarStore";
 import SidebarEntity from "./SidebarEntity";
 
 import "./SidebarList.scss";
+import TooltipStore from "../../../store/TooltipStore";
 
 /**
  * The component representing the list of unpinned entities in the sidebar, i.e. the last viewed entities.
@@ -16,6 +17,8 @@ import "./SidebarList.scss";
 const UnpinnedEntityList = () => {
     const { t } = useTranslation();
     const sidebarStore = useContext(SidebarStore);
+    const tooltipStore = useContext(TooltipStore);
+
     const sortableOptions = {
         group: {
             name: "sidebar-entities",
@@ -25,6 +28,12 @@ const UnpinnedEntityList = () => {
         sort: false,
         draggable: ".sidebar-entity",
         animation: 100,
+        onStart: () => {
+            tooltipStore.setDisableFlag("sidebar-unpinned", true);
+        },
+        onEnd: () => {
+            tooltipStore.setDisableFlag("sidebar-unpinned", false);
+        },
     };
     const entities = sidebarStore.unpinnedEntities;
 

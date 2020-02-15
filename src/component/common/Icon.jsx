@@ -1,13 +1,15 @@
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
-import React, { useEffect } from "react";
+import React, { createRef, useContext, useEffect } from "react";
 
+import { iconManager } from "../../class/IconManager";
 import { formatAmount } from "../../helper/format";
+import TooltipStore from "../../store/TooltipStore";
+
 import EntityLink from "../link/EntityLink";
 
 import "./Icon.scss";
-import { iconManager } from "../../class/IconManager";
 
 /**
  * Renders the element for the amount.
@@ -29,16 +31,21 @@ function renderAmount(amount) {
  * @param {number} amount
  * @param {boolean} transparent
  * @param {boolean} linked
+ * @param {React.RefObject<HTMLElement>} ref
  * @returns {ReactNode}
  * @constructor
  */
-const Icon = ({ type, name, amount = 0, transparent = false, linked = false }) => {
+const Icon = ({ type, name, amount = 0, transparent = false, linked = false }, ref) => {
+    console.log("ICON REF", ref);
+    const tooltipStore = useContext(TooltipStore);
+
     const classes = classNames({
         "icon": true,
         [`icon-${type}-${name}`.replace(" ", "_")]: true,
         "with-background": !transparent,
     });
     const label = renderAmount(amount);
+    const iconRef = ref || createRef();
 
     useEffect(() => {
         iconManager.requestIcon(type, name);
@@ -46,13 +53,28 @@ const Icon = ({ type, name, amount = 0, transparent = false, linked = false }) =
 
     if (linked) {
         return (
-            <EntityLink type={type} name={name} className={classes}>
+            <EntityLink
+                type={type}
+                name={name}
+                className={classes}
+                ref={iconRef}
+                onMouseEnter={async () => {
+                    await tooltipStore.showTooltip(iconRef, type, name);
+                }}
+                onMouseLeave={() => {
+                    tooltipStore.hideTooltip();
+                }}
+            >
                 {label}
             </EntityLink>
         );
     }
 
-    return <div className={classes}>{label}</div>;
+    return (
+        <div className={classes} ref={iconRef}>
+            {label}
+        </div>
+    );
 };
 
 Icon.propTypes = {
@@ -63,4 +85,4 @@ Icon.propTypes = {
     linked: PropTypes.bool,
 };
 
-export default observer(Icon);
+export default observer(Icon, { forwardRef: true });

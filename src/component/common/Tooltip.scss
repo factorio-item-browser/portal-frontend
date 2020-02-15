@@ -1,0 +1,62 @@
+@import "../../style/mixin/all";
+@import "../../style/variable/all";
+
+.tooltip {
+    pointer-events: none;
+    position: absolute;
+    z-index: $zIndex-tooltip;
+
+    .entity {
+        box-shadow: $shadow-box-tooltip;
+        max-width: $tooltip-content-width;
+        margin: 0;
+        width: $tooltip-content-width;
+    }
+
+    .entity-head {
+        background: $color-tooltip;
+        color: color($color-tooltip, $lightness-text-primary);
+    }
+
+    .compact-recipe {
+        background: rgba(color($color-tooltip, $lightness-box-background), $alpha-box-content-tooltip);
+        border-top-color: rgba(color($color-tooltip, $lightness-box-border), $alpha-box-border);
+        color: color($color-tooltip, $lightness-text-primary);
+
+        &.expensive {
+            background-color: rgba(color($color-recipe-expensive, $lightness-box-background), $alpha-box-content-tooltip);
+            color: color($color-recipe-expensive, $lightness-text-primary);
+        }
+    }
+
+    .chevron {
+        color: color($color-tooltip, $lightness-box-background);
+        filter: drop-shadow($shadow-box-tooltip-chevron);
+        font-size: $tooltip-chevron-size;
+        height: $tooltip-chevron-size - $spacing-small;
+        margin: 0 $spacing-default;
+        position: absolute;
+        right: auto;
+        text-align: center;
+        top: -$tooltip-chevron-size;
+        width: $tooltip-chevron-size;
+
+        .fa-chevron-down {
+            display: none;
+        }
+        &.bottom {
+            bottom: -$tooltip-chevron-size + $spacing-default;
+            top: auto;
+
+            .fa-chevron-up {
+                display: none;
+            }
+            .fa-chevron-down {
+                display: inline-block;
+            }
+        }
+        &.right {
+            right: 0;
+        }
+    }
+}

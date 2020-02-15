@@ -27,9 +27,5 @@
     &.expensive {
         background-color: rgba(color($color-recipe-expensive, $lightness-box-background), $alpha-box-content);
         color: color($color-recipe-expensive, $lightness-text-primary);
-
-        &:before {
-            background: rgba(color($color-recipe-expensive, $lightness-box-border), $alpha-box-border);
-        }
     }
 }
