@@ -8,12 +8,13 @@ import "./Section.scss";
  * The component representing a section with an underlined headline.
  * @param {string} headline
  * @param {ReactDOM} children
+ * @param {any} props
  * @returns {ReactDOM}
  * @constructor
  */
-const Section = ({ headline, children }) => {
+const Section = ({ headline, children, ...props }) => {
     return (
-        <section>
+        <section {...props}>
             <h2>{headline}</h2>
             {children}
         </section>

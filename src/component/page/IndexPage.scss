@@ -1,0 +1,13 @@
+@import "../../style/variable/all.scss";
+@import "../../style/mixin/all.scss";
+
+.random-items {
+    .entity-list > .entity {
+        @include breakpoint(large) {
+            flex-basis: calc(33.33% - 2 * #{$spacing-default});
+        }
+        @include breakpoint(huge) {
+            flex-basis: calc(25% - 2 * #{$spacing-default});
+        }
+    }
+}

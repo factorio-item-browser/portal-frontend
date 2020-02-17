@@ -59,6 +59,14 @@ class PortalApi {
     }
 
     /**
+     * Fetches random items from the server.
+     * @return {Promise<EntityData[]>}
+     */
+    async getRandom() {
+        return this._executeRequest("/random", { numberOfResults: 12 });
+    }
+
+    /**
      * Fetches the recipe details with the specified name.
      * @param {string} name
      * @returns {Promise<RecipeDetailsData>}

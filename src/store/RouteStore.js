@@ -1,4 +1,4 @@
-import { action, computed, observable } from "mobx";
+import { action, computed, observable, runInAction } from "mobx";
 import { createContext } from "react";
 import { createRouter } from "router5";
 import browserPluginFactory from "router5-plugin-browser";
@@ -20,6 +20,13 @@ const entityTypeToRouteMap = {
  * The store handling the pages, including routing between them.
  */
 class RouteStore {
+    /**
+     * The portal API instance.
+     * @type {PortalApi}
+     * @private
+     */
+    _portalApi;
+
     /**
      * The change handlers of the routes.
      * @type {object<string,Function>}
@@ -55,11 +62,21 @@ class RouteStore {
     loadingCircleTarget = null;
 
     /**
-     * The portal API instance.
+     * The random items shown on the index page.
+     * @type {EntityData[]}
      */
-    constructor() {
+    @observable
+    randomItems = [];
+
+    /**
+     * The portal API instance.
+     * @type {PortalApi}
+     */
+    constructor(portalApi) {
+        this._portalApi = portalApi;
+
         this._router = this._createRouter();
-        this.addRoute(routeIndex, "/");
+        this.addRoute(routeIndex, "/", this._handleIndexRouteChange.bind(this));
     }
 
     /**
@@ -98,6 +115,18 @@ class RouteStore {
     @action
     _handleChangeEvent(state) {
         this.currentRoute = state.route.name;
+    }
+
+    /**
+     * Handles the route change to the index page.
+     * @return {Promise<void>}
+     * @private
+     */
+    async _handleIndexRouteChange() {
+        const randomItems = await this._portalApi.getRandom();
+        runInAction(() => {
+            this.randomItems = randomItems;
+        });
     }
 
     /**
@@ -204,5 +233,5 @@ class RouteStore {
     }
 }
 
-export const routeStore = new RouteStore();
+export const routeStore = new RouteStore(portalApi);
 export default createContext(routeStore);

@@ -28,6 +28,12 @@
             "placeholder": "Item, Rezept, ..."
         }
     },
+    "index": {
+        "random-items": {
+            "headline": "Zufällige Items"
+        },
+        "title": "Factorio Item Browser"
+    },
     "item-details": {
         "headline": {
             "item": "Item: {{label}}",
