@@ -4,6 +4,8 @@ import { createContext } from "react";
 import Cache from "../class/Cache";
 import { portalApi } from "../class/PortalApi";
 
+import { routeStore } from "./RouteStore";
+
 /**
  * The store managing the tooltips.
  */
@@ -21,6 +23,13 @@ class TooltipStore {
      * @private
      */
     _portalApi;
+
+    /**
+     * The route store.
+     * @type {RouteStore}
+     * @private
+     */
+    _routeStore;
 
     /**
      * The flags which may disable the tooltips.
@@ -54,10 +63,22 @@ class TooltipStore {
      * Initializes the store.
      * @param {Cache<EntityData>} cache
      * @param {PortalApi} portalApi
+     * @param {RouteStore} routeStore
      */
-    constructor(cache, portalApi) {
+    constructor(cache, portalApi, routeStore) {
         this._cache = cache;
         this._portalApi = portalApi;
+        this._routeStore = routeStore;
+
+        this._routeStore.addRouteChangeHandler(this._handleRouteChange.bind(this));
+    }
+
+    /**
+     * Handles the change of the route.
+     * @private
+     */
+    _handleRouteChange() {
+        this.hideTooltip();
     }
 
     /**
@@ -151,5 +172,5 @@ class TooltipStore {
 
 const cache = new Cache("tooltip", 86400000);
 
-export const tooltipStore = new TooltipStore(cache, portalApi);
+export const tooltipStore = new TooltipStore(cache, portalApi, routeStore);
 export default createContext(tooltipStore);

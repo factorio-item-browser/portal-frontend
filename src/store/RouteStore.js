@@ -42,6 +42,13 @@ class RouteStore {
     _initializeSessionHandlers = [];
 
     /**
+     * The handlers called on every route change.
+     * @type {function[]}
+     * @private
+     */
+    _routeChangeHandlers = [];
+
+    /**
      * The router of the store.
      * @type {Router}
      */
@@ -115,6 +122,10 @@ class RouteStore {
     @action
     _handleChangeEvent(state) {
         this.currentRoute = state.route.name;
+
+        for (const handler of this._routeChangeHandlers) {
+            handler(state);
+        }
     }
 
     /**
@@ -149,6 +160,14 @@ class RouteStore {
      */
     addInitializeSessionHandler(handler) {
         this._initializeSessionHandlers.push(handler);
+    }
+
+    /**
+     * Adds a handler called on every route change.
+     * @param {function} handler
+     */
+    addRouteChangeHandler(handler) {
+        this._routeChangeHandlers.push(handler);
     }
 
     /**
