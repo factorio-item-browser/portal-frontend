@@ -94,6 +94,10 @@ class TooltipStore {
      */
     @action
     async showTooltip(target, type, name) {
+        if (!this.isEnabled) {
+            return;
+        }
+
         this.requestedTarget = target;
         const data = await this._fetchTooltipData(type, name);
         runInAction(() => {

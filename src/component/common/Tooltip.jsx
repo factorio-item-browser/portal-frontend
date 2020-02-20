@@ -1,12 +1,14 @@
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
-import React, { createRef, useContext, useLayoutEffect } from "react";
+import React, { createRef, useContext, useEffect, useLayoutEffect } from "react";
 
 import TooltipStore from "../../store/TooltipStore";
 import Entity from "../entity/Entity";
 
 import "./Tooltip.scss";
+import { useMediaQuery } from "react-responsive";
+import { breakpointMedium } from "../../helper/const";
 
 /**
  * The margin used by the tooltip chevron.
@@ -59,11 +61,17 @@ function calculatePosition({ target, content, chevron }) {
  */
 const Tooltip = () => {
     const tooltipStore = useContext(TooltipStore);
+    const isMedium = useMediaQuery({ minWidth: breakpointMedium });
+
     const chevronRef = createRef();
     const contentRef = createRef();
     const tooltipRef = createRef();
 
     const doRender = tooltipStore.isTooltipAvailable;
+
+    useEffect(() => {
+        tooltipStore.setDisableFlag("breakpoint", !isMedium);
+    }, [isMedium]);
 
     useLayoutEffect(() => {
         if (doRender) {

@@ -2,6 +2,7 @@
 const title = "Factorio Item Browser";
 const description = "Lorem ipsum dolor sit amet.";
 const color = "#165868";
+const openSearchUrl = "https://react.factiorio-item-browser.com/opensearch.xml";
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,6 +26,7 @@ const color = "#165868";
 
         <link rel="shortcut icon" href="<%= require("./image/icon/favicon.png") %>" />
         <link rel="apple-touch-icon-precomposed" href="<%= require("./image/icon/apple-touch-icon.png") %>" />
+        <link rel="search" type="application/opensearchdescription+xml" title="FIB Search" href="<%= openSearchUrl %>">
     </head>
     <body>
         <div id="app">

@@ -91,7 +91,8 @@ module.exports = (env, argv) => {
             new HotModuleReplacementPlugin(),
             new CleanWebpackPlugin(),
             new CopyPlugin([
-                { from: `${currentPath}/src/root/.htaccess` }
+                { from: `${currentPath}/src/root/.htaccess` },
+                { from: `${currentPath}/src/root/opensearch.xml` },
             ]),
             new DefinePlugin(envVars),
             new HtmlWebpackPlugin({

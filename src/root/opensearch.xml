@@ -1,0 +1,16 @@
+<OpenSearchDescription
+    xmlns="http://a9.com/-/spec/opensearch/1.1/"
+    xmlns:moz="http://www.mozilla.org/2006/browser/search/"
+>
+    <ShortName>FIB Search</ShortName>
+    <Description>Search the Factorio Item Browser</Description>
+    <InputEncoding>UTF-8</InputEncoding>
+    <Image width="128" height="128" type="image/png">https://www.factorio-item-browser.com/asset/image/icon/favicon.png</Image>
+    <Url type="text/html" template="https://react.factorio-item-browser.com/search/{searchTerms}" />
+    <Url
+        type="application/opensearchdescription+xml"
+        rel="self"
+        template="https://react.factorio-item-browser.com/opensearch.xml"
+    />
+    <moz:SearchForm>https://react.factorio-item-browser.com/</moz:SearchForm>
+</OpenSearchDescription>
