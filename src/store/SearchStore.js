@@ -42,6 +42,13 @@ class SearchStore {
     _debounceHandleQueryChange;
 
     /**
+     * Whether the search input element is currently focused.
+     * @type {boolean}
+     * @private
+     */
+    _isInputFocused = false;
+
+    /**
      * The current search query entered into the search field.
      * @type {string}
      */
@@ -88,15 +95,8 @@ class SearchStore {
         this._routeStore = routeStore;
 
         this._debounceHandleQueryChange = debounce(this._handleQueryChange, 500, this);
-        this._initializeRoutes();
-    }
-
-    /**
-     * Initializes the routes of the store.
-     * @private
-     */
-    _initializeRoutes() {
         this._routeStore.addRoute(routeSearch, "/search/*query", this._handleRouteChange.bind(this));
+        this._routeStore.addRouteChangeHandler(this._handleGeneralRouteChange.bind(this));
     }
 
     /**
@@ -112,7 +112,23 @@ class SearchStore {
             this.paginatedSearchResults = newPaginatedList;
             this.currentlyExecutedQuery = searchResultsData.query;
             this.isLoading = false;
+
+            if (!this._isInputFocused) {
+                this.searchQuery = query;
+            }
         });
+    }
+
+    /**
+     * Handles a general (maybe not-search related) route change.
+     * @param {State} route
+     * @private
+     */
+    @action
+    _handleGeneralRouteChange({ route }) {
+        if (route.name !== routeSearch && !this._isInputFocused) {
+            this.searchQuery = "";
+        }
     }
 
     /**
@@ -145,6 +161,14 @@ class SearchStore {
     }
 
     /**
+     * Triggers the query to be changed without waiting for the debounce.
+     * @return {Promise<void>}
+     */
+    async triggerQueryChange() {
+        this._handleQueryChange(this.searchQuery);
+    }
+
+    /**
      * Handles the (debounced) change of the query, triggering the search.
      * @param {string} query
      * @returns {Promise<void>}
@@ -158,6 +182,14 @@ class SearchStore {
 
         this.isLoading = true;
         this._routeStore.navigateTo(routeSearch, { query: query });
+    }
+
+    /**
+     * Sets whether the input is currently focused.
+     * @param {boolean} isInputFocused
+     */
+    set isInputFocused(isInputFocused) {
+        this._isInputFocused = isInputFocused;
     }
 
     /**

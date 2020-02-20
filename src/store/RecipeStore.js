@@ -83,14 +83,6 @@ class RecipeStore {
         this._routeStore = routeStore;
         this._sidebarStore = sidebarStore;
 
-        this._initializeRoutes();
-    }
-
-    /**
-     * Initializes the routes of the store.
-     * @private
-     */
-    _initializeRoutes() {
         this._routeStore.addRoute(routeRecipeDetails, "/recipe/:name", this._handleRouteChange.bind(this));
     }
 

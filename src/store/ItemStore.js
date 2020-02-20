@@ -73,14 +73,6 @@ class ItemStore {
         this._routeStore = routeStore;
         this._sidebarStore = sidebarStore;
 
-        this._initializeRoutes();
-    }
-
-    /**
-     * Initializes the routes of the store.
-     * @private
-     */
-    _initializeRoutes() {
         this._routeStore.addRoute(routeItemDetails, "/:type<item|fluid>/:name", this._handleRouteChange.bind(this));
     }
 

@@ -43,17 +43,32 @@ const HeaderSearch = () => {
                     <FontAwesomeIcon icon={faSearch} />
                 )}
             </div>
-            <input
-                autoComplete="off"
-                autoFocus={!isLarge}
-                name="query"
-                placeholder={t("header.search.placeholder")}
-                type="search"
-                value={searchStore.searchQuery}
-                onChange={(event) => {
-                    searchStore.setSearchQuery(event.target.value);
+            <form
+                onSubmit={async (event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    await searchStore.triggerQueryChange();
+                    return false;
                 }}
-            />
+            >
+                <input
+                    autoComplete="off"
+                    autoFocus={!isLarge}
+                    name="query"
+                    placeholder={t("header.search.placeholder")}
+                    type="search"
+                    value={searchStore.searchQuery}
+                    onChange={(event) => {
+                        searchStore.setSearchQuery(event.target.value);
+                    }}
+                    onFocus={() => {
+                        searchStore.isInputFocused = true;
+                    }}
+                    onBlur={() => {
+                        searchStore.isInputFocused = false;
+                    }}
+                />
+            </form>
             {closeIcon}
         </div>
     );
