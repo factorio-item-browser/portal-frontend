@@ -1,4 +1,10 @@
-import { portalApiUrl } from "../helper/const";
+import {
+    NUMBER_OF_MACHINES_PER_PAGE,
+    NUMBER_OF_ITEM_RECIPES_PER_PAGE,
+    NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
+    PORTAL_API_URL,
+    NUMBER_OF_RANDOM_ITEMS,
+} from "../helper/const";
 
 /**
  * The class functioning as interface to the Portal API server.
@@ -16,8 +22,8 @@ class PortalApi {
     async search(query, page) {
         return this._executeRequest("/search", {
             query,
-            indexOfFirstResult: (page - 1) * 24,
-            numberOfResults: 24,
+            indexOfFirstResult: (page - 1) * NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
+            numberOfResults: NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
         });
     }
 
@@ -39,8 +45,8 @@ class PortalApi {
      */
     async getItemIngredientRecipes(type, name, page) {
         return this._executeRequest(`/${encodeURI(type)}/${encodeURI(name)}/ingredients`, {
-            indexOfFirstResult: (page - 1) * 24,
-            numberOfResults: 24,
+            indexOfFirstResult: (page - 1) * NUMBER_OF_ITEM_RECIPES_PER_PAGE,
+            numberOfResults: NUMBER_OF_ITEM_RECIPES_PER_PAGE,
         });
     }
 
@@ -53,8 +59,8 @@ class PortalApi {
      */
     async getItemProductRecipes(type, name, page) {
         return this._executeRequest(`/${encodeURI(type)}/${encodeURI(name)}/products`, {
-            indexOfFirstResult: (page - 1) * 24,
-            numberOfResults: 24,
+            indexOfFirstResult: (page - 1) * NUMBER_OF_ITEM_RECIPES_PER_PAGE,
+            numberOfResults: NUMBER_OF_ITEM_RECIPES_PER_PAGE,
         });
     }
 
@@ -63,7 +69,7 @@ class PortalApi {
      * @return {Promise<EntityData[]>}
      */
     async getRandom() {
-        return this._executeRequest("/random", { numberOfResults: 12 });
+        return this._executeRequest("/random", { numberOfResults: NUMBER_OF_RANDOM_ITEMS });
     }
 
     /**
@@ -83,8 +89,8 @@ class PortalApi {
      */
     async getRecipeMachines(name, page) {
         return this._executeRequest(`/recipe/${encodeURI(name)}/machines`, {
-            indexOfFirstResult: (page - 1) * 12,
-            numberOfResults: 12,
+            indexOfFirstResult: (page - 1) * NUMBER_OF_MACHINES_PER_PAGE,
+            numberOfResults: NUMBER_OF_MACHINES_PER_PAGE,
         });
     }
 
@@ -140,7 +146,7 @@ class PortalApi {
      * @private
      */
     _buildRequestUrl(route, queryParams) {
-        let result = portalApiUrl + route;
+        let result = PORTAL_API_URL + route;
         const encodedParams = Object.keys(queryParams || {})
             .map((name) => {
                 return `${encodeURIComponent(name)}=${encodeURIComponent(queryParams[name])}`;

@@ -8,7 +8,7 @@ import Entity from "../entity/Entity";
 
 import "./Tooltip.scss";
 import { useMediaQuery } from "react-responsive";
-import { breakpointMedium } from "../../helper/const";
+import { BREAKPOINT_MEDIUM } from "../../helper/const";
 
 /**
  * The margin used by the tooltip chevron.
@@ -61,7 +61,7 @@ function calculatePosition({ target, content, chevron }) {
  */
 const Tooltip = () => {
     const tooltipStore = useContext(TooltipStore);
-    const isMedium = useMediaQuery({ minWidth: breakpointMedium });
+    const isMedium = useMediaQuery({ minWidth: BREAKPOINT_MEDIUM });
 
     const chevronRef = createRef();
     const contentRef = createRef();

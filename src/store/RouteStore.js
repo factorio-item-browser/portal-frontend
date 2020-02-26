@@ -4,16 +4,16 @@ import { createRouter } from "router5";
 import browserPluginFactory from "router5-plugin-browser";
 
 import { portalApi } from "../class/PortalApi";
-import { routeIndex, routeItemDetails, routeRecipeDetails } from "../helper/const";
+import { ROUTE_INDEX, ROUTE_ITEM_DETAILS, ROUTE_RECIPE_DETAILS } from "../helper/const";
 
 /**
  * The map from the entity types to their corresponding routes.
  * @type {Object<string, string>}
  */
 const entityTypeToRouteMap = {
-    item: routeItemDetails,
-    fluid: routeItemDetails,
-    recipe: routeRecipeDetails,
+    item: ROUTE_ITEM_DETAILS,
+    fluid: ROUTE_ITEM_DETAILS,
+    recipe: ROUTE_RECIPE_DETAILS,
 };
 
 /**
@@ -83,7 +83,7 @@ class RouteStore {
         this._portalApi = portalApi;
 
         this._router = this._createRouter();
-        this.addRoute(routeIndex, "/", this._handleIndexRouteChange.bind(this));
+        this.addRoute(ROUTE_INDEX, "/", this._handleIndexRouteChange.bind(this));
     }
 
     /**
@@ -228,7 +228,7 @@ class RouteStore {
         }
 
         return {
-            route: routeIndex,
+            route: ROUTE_INDEX,
             params: {},
         };
     }
@@ -239,7 +239,7 @@ class RouteStore {
      */
     @computed
     get useBigHeader() {
-        return this.currentRoute === routeIndex;
+        return this.currentRoute === ROUTE_INDEX;
     }
 
     /**

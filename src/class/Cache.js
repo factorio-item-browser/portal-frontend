@@ -1,4 +1,4 @@
-import { enableCache } from "../helper/const";
+import { ENABLE_CACHE } from "../helper/const";
 
 /**
  * The class managing the local cache.
@@ -56,7 +56,7 @@ class Cache {
      * @param {T} data
      */
     write(key, data) {
-        if (!enableCache) {
+        if (!ENABLE_CACHE) {
             return;
         }
 
@@ -75,7 +75,7 @@ class Cache {
      * @return {T|null}
      */
     read(key) {
-        if (!enableCache) {
+        if (!ENABLE_CACHE) {
             return null;
         }
 

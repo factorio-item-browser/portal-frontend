@@ -5,7 +5,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 
-import { breakpointMedium } from "../../../helper/const";
+import { BREAKPOINT_MEDIUM } from "../../../helper/const";
 import RecipeItemList from "./RecipeItemList";
 import RecipeItemSeparator from "./RecipeItemSeparator";
 
@@ -18,7 +18,7 @@ import "./RecipeDetails.scss";
  * @constructor
  */
 const RecipeDetails = ({ recipe }) => {
-    const isMedium = useMediaQuery({ minWidth: breakpointMedium });
+    const isMedium = useMediaQuery({ minWidth: BREAKPOINT_MEDIUM });
     const { t } = useTranslation();
 
     if (!recipe) {

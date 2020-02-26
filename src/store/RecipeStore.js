@@ -4,7 +4,7 @@ import { createContext } from "react";
 import Cache from "../class/Cache";
 import { portalApi } from "../class/PortalApi";
 import PaginatedList from "../class/PaginatedList";
-import { routeRecipeDetails } from "../helper/const";
+import { ROUTE_RECIPE_DETAILS } from "../helper/const";
 
 import { routeStore } from "./RouteStore";
 import { sidebarStore } from "./SidebarStore";
@@ -83,7 +83,7 @@ class RecipeStore {
         this._routeStore = routeStore;
         this._sidebarStore = sidebarStore;
 
-        this._routeStore.addRoute(routeRecipeDetails, "/recipe/:name", this._handleRouteChange.bind(this));
+        this._routeStore.addRoute(ROUTE_RECIPE_DETAILS, "/recipe/:name", this._handleRouteChange.bind(this));
     }
 
     /**

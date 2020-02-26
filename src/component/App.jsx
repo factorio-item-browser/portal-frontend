@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext, useEffect } from "react";
 
-import { routeIndex, routeItemDetails, routeRecipeDetails, routeSearch } from "../helper/const";
+import { ROUTE_INDEX, ROUTE_ITEM_DETAILS, ROUTE_RECIPE_DETAILS, ROUTE_SEARCH } from "../helper/const";
 
 import RouteStore from "../store/RouteStore";
 
@@ -19,10 +19,10 @@ import SearchResultsPage from "./page/SearchResultsPage";
 import "./App.scss";
 
 const PAGE_BY_ROUTES = {
-    [routeIndex]: <IndexPage />,
-    [routeItemDetails]: <ItemDetailsPage />,
-    [routeRecipeDetails]: <RecipeDetailsPage />,
-    [routeSearch]: <SearchResultsPage />,
+    [ROUTE_INDEX]: <IndexPage />,
+    [ROUTE_ITEM_DETAILS]: <ItemDetailsPage />,
+    [ROUTE_RECIPE_DETAILS]: <RecipeDetailsPage />,
+    [ROUTE_SEARCH]: <SearchResultsPage />,
 };
 
 /**

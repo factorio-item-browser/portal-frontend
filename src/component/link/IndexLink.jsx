@@ -2,7 +2,7 @@ import * as PropTypes from "prop-types";
 import React from "react";
 import { observer } from "mobx-react-lite";
 
-import { routeIndex } from "../../helper/const";
+import { ROUTE_INDEX } from "../../helper/const";
 import Link from "./Link";
 
 /**
@@ -14,7 +14,7 @@ import Link from "./Link";
  */
 const IndexLink = ({ children, ...props }) => {
     return (
-        <Link route={routeIndex} {...props}>
+        <Link route={ROUTE_INDEX} {...props}>
             {children}
         </Link>
     );

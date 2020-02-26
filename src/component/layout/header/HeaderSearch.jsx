@@ -5,7 +5,7 @@ import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 
-import { breakpointLarge } from "../../../helper/const";
+import { BREAKPOINT_LARGE } from "../../../helper/const";
 import SearchStore from "../../../store/SearchStore";
 
 import "./HeaderSearch.scss";
@@ -16,7 +16,7 @@ import "./HeaderSearch.scss";
  * @constructor
  */
 const HeaderSearch = () => {
-    const isLarge = useMediaQuery({ minWidth: breakpointLarge });
+    const isLarge = useMediaQuery({ minWidth: BREAKPOINT_LARGE });
     const searchStore = useContext(SearchStore);
     const { t } = useTranslation();
 

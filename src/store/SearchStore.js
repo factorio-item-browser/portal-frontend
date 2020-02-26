@@ -4,7 +4,7 @@ import { createContext } from "react";
 import Cache from "../class/Cache";
 import PaginatedList from "../class/PaginatedList";
 import { portalApi } from "../class/PortalApi";
-import { routeSearch } from "../helper/const";
+import { ROUTE_SEARCH } from "../helper/const";
 import { debounce } from "../helper/utils";
 
 import { routeStore } from "./RouteStore";
@@ -102,7 +102,7 @@ class SearchStore {
         this._routeStore = routeStore;
 
         this._debounceHandleQueryChange = debounce(this._handleQueryChange, 500, this);
-        this._routeStore.addRoute(routeSearch, "/search/*query", this._handleRouteChange.bind(this));
+        this._routeStore.addRoute(ROUTE_SEARCH, "/search/*query", this._handleRouteChange.bind(this));
         this._routeStore.addRouteChangeHandler(this._handleGeneralRouteChange.bind(this));
     }
 
@@ -133,7 +133,7 @@ class SearchStore {
      */
     @action
     _handleGeneralRouteChange({ route }) {
-        if (route.name !== routeSearch && !this._isInputFocused) {
+        if (route.name !== ROUTE_SEARCH && !this._isInputFocused) {
             this.searchQuery = "";
         }
     }
@@ -189,7 +189,7 @@ class SearchStore {
 
         this.requestedSearchQuery = query;
         this.isLoading = true;
-        this._routeStore.navigateTo(routeSearch, { query: query });
+        this._routeStore.navigateTo(ROUTE_SEARCH, { query: query });
     }
 
     /**

@@ -4,7 +4,7 @@ import { createContext } from "react";
 import Cache from "../class/Cache";
 import { portalApi } from "../class/PortalApi";
 import PaginatedList from "../class/PaginatedList";
-import { routeItemDetails } from "../helper/const";
+import { ROUTE_ITEM_DETAILS } from "../helper/const";
 
 import { routeStore } from "./RouteStore";
 import { sidebarStore } from "./SidebarStore";
@@ -73,7 +73,7 @@ class ItemStore {
         this._routeStore = routeStore;
         this._sidebarStore = sidebarStore;
 
-        this._routeStore.addRoute(routeItemDetails, "/:type<item|fluid>/:name", this._handleRouteChange.bind(this));
+        this._routeStore.addRoute(ROUTE_ITEM_DETAILS, "/:type<item|fluid>/:name", this._handleRouteChange.bind(this));
     }
 
     /**

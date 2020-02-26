@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 
-import { breakpointLarge } from "../../helper/const";
+import { BREAKPOINT_LARGE } from "../../helper/const";
 import RouteStore from "../../store/RouteStore";
 import SidebarStore from "../../store/SidebarStore";
 
@@ -22,7 +22,7 @@ import "./Sidebar.scss";
 const Sidebar = () => {
     const routeStore = useContext(RouteStore);
     const sidebarStore = useContext(SidebarStore);
-    const isLarge = useMediaQuery({ minWidth: breakpointLarge });
+    const isLarge = useMediaQuery({ minWidth: BREAKPOINT_LARGE });
 
     const classes = classNames({
         "sidebar": true,
