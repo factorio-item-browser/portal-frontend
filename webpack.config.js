@@ -5,6 +5,7 @@ const HtmlWebpackExcludeAssetsPlugin = require("html-webpack-exclude-assets-plug
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
+const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const { DefinePlugin, HotModuleReplacementPlugin } = require("webpack");
 
 module.exports = (env, argv) => {
@@ -100,6 +101,9 @@ module.exports = (env, argv) => {
                 excludeAssets: [/images\.(.*)\.js$/],
             }),
             new HtmlWebpackExcludeAssetsPlugin(),
+            new ScriptExtHtmlWebpackPlugin({
+                defaultAttribute: "defer",
+            }),
             new MiniCssExtractPlugin({
                 filename: isProduction ? "asset/css/[name].[hash].css" : "asset/css/[name].css",
             }),
