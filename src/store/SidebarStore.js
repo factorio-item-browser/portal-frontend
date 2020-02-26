@@ -4,6 +4,7 @@ import { createContext } from "react";
 import { portalApi } from "../class/PortalApi";
 
 import { routeStore } from "./RouteStore";
+import { tooltipStore } from "./TooltipStore";
 
 /**
  * The store managing all the data of the sidebar.
@@ -24,6 +25,13 @@ class SidebarStore {
     _routeStore;
 
     /**
+     * The tooltip store.
+     * @type {TooltipStore}
+     * @private
+     */
+    _tooltipStore;
+
+    /**
      * The entities of the sidebar.
      * @type {Map<string,SidebarEntityData>}
      */
@@ -41,10 +49,12 @@ class SidebarStore {
      * Initializes the store.
      * @param {PortalApi} portalApi
      * @param {RouteStore} routeStore
+     * @param {TooltipStore} tooltipStore
      */
-    constructor(portalApi, routeStore) {
+    constructor(portalApi, routeStore, tooltipStore) {
         this._portalApi = portalApi;
         this._routeStore = routeStore;
+        this._tooltipStore = tooltipStore;
 
         this._routeStore.addInitializeSessionHandler(this._initializeSession.bind(this));
         window.addEventListener("storage", this._handleStorage.bind(this));
@@ -150,6 +160,7 @@ class SidebarStore {
     pinEntity(entity) {
         entity.pinnedPosition = this.pinnedEntities.length + 1;
 
+        this._tooltipStore.hideTooltip();
         this._validateEntities();
         this._sendEntities();
     }
@@ -162,6 +173,7 @@ class SidebarStore {
     unpinEntity(entity) {
         entity.pinnedPosition = 0;
 
+        this._tooltipStore.hideTooltip();
         this._validateEntities();
         this._sendEntities();
     }
@@ -248,5 +260,5 @@ class SidebarStore {
     }
 }
 
-export const sidebarStore = new SidebarStore(portalApi, routeStore);
+export const sidebarStore = new SidebarStore(portalApi, routeStore, tooltipStore);
 export default createContext(sidebarStore);

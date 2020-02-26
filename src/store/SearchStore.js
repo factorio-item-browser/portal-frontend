@@ -56,6 +56,13 @@ class SearchStore {
     searchQuery = "";
 
     /**
+     * The search query which has currently been requested.
+     * @type {string}
+     */
+    @observable
+    requestedSearchQuery = "";
+
+    /**
      * Whether the search bar has been opened on mobile.
      * @type {boolean}
      */
@@ -176,10 +183,11 @@ class SearchStore {
      */
     @action
     async _handleQueryChange(query) {
-        if (query.length < 2) {
+        if (query.length < 2 || query === this.requestedSearchQuery) {
             return;
         }
 
+        this.requestedSearchQuery = query;
         this.isLoading = true;
         this._routeStore.navigateTo(routeSearch, { query: query });
     }

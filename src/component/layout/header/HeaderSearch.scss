@@ -51,3 +51,9 @@
         }
     }
 }
+
+header.big .header-search {
+    display: block;
+    margin: $spacing-huge auto;
+    max-width: 64rem;
+}

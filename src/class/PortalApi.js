@@ -170,9 +170,9 @@ class PortalApi {
                 ...options,
                 method: "POST",
                 body: JSON.stringify(requestData),
-                // headers: { // @todo Send correct header when the CORS preflight is handled correctly by the API.
-                //     "Content-Type": "application/json",
-                // }
+                headers: {
+                    "Content-Type": "application/json",
+                },
             };
         }
         return options;
