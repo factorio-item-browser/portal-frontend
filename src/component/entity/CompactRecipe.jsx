@@ -12,12 +12,13 @@ import "./CompactRecipe.scss";
 /**
  * Renders a single item of the recipe.
  * @param {RecipeItemData} item
+ * @param {number} index
  * @returns {ReactDOM}
  */
-function renderItem(item) {
+function renderItem(item, index) {
     return (
         <Icon
-            key={`${item.type}/${item.name}`}
+            key={`${item.type}-${item.name}-${index}`}
             type={item.type}
             name={item.name}
             amount={item.amount}

@@ -20,8 +20,8 @@ const RecipeItemList = ({ headline, items, craftingTime = 0 }) => {
         <div className="recipe-item-list">
             <h3>{headline}</h3>
             {craftingTime > 0 ? <RecipeItemTime craftingTime={craftingTime} /> : null}
-            {items.map((item) => {
-                return <RecipeItem key={`${item.type}-${item.name}`} item={item} />;
+            {items.map((item, index) => {
+                return <RecipeItem key={`${item.type}-${item.name}-${index}`} item={item} />;
             })}
         </div>
     );
