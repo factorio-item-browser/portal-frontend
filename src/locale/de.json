@@ -30,7 +30,8 @@
     },
     "index": {
         "random-items": {
-            "headline": "Zufällige Items"
+            "headline": "Zufällige Items",
+            "randomize": "Neu würfeln"
         },
         "title": "Factorio Item Browser"
     },

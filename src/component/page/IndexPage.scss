@@ -2,6 +2,23 @@
 @import "../../style/mixin/all.scss";
 
 .random-items {
+    position: relative;
+    .randomize {
+        cursor: pointer;
+        text-align: right;
+
+        @include breakpoint(medium) {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        svg {
+            filter: drop-shadow($shadow-label);
+            margin-right: $spacing-default;
+        }
+    }
+
     .entity-list > .entity {
         @include breakpoint(large) {
             flex-basis: calc(33.33% - 2 * #{$spacing-default});
