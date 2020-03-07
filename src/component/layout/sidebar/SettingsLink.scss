@@ -1,0 +1,28 @@
+@import "../../../style/mixin/all";
+@import "../../../style/variable/all";
+
+.settings-link {
+    @include button-color();
+    @include dynamic-spacing(padding, small default);
+
+    align-items: center;
+    display: flex;
+    font-weight: bold;
+    position: relative;
+
+    .link-icon {
+        align-items: center;
+        display: flex;
+        flex-shrink: 1;
+        font-size: $icon-size-small;
+        height: $icon-size-default;
+        width: $icon-size-default;
+    }
+    .label {
+        @include dynamic-spacing(margin-left, default);
+
+        flex-grow: 1;
+        font-weight: bold;
+        padding-right: $spacing-large;
+    }
+}

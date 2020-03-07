@@ -1,4 +1,4 @@
-import { action, computed, observable } from "mobx";
+import { action, computed, observable, runInAction } from "mobx";
 import { createContext } from "react";
 import { createRouter } from "router5";
 import browserPluginFactory from "router5-plugin-browser";
@@ -178,7 +178,9 @@ class RouteStore {
      */
     navigateTo(route, params) {
         this._router.navigate(route, params, () => {
-            this.loadingCircleTarget = null;
+            runInAction(() => {
+                this.loadingCircleTarget = null;
+            });
         });
     }
 

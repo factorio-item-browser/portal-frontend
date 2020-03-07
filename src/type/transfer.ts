@@ -38,6 +38,13 @@ interface MachineData {
     energyUsageUnit: string,
 }
 
+interface ModData {
+    name: string,
+    label: string,
+    author: string,
+    version: string,
+}
+
 interface NamesByTypes {
     [key: string]: string[],
 }
@@ -77,6 +84,11 @@ interface SearchResultsData {
 
 interface SessionInitData {
     sidebarEntities: SidebarEntityData[],
+}
+
+interface SettingData {
+    name: string,
+    mods: ModData[],
 }
 
 interface SidebarEntityData {

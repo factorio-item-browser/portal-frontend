@@ -8,6 +8,7 @@ import RouteStore from "../../store/RouteStore";
 import SidebarStore from "../../store/SidebarStore";
 
 import PinnedEntityList from "./sidebar/PinnedEntityList";
+import SettingsLink from "./sidebar/SettingsLink";
 import SidebarCloseIcon from "./sidebar/SidebarCloseIcon";
 import SidebarCloseOverlay from "./sidebar/SidebarCloseOverlay";
 import UnpinnedEntityList from "./sidebar/UnpinnedEntityList";
@@ -37,6 +38,8 @@ const Sidebar = () => {
         <Fragment>
             <div className={classes}>
                 {isLarge ? null : <SidebarCloseIcon />}
+                <SettingsLink />
+
                 <PinnedEntityList />
                 <UnpinnedEntityList />
             </div>

@@ -1,0 +1,50 @@
+@import "../../style/mixin/all";
+@import "../../style/variable/all";
+
+.mod-entity {
+    display: flex;
+
+    .mod-icon {
+        align-items: center;
+        background: color($color-box-default, $lightness-box-background);
+        display: flex;
+        flex-shrink: 1;
+        padding: $spacing-small;
+
+        .icon {
+            height: 6rem;
+            width: 6rem;
+        }
+    }
+
+    .mod-content {
+        background: rgba(color($color-box-default, $lightness-box-background), $alpha-box-content);
+        flex-grow: 1;
+    }
+
+}
+
+.mod-details {
+    border-top: px-to-rem(1) solid rgba(color($color-box-default, $lightness-box-border), $alpha-box-border);
+    border-left: px-to-rem(1) solid rgba(color($color-box-default, $lightness-box-border), $alpha-box-border);
+    color: color($color-box-default, $lightness-text-primary);
+    line-height: $text-size-default;
+    padding: $spacing-default;
+
+    .mod-detail {
+        display: flex;
+
+        .label {
+            display: inline-block;
+            flex-basis: 100px;
+            text-align: right;
+        }
+
+        .value {
+            font-weight: bold;
+            flex-grow: 1;
+            padding-left: $spacing-small;
+            text-align: left;
+        }
+    }
+}

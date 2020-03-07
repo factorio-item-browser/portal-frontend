@@ -85,10 +85,20 @@
         },
         "title": "Search: {{query}} - Factorio Item Browser"
     },
+    "settings": {
+        "mod-list": {
+            "headline": "Uses {{count}} mod",
+            "headline_plural": "Uses {{count}} mods",
+            "author": "Author",
+            "name": "Name",
+            "version": "Version"
+        }
+    },
     "sidebar": {
         "action-pin": "Pin element to the top",
         "action-unpin": "Unpin element from the top",
         "headline-last-viewed": "Last viewed",
-        "headline-pinned": "Pinned"
+        "headline-pinned": "Pinned",
+        "setting": "Setting: {{name}}"
     }
 }
