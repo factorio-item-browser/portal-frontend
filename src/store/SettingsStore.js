@@ -1,7 +1,7 @@
 import { action, observable, runInAction } from "mobx";
 import { createContext } from "react";
 
-import { ROUTE_SETTINGS } from "../helper/const";
+import { RECIPE_MODE_HYBRID, ROUTE_SETTINGS } from "../helper/const";
 import { portalApi } from "../class/PortalApi";
 import { routeStore } from "./RouteStore";
 
@@ -38,6 +38,20 @@ class SettingsStore {
     settingDetails;
 
     /**
+     * The locale which has been selected.
+     * @type {string}
+     */
+    @observable
+    selectedLocale = "en";
+
+    /**
+     * The recipe mode which have been selected.
+     * @type {string}
+     */
+    @observable
+    selectedRecipeMode = RECIPE_MODE_HYBRID;
+
+    /**
      * Initializes the store.
      * @param {PortalApi} portalApi
      * @param {RouteStore} routeStore
@@ -70,6 +84,24 @@ class SettingsStore {
         runInAction(() => {
             this.settingDetails = settingsListData.currentSetting;
         });
+    }
+
+    /**
+     * Changes the locale.
+     * @param {string} locale
+     */
+    @action
+    changeLocale(locale) {
+        this.selectedLocale = locale;
+    }
+
+    /**
+     * Changes the recipe mode.
+     * @param {string} recipeMode
+     */
+    @action
+    changeRecipeMode(recipeMode) {
+        this.selectedRecipeMode = recipeMode;
     }
 }
 

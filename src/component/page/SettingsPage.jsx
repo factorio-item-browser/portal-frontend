@@ -8,6 +8,8 @@ import Section from "../common/Section";
 import EntityList from "../entity/EntityList";
 import Mod from "../entity/Mod";
 
+import OptionsList from "./setting/OptionsList";
+
 /**
  * The component representing the settings page.
  * @return {ReactDOM}
@@ -19,6 +21,10 @@ const SettingsPage = () => {
 
     return (
         <Fragment>
+            <Section headline={t("settings.options.headline")}>
+                <OptionsList />
+            </Section>
+
             <Section headline={t("settings.mod-list.headline", { count: settingsStore.settingDetails.mods.length })}>
                 <EntityList>
                     {settingsStore.settingDetails.mods.map((mod) => {

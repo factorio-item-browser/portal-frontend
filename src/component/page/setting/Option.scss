@@ -1,0 +1,60 @@
+@import "../../../style/variable/all.scss";
+@import "../../../style/mixin/all.scss";
+
+.option {
+    @include dynamic-spacing(margin, default);
+
+    box-shadow: $shadow-box;
+    position: relative;
+
+    .option-chevron {
+        @include dynamic-spacing(right top, default);
+
+        color: color($color-box-default, $lightness-text-primary);
+        font-size: $text-size-default;
+        pointer-events: none;
+        position: absolute;
+    }
+
+    .option-head {
+        background: $color-box-default;
+        color: color($color-box-default, $lightness-text-primary);
+        display: flex;
+        align-items: center;
+        font-size: $text-size-default;
+        font-weight: bold;
+
+        h3 {
+            @include dynamic-spacing(padding, default);
+        }
+
+        select {
+            @include dynamic-spacing(padding, default);
+
+            appearance: none;
+            background: $color-box-default;
+            border: none;
+            cursor: pointer;
+            flex-grow: 1;
+            font-size: $text-size-default;
+            font-weight: bold;
+            outline: none;
+
+            option {
+                font-size: 1rem;
+            }
+
+            &:active {
+                border: none;
+            }
+        }
+    }
+
+    .option-description {
+        @include dynamic-spacing(padding, default);
+
+        background: rgba(color($color-box-default, $lightness-box-background), $alpha-box-content);
+        border-top: px-to-rem(1) solid rgba(color($color-box-default, $lightness-box-border), $alpha-box-border);
+        color: color($color-box-default, $lightness-text-primary);
+    }
+}

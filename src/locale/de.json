@@ -86,12 +86,28 @@
         "title": "Suche: {{query}} - Factorio Item Browser"
     },
     "settings": {
+        "locale": {
+            "label": "Sprache",
+            "description": "Die Sprachen werden nur unterstützt, wenn die Mods entsprechende Übersetzungen liefern. Fehlende Übersetzen werden durch Englisch ersetzt."
+        },
         "mod-list": {
             "headline": "Verwendet {{count}} Mod",
             "headline_plural": "Verwendet {{count}} Mods",
             "author": "Author",
             "name": "Name",
             "version": "Version"
+        },
+        "options": {
+            "headline": "Optionen"
+        },
+        "recipe-mode": {
+            "label": "Rezept-Modus",
+            "description": "Der Rezept-Modus legt fest, wie Rezepte mit mehreren Varianten gehandhabt werden sollen, indem entweder beide Varianten angezeigt werden (Hybrid-Modus) oder die uninteresante Variante ausgeblendet wird (normaler und teurer Modus).",
+            "option": {
+                "hybrid": "Hybrid-Modus",
+                "normal": "Normaler Modus",
+                "expensive": "Teurer Modus"
+            }
         }
     },
     "sidebar": {
