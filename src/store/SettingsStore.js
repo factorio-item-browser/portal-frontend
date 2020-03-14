@@ -1,9 +1,21 @@
+import { action, observable, runInAction } from "mobx";
 import { createContext } from "react";
-import { routeStore } from "./RouteStore";
-import { ROUTE_SETTINGS } from "../helper/const";
-import { observable } from "mobx";
 
+import { ROUTE_SETTINGS } from "../helper/const";
+import { portalApi } from "../class/PortalApi";
+import { routeStore } from "./RouteStore";
+
+/**
+ * The store managing the settings and the settings page.
+ */
 class SettingsStore {
+    /**
+     * The Portal API.
+     * @type {PortalApi}
+     * @private
+     */
+    _portalApi;
+
     /**
      * The route store.
      * @type {RouteStore}
@@ -12,40 +24,54 @@ class SettingsStore {
     _routeStore;
 
     /**
+     * The meta data of the currently used setting.
+     * @type {SettingMetaData}
+     */
+    @observable
+    settingMeta;
+
+    /**
+     * The setting details currently shown on the settings page.
+     * @type {SettingDetailsData}
+     */
+    @observable
+    settingDetails;
+
+    /**
      * Initializes the store.
+     * @param {PortalApi} portalApi
      * @param {RouteStore} routeStore
      */
-    constructor(routeStore) {
+    constructor(portalApi, routeStore) {
+        this._portalApi = portalApi;
         this._routeStore = routeStore;
 
-        this._routeStore.addRoute(ROUTE_SETTINGS, "/settings");
+        this._routeStore.addRoute(ROUTE_SETTINGS, "/settings", this._handleRouteChange.bind(this));
+        this._routeStore.addInitializeSessionHandler(this._initializeSession.bind(this));
     }
 
-    @observable
-    currentSetting = {
-        name: "Vanilla",
-        mods: [
-            {
-                name: "base",
-                label: "Base mod",
-                author: "Factorio team",
-                version: "0.18.9",
-            },
-            {
-                name: "boblibrary",
-                label: "Bob Library Thingy",
-                author: "Bob",
-                version: "0.18.0",
-            },
-            {
-                name: "FNEI",
-                label: "FNEI",
-                author: "fnei",
-                version: "0.18.0",
-            },
-        ],
-    };
+    /**
+     * Initializes the store with the session data.
+     * @param {SettingMetaData} setting
+     * @private
+     */
+    @action
+    _initializeSession({ setting }) {
+        this.settingMeta = setting;
+    }
+
+    /**
+     * Handles the change of the route.
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _handleRouteChange() {
+        const settingsListData = await this._portalApi.getSettings();
+        runInAction(() => {
+            this.settingDetails = settingsListData.currentSetting;
+        });
+    }
 }
 
-export const settingsStore = new SettingsStore(routeStore);
+export const settingsStore = new SettingsStore(portalApi, routeStore);
 export default createContext(settingsStore);

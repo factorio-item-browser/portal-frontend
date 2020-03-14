@@ -83,12 +83,22 @@ interface SearchResultsData {
 }
 
 interface SessionInitData {
+    setting: SettingMetaData,
     sidebarEntities: SidebarEntityData[],
 }
 
-interface SettingData {
-    name: string,
+interface SettingDetailsData extends SettingMetaData {
     mods: ModData[],
+}
+
+interface SettingMetaData {
+    id: string,
+    name: string,
+}
+
+interface SettingsListData {
+    settings: SettingMetaData[],
+    currentSetting: SettingDetailsData,
 }
 
 interface SidebarEntityData {

@@ -19,9 +19,9 @@ const SettingsPage = () => {
 
     return (
         <Fragment>
-            <Section headline={t("settings.mod-list.headline", { count: settingsStore.currentSetting.mods.length })}>
+            <Section headline={t("settings.mod-list.headline", { count: settingsStore.settingDetails.mods.length })}>
                 <EntityList>
-                    {settingsStore.currentSetting.mods.map((mod) => {
+                    {settingsStore.settingDetails.mods.map((mod) => {
                         return <Mod key={mod.name} mod={mod} />;
                     })}
                 </EntityList>

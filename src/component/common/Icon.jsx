@@ -40,7 +40,7 @@ const Icon = ({ type, name, amount = 0, transparent = false, linked = false }, r
 
     const classes = classNames({
         "icon": true,
-        [`icon-${type}-${name}`.replace(" ", "_")]: true,
+        [`icon-${type}-${name}`.replace(/ /g, "_")]: true,
         "with-background": !transparent,
     });
     const label = renderAmount(amount);

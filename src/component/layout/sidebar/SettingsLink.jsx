@@ -25,7 +25,7 @@ const SettingsLink = () => {
             <div className="link-icon">
                 <FontAwesomeIcon icon={faCogs} />
             </div>
-            <div className="label">{t("sidebar.setting", { name: settingsStore.currentSetting.name })}</div>
+            <div className="label">{t("sidebar.setting", { name: settingsStore.settingMeta.name })}</div>
         </Link>
     );
 };

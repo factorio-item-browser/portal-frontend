@@ -1,9 +1,9 @@
 import {
     NUMBER_OF_MACHINES_PER_PAGE,
     NUMBER_OF_ITEM_RECIPES_PER_PAGE,
+    NUMBER_OF_RANDOM_ITEMS,
     NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
     PORTAL_API_URL,
-    NUMBER_OF_RANDOM_ITEMS,
 } from "../helper/const";
 
 /**
@@ -92,6 +92,14 @@ class PortalApi {
             indexOfFirstResult: (page - 1) * NUMBER_OF_MACHINES_PER_PAGE,
             numberOfResults: NUMBER_OF_MACHINES_PER_PAGE,
         });
+    }
+
+    /**
+     * Fetches the settings available for the current user.
+     * @return {Promise<SettingsListData>}
+     */
+    async getSettings() {
+        return this._executeRequest("/settings");
     }
 
     /**
