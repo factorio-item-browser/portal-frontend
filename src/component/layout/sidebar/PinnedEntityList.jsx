@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next";
 import Sortable from "react-sortablejs";
 
 import SidebarStore from "../../../store/SidebarStore";
+import TooltipStore from "../../../store/TooltipStore";
 import SidebarEntity from "./SidebarEntity";
 
 import "./SidebarList.scss";
-import TooltipStore from "../../../store/TooltipStore";
 
 /**
  * The component representing the list of pinned entities in the sidebar.
@@ -19,6 +19,10 @@ const PinnedEntityList = () => {
     const sidebarStore = useContext(SidebarStore);
     const tooltipStore = useContext(TooltipStore);
 
+    if (sidebarStore.pinnedEntities.length === 0) {
+        return null;
+    }
+
     const sortableOptions = {
         group: {
             name: "sidebar-entities",
@@ -27,6 +31,7 @@ const PinnedEntityList = () => {
         },
         draggable: ".sidebar-entity",
         animation: 100,
+        delay: 100,
         onStart: () => {
             tooltipStore.setDisableFlag("sidebar-pinned", true);
         },
@@ -34,11 +39,6 @@ const PinnedEntityList = () => {
             tooltipStore.setDisableFlag("sidebar-pinned", false);
         },
     };
-    const entities = sidebarStore.pinnedEntities;
-
-    if (entities.length === 0) {
-        return null;
-    }
 
     return (
         <Sortable
@@ -49,7 +49,7 @@ const PinnedEntityList = () => {
             }}
         >
             <h3>{t("sidebar.headline-pinned")}</h3>
-            {entities.map((entity) => {
+            {sidebarStore.pinnedEntities.map((entity) => {
                 return <SidebarEntity key={sidebarStore.getIdForEntity(entity)} entity={entity} />;
             })}
         </Sortable>

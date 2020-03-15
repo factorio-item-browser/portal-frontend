@@ -83,6 +83,8 @@ class SettingsStore {
         const settingsListData = await this._portalApi.getSettings();
         runInAction(() => {
             this.settingDetails = settingsListData.currentSetting;
+            this.selectedLocale = settingsListData.currentSetting.locale;
+            this.selectedRecipeMode = settingsListData.currentSetting.recipeMode;
         });
     }
 

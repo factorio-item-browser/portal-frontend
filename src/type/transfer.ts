@@ -89,6 +89,8 @@ interface SessionInitData {
 
 interface SettingDetailsData extends SettingMetaData {
     mods: ModData[],
+    locale: string,
+    recipeMode: string,
 }
 
 interface SettingMetaData {

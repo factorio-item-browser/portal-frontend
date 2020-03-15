@@ -57,6 +57,7 @@ class SidebarStore {
         this._tooltipStore = tooltipStore;
 
         this._routeStore.addInitializeSessionHandler(this._initializeSession.bind(this));
+        this._routeStore.addRouteChangeHandler(this.closeSidebar.bind(this));
         window.addEventListener("storage", this._handleStorage.bind(this));
     }
 
