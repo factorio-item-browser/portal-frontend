@@ -69,6 +69,20 @@ class RouteStore {
     loadingCircleTarget = null;
 
     /**
+     * The name of the currently loaded setting.
+     * @type {string}
+     */
+    @observable
+    settingName = "Vanilla";
+
+    /**
+     * The locale to use for the page.
+     * @type {string}
+     */
+    @observable
+    locale = "en";
+
+    /**
      * Initializes the route store.
      * @type {PortalApi}
      */
@@ -76,6 +90,7 @@ class RouteStore {
         this._portalApi = portalApi;
 
         this._router = this._createRouter();
+        this.addInitializeSessionHandler(this._initializeSession.bind(this));
     }
 
     /**
@@ -118,6 +133,12 @@ class RouteStore {
         for (const handler of this._routeChangeHandlers) {
             handler(state);
         }
+    }
+
+    @action
+    _initializeSession({ settingName, locale }) {
+        this.settingName = settingName;
+        this.locale = locale;
     }
 
     /**

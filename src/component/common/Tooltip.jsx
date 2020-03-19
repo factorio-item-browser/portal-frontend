@@ -74,19 +74,21 @@ const Tooltip = () => {
     }, [isMedium]);
 
     useLayoutEffect(() => {
-        if (doRender) {
-            const { top, left, isChevronAbove, isChevronRight } = calculatePosition({
-                target: tooltipStore.fetchedTarget.current,
-                content: contentRef.current,
-                chevron: chevronRef.current,
-            });
-
-            tooltipRef.current.style.left = `${left}px`;
-            tooltipRef.current.style.top = `${top}px`;
-
-            chevronRef.current.classList.toggle("bottom", isChevronAbove);
-            chevronRef.current.classList.toggle("right", isChevronRight);
+        if (!doRender) {
+            return;
         }
+
+        const { top, left, isChevronAbove, isChevronRight } = calculatePosition({
+            target: tooltipStore.fetchedTarget.current,
+            content: contentRef.current,
+            chevron: chevronRef.current,
+        });
+
+        tooltipRef.current.style.left = `${left}px`;
+        tooltipRef.current.style.top = `${top}px`;
+
+        chevronRef.current.classList.toggle("bottom", isChevronAbove);
+        chevronRef.current.classList.toggle("right", isChevronRight);
     });
 
     if (!doRender) {

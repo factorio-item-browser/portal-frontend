@@ -54,19 +54,21 @@ const OptionsList = () => {
         <div className="options-list">
             <Option
                 label={t("settings.recipe-mode.label") + ":"}
-                description={t("settings.recipe-mode.description")}
                 options={buildRecipeModeOptions(t)}
                 value={settingStore.selectedRecipeMode}
                 onChange={(recipeMode) => settingStore.changeRecipeMode(recipeMode)}
-            />
+            >
+                {t("settings.recipe-mode.description")}
+            </Option>
 
             <Option
                 label={t("settings.locale.label") + ":"}
-                description={t("settings.locale.description")}
                 options={buildLocaleOptions()}
                 value={settingStore.selectedLocale}
                 onChange={(locale) => settingStore.changeLocale(locale)}
-            />
+            >
+                {t("settings.locale.description")}
+            </Option>
         </div>
     );
 };

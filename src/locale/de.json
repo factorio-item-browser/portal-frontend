@@ -86,6 +86,9 @@
         "title": "Suche: {{query}} - Factorio Item Browser"
     },
     "settings": {
+        "current-setting": {
+            "label": "Aktuelle Einstellung"
+        },
         "locale": {
             "label": "Sprache",
             "description": "Die Sprachen werden nur unterstützt, wenn die Mods entsprechende Übersetzungen liefern. Fehlende Übersetzen werden durch Englisch ersetzt."
@@ -108,7 +111,8 @@
                 "normal": "Normaler Modus",
                 "expensive": "Teurer Modus"
             }
-        }
+        },
+        "save-changes": "Änderungen speichern"
     },
     "sidebar": {
         "action-pin": "Element oben anheften",

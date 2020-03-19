@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import { ROUTE_INDEX, ROUTE_ITEM_DETAILS, ROUTE_RECIPE_DETAILS, ROUTE_SEARCH, ROUTE_SETTINGS } from "../helper/const";
-
 import RouteStore from "../store/RouteStore";
 
 import Tooltip from "./common/Tooltip";
@@ -34,10 +34,12 @@ const PAGE_BY_ROUTES = {
  */
 const App = () => {
     const routeStore = useContext(RouteStore);
+    const { i18n } = useTranslation();
 
     useEffect(() => {
         (async () => {
             await routeStore.initializeSession();
+            await i18n.changeLanguage(routeStore.locale);
         })();
     }, []);
 

@@ -1,0 +1,15 @@
+@import "../../../style/variable/all.scss";
+@import "../../../style/mixin/all.scss";
+
+.save-button {
+    @include dynamic-spacing(margin, default large);
+    @include dynamic-spacing(bottom, large);
+    @include button();
+
+    position: sticky;
+    z-index: $zIndex-sticky-button;
+
+    svg {
+        margin: 0 $spacing-default;
+    }
+}

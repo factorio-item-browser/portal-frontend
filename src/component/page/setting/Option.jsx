@@ -16,7 +16,7 @@ import "./Option.scss";
  * @return {ReactDOM}
  * @constructor
  */
-const Option = ({ label, description, options, value, onChange }) => {
+const Option = ({ label, options, value, onChange, children }) => {
     return (
         <div className="option">
             <div className="option-chevron">
@@ -33,13 +33,13 @@ const Option = ({ label, description, options, value, onChange }) => {
                     ))}
                 </select>
             </div>
-            <div className="option-description">{description}</div>
+            {children ? <div className="option-description">{children}</div> : null}
         </div>
     );
 };
 
 Option.propTypes = {
-    description: PropTypes.string.isRequired,
+    children: PropTypes.any,
     label: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     options: PropTypes.array.isRequired,

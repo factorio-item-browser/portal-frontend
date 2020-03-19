@@ -1,0 +1,6 @@
+@import "../../../style/variable/all.scss";
+@import "../../../style/mixin/all.scss";
+
+.settings-list {
+    @include dynamic-spacing(padding, 0 default);
+}

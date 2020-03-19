@@ -10,6 +10,7 @@ import HeaderLogo from "./header/HeaderLogo";
 import HeaderSearch from "./header/HeaderSearch";
 import SidebarIcon from "./header/SidebarIcon";
 import SearchIcon from "./header/SearchIcon";
+import SettingsLink from "./header/SettingsLink";
 
 import "./Header.scss";
 
@@ -29,6 +30,7 @@ const Header = () => {
             <header className="big">
                 <HeaderLogo />
                 <HeaderSearch />
+                <SettingsLink />
             </header>
         );
     }

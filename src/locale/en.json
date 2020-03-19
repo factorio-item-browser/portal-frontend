@@ -86,6 +86,9 @@
         "title": "Search: {{query}} - Factorio Item Browser"
     },
     "settings": {
+        "current-setting": {
+            "label": "Current setting"
+        },
         "locale": {
             "label": "Language",
             "description": "Languages are only supported as long as the mods provide translations for them. Missing translations will fall back to English."
@@ -108,7 +111,8 @@
                 "normal": "Normal mode",
                 "expensive": "Expensive mode"
             }
-        }
+        },
+        "save-changes": "Save changes"
     },
     "sidebar": {
         "action-pin": "Pin element to the top",

@@ -83,19 +83,23 @@ interface SearchResultsData {
 }
 
 interface SessionInitData {
-    setting: SettingMetaData,
+    settingName: string,
+    locale: string,
     sidebarEntities: SidebarEntityData[],
 }
 
-interface SettingDetailsData extends SettingMetaData {
+interface SettingDetailsData extends SettingMetaData, SettingOptionsData {
     mods: ModData[],
-    locale: string,
-    recipeMode: string,
 }
 
 interface SettingMetaData {
     id: string,
     name: string,
+}
+
+interface SettingOptionsData {
+    locale: string,
+    recipeMode: string,
 }
 
 interface SettingsListData {

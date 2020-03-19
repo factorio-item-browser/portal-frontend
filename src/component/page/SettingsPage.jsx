@@ -9,6 +9,8 @@ import EntityList from "../entity/EntityList";
 import Mod from "../entity/Mod";
 
 import OptionsList from "./setting/OptionsList";
+import SettingsList from "./setting/SettingsList";
+import SaveButton from "./setting/SaveButton";
 
 /**
  * The component representing the settings page.
@@ -21,6 +23,10 @@ const SettingsPage = () => {
 
     return (
         <Fragment>
+            <Section headline="Settings">
+                <SettingsList />
+            </Section>
+
             <Section headline={t("settings.options.headline")}>
                 <OptionsList />
             </Section>
@@ -32,6 +38,8 @@ const SettingsPage = () => {
                     })}
                 </EntityList>
             </Section>
+
+            <SaveButton />
         </Fragment>
     );
 };

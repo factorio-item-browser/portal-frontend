@@ -1,0 +1,39 @@
+@import "../../../style/variable/all.scss";
+@import "../../../style/mixin/all.scss";
+
+.settings-link {
+    @include dynamic-spacing(padding, default);
+    @include transition-default(opacity);
+
+    align-items: center;
+    color: white;
+    display: flex;
+    font-weight: bold;
+    justify-content: center;
+    opacity: $alpha-input-default;
+    margin: 0 auto;
+    max-width: 64rem;
+    position: relative;
+    text-shadow: $shadow-text;
+
+
+    &:hover, &:active {
+        color: white;
+        opacity: $alpha-input-focused;
+    }
+
+    .link-icon {
+        display: flex;
+        font-size: $text-size-large;
+
+        svg {
+            filter: drop-shadow($shadow-label);
+        }
+    }
+    .label {
+        margin-left: $spacing-default;
+
+        font-size: $text-size-large;
+        font-weight: bold;
+    }
+}

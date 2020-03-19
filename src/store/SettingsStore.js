@@ -24,18 +24,25 @@ class SettingsStore {
     _routeStore;
 
     /**
-     * The meta data of the currently used setting.
-     * @type {SettingMetaData}
-     */
-    @observable
-    settingMeta;
-
-    /**
      * The setting details currently shown on the settings page.
      * @type {SettingDetailsData}
      */
     @observable
     settingDetails;
+
+    /**
+     * The list of available settings.
+     * @type {SettingMetaData[]}
+     */
+    @observable
+    availableSettings = [];
+
+    /**
+     * The id of the currently selected setting.
+     * @type {string}
+     */
+    @observable
+    selectedSettingId = "";
 
     /**
      * The locale which has been selected.
@@ -52,6 +59,13 @@ class SettingsStore {
     selectedRecipeMode = RECIPE_MODE_HYBRID;
 
     /**
+     * Whether or not the save button is visible.
+     * @type {boolean}
+     */
+    @observable
+    isSaveButtonVisible = false;
+
+    /**
      * Initializes the store.
      * @param {PortalApi} portalApi
      * @param {RouteStore} routeStore
@@ -61,17 +75,6 @@ class SettingsStore {
         this._routeStore = routeStore;
 
         this._routeStore.addRoute(ROUTE_SETTINGS, "/settings", this._handleRouteChange.bind(this));
-        this._routeStore.addInitializeSessionHandler(this._initializeSession.bind(this));
-    }
-
-    /**
-     * Initializes the store with the session data.
-     * @param {SettingMetaData} setting
-     * @private
-     */
-    @action
-    _initializeSession({ setting }) {
-        this.settingMeta = setting;
     }
 
     /**
@@ -82,10 +85,41 @@ class SettingsStore {
     async _handleRouteChange() {
         const settingsListData = await this._portalApi.getSettings();
         runInAction(() => {
-            this.settingDetails = settingsListData.currentSetting;
-            this.selectedLocale = settingsListData.currentSetting.locale;
-            this.selectedRecipeMode = settingsListData.currentSetting.recipeMode;
+            this.isSaveButtonVisible = false;
+            this.availableSettings = settingsListData.settings;
+            this.selectedSettingId = settingsListData.currentSetting.id;
+
+            this._applySettingDetails(settingsListData.currentSetting);
         });
+    }
+
+    /**
+     * Changes the id of the currently selected setting.
+     * @param {string} settingId
+     * @return {Promise<void>}
+     */
+    @action
+    async changeSettingId(settingId) {
+        this.selectedSettingId = settingId;
+
+        const settingDetails = await this._portalApi.getSetting(settingId);
+        runInAction(() => {
+            this.isSaveButtonVisible = true;
+
+            this._applySettingDetails(settingDetails);
+        });
+    }
+
+    /**
+     * Applies the setting details to the store.
+     * @param {SettingDetailsData} settingDetails
+     * @private
+     */
+    @action
+    _applySettingDetails(settingDetails) {
+        this.settingDetails = settingDetails;
+        this.selectedLocale = settingDetails.locale;
+        this.selectedRecipeMode = settingDetails.recipeMode;
     }
 
     /**
@@ -95,6 +129,7 @@ class SettingsStore {
     @action
     changeLocale(locale) {
         this.selectedLocale = locale;
+        this.isSaveButtonVisible = true;
     }
 
     /**
@@ -104,6 +139,20 @@ class SettingsStore {
     @action
     changeRecipeMode(recipeMode) {
         this.selectedRecipeMode = recipeMode;
+        this.isSaveButtonVisible = true;
+    }
+
+    /**
+     * Saves the options and reloads the page on success.
+     * @return {Promise<void>}
+     */
+    @action
+    async saveOptions() {
+        await this._portalApi.saveSetting(this.selectedSettingId, {
+            locale: this.selectedLocale,
+            recipeMode: this.selectedRecipeMode,
+        });
+        location.reload();
     }
 }
 

@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 
 import { BREAKPOINT_LARGE } from "../../../helper/const";
+import RouteStore from "../../../store/RouteStore";
 import SearchStore from "../../../store/SearchStore";
 
 import "./HeaderSearch.scss";
@@ -16,12 +17,19 @@ import "./HeaderSearch.scss";
  * @constructor
  */
 const HeaderSearch = () => {
-    const isLarge = useMediaQuery({ minWidth: BREAKPOINT_LARGE });
+    const routeStore = useContext(RouteStore);
     const searchStore = useContext(SearchStore);
+
+    const isLarge = useMediaQuery({ minWidth: BREAKPOINT_LARGE });
     const { t } = useTranslation();
 
+    let searchIcon = <FontAwesomeIcon icon={faSearch} />;
+    if (searchStore.isLoading) {
+        searchIcon = <FontAwesomeIcon icon={faSpinner} spin />;
+    }
+
     let closeIcon = null;
-    if (!isLarge) {
+    if (!isLarge && !routeStore.useBigHeader) {
         closeIcon = (
             <div
                 className="close-icon"
@@ -36,13 +44,7 @@ const HeaderSearch = () => {
 
     return (
         <div className="header-search">
-            <div className="search-icon">
-                {searchStore.isLoading ? (
-                    <FontAwesomeIcon icon={faSpinner} spin />
-                ) : (
-                    <FontAwesomeIcon icon={faSearch} />
-                )}
-            </div>
+            <div className="search-icon">{searchIcon}</div>
             <form
                 onSubmit={async (event) => {
                     event.stopPropagation();

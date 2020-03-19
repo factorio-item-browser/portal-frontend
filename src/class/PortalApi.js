@@ -103,6 +103,25 @@ class PortalApi {
     }
 
     /**
+     * Fetches the details to a specific setting.
+     * @param {string} settingId
+     * @return {Promise<SettingDetailsData>}
+     */
+    async getSetting(settingId) {
+        return this._executeRequest(`/settings/${encodeURI(settingId)}`);
+    }
+
+    /**
+     * Save the setting with the options.
+     * @param {string} settingId
+     * @param {SettingOptionsData} options
+     * @return {Promise<void>}
+     */
+    async saveSetting(settingId, options) {
+        await this._executeRequest(`/settings/${encodeURI(settingId)}`, {}, options);
+    }
+
+    /**
      * Fetches the tooltip data for the specified type and name.
      * @param {string} type
      * @param {string} name
@@ -126,7 +145,7 @@ class PortalApi {
      * @returns {Promise<void>}
      */
     async sendSidebarEntities(sidebarEntities) {
-        this._executeRequest("/sidebar/entities", {}, sidebarEntities);
+        await this._executeRequest("/sidebar/entities", {}, sidebarEntities);
     }
 
     /**
