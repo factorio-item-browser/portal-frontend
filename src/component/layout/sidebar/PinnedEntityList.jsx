@@ -31,7 +31,7 @@ const PinnedEntityList = () => {
         },
         draggable: ".sidebar-entity",
         animation: 100,
-        delay: 100,
+        delay: 50,
         onStart: () => {
             tooltipStore.setDisableFlag("sidebar-pinned", true);
         },

@@ -32,7 +32,7 @@ const UnpinnedEntityList = () => {
         sort: false,
         draggable: ".sidebar-entity",
         animation: 100,
-        delay: 100,
+        delay: 50,
         onStart: () => {
             tooltipStore.setDisableFlag("sidebar-unpinned", true);
         },

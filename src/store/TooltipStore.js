@@ -104,6 +104,9 @@ class TooltipStore {
     @action
     setDisableFlag(name, isDisabled) {
         this._disableFlags[name] = isDisabled;
+        if (isDisabled) {
+            this.hideTooltip();
+        }
     }
 
     /**

@@ -86,7 +86,9 @@ class SettingsStore {
         const settingsListData = await this._portalApi.getSettings();
         runInAction(() => {
             this.isSaveButtonVisible = false;
-            this.availableSettings = settingsListData.settings;
+            this.availableSettings = settingsListData.settings.sort((left, right) => {
+                return left.name.localeCompare(right.name);
+            });
             this.selectedSettingId = settingsListData.currentSetting.id;
 
             this._applySettingDetails(settingsListData.currentSetting);
