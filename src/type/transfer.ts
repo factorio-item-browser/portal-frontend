@@ -90,6 +90,7 @@ interface SessionInitData {
 
 interface SettingDetailsData extends SettingMetaData, SettingOptionsData {
     mods: ModData[],
+    modIconsStyle: IconsStyleData,
 }
 
 interface SettingMetaData {

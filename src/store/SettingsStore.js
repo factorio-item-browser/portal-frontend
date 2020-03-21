@@ -1,14 +1,22 @@
 import { action, observable, runInAction } from "mobx";
 import { createContext } from "react";
 
-import { RECIPE_MODE_HYBRID, ROUTE_SETTINGS } from "../helper/const";
+import { iconManager } from "../class/IconManager";
 import { portalApi } from "../class/PortalApi";
+import { RECIPE_MODE_HYBRID, ROUTE_SETTINGS } from "../helper/const";
 import { routeStore } from "./RouteStore";
 
 /**
  * The store managing the settings and the settings page.
  */
 class SettingsStore {
+    /**
+     * The icon manager.
+     * @type {IconManager}
+     * @private
+     */
+    _iconManager;
+
     /**
      * The Portal API.
      * @type {PortalApi}
@@ -67,10 +75,12 @@ class SettingsStore {
 
     /**
      * Initializes the store.
+     * @param {IconManager} iconManager
      * @param {PortalApi} portalApi
      * @param {RouteStore} routeStore
      */
-    constructor(portalApi, routeStore) {
+    constructor(iconManager, portalApi, routeStore) {
+        this._iconManager = iconManager;
         this._portalApi = portalApi;
         this._routeStore = routeStore;
 
@@ -122,6 +132,8 @@ class SettingsStore {
         this.settingDetails = settingDetails;
         this.selectedLocale = settingDetails.locale;
         this.selectedRecipeMode = settingDetails.recipeMode;
+
+        this._iconManager.addAdditionalStyle("mod-icons", settingDetails.modIconsStyle);
     }
 
     /**
@@ -158,5 +170,5 @@ class SettingsStore {
     }
 }
 
-export const settingsStore = new SettingsStore(portalApi, routeStore);
+export const settingsStore = new SettingsStore(iconManager, portalApi, routeStore);
 export default createContext(settingsStore);

@@ -32,6 +32,13 @@ class IconManager {
     _styleElement;
 
     /**
+     * The additional style elements which have been added.
+     * @type {Object<string, Node>}
+     * @private
+     */
+    _additionalStyleElements = {};
+
+    /**
      * The requested entities. These entities must be loaded with the next request.
      * @type {NamesByTypesSet}
      * @private
@@ -117,6 +124,21 @@ class IconManager {
     _appendStyle(style) {
         const text = document.createTextNode(style);
         this._styleElement.appendChild(text);
+    }
+
+    /**
+     * Adds an additional (preloaded) style to the icon manager.
+     * @param {string} name
+     * @param {IconsStyleData} style
+     */
+    addAdditionalStyle(name, style) {
+        if (this._additionalStyleElements[name]) {
+            this._additionalStyleElements[name].textContent = style.style;
+        } else {
+            const text = document.createTextNode(style.style);
+            this._additionalStyleElements[name] = this._styleElement.appendChild(text);
+        }
+        this._processedEntities.merge(style.processedEntities);
     }
 }
 
