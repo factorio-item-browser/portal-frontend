@@ -3,6 +3,7 @@ import { createContext } from "react";
 import { createRouter } from "router5";
 import browserPluginFactory from "router5-plugin-browser";
 
+import { cacheManager } from "../class/CacheManager";
 import { portalApi } from "../class/PortalApi";
 import { ROUTE_INDEX, ROUTE_ITEM_DETAILS, ROUTE_RECIPE_DETAILS } from "../helper/const";
 
@@ -20,6 +21,13 @@ const entityTypeToRouteMap = {
  * The store handling the pages, including routing between them.
  */
 class RouteStore {
+    /**
+     * The cache manager.
+     * @type {CacheManager}
+     * @private
+     */
+    _cacheManager;
+
     /**
      * The portal API instance.
      * @type {PortalApi}
@@ -84,9 +92,11 @@ class RouteStore {
 
     /**
      * Initializes the route store.
-     * @type {PortalApi}
+     * @param {CacheManager} cacheManager
+     * @param {PortalApi} portalApi
      */
-    constructor(portalApi) {
+    constructor(cacheManager, portalApi) {
+        this._cacheManager = cacheManager;
         this._portalApi = portalApi;
 
         this._router = this._createRouter();
@@ -135,10 +145,17 @@ class RouteStore {
         }
     }
 
+    /**
+     * Initializes the session
+     * @param {SessionInitData} session
+     * @private
+     */
     @action
-    _initializeSession({ settingName, locale }) {
-        this.settingName = settingName;
-        this.locale = locale;
+    _initializeSession(session) {
+        this.settingName = session.settingName;
+        this.locale = session.locale;
+
+        this._cacheManager.setSettingHash(session.settingHash);
     }
 
     /**
@@ -255,5 +272,5 @@ class RouteStore {
     }
 }
 
-export const routeStore = new RouteStore(portalApi);
+export const routeStore = new RouteStore(cacheManager, portalApi);
 export default createContext(routeStore);

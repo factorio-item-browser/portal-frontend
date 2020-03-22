@@ -1,7 +1,7 @@
 import { observable, runInAction } from "mobx";
 import { createContext } from "react";
 
-import Cache from "../class/Cache";
+import { cacheManager } from "../class/CacheManager";
 import { portalApi } from "../class/PortalApi";
 import PaginatedList from "../class/PaginatedList";
 import { ROUTE_ITEM_DETAILS } from "../helper/const";
@@ -147,7 +147,5 @@ class ItemStore {
     }
 }
 
-const cache = new Cache("item", 86400000);
-
-export const itemStore = new ItemStore(cache, portalApi, routeStore, sidebarStore);
+export const itemStore = new ItemStore(cacheManager.create("item"), portalApi, routeStore, sidebarStore);
 export default createContext(itemStore);

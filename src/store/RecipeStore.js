@@ -1,7 +1,7 @@
 import { observable, runInAction } from "mobx";
 import { createContext } from "react";
 
-import Cache from "../class/Cache";
+import { cacheManager } from "../class/CacheManager";
 import { portalApi } from "../class/PortalApi";
 import PaginatedList from "../class/PaginatedList";
 import { ROUTE_RECIPE_DETAILS } from "../helper/const";
@@ -142,8 +142,11 @@ class RecipeStore {
     }
 }
 
-const detailsCache = new Cache("recipe", 86400000);
-const machinesCache = new Cache("recipe-machines", 86400000);
-
-export const recipeStore = new RecipeStore(detailsCache, machinesCache, portalApi, routeStore, sidebarStore);
+export const recipeStore = new RecipeStore(
+    cacheManager.create("recipe"),
+    cacheManager.create("recipe-machines"),
+    portalApi,
+    routeStore,
+    sidebarStore
+);
 export default createContext(recipeStore);

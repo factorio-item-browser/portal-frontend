@@ -2,6 +2,7 @@ import { action, computed, observable } from "mobx";
 import { createContext } from "react";
 
 import { portalApi } from "../class/PortalApi";
+import { STORAGE_KEY_SIDEBAR_ENTITIES } from "../helper/const";
 
 import { routeStore } from "./RouteStore";
 import { tooltipStore } from "./TooltipStore";
@@ -76,7 +77,7 @@ class SidebarStore {
      * @private
      */
     _handleStorage(event) {
-        if (event.key === "sidebarEntities") {
+        if (event.key === STORAGE_KEY_SIDEBAR_ENTITIES) {
             try {
                 this._assignEntities(JSON.parse(event.newValue));
             } catch (e) {
@@ -254,7 +255,7 @@ class SidebarStore {
     _sendEntities() {
         const entities = [...this.pinnedEntities, ...this.unpinnedEntities];
 
-        localStorage.setItem("sidebarEntities", JSON.stringify(entities));
+        localStorage.setItem(STORAGE_KEY_SIDEBAR_ENTITIES, JSON.stringify(entities));
         (async () => {
             await this._portalApi.sendSidebarEntities(entities);
         })();

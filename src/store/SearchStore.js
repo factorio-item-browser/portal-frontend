@@ -1,7 +1,7 @@
 import { action, observable, runInAction } from "mobx";
 import { createContext } from "react";
 
-import Cache from "../class/Cache";
+import { cacheManager } from "../class/CacheManager";
 import PaginatedList from "../class/PaginatedList";
 import { portalApi } from "../class/PortalApi";
 import { ROUTE_SEARCH } from "../helper/const";
@@ -135,6 +135,7 @@ class SearchStore {
     _handleGeneralRouteChange({ route }) {
         if (route.name !== ROUTE_SEARCH && !this._isInputFocused) {
             this.searchQuery = "";
+            this.requestedSearchQuery = "";
         }
     }
 
@@ -217,7 +218,5 @@ class SearchStore {
     }
 }
 
-const cache = new Cache("search", 68400000);
-
-export const searchStore = new SearchStore(cache, portalApi, routeStore);
+export const searchStore = new SearchStore(cacheManager.create("search"), portalApi, routeStore);
 export default createContext(searchStore);

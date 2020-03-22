@@ -84,6 +84,7 @@ interface SearchResultsData {
 
 interface SessionInitData {
     settingName: string,
+    settingHash: string,
     locale: string,
     sidebarEntities: SidebarEntityData[],
 }

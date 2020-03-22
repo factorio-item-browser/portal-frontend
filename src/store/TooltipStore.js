@@ -1,7 +1,7 @@
 import { action, computed, observable, runInAction } from "mobx";
 import { createContext } from "react";
 
-import Cache from "../class/Cache";
+import { cacheManager } from "../class/CacheManager";
 import { portalApi } from "../class/PortalApi";
 
 import { routeStore } from "./RouteStore";
@@ -123,6 +123,7 @@ class TooltipStore {
         }
 
         this.requestedTarget = target;
+        this.fetchedTarget = null;
         const data = await this._fetchTooltipData(type, name);
         runInAction(() => {
             if (this.requestedTarget !== null && this.requestedTarget.current === target.current) {
@@ -173,7 +174,5 @@ class TooltipStore {
     }
 }
 
-const cache = new Cache("tooltip", 86400000);
-
-export const tooltipStore = new TooltipStore(cache, portalApi, routeStore);
+export const tooltipStore = new TooltipStore(cacheManager.create("tooltip"), portalApi, routeStore);
 export default createContext(tooltipStore);

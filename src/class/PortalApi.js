@@ -213,4 +213,3 @@ class PortalApi {
 }
 
 export const portalApi = new PortalApi();
-export default PortalApi;
