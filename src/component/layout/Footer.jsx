@@ -10,13 +10,15 @@ import "./Footer.scss";
  * @constructor
  */
 const Footer = () => {
+    const year = (new Date()).getFullYear();
+
     return (
         <footer>
             <div className="copyright">
-                © 2019 Factorio Item Browser
+                © {year} Factorio Item Browser
                 <br />
                 <Trans i18nKey="footer.copyright-disclaimer">
-                    All images are owned by
+                    All content and images are owned by
                     <a href="https://www.factorio.com/" target="_blank" rel="noopener noreferrer nofollow">
                         Wube Software
                     </a>
