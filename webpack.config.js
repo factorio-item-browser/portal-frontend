@@ -1,3 +1,4 @@
+const AsyncCssPlugin = require("async-css-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const dotenv = require("dotenv");
@@ -105,15 +106,16 @@ module.exports = (env, argv) => {
                 template: `${currentPath}/src/index.ejs`,
                 excludeAssets: [/images\.(.*)\.js$/],
             }),
+            new HtmlWebpackExcludeAssetsPlugin(),
             new HtmlInlineCSSWebpackPlugin({
                 filter(fileName) {
                     return fileName === "index.html" || fileName.includes("main");
                 }
             }),
-            new HtmlWebpackExcludeAssetsPlugin(),
             new ScriptExtHtmlWebpackPlugin({
                 defaultAttribute: "defer",
             }),
+            new AsyncCssPlugin(),
         ],
         devServer: {
             contentBase: "./build",
