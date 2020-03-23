@@ -1,6 +1,7 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const dotenv = require("dotenv");
+const HtmlInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin").default;
 const HtmlWebpackExcludeAssetsPlugin = require("html-webpack-exclude-assets-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -97,16 +98,21 @@ module.exports = (env, argv) => {
                 { from: `${currentPath}/src/root/opensearch.xml` },
             ]),
             new DefinePlugin(envVars),
+            new MiniCssExtractPlugin({
+                filename: isProduction ? "asset/css/[name].[hash].css" : "asset/css/[name].css",
+            }),
             new HtmlWebpackPlugin({
                 template: `${currentPath}/src/index.ejs`,
                 excludeAssets: [/images\.(.*)\.js$/],
             }),
+            new HtmlInlineCSSWebpackPlugin({
+                filter(fileName) {
+                    return fileName === "index.html" || fileName.includes("main");
+                }
+            }),
             new HtmlWebpackExcludeAssetsPlugin(),
             new ScriptExtHtmlWebpackPlugin({
                 defaultAttribute: "defer",
-            }),
-            new MiniCssExtractPlugin({
-                filename: isProduction ? "asset/css/[name].[hash].css" : "asset/css/[name].css",
             }),
         ],
         devServer: {
@@ -115,6 +121,6 @@ module.exports = (env, argv) => {
             hot: true,
             historyApiFallback: true
         },
-        devtool: "source-map",
+        devtool: isProduction ? false : "source-map",
     }
 };
