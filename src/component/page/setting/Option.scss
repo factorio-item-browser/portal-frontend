@@ -11,7 +11,7 @@
         @include dynamic-spacing(right top, default);
 
         color: color($color-box-default, $lightness-text-primary);
-        font-size: $text-size-default;
+        font-size: $text-size-option;
         pointer-events: none;
         position: absolute;
     }
@@ -21,26 +21,33 @@
         color: color($color-box-default, $lightness-text-primary);
         display: flex;
         align-items: center;
-        font-size: $text-size-default;
-        font-weight: bold;
+
+
+        select, h3 {
+            @include dynamic-spacing(padding, default);
+
+            font-size: $text-size-option;
+            font-weight: bold;
+        }
 
         h3 {
-            @include dynamic-spacing(padding, default);
+            border-right: px-to-rem(1) solid rgba(color($color-box-default, $lightness-box-border), $alpha-box-border);
+            text-align: right;
+            flex-basis: 16rem;
         }
 
         select {
-            @include dynamic-spacing(padding, default);
-
             appearance: none;
-            background: $color-box-default;
+            background: $color-highlight;
             border: none;
+            color: color($color-highlight, $lightness-text-primary);
             cursor: pointer;
             flex-grow: 1;
-            font-size: $text-size-default;
-            font-weight: bold;
             outline: none;
 
             option {
+                background: $color-box-default;
+                color: color($color-box-default, $lightness-text-primary);
                 font-size: 1rem;
                 font-weight: normal;
             }

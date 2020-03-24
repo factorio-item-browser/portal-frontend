@@ -15,21 +15,18 @@ $alpha-input-focused: 0.75;
 
 $color-box-default: hsl(0deg, 0%, 90%);
 $color-box-error: $color-box-default; //hsl(0deg, 50%, 90%);
-$color-box-mod-disabled: $color-box-default;
-$color-box-mod-enabled: hsl(120deg, 50%, 90%);
-$color-box-setting: $color-box-default;
-$color-box-setting-enabled: hsl(190deg, 57.5%, 90%);
 $color-box-sidebar: $color-box-default;
 $color-button-primary: hsl(25deg, 100%, 90%);
 $color-concrete: #656462;
 $color-header-text: white;
+$color-highlight: hsl(190deg, 57.5%, 90%);
 $color-message-error: hsl(0deg, 50%, 90%);
 $color-message-success: hsl(120deg, 50%, 90%);
 $color-message-warning: hsl(60deg, 50%, 90%);
 $color-overlay: rgba(black, 0.5);
 $color-recipe-expensive: hsl(0deg, 100%, 90%);
 $color-section-headline: $color-box-default;
-$color-tooltip: $color-box-setting-enabled;
+$color-tooltip: hsl(190deg, 57.5%, 90%);
 $color-water: #194c5a;
 
 $lightness-box-background: 90%;

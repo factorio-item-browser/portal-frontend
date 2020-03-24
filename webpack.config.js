@@ -109,7 +109,7 @@ module.exports = (env, argv) => {
             new HtmlWebpackExcludeAssetsPlugin(),
             new HtmlInlineCSSWebpackPlugin({
                 filter(fileName) {
-                    return fileName === "index.html" || fileName.includes("main");
+                    return isProduction && (fileName === "index.html" || fileName.includes("main"));
                 }
             }),
             new ScriptExtHtmlWebpackPlugin({
