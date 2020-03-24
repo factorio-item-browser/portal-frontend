@@ -10,7 +10,7 @@ import "./Footer.scss";
  * @constructor
  */
 const Footer = () => {
-    const year = (new Date()).getFullYear();
+    const year = new Date().getFullYear();
 
     return (
         <footer>

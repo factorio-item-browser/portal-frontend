@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
-import Sortable from "react-sortablejs";
+import { ReactSortable } from "react-sortablejs";
 import { useTranslation } from "react-i18next";
 
 import SidebarStore from "../../../store/SidebarStore";
@@ -23,31 +23,36 @@ const UnpinnedEntityList = () => {
         return null;
     }
 
-    const sortableOptions = {
-        group: {
-            name: "sidebar-entities",
-            pull: true,
-            put: false,
-        },
-        sort: false,
-        draggable: ".sidebar-entity",
-        animation: 100,
-        delay: 50,
-        onStart: () => {
-            tooltipStore.setDisableFlag("sidebar-unpinned", true);
-        },
-        onEnd: () => {
-            tooltipStore.setDisableFlag("sidebar-unpinned", false);
-        },
-    };
+    const items = sidebarStore.unpinnedEntities.map((entity) => {
+        return {
+            id: sidebarStore.getIdForEntity(entity),
+            entity: entity,
+        };
+    });
 
     return (
-        <Sortable className="sidebar-list" options={sortableOptions} onChange={() => {}}>
+        <div className="sidebar-list">
             <h3>{t("sidebar.headline-last-viewed")}</h3>
-            {sidebarStore.unpinnedEntities.map((entity) => {
-                return <SidebarEntity key={sidebarStore.getIdForEntity(entity)} entity={entity} />;
-            })}
-        </Sortable>
+            <ReactSortable
+                list={items}
+                setList={() => {}}
+                group={{ name: "sidebar-entities", pull: true, put: false }}
+                sort={false}
+                draggable=".sidebar-entity"
+                animation={100}
+                delay={"ontouchstart" in window ? 100 : 0}
+                onStart={() => {
+                    tooltipStore.setDisableFlag("sidebar-unpinned", true);
+                }}
+                onEnd={() => {
+                    tooltipStore.setDisableFlag("sidebar-unpinned", false);
+                }}
+            >
+                {items.map((item) => {
+                    return <SidebarEntity key={item.id} entity={item.entity} />;
+                })}
+            </ReactSortable>
+        </div>
     );
 };
 

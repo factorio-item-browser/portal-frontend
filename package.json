@@ -32,10 +32,9 @@
     "react-dom": "^16.13.1",
     "react-i18next": "^11.3.4",
     "react-responsive": "^8.0.3",
-    "react-sortablejs": "^1.5.1",
+    "react-sortablejs": "^2.0.11",
     "router5": "^8.0.1",
-    "router5-plugin-browser": "^8.0.1",
-    "sortablejs": "^1.10.2"
+    "router5-plugin-browser": "^8.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
