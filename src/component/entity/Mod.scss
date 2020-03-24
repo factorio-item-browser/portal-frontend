@@ -18,15 +18,15 @@
     }
 
     .mod-content {
-        background: rgba(color($color-box-default, $lightness-box-background), $alpha-box-content);
+        background: color($color-box-default, $lightness-box-background, $alpha-box-content);
         flex-grow: 1;
     }
 
 }
 
 .mod-details {
-    border-top: px-to-rem(1) solid rgba(color($color-box-default, $lightness-box-border), $alpha-box-border);
-    border-left: px-to-rem(1) solid rgba(color($color-box-default, $lightness-box-border), $alpha-box-border);
+    border-top: px-to-rem(1) solid color($color-box-default, $lightness-box-border, $alpha-box-border);
+    border-left: px-to-rem(1) solid color($color-box-default, $lightness-box-border, $alpha-box-border);
     color: color($color-box-default, $lightness-text-primary);
     line-height: $text-size-default;
     padding: $spacing-default;

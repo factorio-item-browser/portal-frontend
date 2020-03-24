@@ -13,8 +13,8 @@
         width: $tooltip-content-width;
 
         .more-recipes {
-            background: rgba(color($color-tooltip, $lightness-box-background), $alpha-box-content-tooltip);
-            border-top: px-to-rem(1) solid rgba(color($color-tooltip, $lightness-box-border), $alpha-box-border);
+            background: color($color-tooltip, $lightness-box-background, $alpha-box-content-tooltip);
+            border-top: px-to-rem(1) solid color($color-tooltip, $lightness-box-border, $alpha-box-border);
             color: color($color-tooltip, $lightness-text-primary);
         }
     }
@@ -25,12 +25,12 @@
     }
 
     .compact-recipe {
-        background: rgba(color($color-tooltip, $lightness-box-background), $alpha-box-content-tooltip);
-        border-top-color: rgba(color($color-tooltip, $lightness-box-border), $alpha-box-border);
+        background: color($color-tooltip, $lightness-box-background, $alpha-box-content-tooltip);
+        border-top-color: color($color-tooltip, $lightness-box-border, $alpha-box-border);
         color: color($color-tooltip, $lightness-text-primary);
 
         &.expensive {
-            background-color: rgba(color($color-recipe-expensive, $lightness-box-background), $alpha-box-content-tooltip);
+            background-color: color($color-recipe-expensive, $lightness-box-background, $alpha-box-content-tooltip);
             color: color($color-recipe-expensive, $lightness-text-primary);
         }
     }

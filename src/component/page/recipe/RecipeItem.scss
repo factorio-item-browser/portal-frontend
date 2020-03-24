@@ -6,7 +6,7 @@
 
     align-items: center;
     background: rgba($color-box-default, $alpha-box-content);
-    border-top: px-to-rem(1) solid rgba(color($color-box-default, $lightness-box-border), $alpha-box-border);
+    border-top: px-to-rem(1) solid color($color-box-default, $lightness-box-border, $alpha-box-border);
     display: flex;
     font-weight: bold;
 
@@ -28,6 +28,6 @@
 }
 
 .recipe-details.expensive .recipe-item {
-    background: rgba(color($color-recipe-expensive, $lightness-box-background), $alpha-box-content);
-    border-top-color: rgba(color($color-recipe-expensive, $lightness-box-border), $alpha-box-border);
+    background: color($color-recipe-expensive, $lightness-box-background, $alpha-box-content);
+    border-top-color: color($color-recipe-expensive, $lightness-box-border, $alpha-box-border);
 }

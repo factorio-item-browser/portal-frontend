@@ -37,6 +37,6 @@
         @include dynamic-spacing(padding, default);
 
         background: rgba($color-box-default, $alpha-box-content);
-        border-top: px-to-rem(1) solid rgba(color($color-box-default, $lightness-box-border), $alpha-box-border);
+        border-top: px-to-rem(1) solid color($color-box-default, $lightness-box-border, $alpha-box-border);
     }
 }

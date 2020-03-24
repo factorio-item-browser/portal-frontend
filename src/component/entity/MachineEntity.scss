@@ -2,8 +2,8 @@
 @import "../../style/variable/all";
 
 .machine-details {
-    background: rgba(color($color-box-default, $lightness-box-background), $alpha-box-content);
-    border-top: px-to-rem(1) solid rgba(color($color-box-default, $lightness-box-border), $alpha-box-border);
+    background: color($color-box-default, $lightness-box-background, $alpha-box-content);
+    border-top: px-to-rem(1) solid color($color-box-default, $lightness-box-border, $alpha-box-border);
     color: color($color-box-default, $lightness-text-primary);
     line-height: $text-size-default;
     padding: $spacing-small $spacing-default;

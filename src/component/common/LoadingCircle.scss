@@ -3,7 +3,7 @@
 
 .loading-circle {
     align-items: center;
-    background: rgba(color($color-box-default, $lightness-box-background), 0.5);
+    background: color($color-box-default, $lightness-box-background, $alpha-loading-circle);
     display: flex;
     font-size: $icon-size-default;
     justify-content: center;

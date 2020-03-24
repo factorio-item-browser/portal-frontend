@@ -11,10 +11,14 @@
  * Modifies a color by changing the lightness value in the HSL color room.
  * @param {color} $color The color to modify
  * @param {number} $lightness The lightness value to use.
+ * @param {number} $alpha The alpha value to use.
  * @return {color} The modified color.
  */
-@function color($color, $lightness) {
-    @return hsl(hue($color), saturation($color), $lightness);
+@function color($color, $lightness, $alpha: 100%) {
+    @if $alpha == 100% {
+        @return hsl(hue($color), saturation($color), $lightness)
+    }
+    @return hsla(hue($color), saturation($color), $lightness, $alpha);
 }
 
 /**
