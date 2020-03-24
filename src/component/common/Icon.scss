@@ -33,4 +33,15 @@
             top: px-to-rem(-10);
         }
     }
+
+    &.highlighted {
+        &.with-background {
+            border: px-to-rem(1) solid color($color-highlight, $lightness-box-border);
+            background-color: color($color-highlight, $lightness-icon-background);
+        }
+
+        .amount {
+            color: color($color-highlight, $lightness-shadowed-label-text);
+        }
+    }
 }

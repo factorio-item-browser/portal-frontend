@@ -1,4 +1,4 @@
-import { observable, runInAction } from "mobx";
+import { computed, observable, runInAction } from "mobx";
 import { createContext } from "react";
 
 import { cacheManager } from "../class/CacheManager";
@@ -26,6 +26,13 @@ class ItemStore {
      * @private
      */
     _portalApi;
+
+    /**
+     * The route store.
+     * @type {RouteStore}
+     * @private
+     */
+    _routeStore;
 
     /**
      * The sidebar store.
@@ -144,6 +151,25 @@ class ItemStore {
         const requestedData = await this._portalApi.getItemIngredientRecipes(type, name, page);
         this._cache.write(cacheKey, requestedData);
         return requestedData;
+    }
+
+    /**
+     * Returns the entity to highlight.
+     * @return {{name: string, type: string}}
+     */
+    @computed
+    get highlightedEntity() {
+        if (this._routeStore.currentRoute !== ROUTE_ITEM_DETAILS) {
+            return {
+                type: "",
+                name: "",
+            }
+        }
+
+        return {
+            type: this.currentItem.type,
+            name: this.currentItem.name,
+        }
     }
 }
 

@@ -10,6 +10,7 @@ import TooltipStore from "../../store/TooltipStore";
 import EntityLink from "../link/EntityLink";
 
 import "./Icon.scss";
+import ItemStore from "../../store/ItemStore";
 
 /**
  * Renders the element for the amount.
@@ -36,12 +37,14 @@ function renderAmount(amount) {
  * @constructor
  */
 const Icon = ({ type, name, amount = 0, transparent = false, linked = false }, ref) => {
+    const itemStore = useContext(ItemStore);
     const tooltipStore = useContext(TooltipStore);
 
     const classes = classNames({
         "icon": true,
         [`icon-${type}-${name}`.replace(/ /g, "_")]: true,
         "with-background": !transparent,
+        "highlighted": itemStore.highlightedEntity.type === type && itemStore.highlightedEntity.name === name,
     });
     const label = renderAmount(amount);
     const iconRef = ref || createRef();
