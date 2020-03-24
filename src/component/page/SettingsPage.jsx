@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { Fragment, useContext } from "react";
+import React, { Fragment, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import SettingsStore from "../../store/SettingsStore";
@@ -20,6 +20,10 @@ import SaveButton from "./setting/SaveButton";
 const SettingsPage = () => {
     const settingsStore = useContext(SettingsStore);
     const { t } = useTranslation();
+
+    useEffect(() => {
+        document.title = t("settings.title");
+    }, []);
 
     return (
         <Fragment>

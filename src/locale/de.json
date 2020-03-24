@@ -112,7 +112,8 @@
                 "expensive": "Teurer Modus"
             }
         },
-        "save-changes": "Änderungen speichern"
+        "save-changes": "Änderungen speichern",
+        "title": "Einstellungen - Factorio Item Browser"
     },
     "sidebar": {
         "action-pin": "Element oben anheften",

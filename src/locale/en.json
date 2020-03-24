@@ -112,7 +112,8 @@
                 "expensive": "Expensive mode"
             }
         },
-        "save-changes": "Save changes"
+        "save-changes": "Save changes",
+        "title": "Settings - Factorio Item Browser"
     },
     "sidebar": {
         "action-pin": "Pin element to the top",
