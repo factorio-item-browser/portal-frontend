@@ -2,7 +2,7 @@ import { action, computed, observable } from "mobx";
 import { createContext } from "react";
 
 import { portalApi } from "../class/PortalApi";
-import { STORAGE_KEY_SIDEBAR_ENTITIES } from "../helper/const";
+import { ROUTE_ITEM_DETAILS, ROUTE_RECIPE_DETAILS, STORAGE_KEY_SIDEBAR_ENTITIES } from "../helper/const";
 
 import { routeStore } from "./RouteStore";
 import { tooltipStore } from "./TooltipStore";
@@ -40,6 +40,13 @@ class SidebarStore {
     entities = new Map();
 
     /**
+     * The id of the entity which is currently highlighted.
+     * @type {string}
+     */
+    @observable
+    highlightedEntityId = "";
+
+    /**
      * Whether the sidebar has been opened on mobile.
      * @type {boolean}
      */
@@ -58,7 +65,7 @@ class SidebarStore {
         this._tooltipStore = tooltipStore;
 
         this._routeStore.addInitializeSessionHandler(this._initializeSession.bind(this));
-        this._routeStore.addRouteChangeHandler(this.closeSidebar.bind(this));
+        this._routeStore.addRouteChangeHandler(this._handleRouteChange.bind(this));
         window.addEventListener("storage", this._handleStorage.bind(this));
     }
 
@@ -69,6 +76,27 @@ class SidebarStore {
      */
     _initializeSession({ sidebarEntities }) {
         this._assignEntities(sidebarEntities);
+    }
+
+    /**
+     * Handles the change of the route.
+     * @param {State} route
+     * @private
+     */
+    @action
+    _handleRouteChange({ route }) {
+        this.closeSidebar();
+
+        switch (route.name) {
+            case ROUTE_RECIPE_DETAILS:
+                this.highlightedEntityId = `recipe-${route.params.name}`;
+                break;
+            case ROUTE_ITEM_DETAILS:
+                this.highlightedEntityId = `${route.params.type}-${route.params.name}`;
+                break;
+            default:
+                this.highlightedEntityId = "";
+        }
     }
 
     /**

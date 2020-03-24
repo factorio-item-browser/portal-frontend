@@ -54,4 +54,21 @@
         right: 0;
         text-transform: uppercase;
     }
+
+    &.highlighted {
+        background: color($color-highlight, $lightness-box-background, $alpha-box-content);
+        color: color($color-highlight, $lightness-text-primary);
+
+        .action {
+            color: color($color-highlight, $lightness-text-secondary);
+
+            &:hover {
+                color: color($color-highlight, $lightness-text-primary);
+            }
+        }
+
+        .type {
+            color: color($color-highlight, $lightness-text-primary, $alpha-box-label);
+        }
+    }
 }

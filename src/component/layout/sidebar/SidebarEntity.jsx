@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbtack, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
@@ -74,14 +75,19 @@ const SidebarEntity = ({ entity }) => {
     const tooltipStore = useContext(TooltipStore);
 
     const iconRef = createRef();
+    const entityId = sidebarStore.getIdForEntity(entity);
+    const classes = classNames({
+        "sidebar-entity": true,
+        "highlighted": entityId === sidebarStore.highlightedEntityId,
+    });
 
     return (
         <EntityLink
             type={entity.type}
             name={entity.name}
-            className="sidebar-entity"
+            className={classes}
             draggable={true}
-            data-id={sidebarStore.getIdForEntity(entity)}
+            data-id={entityId}
             onMouseEnter={async () => {
                 await tooltipStore.showTooltip(iconRef, entity.type, entity.name);
             }}
