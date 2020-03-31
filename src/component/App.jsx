@@ -2,7 +2,14 @@ import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import { ROUTE_INDEX, ROUTE_ITEM_DETAILS, ROUTE_RECIPE_DETAILS, ROUTE_SEARCH, ROUTE_SETTINGS } from "../helper/const";
+import {
+    ROUTE_INDEX,
+    ROUTE_ITEM_DETAILS,
+    ROUTE_SETTINGS_CREATE,
+    ROUTE_RECIPE_DETAILS,
+    ROUTE_SEARCH,
+    ROUTE_SETTINGS
+} from "../helper/const";
 import RouteStore from "../store/RouteStore";
 
 import Tooltip from "./common/Tooltip";
@@ -15,6 +22,7 @@ import IndexPage from "./page/IndexPage";
 import ItemDetailsPage from "./page/ItemDetailsPage";
 import RecipeDetailsPage from "./page/RecipeDetailsPage";
 import SearchResultsPage from "./page/SearchResultsPage";
+import SettingsCreatePage from "./page/SettingsCreatePage";
 import SettingsPage from "./page/SettingsPage";
 
 import "./App.scss";
@@ -22,6 +30,7 @@ import "./App.scss";
 const PAGE_BY_ROUTES = {
     [ROUTE_INDEX]: <IndexPage />,
     [ROUTE_ITEM_DETAILS]: <ItemDetailsPage />,
+    [ROUTE_SETTINGS_CREATE]: <SettingsCreatePage />,
     [ROUTE_RECIPE_DETAILS]: <RecipeDetailsPage />,
     [ROUTE_SEARCH]: <SearchResultsPage />,
     [ROUTE_SETTINGS]: <SettingsPage />,

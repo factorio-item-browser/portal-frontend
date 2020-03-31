@@ -73,6 +73,7 @@ export const ROUTE_ITEM_DETAILS = "itemDetails";
 export const ROUTE_RECIPE_DETAILS = "recipeDetails";
 export const ROUTE_SEARCH = "search";
 export const ROUTE_SETTINGS = "settings";
+export const ROUTE_SETTINGS_CREATE = "settingsCreate";
 
 export const STORAGE_KEY_SIDEBAR_ENTITIES = "sidebar-entities";
 export const STORAGE_KEY_SETTING_HASH = "setting-hash";

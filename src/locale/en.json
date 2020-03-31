@@ -115,6 +115,17 @@
         "save-changes": "Save changes",
         "title": "Settings - Factorio Item Browser"
     },
+    "settings-create": {
+        "upload-file": {
+            "button": {
+                "select": "Select your <1>mod-list.json</1> file.",
+                "select-or-drag": "Select your <1>mod-list.json</1> file or drag it here.",
+                "drop": "Drop it here."
+            },
+            "headline": "1. Upload mod-list.json"
+        },
+        "title": "Create Setting - Factorio Item Browser"
+    },
     "sidebar": {
         "action-pin": "Pin element to the top",
         "action-unpin": "Unpin element from the top",

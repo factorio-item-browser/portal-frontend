@@ -1,0 +1,30 @@
+@import "../../../style/variable/all.scss";
+@import "../../../style/mixin/all.scss";
+
+.mod-list-upload {
+    label {
+        @include button();
+        @include dynamic-spacing(margin padding, large);
+
+        font-size: $text-size-headline-small;
+        font-weight: normal;
+
+        @include breakpoint(large) {
+            font-size: $text-size-large;
+        }
+
+        .file {
+            font-weight: bold;
+        }
+
+        svg {
+            margin-right: $spacing-default;
+        }
+    }
+
+    &.is-dragged-over {
+        label {
+            background: color($color-button-primary, $lightness-button-background-hover);
+        }
+    }
+}
