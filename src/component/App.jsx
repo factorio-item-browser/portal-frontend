@@ -8,7 +8,7 @@ import {
     ROUTE_SETTINGS_CREATE,
     ROUTE_RECIPE_DETAILS,
     ROUTE_SEARCH,
-    ROUTE_SETTINGS
+    ROUTE_SETTINGS,
 } from "../helper/const";
 import RouteStore from "../store/RouteStore";
 

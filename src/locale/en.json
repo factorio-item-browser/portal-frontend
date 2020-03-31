@@ -87,10 +87,10 @@
     },
     "settings": {
         "current-setting": {
-            "label": "Current setting"
+            "label": "Current setting:"
         },
         "locale": {
-            "label": "Language",
+            "label": "Language:",
             "description": "Languages are only supported as long as the mods provide translations for them. Missing translations will fall back to English."
         },
         "mod-list": {
@@ -100,11 +100,14 @@
             "name": "Name",
             "version": "Version"
         },
+        "name": {
+            "label": "Setting name:"
+        },
         "options": {
             "headline": "Options"
         },
         "recipe-mode": {
-            "label": "Recipe mode",
+            "label": "Recipe mode:",
             "description": "The recipe mode defines how to handle recipes with multiple variants by either showing both variants (hybrid mode) or omitting the uninteresting one (normal and expensive mode).",
             "option": {
                 "hybrid": "Hybrid mode",

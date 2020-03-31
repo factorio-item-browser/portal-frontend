@@ -163,13 +163,13 @@ class ItemStore {
             return {
                 type: "",
                 name: "",
-            }
+            };
         }
 
         return {
             type: this.currentItem.type,
             name: this.currentItem.name,
-        }
+        };
     }
 }
 

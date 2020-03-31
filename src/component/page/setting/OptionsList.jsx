@@ -5,7 +5,8 @@ import { useTranslation } from "react-i18next";
 import { LOCALES, RECIPE_MODES } from "../../../helper/const";
 import SettingsStore from "../../../store/SettingsStore";
 
-import Option from "./Option";
+import InputOption from "./InputOption";
+import SelectOption from "./SelectOption";
 
 import "./OptionsList.scss";
 
@@ -52,23 +53,30 @@ const OptionsList = () => {
 
     return (
         <div className="options-list">
-            <Option
-                label={t("settings.recipe-mode.label") + ":"}
+            <InputOption
+                label={t("settings.name.label")}
+                value={settingStore.selectedOptions.name}
+                onChange={(name) => settingStore.changeSettingName(name)}
+                useFullWidth={true}
+            />
+
+            <SelectOption
+                label={t("settings.recipe-mode.label")}
                 options={buildRecipeModeOptions(t)}
-                value={settingStore.selectedRecipeMode}
+                value={settingStore.selectedOptions.recipeMode}
                 onChange={(recipeMode) => settingStore.changeRecipeMode(recipeMode)}
             >
                 {t("settings.recipe-mode.description")}
-            </Option>
+            </SelectOption>
 
-            <Option
-                label={t("settings.locale.label") + ":"}
+            <SelectOption
+                label={t("settings.locale.label")}
                 options={buildLocaleOptions()}
-                value={settingStore.selectedLocale}
+                value={settingStore.selectedOptions.locale}
                 onChange={(locale) => settingStore.changeLocale(locale)}
             >
                 {t("settings.locale.description")}
-            </Option>
+            </SelectOption>
         </div>
     );
 };

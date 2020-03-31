@@ -87,10 +87,10 @@
     },
     "settings": {
         "current-setting": {
-            "label": "Aktuelle Einstellung"
+            "label": "Aktuelle Einstellung:"
         },
         "locale": {
-            "label": "Sprache",
+            "label": "Sprache:",
             "description": "Die Sprachen werden nur unterstützt, wenn die Mods entsprechende Übersetzungen liefern. Fehlende Übersetzen werden durch Englisch ersetzt."
         },
         "mod-list": {
@@ -100,11 +100,14 @@
             "name": "Name",
             "version": "Version"
         },
+        "name": {
+            "label": "Name der Einstellung:"
+        },
         "options": {
             "headline": "Optionen"
         },
         "recipe-mode": {
-            "label": "Rezept-Modus",
+            "label": "Rezept-Modus:",
             "description": "Der Rezept-Modus legt fest, wie Rezepte mit mehreren Varianten gehandhabt werden sollen, indem entweder beide Varianten angezeigt werden (Hybrid-Modus) oder die uninteresante Variante ausgeblendet wird (normaler und teurer Modus).",
             "option": {
                 "hybrid": "Hybrid-Modus",

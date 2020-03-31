@@ -46,25 +46,16 @@ class SettingsStore {
     availableSettings = [];
 
     /**
-     * The id of the currently selected setting.
-     * @type {string}
+     * The selected values of the input elements for the current setting.
+     * @type {{name: string, recipeMode: string, locale: string, settingId: string}}
      */
     @observable
-    selectedSettingId = "";
-
-    /**
-     * The locale which has been selected.
-     * @type {string}
-     */
-    @observable
-    selectedLocale = "en";
-
-    /**
-     * The recipe mode which have been selected.
-     * @type {string}
-     */
-    @observable
-    selectedRecipeMode = RECIPE_MODE_HYBRID;
+    selectedOptions = {
+        settingId: "",
+        name: "",
+        locale: "en",
+        recipeMode: RECIPE_MODE_HYBRID,
+    };
 
     /**
      * Whether or not the save button is visible.
@@ -99,7 +90,7 @@ class SettingsStore {
             this.availableSettings = settingsListData.settings.sort((left, right) => {
                 return left.name.localeCompare(right.name);
             });
-            this.selectedSettingId = settingsListData.currentSetting.id;
+            this.selectedOptions.settingId = settingsListData.currentSetting.id;
 
             this._applySettingDetails(settingsListData.currentSetting);
         });
@@ -112,7 +103,7 @@ class SettingsStore {
      */
     @action
     async changeSettingId(settingId) {
-        this.selectedSettingId = settingId;
+        this.selectedOptions.settingId = settingId;
 
         const settingDetails = await this._portalApi.getSetting(settingId);
         runInAction(() => {
@@ -130,10 +121,22 @@ class SettingsStore {
     @action
     _applySettingDetails(settingDetails) {
         this.settingDetails = settingDetails;
-        this.selectedLocale = settingDetails.locale;
-        this.selectedRecipeMode = settingDetails.recipeMode;
+
+        this.selectedOptions.name = settingDetails.name;
+        this.selectedOptions.locale = settingDetails.locale;
+        this.selectedOptions.recipeMode = settingDetails.recipeMode;
 
         this._iconManager.addAdditionalStyle("mod-icons", settingDetails.modIconsStyle);
+    }
+
+    /**
+     * Changes the setting name.
+     * @param name
+     */
+    @action
+    changeSettingName(name) {
+        this.selectedOptions.name = name;
+        this.isSaveButtonVisible = true;
     }
 
     /**
@@ -142,7 +145,7 @@ class SettingsStore {
      */
     @action
     changeLocale(locale) {
-        this.selectedLocale = locale;
+        this.selectedOptions.locale = locale;
         this.isSaveButtonVisible = true;
     }
 
@@ -152,7 +155,7 @@ class SettingsStore {
      */
     @action
     changeRecipeMode(recipeMode) {
-        this.selectedRecipeMode = recipeMode;
+        this.selectedOptions.recipeMode = recipeMode;
         this.isSaveButtonVisible = true;
     }
 
@@ -162,9 +165,10 @@ class SettingsStore {
      */
     @action
     async saveOptions() {
-        await this._portalApi.saveSetting(this.selectedSettingId, {
-            locale: this.selectedLocale,
-            recipeMode: this.selectedRecipeMode,
+        await this._portalApi.saveSetting(this.selectedOptions.settingId, {
+            name: this.selectedOptions.name,
+            locale: this.selectedOptions.locale,
+            recipeMode: this.selectedOptions.recipeMode,
         });
         location.reload();
     }

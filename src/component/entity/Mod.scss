@@ -3,6 +3,7 @@
 
 .mod-entity {
     display: flex;
+    position: relative;
 
     .mod-icon {
         align-items: center;
@@ -22,6 +23,17 @@
         flex-grow: 1;
     }
 
+    .external-link-icon {
+        @include dynamic-spacing(bottom right, default);
+        @include transition-default(color);
+
+        color: color($color-box-default, $lightness-text-primary, 0.5);
+        position: absolute;
+    }
+
+    &:hover .external-link-icon {
+        color: color($color-box-default, $lightness-text-primary);
+    }
 }
 
 .mod-details {

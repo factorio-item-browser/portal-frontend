@@ -100,6 +100,7 @@ interface SettingMetaData {
 }
 
 interface SettingOptionsData {
+    name: string,
     locale: string,
     recipeMode: string,
 }

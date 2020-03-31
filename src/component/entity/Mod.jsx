@@ -6,6 +6,8 @@ import { useTranslation } from "react-i18next";
 import Icon from "../common/Icon";
 
 import "./Mod.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Builds the external link to the mod.
@@ -56,6 +58,8 @@ const Mod = ({ mod }) => {
                     </div>
                 </div>
             </div>
+
+            <FontAwesomeIcon className="external-link-icon" icon={faExternalLinkAlt} />
         </a>
     );
 };

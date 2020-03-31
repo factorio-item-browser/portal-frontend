@@ -18,5 +18,11 @@
         @include breakpoint(huge) {
             flex-basis: calc(50% - 2 * #{$spacing-default});
         }
+
+        &.full-width {
+            @include breakpoint(huge) {
+                flex-basis: calc(100% - 2 * #{$spacing-default});
+            }
+        }
     }
 }

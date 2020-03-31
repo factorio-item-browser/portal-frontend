@@ -3,8 +3,7 @@ import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 
 import SettingsStore from "../../../store/SettingsStore";
-
-import Option from "./Option";
+import SelectOption from "./SelectOption";
 
 import "./SettingsList.scss";
 
@@ -33,10 +32,10 @@ const SettingsList = () => {
 
     return (
         <div className="settings-list">
-            <Option
-                label={t("settings.current-setting.label") + ":"}
+            <SelectOption
+                label={t("settings.current-setting.label")}
                 options={buildSettingsOptions(settingsStore.availableSettings)}
-                value={settingsStore.selectedSettingId}
+                value={settingsStore.selectedOptions.settingId}
                 onChange={async (settingId) => await settingsStore.changeSettingId(settingId)}
             />
         </div>

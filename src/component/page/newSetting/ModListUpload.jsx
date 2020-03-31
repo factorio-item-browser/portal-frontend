@@ -31,13 +31,17 @@ const ModListUpload = () => {
         label = t("settings-create.upload-file.button.drop");
         icon = <FontAwesomeIcon icon={faArrowDown} />;
     } else if (settingsCreateStore.isDropSupported) {
-        label = <Trans i18nKey="settings-create.upload-file.button.select-or-drag">
-            Select your <span className="file">mod-list.json</span> file or drag it here.
-        </Trans>;
+        label = (
+            <Trans i18nKey="settings-create.upload-file.button.select-or-drag">
+                Select your <span className="file">mod-list.json</span> file or drag it here.
+            </Trans>
+        );
     } else {
-        label = <Trans i18nKey="settings-create.upload-file.button.select">
-            Select your <span className="file">mod-list.json</span> file.
-        </Trans>;
+        label = (
+            <Trans i18nKey="settings-create.upload-file.button.select">
+                Select your <span className="file">mod-list.json</span> file.
+            </Trans>
+        );
     }
 
     return (

@@ -10,7 +10,7 @@
     .option-chevron {
         @include dynamic-spacing(right top, default);
 
-        color: color($color-box-default, $lightness-text-primary);
+        color: color($color-highlight, $lightness-text-primary);
         font-size: $text-size-option;
         pointer-events: none;
         position: absolute;
@@ -22,38 +22,49 @@
         display: flex;
         align-items: center;
 
-
-        select, h3 {
+        h3 {
             @include dynamic-spacing(padding, default);
 
+            border-right: px-to-rem(1) solid color($color-box-default, $lightness-box-border, $alpha-box-border);
+            text-align: right;
+            flex-basis: 16rem;
             font-size: $text-size-option;
             font-weight: bold;
         }
 
-        h3 {
-            border-right: px-to-rem(1) solid color($color-box-default, $lightness-box-border, $alpha-box-border);
-            text-align: right;
-            flex-basis: 16rem;
+        select, input[type=text] {
+            @include dynamic-spacing(padding, default);
+
+            background: $color-highlight;
+            border: none;
+            color: color($color-highlight, $lightness-text-primary);
+            flex-grow: 1;
+            font-size: $text-size-option;
+            font-weight: bold;
+        }
+
+        input[type=text] {
+            padding: $spacing-small $spacing-default;
+
+            @include breakpoint(large) {
+                padding: $spacing-default ($spacing-default + $spacing-small);
+            }
         }
 
         select {
             appearance: none;
-            background: $color-highlight;
-            border: none;
-            color: color($color-highlight, $lightness-text-primary);
             cursor: pointer;
-            flex-grow: 1;
             outline: none;
+
+            &:active {
+                border: none;
+            }
 
             option {
                 background: $color-box-default;
                 color: color($color-box-default, $lightness-text-primary);
                 font-size: 1rem;
                 font-weight: normal;
-            }
-
-            &:active {
-                border: none;
             }
         }
     }

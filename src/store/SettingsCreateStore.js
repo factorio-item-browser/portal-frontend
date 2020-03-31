@@ -91,7 +91,6 @@ class SettingsCreateStore {
         });
         fileReader.readAsText(file);
     }
-
 }
 
 export const settingsCreateStore = new SettingsCreateStore(routeStore);
