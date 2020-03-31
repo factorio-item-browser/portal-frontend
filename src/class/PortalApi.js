@@ -20,7 +20,7 @@ class PortalApi {
      * @returns {Promise<SearchResultsData>}
      */
     async search(query, page) {
-        return this._executeRequest("/search", {
+        return this._executeRequest("GET", "/search", {
             query,
             indexOfFirstResult: (page - 1) * NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
             numberOfResults: NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
@@ -33,7 +33,7 @@ class PortalApi {
      * @returns {Promise<IconsStyleData>}
      */
     async getIconsStyle(namesByTypes) {
-        return this._executeRequest("/style/icons", {}, namesByTypes);
+        return this._executeRequest("POST", "/style/icons", namesByTypes);
     }
 
     /**
@@ -44,7 +44,7 @@ class PortalApi {
      * @returns {Promise<ItemRecipesData>}
      */
     async getItemIngredientRecipes(type, name, page) {
-        return this._executeRequest(`/${encodeURI(type)}/${encodeURI(name)}/ingredients`, {
+        return this._executeRequest("GET", `/${encodeURI(type)}/${encodeURI(name)}/ingredients`, {
             indexOfFirstResult: (page - 1) * NUMBER_OF_ITEM_RECIPES_PER_PAGE,
             numberOfResults: NUMBER_OF_ITEM_RECIPES_PER_PAGE,
         });
@@ -58,7 +58,7 @@ class PortalApi {
      * @returns {Promise<ItemRecipesData>}
      */
     async getItemProductRecipes(type, name, page) {
-        return this._executeRequest(`/${encodeURI(type)}/${encodeURI(name)}/products`, {
+        return this._executeRequest("GET", `/${encodeURI(type)}/${encodeURI(name)}/products`, {
             indexOfFirstResult: (page - 1) * NUMBER_OF_ITEM_RECIPES_PER_PAGE,
             numberOfResults: NUMBER_OF_ITEM_RECIPES_PER_PAGE,
         });
@@ -69,7 +69,7 @@ class PortalApi {
      * @return {Promise<EntityData[]>}
      */
     async getRandom() {
-        return this._executeRequest("/random", { numberOfResults: NUMBER_OF_RANDOM_ITEMS });
+        return this._executeRequest("GET", "/random", { numberOfResults: NUMBER_OF_RANDOM_ITEMS });
     }
 
     /**
@@ -78,7 +78,7 @@ class PortalApi {
      * @returns {Promise<RecipeDetailsData>}
      */
     async getRecipeDetails(name) {
-        return this._executeRequest(`/recipe/${encodeURI(name)}`);
+        return this._executeRequest("GET", `/recipe/${encodeURI(name)}`);
     }
 
     /**
@@ -88,7 +88,7 @@ class PortalApi {
      * @returns {Promise<RecipeMachinesData>}
      */
     async getRecipeMachines(name, page) {
-        return this._executeRequest(`/recipe/${encodeURI(name)}/machines`, {
+        return this._executeRequest("GET", `/recipe/${encodeURI(name)}/machines`, {
             indexOfFirstResult: (page - 1) * NUMBER_OF_MACHINES_PER_PAGE,
             numberOfResults: NUMBER_OF_MACHINES_PER_PAGE,
         });
@@ -99,7 +99,7 @@ class PortalApi {
      * @return {Promise<SettingsListData>}
      */
     async getSettings() {
-        return this._executeRequest("/settings");
+        return this._executeRequest("GET", "/settings");
     }
 
     /**
@@ -108,7 +108,7 @@ class PortalApi {
      * @return {Promise<SettingDetailsData>}
      */
     async getSetting(settingId) {
-        return this._executeRequest(`/settings/${encodeURI(settingId)}`);
+        return this._executeRequest("GET", `/settings/${encodeURI(settingId)}`);
     }
 
     /**
@@ -118,7 +118,7 @@ class PortalApi {
      * @return {Promise<void>}
      */
     async saveSetting(settingId, options) {
-        await this._executeRequest(`/settings/${encodeURI(settingId)}`, {}, options);
+        await this._executeRequest("PUT", `/settings/${encodeURI(settingId)}`, options);
     }
 
     /**
@@ -128,7 +128,7 @@ class PortalApi {
      * @return {Promise<EntityData>}
      */
     async getTooltip(type, name) {
-        return this._executeRequest(`/tooltip/${type}/${name}`);
+        return this._executeRequest("GET", `/tooltip/${encodeURI(type)}/${encodeURI(name)}`);
     }
 
     /**
@@ -136,7 +136,7 @@ class PortalApi {
      * @returns {Promise<SessionInitData>}
      */
     async initializeSession() {
-        return this._executeRequest("/session/init");
+        return this._executeRequest("GET", "/session/init");
     }
 
     /**
@@ -145,19 +145,32 @@ class PortalApi {
      * @returns {Promise<void>}
      */
     async sendSidebarEntities(sidebarEntities) {
-        await this._executeRequest("/sidebar/entities", {}, sidebarEntities);
+        await this._executeRequest("PUT", "/sidebar/entities", sidebarEntities);
     }
 
     /**
      * Executes a request.
+     * @param {string} method
      * @param {string} route
-     * @param {object} [queryParams]
-     * @param {object} [requestData]
+     * @param {object} [parameters]
      * @returns {Promise<string|object>}
      * @private
      */
-    async _executeRequest(route, queryParams, requestData) {
-        const response = await fetch(this._buildRequestUrl(route, queryParams), this._buildRequestOptions(requestData));
+    async _executeRequest(method, route, parameters) {
+        const requestUrl = this._buildRequestUrl(route, method === "GET" ? parameters : undefined);
+        const requestOptions = this._buildRequestOptions(method, method !== "GET" ? parameters : undefined);
+
+        const response = await fetch(requestUrl, requestOptions);
+        return this._handleResponse(response);
+    }
+
+    /**
+     * Handles the response received from the server.
+     * @param {Response} response
+     * @return {Promise<string|object>}
+     * @private
+     */
+    async _handleResponse(response) {
         if (response.headers.get("Content-Type") === "application/json") {
             return response.json();
         } else {
@@ -188,20 +201,20 @@ class PortalApi {
 
     /**
      * Builds the options to use for the request,
+     * @param {string} method
      * @param {object} [requestData]
      * @returns {object}
      * @private
      */
-    _buildRequestOptions(requestData) {
+    _buildRequestOptions(method, requestData) {
         let options = {
-            method: "GET",
+            method: method,
             credentials: "include",
         };
 
         if (typeof requestData === "object") {
             options = {
                 ...options,
-                method: "POST",
                 body: JSON.stringify(requestData),
                 headers: {
                     "Content-Type": "application/json",
