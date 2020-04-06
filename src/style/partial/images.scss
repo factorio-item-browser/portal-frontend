@@ -5,8 +5,7 @@
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
 
-@import "../../style/mixin/all.scss";
-@import "../../style/variable/all.scss";
+@import "../../style/import";
 
 header, footer {
     background: $color-water url("../../image/inline/layout/water.jpg") repeat;

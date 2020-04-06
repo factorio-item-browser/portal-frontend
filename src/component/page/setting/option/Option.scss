@@ -1,5 +1,4 @@
-@import "../../../../style/variable/all";
-@import "../../../../style/mixin/all";
+@import "../../../../style/import";
 
 .option {
     @include dynamic-spacing(margin, default);

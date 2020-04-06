@@ -1,5 +1,4 @@
-@import "../../style/mixin/all";
-@import "../../style/variable/all";
+@import "../../style/import";
 
 section h2 {
     @extend %underlined-headline;

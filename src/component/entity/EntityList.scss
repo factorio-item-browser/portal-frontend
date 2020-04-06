@@ -1,5 +1,4 @@
-@import "../../style/mixin/all";
-@import "../../style/variable/all";
+@import "../../style/import";
 
 .entity-list {
     @include dynamic-spacing(padding, 0 default);

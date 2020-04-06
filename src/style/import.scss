@@ -1,0 +1,19 @@
+/**
+ * File importing all other SCSS files.
+ *
+ * @author BluePsyduck <bluepsyduck@gmx.com>
+ * @license http://opensource.org/licenses/GPL-3.0 GPL v3
+ */
+
+@import "mixin/breakpoint";
+@import "mixin/button";
+@import "mixin/flex";
+@import "mixin/misc";
+@import "mixin/placeholder";
+@import "mixin/size";
+
+@import "variable/breakpoint";
+@import "variable/color";
+@import "variable/shadow";
+@import "variable/size";
+@import "variable/z-index";

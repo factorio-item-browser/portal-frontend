@@ -1,5 +1,4 @@
-@import "../../style/mixin/all";
-@import "../../style/variable/all";
+@import "../../style/import";
 
 .status-box {
     @include dynamic-spacing(margin, large);

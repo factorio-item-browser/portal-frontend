@@ -1,5 +1,4 @@
-@import "../../../style/variable/all.scss";
-@import "../../../style/mixin/all.scss";
+@import "../../../style/import";
 
 .header-search {
     @include dynamic-spacing(margin, large);
