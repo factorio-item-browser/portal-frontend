@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
-import React, { useContext } from "react";
+import * as PropTypes from "prop-types";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
-import SettingsCreateStore from "../../store/SettingsCreateStore";
 import {
     SETTING_STATUS_AVAILABLE,
     SETTING_STATUS_ERRORED,
@@ -17,6 +17,10 @@ import {
 
 import Status from "./Status";
 
+/**
+ * The map of the setting status to the actual box status.
+ * @type {Object<string, string>}
+ */
 const STATUS_MAP = {
     [SETTING_STATUS_AVAILABLE]: STATUS_SUCCESS,
     [SETTING_STATUS_ERRORED]: STATUS_ERROR,
@@ -27,25 +31,27 @@ const STATUS_MAP = {
 
 /**
  * The component representing the status of a setting.
+ * @param {?SettingStatusData} settingStatus
  * @return {ReactDOM|null}
  * @constructor
  */
-const SettingStatus = () => {
-    const settingsCreateStore = useContext(SettingsCreateStore);
+const SettingStatus = ({ settingStatus }) => {
     const { t } = useTranslation();
 
-    if (!settingsCreateStore.settingStatus) {
+    if (!settingStatus) {
         return null;
     }
 
-    const status = settingsCreateStore.settingStatus.status;
-
     return (
-        <Status status={STATUS_MAP[status]}>
-            <h3>{t(`setting-status.${status}.headline`)}</h3>
-            {t(`setting-status.${status}.description`)}
+        <Status status={STATUS_MAP[settingStatus.status]}>
+            <h3>{t(`setting-status.${settingStatus.status}.headline`)}</h3>
+            {t(`setting-status.${settingStatus.status}.description`)}
         </Status>
     );
+};
+
+SettingStatus.propTypes = {
+    settingStatus: PropTypes.object,
 };
 
 export default observer(SettingStatus);

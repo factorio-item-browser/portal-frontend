@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import React, { useContext, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
-import SettingsCreateStore from "../../../store/SettingsCreateStore";
+import SettingsNewStore from "../../../store/SettingsNewStore";
 
 import "./ModListUpload.scss";
 
@@ -16,7 +16,7 @@ import "./ModListUpload.scss";
  */
 const ModListUpload = () => {
     const { t } = useTranslation();
-    const settingsCreateStore = useContext(SettingsCreateStore);
+    const settingsNewStore = useContext(SettingsNewStore);
     const [dragCount, setDragCount] = useState(0);
 
     const inputId = "mod-list-upload-input";
@@ -30,7 +30,7 @@ const ModListUpload = () => {
     if (dragCount > 0) {
         label = t("settings-create.upload-file.button.drop");
         icon = <FontAwesomeIcon icon={faArrowDown} />;
-    } else if (settingsCreateStore.isDropSupported) {
+    } else if (settingsNewStore.isDropSupported) {
         label = (
             <Trans i18nKey="settings-create.upload-file.button.select-or-drag">
                 Select your <span className="file">mod-list.json</span> file or drag it here.
@@ -51,7 +51,7 @@ const ModListUpload = () => {
             onDragOver={(event) => event.preventDefault()}
             onDragLeave={() => setDragCount(dragCount - 1)}
             onDrop={(event) => {
-                settingsCreateStore.uploadFile(event.dataTransfer.files[0]);
+                settingsNewStore.uploadFile(event.dataTransfer.files[0]);
                 setDragCount(0);
                 event.preventDefault();
             }}
@@ -65,7 +65,7 @@ const ModListUpload = () => {
                 type="file"
                 accept="application/json,.json"
                 hidden={true}
-                onChange={(event) => settingsCreateStore.uploadFile(event.currentTarget.files[0])}
+                onChange={(event) => settingsNewStore.uploadFile(event.currentTarget.files[0])}
             />
         </div>
     );

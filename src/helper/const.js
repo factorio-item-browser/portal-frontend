@@ -76,7 +76,7 @@ export const ROUTE_ITEM_DETAILS = "itemDetails";
 export const ROUTE_RECIPE_DETAILS = "recipeDetails";
 export const ROUTE_SEARCH = "search";
 export const ROUTE_SETTINGS = "settings";
-export const ROUTE_SETTINGS_CREATE = "settingsCreate";
+export const ROUTE_SETTINGS_NEW = "settingsNew";
 
 export const SETTING_STATUS_AVAILABLE = "available";
 export const SETTING_STATUS_ERRORED = "errored";

@@ -46,12 +46,18 @@ class SettingsStore {
     availableSettings = [];
 
     /**
+     * The currently selected setting id.
+     * @type {string}
+     */
+    @observable
+    selectedSettingId = "";
+
+    /**
      * The selected values of the input elements for the current setting.
-     * @type {{name: string, recipeMode: string, locale: string, settingId: string}}
+     * @type {SettingOptionsData}
      */
     @observable
     selectedOptions = {
-        settingId: "",
         name: "",
         locale: "en",
         recipeMode: RECIPE_MODE_HYBRID,
@@ -90,7 +96,7 @@ class SettingsStore {
             this.availableSettings = settingsListData.settings.sort((left, right) => {
                 return left.name.localeCompare(right.name);
             });
-            this.selectedOptions.settingId = settingsListData.currentSetting.id;
+            this.selectedSettingId = settingsListData.currentSetting.id;
 
             this._applySettingDetails(settingsListData.currentSetting);
         });
@@ -103,13 +109,13 @@ class SettingsStore {
      */
     @action
     async changeSettingId(settingId) {
-        this.selectedOptions.settingId = settingId;
+        this.selectedSettingId = settingId;
 
         const settingDetails = await this._portalApi.getSetting(settingId);
         runInAction(() => {
-            this.isSaveButtonVisible = true;
-
             this._applySettingDetails(settingDetails);
+
+            this.isSaveButtonVisible = true;
         });
     }
 
@@ -130,32 +136,15 @@ class SettingsStore {
     }
 
     /**
-     * Changes the setting name.
-     * @param name
+     * Changes the selected options.
+     * @param {Partial<SettingOptionsData>} options
      */
     @action
-    changeSettingName(name) {
-        this.selectedOptions.name = name;
-        this.isSaveButtonVisible = true;
-    }
-
-    /**
-     * Changes the locale.
-     * @param {string} locale
-     */
-    @action
-    changeLocale(locale) {
-        this.selectedOptions.locale = locale;
-        this.isSaveButtonVisible = true;
-    }
-
-    /**
-     * Changes the recipe mode.
-     * @param {string} recipeMode
-     */
-    @action
-    changeRecipeMode(recipeMode) {
-        this.selectedOptions.recipeMode = recipeMode;
+    changeSelectedOptions(options) {
+        this.selectedOptions = {
+            ...this.selectedOptions,
+            ...options,
+        };
         this.isSaveButtonVisible = true;
     }
 
@@ -165,11 +154,7 @@ class SettingsStore {
      */
     @action
     async saveOptions() {
-        await this._portalApi.saveSetting(this.selectedOptions.settingId, {
-            name: this.selectedOptions.name,
-            locale: this.selectedOptions.locale,
-            recipeMode: this.selectedOptions.recipeMode,
-        });
+        await this._portalApi.saveSetting(this.selectedSettingId, this.selectedOptions);
         location.reload();
     }
 }

@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import {
     ROUTE_INDEX,
     ROUTE_ITEM_DETAILS,
-    ROUTE_SETTINGS_CREATE,
+    ROUTE_SETTINGS_NEW,
     ROUTE_RECIPE_DETAILS,
     ROUTE_SEARCH,
     ROUTE_SETTINGS,
@@ -22,7 +22,7 @@ import IndexPage from "./page/IndexPage";
 import ItemDetailsPage from "./page/ItemDetailsPage";
 import RecipeDetailsPage from "./page/RecipeDetailsPage";
 import SearchResultsPage from "./page/SearchResultsPage";
-import SettingsCreatePage from "./page/SettingsCreatePage";
+import SettingsNewPage from "./page/SettingsNewPage";
 import SettingsPage from "./page/SettingsPage";
 
 import "./App.scss";
@@ -30,10 +30,10 @@ import "./App.scss";
 const PAGE_BY_ROUTES = {
     [ROUTE_INDEX]: <IndexPage />,
     [ROUTE_ITEM_DETAILS]: <ItemDetailsPage />,
-    [ROUTE_SETTINGS_CREATE]: <SettingsCreatePage />,
     [ROUTE_RECIPE_DETAILS]: <RecipeDetailsPage />,
     [ROUTE_SEARCH]: <SearchResultsPage />,
     [ROUTE_SETTINGS]: <SettingsPage />,
+    [ROUTE_SETTINGS_NEW]: <SettingsNewPage />,
 };
 
 /**

@@ -1,23 +1,23 @@
 import { createContext } from "react";
+import { action, computed, observable, runInAction } from "mobx";
 
 import {
     ERROR_INVALID_FILE,
     ERROR_NO_MODS,
     RECIPE_MODE_HYBRID,
-    ROUTE_SETTINGS_CREATE,
+    ROUTE_SETTINGS_NEW,
     SETTING_STATUS_AVAILABLE,
     SETTING_STATUS_LOADING,
     SETTING_STATUS_PENDING,
 } from "../helper/const";
 
 import { routeStore } from "./RouteStore";
-import { action, computed, observable, runInAction } from "mobx";
 import { portalApi } from "../class/PortalApi";
 
 /**
  * The store managing the creation of new settings for the users.
  */
-class SettingsCreateStore {
+class SettingsNewStore {
     /**
      * The portal API instance.
      * @type {PortalApi}
@@ -55,10 +55,10 @@ class SettingsCreateStore {
 
     /**
      * The status of the new setting.
-     * @type {SettingStatusData|undefined}
+     * @type {?SettingStatusData}
      */
     @observable
-    settingStatus;
+    settingStatus = null;
 
     /**
      * The options to use for the new setting.
@@ -80,7 +80,7 @@ class SettingsCreateStore {
         this._portalApi = portalApi;
         this._routeStore = routeStore;
 
-        this._routeStore.addRoute(ROUTE_SETTINGS_CREATE, "/settings/create");
+        this._routeStore.addRoute(ROUTE_SETTINGS_NEW, "/settings/new");
         this._detectDropSupport();
     }
 
@@ -108,7 +108,7 @@ class SettingsCreateStore {
     }
 
     /**
-     * Parsed the content as mod-list.json file and extractes the enabled mod names.
+     * Parsed the content as mod-list.json file and extracts the enabled mod names.
      * @param {string|ArrayBuffer} content
      * @return {array<string>}
      * @private
@@ -147,23 +147,35 @@ class SettingsCreateStore {
      * Uploads the file, parsing it as JSON.
      * @param {File} file
      */
+    @action
     uploadFile(file) {
-        const fileReader = new FileReader();
-        fileReader.addEventListener("load", async (event) => {
-            try {
-                const modNames = this._parseModListJson(event.target.result);
-                this._requestSettingStatus(modNames);
+        this.uploadedModNames = [];
+        this.uploadError = "";
+        this.settingStatus = null;
 
-                runInAction(() => {
-                    this.uploadedModNames = modNames;
-                    this.uploadError = "";
-                });
-            } catch (err) {
-                this.uploadedModNames = [];
-                this.uploadError = err;
-            }
-        });
+        const fileReader = new FileReader();
+        fileReader.addEventListener("load", this._handleFileReaderLoad.bind(this));
         fileReader.readAsText(file);
+    }
+
+    /**
+     * Handles the load event of the file reader.
+     * @param {ProgressEvent} event
+     * @return {Promise<void>}
+     * @private
+     */
+    @action
+    async _handleFileReaderLoad(event) {
+        try {
+            const modNames = this._parseModListJson(event.target.result);
+            this.uploadedModNames = modNames;
+            this.uploadError = "";
+
+            this._requestSettingStatus(modNames);
+        } catch (err) {
+            this.uploadedModNames = [];
+            this.uploadError = err;
+        }
     }
 
     /**
@@ -172,6 +184,7 @@ class SettingsCreateStore {
      * @return {Promise<void>}
      * @private
      */
+    @action
     async _requestSettingStatus(modNames) {
         this.settingStatus = {
             status: SETTING_STATUS_LOADING,
@@ -196,5 +209,5 @@ class SettingsCreateStore {
     }
 }
 
-export const settingsCreateStore = new SettingsCreateStore(portalApi, routeStore);
-export default createContext(settingsCreateStore);
+export const settingsNewStore = new SettingsNewStore(portalApi, routeStore);
+export default createContext(settingsNewStore);

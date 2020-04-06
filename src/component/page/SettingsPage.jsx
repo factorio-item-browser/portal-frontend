@@ -34,7 +34,7 @@ const SettingsPage = () => {
                 <OptionsList>
                     <OptionSettingId
                         settings={settingsStore.availableSettings}
-                        value={settingsStore.selectedOptions.settingId}
+                        value={settingsStore.selectedSettingId}
                         onChange={(settingId) => settingsStore.changeSettingId(settingId)}
                     />
                 </OptionsList>
@@ -44,17 +44,17 @@ const SettingsPage = () => {
                 <OptionsList>
                     <OptionSettingName
                         value={settingsStore.selectedOptions.name}
-                        onChange={(settingName) => settingsStore.changeSettingName(settingName)}
+                        onChange={(name) => settingsStore.changeSelectedOptions({ name })}
                     />
 
                     <OptionRecipeMode
                         value={settingsStore.selectedOptions.recipeMode}
-                        onChange={(recipeMode) => settingsStore.changeRecipeMode(recipeMode)}
+                        onChange={(recipeMode) => settingsStore.changeSelectedOptions({ recipeMode })}
                     />
 
                     <OptionLocale
                         value={settingsStore.selectedOptions.locale}
-                        onChange={(locale) => settingsStore.changeLocale(locale)}
+                        onChange={(locale) => settingsStore.changeSelectedOptions({ locale })}
                     />
                 </OptionsList>
             </Section>

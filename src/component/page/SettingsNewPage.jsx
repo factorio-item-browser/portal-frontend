@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import SettingsCreateStore from "../../store/SettingsCreateStore";
+import SettingsNewStore from "../../store/SettingsNewStore";
 
 import ModListUpload from "./newSetting/ModListUpload";
 import ModListUploadStatus from "../status/ModListUploadStatus";
@@ -18,44 +18,47 @@ import SettingStatus from "../status/SettingStatus";
  * @return {ReactDOM}
  * @constructor
  */
-const SettingsCreatePage = () => {
+const SettingsNewPage = () => {
     const { t } = useTranslation();
-    const settingsCreateStore = useContext(SettingsCreateStore);
+    const settingsNewStore = useContext(SettingsNewStore);
 
     useEffect(() => {
         document.title = t("settings-create.title");
-        settingsCreateStore.changeOptions({ name: t("settings-create.new-setting-name") });
+        settingsNewStore.changeOptions({ name: t("settings-create.new-setting-name") });
     }, []);
 
     return (
         <Fragment>
             <Section headline={t("settings-create.upload-file.headline")}>
                 <ModListUpload />
-                <ModListUploadStatus />
+                <ModListUploadStatus
+                    modNames={settingsNewStore.uploadedModNames}
+                    error={settingsNewStore.uploadError}
+                />
             </Section>
 
-            {settingsCreateStore.showAvailabilityStep ? (
+            {settingsNewStore.showAvailabilityStep ? (
                 <Section headline={"2. Data availability"}>
-                    <SettingStatus />
+                    <SettingStatus settingStatus={settingsNewStore.settingStatus} />
                 </Section>
             ) : null}
 
-            {settingsCreateStore.showOptionsStep ? (
+            {settingsNewStore.showOptionsStep ? (
                 <Section headline={"3. Additional options"}>
                     <OptionsList>
                         <OptionSettingName
-                            value={settingsCreateStore.newOptions.name}
-                            onChange={(name) => settingsCreateStore.changeOptions({ name })}
+                            value={settingsNewStore.newOptions.name}
+                            onChange={(name) => settingsNewStore.changeOptions({ name })}
                         />
 
                         <OptionRecipeMode
-                            value={settingsCreateStore.newOptions.recipeMode}
-                            onChange={(recipeMode) => settingsCreateStore.changeOptions({ recipeMode })}
+                            value={settingsNewStore.newOptions.recipeMode}
+                            onChange={(recipeMode) => settingsNewStore.changeOptions({ recipeMode })}
                         />
 
                         <OptionLocale
-                            value={settingsCreateStore.newOptions.locale}
-                            onChange={(locale) => settingsCreateStore.changeOptions({ locale })}
+                            value={settingsNewStore.newOptions.locale}
+                            onChange={(locale) => settingsNewStore.changeOptions({ locale })}
                         />
                     </OptionsList>
                 </Section>
@@ -64,4 +67,4 @@ const SettingsCreatePage = () => {
     );
 };
 
-export default observer(SettingsCreatePage);
+export default observer(SettingsNewPage);
