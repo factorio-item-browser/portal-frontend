@@ -10,6 +10,9 @@ export const BREAKPOINT_MEDIUM = 800;
 export const BREAKPOINT_LARGE = 1200;
 export const BREAKPOINT_HUGE = 1500;
 
+export const ERROR_INVALID_FILE = "invalid-file";
+export const ERROR_NO_MODS = "no-mods";
+
 export const LOCALES = {
     "af": "Afrikaans",
     "ar": "العَرَبِيَّة",
@@ -74,6 +77,17 @@ export const ROUTE_RECIPE_DETAILS = "recipeDetails";
 export const ROUTE_SEARCH = "search";
 export const ROUTE_SETTINGS = "settings";
 export const ROUTE_SETTINGS_CREATE = "settingsCreate";
+
+export const SETTING_STATUS_AVAILABLE = "available";
+export const SETTING_STATUS_ERRORED = "errored";
+export const SETTING_STATUS_LOADING = "loading";
+export const SETTING_STATUS_PENDING = "pending";
+export const SETTING_STATUS_UNKNOWN = "unknown";
+
+export const STATUS_ERROR = "error";
+export const STATUS_PENDING = "pending";
+export const STATUS_SUCCESS = "success";
+export const STATUS_WARNING = "warning";
 
 export const STORAGE_KEY_SIDEBAR_ENTITIES = "sidebar-entities";
 export const STORAGE_KEY_SETTING_HASH = "setting-hash";

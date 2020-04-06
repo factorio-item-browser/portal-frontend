@@ -112,6 +112,18 @@ class PortalApi {
     }
 
     /**
+     * Fetches the status of the specified combination of mods, or the current setting.
+     * @param {string[]} [modNames]
+     * @return {Promise<SettingStatusData>}
+     */
+    async getSettingStatus(modNames) {
+        if (Array.isArray(modNames)) {
+            return this._executeRequest("POST", "/settings/status", modNames);
+        }
+        return this._executeRequest("GET", "/settings/status");
+    }
+
+    /**
      * Save the setting with the options.
      * @param {string} settingId
      * @param {SettingOptionsData} options

@@ -119,6 +119,8 @@
         "title": "Einstellungen - Factorio Item Browser"
     },
     "settings-create": {
+        "new-setting-name": "Neue Einstellung",
+        "title": "Einstellung erstellen - Factorio Item Browser",
         "upload-file": {
             "button": {
                 "select": "Wähle deine <1>mod-list.json</1>-Datei aus.",
@@ -126,8 +128,7 @@
                 "drop": "Lasse sie hier los."
             },
             "headline": "1. mod-list.json hochladen"
-        },
-        "title": "Einstellung erstellen - Factorio Item Browser"
+        }
     },
     "sidebar": {
         "action-pin": "Element oben anheften",

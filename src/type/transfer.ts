@@ -105,6 +105,11 @@ interface SettingOptionsData {
     recipeMode: string,
 }
 
+interface SettingStatusData {
+    status: string,
+    exportTime?: string,
+}
+
 interface SettingsListData {
     settings: SettingMetaData[],
     currentSetting: SettingDetailsData,

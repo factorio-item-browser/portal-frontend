@@ -119,6 +119,8 @@
         "title": "Settings - Factorio Item Browser"
     },
     "settings-create": {
+        "new-setting-name": "New setting",
+        "title": "Create Setting - Factorio Item Browser",
         "upload-file": {
             "button": {
                 "select": "Select your <1>mod-list.json</1> file.",
@@ -126,8 +128,29 @@
                 "drop": "Drop it here."
             },
             "headline": "1. Upload mod-list.json"
+        }
+    },
+    "setting-status": {
+        "available": {
+            "headline": "Data is available.",
+            "description": "The data for your combination of mods is available and read-to-use."
         },
-        "title": "Create Setting - Factorio Item Browser"
+        "errored": {
+            "headline": "Data export has failed.",
+            "description": "A previously running export of the data has failed. Sorry, but the data cannot be made available automatically."
+        },
+        "loading": {
+            "headline": "Checking data availability...",
+            "description": ""
+        },
+        "pending": {
+            "headline": "Data export is pending.",
+            "description": "The export of your combination of mods has already been triggered and is currently waiting in the queue to get its turn."
+        },
+        "unknown": {
+            "headline": "Data not available.",
+            "description": "The data for your combination of mods is currently not available and an export will get triggered."
+        }
     },
     "sidebar": {
         "action-pin": "Pin element to the top",
