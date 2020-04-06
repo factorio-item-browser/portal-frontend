@@ -18,20 +18,17 @@ const OptionLocale = ({ value, onChange }) => {
     const { t } = useTranslation();
 
     const locales = Object.entries(LOCALES);
-    locales.sort(([_1, leftLabel], [_2, rightLabel]) => leftLabel.localeCompare(rightLabel));
+    locales.sort(([, leftLabel], [, rightLabel]) => leftLabel.localeCompare(rightLabel));
 
     return (
-        <Option
-            label={t("settings.locale.label")}
-            description={t("settings.locale.description")}
-            withChevron={true}
-        >
-            <select
-                value={value}
-                onChange={(event) => onChange(event.currentTarget.value)}
-            >
+        <Option label={t("settings.locale.label")} description={t("settings.locale.description")} withChevron={true}>
+            <select value={value} onChange={(event) => onChange(event.currentTarget.value)}>
                 {locales.map(([locale, label]) => {
-                    return <option key={locale} value={locale}>{label}</option>;
+                    return (
+                        <option key={locale} value={locale}>
+                            {label}
+                        </option>
+                    );
                 })}
             </select>
         </Option>

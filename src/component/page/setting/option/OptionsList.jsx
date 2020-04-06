@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React  from "react";
+import React from "react";
 
 import "./OptionsList.scss";
 import * as PropTypes from "prop-types";
@@ -11,14 +11,10 @@ import * as PropTypes from "prop-types";
  * @constructor
  */
 const OptionsList = ({ children }) => {
-    return (
-        <div className="options-list">
-            {children}
-        </div>
-    );
+    return <div className="options-list">{children}</div>;
 };
 
-Option.propTypes = {
+OptionsList.propTypes = {
     children: PropTypes.any.isRequired,
 };
 

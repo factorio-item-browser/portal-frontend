@@ -36,9 +36,7 @@ const Status = ({ status, children }) => {
     return (
         <div className={classes}>
             <div className="status-icon">{ICON_MAP[status]}</div>
-            <div className="status-text">
-                {children}
-            </div>
+            <div className="status-text">{children}</div>
         </div>
     );
 };

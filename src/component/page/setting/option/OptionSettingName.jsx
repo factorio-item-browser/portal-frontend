@@ -16,13 +16,10 @@ const OptionSettingName = ({ value, onChange }) => {
     const { t } = useTranslation();
 
     return (
-        <Option
-            label={t("settings.name.label")}
-            useFullWidth={true}
-        >
+        <Option label={t("settings.name.label")} useFullWidth={true}>
             <input type="text" value={value} onChange={(event) => onChange(event.currentTarget.value)} />
         </Option>
-    )
+    );
 };
 
 OptionSettingName.propTypes = {

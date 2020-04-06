@@ -19,13 +19,14 @@ const OptionSettingId = ({ settings, value, onChange }) => {
     settings.slice().sort((left, right) => left.name.localeCompare(right.name));
 
     return (
-        <Option
-            label={t("settings.current-setting.label")}
-            useFullWidth={true}
-        >
+        <Option label={t("settings.current-setting.label")} useFullWidth={true}>
             <select value={value} onChange={(event) => onChange(event.currentTarget.value)}>
                 {settings.map((setting) => {
-                    return <option key={setting.id} value={setting.id}>{setting.name}</option>;
+                    return (
+                        <option key={setting.id} value={setting.id}>
+                            {setting.name}
+                        </option>
+                    );
                 })}
             </select>
         </Option>
@@ -38,4 +39,4 @@ OptionSettingId.propTypes = {
     value: PropTypes.string.isRequired,
 };
 
-export default observer(OptionSettingId)
+export default observer(OptionSettingId);

@@ -38,7 +38,7 @@ const SettingsCreatePage = () => {
                 <Section headline={"2. Data availability"}>
                     <SettingStatus />
                 </Section>
-            ): null}
+            ) : null}
 
             {settingsCreateStore.showOptionsStep ? (
                 <Section headline={"3. Additional options"}>

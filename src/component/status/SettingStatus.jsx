@@ -4,12 +4,15 @@ import { useTranslation } from "react-i18next";
 
 import SettingsCreateStore from "../../store/SettingsCreateStore";
 import {
-    SETTING_STATUS_AVAILABLE, SETTING_STATUS_ERRORED,
+    SETTING_STATUS_AVAILABLE,
+    SETTING_STATUS_ERRORED,
     SETTING_STATUS_LOADING,
     SETTING_STATUS_PENDING,
-    SETTING_STATUS_UNKNOWN, STATUS_ERROR,
-    STATUS_PENDING, STATUS_SUCCESS,
-    STATUS_WARNING
+    SETTING_STATUS_UNKNOWN,
+    STATUS_ERROR,
+    STATUS_PENDING,
+    STATUS_SUCCESS,
+    STATUS_WARNING,
 } from "../../helper/const";
 
 import Status from "./Status";

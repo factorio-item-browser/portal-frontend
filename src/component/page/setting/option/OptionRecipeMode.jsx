@@ -22,12 +22,13 @@ const OptionRecipeMode = ({ value, onChange }) => {
             description={t("settings.recipe-mode.description")}
             withChevron={true}
         >
-            <select
-                value={value}
-                onChange={(event) => onChange(event.currentTarget.value)}
-            >
+            <select value={value} onChange={(event) => onChange(event.currentTarget.value)}>
                 {RECIPE_MODES.map((recipeMode) => {
-                    return <option key={recipeMode} value={recipeMode}>{t(`settings.recipe-mode.option.${recipeMode}`)}</option>
+                    return (
+                        <option key={recipeMode} value={recipeMode}>
+                            {t(`settings.recipe-mode.option.${recipeMode}`)}
+                        </option>
+                    );
                 })}
             </select>
         </Option>

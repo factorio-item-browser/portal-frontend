@@ -4,7 +4,10 @@ import {
     ERROR_INVALID_FILE,
     ERROR_NO_MODS,
     RECIPE_MODE_HYBRID,
-    ROUTE_SETTINGS_CREATE, SETTING_STATUS_AVAILABLE, SETTING_STATUS_LOADING, SETTING_STATUS_PENDING,
+    ROUTE_SETTINGS_CREATE,
+    SETTING_STATUS_AVAILABLE,
+    SETTING_STATUS_LOADING,
+    SETTING_STATUS_PENDING,
 } from "../helper/const";
 
 import { routeStore } from "./RouteStore";
@@ -98,8 +101,10 @@ class SettingsCreateStore {
 
     @computed
     get showOptionsStep() {
-        return this.settingStatus &&
-            ([SETTING_STATUS_AVAILABLE, SETTING_STATUS_PENDING].indexOf(this.settingStatus.status) !== -1);
+        return (
+            this.settingStatus &&
+            [SETTING_STATUS_AVAILABLE, SETTING_STATUS_PENDING].indexOf(this.settingStatus.status) !== -1
+        );
     }
 
     /**
@@ -186,8 +191,8 @@ class SettingsCreateStore {
     changeOptions(options) {
         this.newOptions = {
             ...this.newOptions,
-            ...options
-        }
+            ...options,
+        };
     }
 }
 
