@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 
 import { debounce } from "../../helper/utils";
 
-import "./PaginatedListButton.scss";
+import Button from "./Button";
 
 /**
  *
@@ -61,24 +61,25 @@ const PaginatedListButton = ({ paginatedList, localePrefix, loadOnScroll = false
     // We are already loading the next page, so show the animation.
     if (paginatedList.isLoading) {
         return (
-            <div className="paginated-list-button">
+            <Button primary spacing>
                 <FontAwesomeIcon icon={faSpinner} spin />
                 {t(`${localePrefix}.loading`)}
-            </div>
+            </Button>
         );
     }
 
     // Show the default button, waiting to be clicked.
     return (
-        <div
-            className="paginated-list-button"
+        <Button
+            primary
+            spacing
             ref={element}
             onClick={async () => {
                 await paginatedList.requestNextPage();
             }}
         >
             {t(`${localePrefix}.load`)}
-        </div>
+        </Button>
     );
 };
 

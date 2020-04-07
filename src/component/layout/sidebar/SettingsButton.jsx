@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { ROUTE_SETTINGS } from "../../../helper/const";
 import RouteStore from "../../../store/RouteStore";
 
-import Link from "../../link/Link";
+import ButtonLink from "../../link/ButtonLink";
 
 import "./SettingsButton.scss";
 
@@ -21,12 +21,12 @@ const SettingsButton = () => {
     const { t } = useTranslation();
 
     return (
-        <Link className="settings-button" route={ROUTE_SETTINGS}>
+        <ButtonLink className="settings-button" primary route={ROUTE_SETTINGS}>
             <div className="link-icon">
                 <FontAwesomeIcon icon={faCogs} />
             </div>
             <div className="label">{t("sidebar.setting", { name: routeStore.settingName })}</div>
-        </Link>
+        </ButtonLink>
     );
 };
 

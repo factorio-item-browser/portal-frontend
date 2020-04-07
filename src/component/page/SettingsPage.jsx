@@ -7,6 +7,7 @@ import SettingsStore from "../../store/SettingsStore";
 import Section from "../common/Section";
 import EntityList from "../entity/EntityList";
 import Mod from "../entity/Mod";
+import { ROUTE_SETTINGS_NEW } from "../../helper/const";
 
 import OptionLocale from "./setting/option/OptionLocale";
 import OptionRecipeMode from "./setting/option/OptionRecipeMode";
@@ -14,6 +15,7 @@ import OptionSettingId from "./setting/option/SettingOptionId";
 import OptionSettingName from "./setting/option/OptionSettingName";
 import OptionsList from "./setting/option/OptionsList";
 import SaveButton from "./setting/SaveButton";
+import ButtonLink from "../link/ButtonLink";
 
 /**
  * The component representing the settings page.
@@ -38,6 +40,10 @@ const SettingsPage = () => {
                         onChange={(settingId) => settingsStore.changeSettingId(settingId)}
                     />
                 </OptionsList>
+
+                <ButtonLink primary spacing route={ROUTE_SETTINGS_NEW}>
+                    New Setting
+                </ButtonLink>
             </Section>
 
             <Section headline={t("settings.options.headline")}>

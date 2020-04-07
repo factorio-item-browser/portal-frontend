@@ -5,6 +5,8 @@ import React, { useContext } from "react";
 
 import SettingsStore from "../../../store/SettingsStore";
 
+import Button from "../../common/Button";
+
 import "./SaveButton.scss";
 
 /**
@@ -20,15 +22,17 @@ const SaveButton = () => {
     }
 
     return (
-        <div
+        <Button
             className="save-button"
+            primary
+            spacing
             onClick={async () => {
                 await settingStore.saveOptions();
             }}
         >
             <FontAwesomeIcon icon={faSave} />
             Save Changes
-        </div>
+        </Button>
     );
 };
 

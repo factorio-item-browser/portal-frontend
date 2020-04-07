@@ -19,7 +19,7 @@ const OptionSettingId = ({ settings, value, onChange }) => {
     settings.slice().sort((left, right) => left.name.localeCompare(right.name));
 
     return (
-        <Option label={t("settings.current-setting.label")} useFullWidth={true}>
+        <Option label={t("settings.current-setting.label")} useFullWidth={true} withChevron={true}>
             <select value={value} onChange={(event) => onChange(event.currentTarget.value)}>
                 {settings.map((setting) => {
                     return (

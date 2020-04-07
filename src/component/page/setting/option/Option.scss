@@ -33,13 +33,18 @@
 
         select, input[type=text] {
             @include dynamic-spacing(padding, default);
+            @include transition-default(background-color);
 
-            background: $color-highlight;
+            background: color($color-input, $lightness-input-background);
             border: none;
-            color: color($color-highlight, $lightness-text-primary);
+            color: color($color-input, $lightness-input-text);
             flex-grow: 1;
             font-size: $text-size-option;
             font-weight: bold;
+
+            &:hover, &:active {
+                background: color($color-input, $lightness-input-background-hover);
+            }
         }
 
         input[type=text] {

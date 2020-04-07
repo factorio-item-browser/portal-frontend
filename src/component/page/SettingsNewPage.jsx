@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import SettingsNewStore from "../../store/SettingsNewStore";
 
-import ModListUpload from "./newSetting/ModListUpload";
+import ModListUpload from "./settingNew/ModListUpload";
 import ModListUploadStatus from "../status/ModListUploadStatus";
 import OptionsList from "./setting/option/OptionsList";
 import OptionSettingName from "./setting/option/OptionSettingName";

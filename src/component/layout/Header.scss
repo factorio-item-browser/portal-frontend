@@ -1,10 +1,10 @@
 @import "../../style/import";
 
 header {
-    @include flex-container();
-    @include flex-container-align(center, center);
-
+    align-items: center;
     background-color: $color-water;
+    display: flex;
+    justify-content: center;
     min-height: 5rem;
     position: relative;
 

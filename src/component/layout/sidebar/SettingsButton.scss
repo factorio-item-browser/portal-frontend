@@ -1,13 +1,13 @@
 @import "../../../style/import";
 
 .settings-button {
-    @include button-color();
     @include dynamic-spacing(padding, small default);
 
     align-items: center;
     display: flex;
     font-weight: bold;
     position: relative;
+    text-align: left;
 
     .link-icon {
         align-items: center;
@@ -16,31 +16,16 @@
         font-size: $icon-size-small;
         height: $icon-size-default;
         width: $icon-size-default;
+
+        svg {
+            margin: 0;
+        }
     }
+
     .label {
         @include dynamic-spacing(margin-left, default);
 
         flex-grow: 1;
         font-weight: bold;
-    }
-}
-
-header .settings-button {
-    @include dynamic-spacing(padding, default);
-
-    justify-content: center;
-    margin: 0 auto;
-    max-width: 48rem;
-
-    .link-icon {
-        font-size: $text-size-large;
-    }
-
-    .label {
-        margin-left: $spacing-default;
-
-        flex-grow: 0;
-        flex-shrink: 1;
-        font-size: $text-size-large;
     }
 }
