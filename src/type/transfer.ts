@@ -89,6 +89,10 @@ interface SessionInitData {
     sidebarEntities: SidebarEntityData[],
 }
 
+interface SettingCreateData extends SettingOptionsData {
+    modNames: string[],
+}
+
 interface SettingDetailsData extends SettingMetaData, SettingOptionsData {
     mods: ModData[],
     modIconsStyle: IconsStyleData,

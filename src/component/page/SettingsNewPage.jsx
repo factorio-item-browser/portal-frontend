@@ -1,15 +1,21 @@
+import { faSave, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import SettingsNewStore from "../../store/SettingsNewStore";
+import { ROUTE_SETTINGS } from "../../helper/const";
 
+import Button from "../common/Button";
+import ButtonLink from "../link/ButtonLink";
+import ButtonList from "./setting/ButtonList";
 import ModListUpload from "./settingNew/ModListUpload";
 import ModListUploadStatus from "../status/ModListUploadStatus";
-import OptionsList from "./setting/option/OptionsList";
-import OptionSettingName from "./setting/option/OptionSettingName";
-import OptionRecipeMode from "./setting/option/OptionRecipeMode";
 import OptionLocale from "./setting/option/OptionLocale";
+import OptionRecipeMode from "./setting/option/OptionRecipeMode";
+import OptionSettingName from "./setting/option/OptionSettingName";
+import OptionsList from "./setting/option/OptionsList";
 import Section from "../common/Section";
 import SettingStatus from "../status/SettingStatus";
 
@@ -63,6 +69,24 @@ const SettingsNewPage = () => {
                     </OptionsList>
                 </Section>
             ) : null}
+
+            <ButtonList>
+                <ButtonLink route={ROUTE_SETTINGS}>
+                    <FontAwesomeIcon icon={faTimes} />
+                    Cancel
+                </ButtonLink>
+                {settingsNewStore.showSaveButton ? (
+                    <Button
+                        primary
+                        onClick={async () => {
+                            await settingsNewStore.saveNewSetting();
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faSave} />
+                        Save New Setting
+                    </Button>
+                ) : null}
+            </ButtonList>
         </Fragment>
     );
 };

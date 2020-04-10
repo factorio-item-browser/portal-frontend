@@ -134,6 +134,24 @@ class PortalApi {
     }
 
     /**
+     * Creates a new setting with the specified data.
+     * @param {SettingCreateData} settingData
+     * @return {Promise<void>}
+     */
+    async createSetting(settingData) {
+        await this._executeRequest("PUT", "/settings", settingData);
+    }
+
+    /**
+     * Deletes the setting with the specified id.
+     * @param {string} settingId
+     * @return {Promise<void>}
+     */
+    async deleteSetting(settingId) {
+        await this._executeRequest("DELETE", `/settings/${encodeURI(settingId)}`);
+    }
+
+    /**
      * Fetches the tooltip data for the specified type and name.
      * @param {string} type
      * @param {string} name

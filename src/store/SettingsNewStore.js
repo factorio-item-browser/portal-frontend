@@ -5,6 +5,7 @@ import {
     ERROR_INVALID_FILE,
     ERROR_NO_MODS,
     RECIPE_MODE_HYBRID,
+    ROUTE_SETTINGS,
     ROUTE_SETTINGS_NEW,
     SETTING_STATUS_AVAILABLE,
     SETTING_STATUS_LOADING,
@@ -80,8 +81,19 @@ class SettingsNewStore {
         this._portalApi = portalApi;
         this._routeStore = routeStore;
 
-        this._routeStore.addRoute(ROUTE_SETTINGS_NEW, "/settings/new");
+        this._routeStore.addRoute(ROUTE_SETTINGS_NEW, "/settings/new", this._handleRouteChange.bind(this));
         this._detectDropSupport();
+    }
+
+    /**
+     * Handles the change of the route.
+     * @returns {Promise<void>}
+     * @private
+     */
+    @action
+    async _handleRouteChange() {
+        this.uploadedModNames = [];
+        this.settingStatus = null;
     }
 
     /**
@@ -94,17 +106,34 @@ class SettingsNewStore {
         this.isDropSupported = "ondragstart" in element && "ondrop" in element;
     }
 
+    /**
+     * Returns whether the availability step is currently visible.
+     * @return {boolean}
+     */
     @computed
     get showAvailabilityStep() {
         return !!this.settingStatus;
     }
 
+    /**
+     * Returns whether the options step is currently visible.
+     * @return {boolean}
+     */
     @computed
     get showOptionsStep() {
         return (
             this.settingStatus &&
             [SETTING_STATUS_AVAILABLE, SETTING_STATUS_PENDING].indexOf(this.settingStatus.status) !== -1
         );
+    }
+
+    /**
+     * Returns whether the save button is currently visible.
+     * @return {boolean}
+     */
+    @computed
+    get showSaveButton() {
+        return this.showOptionsStep;
     }
 
     /**
@@ -206,6 +235,22 @@ class SettingsNewStore {
             ...this.newOptions,
             ...options,
         };
+    }
+
+    /**
+     * Saves the new settings, pushing them to the server and redirecting afterwards.
+     * @return {Promise<void>}
+     */
+    @action
+    async saveNewSetting() {
+        const settingData = {
+            ...this.newOptions,
+            modNames: this.uploadedModNames,
+        };
+        await this._portalApi.createSetting(settingData);
+
+        // Hard redirect to the settings page to show the updated data.
+        location.assign(this._routeStore.buildPath(ROUTE_SETTINGS));
     }
 }
 

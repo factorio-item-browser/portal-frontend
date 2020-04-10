@@ -1,4 +1,4 @@
-import { action, observable, runInAction } from "mobx";
+import { action, computed, observable, runInAction } from "mobx";
 import { createContext } from "react";
 
 import { iconManager } from "../class/IconManager";
@@ -32,11 +32,18 @@ class SettingsStore {
     _routeStore;
 
     /**
-     * The setting details currently shown on the settings page.
-     * @type {SettingDetailsData}
+     * The id of the currently active setting.
+     * @type {string}
+     * @private
      */
-    @observable
-    settingDetails;
+    _currentSettingId;
+
+    /**
+     * All the setting details which have been requested up to now.
+     * @type {Object<string, SettingDetailsData>}
+     * @private
+     */
+    _allSettingDetails = {};
 
     /**
      * The list of available settings.
@@ -89,17 +96,66 @@ class SettingsStore {
      * @returns {Promise<void>}
      * @private
      */
+    @action
     async _handleRouteChange() {
-        const settingsListData = await this._portalApi.getSettings();
-        runInAction(() => {
-            this.isSaveButtonVisible = false;
-            this.availableSettings = settingsListData.settings.sort((left, right) => {
-                return left.name.localeCompare(right.name);
+        this.isSaveButtonVisible = false;
+        if (!this._currentSettingId) {
+            const settingsListData = await this._portalApi.getSettings();
+            runInAction(() => {
+                this.availableSettings = settingsListData.settings.sort((left, right) => {
+                    return left.name.localeCompare(right.name);
+                });
+                this._currentSettingId = settingsListData.currentSetting.id;
+                this._addSettingDetails(settingsListData.currentSetting);
             });
-            this.selectedSettingId = settingsListData.currentSetting.id;
+        }
 
-            this._applySettingDetails(settingsListData.currentSetting);
+        runInAction(() => {
+            this.selectedSettingId = this._currentSettingId;
+            this._applySelectedSetting();
         });
+    }
+
+    /**
+     * Adds the setting details to the store.
+     * @param {SettingDetailsData} settingDetails
+     * @private
+     */
+    _addSettingDetails(settingDetails) {
+        this._allSettingDetails[settingDetails.id] = settingDetails;
+    }
+
+    /**
+     * Applies the setting details to the store.
+     * @private
+     */
+    @action
+    _applySelectedSetting() {
+        const selectedSetting = this.selectedSettingDetails;
+
+        this.selectedOptions.name = selectedSetting.name;
+        this.selectedOptions.locale = selectedSetting.locale;
+        this.selectedOptions.recipeMode = selectedSetting.recipeMode;
+
+        this._iconManager.addAdditionalStyle("mod-icons", selectedSetting.modIconsStyle);
+    }
+
+    /**
+     * Returns the details of the currently selected setting.
+     * @return {SettingDetailsData}
+     */
+    @computed
+    get selectedSettingDetails() {
+        return this._allSettingDetails[this.selectedSettingId];
+    }
+
+    /**
+     * Returns whether the delete button is visible.
+     * @return {boolean}
+     */
+    @computed
+    get isDeleteButtonVisible() {
+        return this._currentSettingId !== this.selectedSettingDetails.id;
     }
 
     /**
@@ -109,30 +165,16 @@ class SettingsStore {
      */
     @action
     async changeSettingId(settingId) {
-        this.selectedSettingId = settingId;
+        if (!this._allSettingDetails[settingId]) {
+            const settingDetails = await this._portalApi.getSetting(settingId);
+            this._addSettingDetails(settingDetails);
+        }
 
-        const settingDetails = await this._portalApi.getSetting(settingId);
         runInAction(() => {
-            this._applySettingDetails(settingDetails);
-
+            this.selectedSettingId = settingId;
+            this._applySelectedSetting();
             this.isSaveButtonVisible = true;
         });
-    }
-
-    /**
-     * Applies the setting details to the store.
-     * @param {SettingDetailsData} settingDetails
-     * @private
-     */
-    @action
-    _applySettingDetails(settingDetails) {
-        this.settingDetails = settingDetails;
-
-        this.selectedOptions.name = settingDetails.name;
-        this.selectedOptions.locale = settingDetails.locale;
-        this.selectedOptions.recipeMode = settingDetails.recipeMode;
-
-        this._iconManager.addAdditionalStyle("mod-icons", settingDetails.modIconsStyle);
     }
 
     /**
@@ -156,6 +198,22 @@ class SettingsStore {
     async saveOptions() {
         await this._portalApi.saveSetting(this.selectedSettingId, this.selectedOptions);
         location.reload();
+    }
+
+    /**
+     * Deletes the currently selected setting.
+     * @return {Promise<void>}
+     */
+    async deleteSelectedSetting() {
+        await this._portalApi.deleteSetting(this.selectedSettingId);
+
+        runInAction(() => {
+            this.availableSettings = this.availableSettings.filter((setting) => setting.id !== this.selectedSettingId);
+            delete this._allSettingDetails[this.selectedSettingId];
+
+            this.selectedSettingId = this._currentSettingId;
+            this._applySelectedSetting();
+        });
     }
 }
 
