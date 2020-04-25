@@ -10,10 +10,17 @@ import {
     SETTING_STATUS_AVAILABLE,
     SETTING_STATUS_LOADING,
     SETTING_STATUS_PENDING,
+    SETTING_STATUS_UNKNOWN,
 } from "../helper/const";
 
 import { routeStore } from "./RouteStore";
 import { portalApi } from "../class/PortalApi";
+
+/**
+ * The status making a setting valid for adding.
+ * @type {string[]}
+ */
+const VALID_SETTING_STATUS = [SETTING_STATUS_AVAILABLE, SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN];
 
 /**
  * The store managing the creation of new settings for the users.
@@ -121,10 +128,7 @@ class SettingsNewStore {
      */
     @computed
     get showOptionsStep() {
-        return (
-            this.settingStatus &&
-            [SETTING_STATUS_AVAILABLE, SETTING_STATUS_PENDING].indexOf(this.settingStatus.status) !== -1
-        );
+        return this.settingStatus && VALID_SETTING_STATUS.indexOf(this.settingStatus.status) !== -1;
     }
 
     /**

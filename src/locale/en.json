@@ -118,26 +118,39 @@
         "save-changes": "Save changes",
         "title": "Settings - Factorio Item Browser"
     },
-    "settings-create": {
+    "settings-new": {
         "new-setting-name": "New setting",
-        "title": "Create Setting - Factorio Item Browser",
+        "title": "New Setting - Factorio Item Browser",
         "upload-file": {
             "button": {
                 "select": "Select your <1>mod-list.json</1> file.",
                 "select-or-drag": "Select your <1>mod-list.json</1> file or drag it here.",
                 "drop": "Drop it here."
             },
-            "headline": "1. Upload mod-list.json"
+            "headline": "1. Combination of mods",
+            "status": {
+                "error": {
+                    "headline": "Unable to extract mods:",
+                    "message": {
+                        "invalid-file": "The selected file was invalid and could not be processed. Are you sure you selected a valid mod-list.json file?",
+                        "no-mods": "The selected file did not contain any mods. Are you sure you selected a valid mod-list.json file?"
+                    }
+                },
+                "success": {
+                    "headline": "Detected {{count}} mod:",
+                    "headline_plural": "Detected {{count}} mods:"
+                }
+            }
         }
     },
     "setting-status": {
         "available": {
             "headline": "Data is available.",
-            "description": "The data for your combination of mods is available and read-to-use."
+            "description": "The data for your combination of mods is already available. Save the new setting and start browsing!"
         },
         "errored": {
             "headline": "Data export has failed.",
-            "description": "A previously running export of the data has failed. Sorry, but the data cannot be made available automatically."
+            "description": "A previously triggered data export of these mods has failed. Sorry, but the required data cannot be made available at this point."
         },
         "loading": {
             "headline": "Checking data availability...",
@@ -145,11 +158,11 @@
         },
         "pending": {
             "headline": "Data export is pending.",
-            "description": "The export of your combination of mods has already been triggered and is currently waiting in the queue to get its turn."
+            "description": "The data export of these mods has already been triggered and is currently waiting to get its turn."
         },
         "unknown": {
-            "headline": "Data not available.",
-            "description": "The data for your combination of mods is currently not available and an export will get triggered."
+            "headline": "Data is currently not available.",
+            "description": "The data for these mods is currently not available and a data export will get triggered when saving the new setting."
         }
     },
     "sidebar": {

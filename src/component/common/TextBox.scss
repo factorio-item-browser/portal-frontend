@@ -1,0 +1,39 @@
+@import "../../style/import";
+
+.text-box {
+    @include dynamic-spacing(margin, large);
+    @include dynamic-spacing(padding, default);
+
+    background: color($color-box-default, $lightness-box-background, $alpha-box-content);
+    box-shadow: $shadow-box;
+
+    dl, p:not(:last-child), ul {
+        @include dynamic-spacing(margin-bottom, default);
+    }
+
+    dl {
+        display: flex;
+        flex-wrap: wrap;
+
+        dt {
+            font-weight: bold;
+            flex-basis: 15rem;
+            text-align: right;
+            padding: $spacing-tiny $spacing-small;
+        }
+        dd {
+            flex-grow: 1;
+            flex-basis: calc(100% - 15rem);
+            font-family: monospace;
+            font-size: 1rem;
+            padding: $spacing-tiny $spacing-small;
+        }
+    }
+
+    ul {
+        li {
+            list-style: disc;
+            margin-left: 2rem;
+        }
+    }
+}
