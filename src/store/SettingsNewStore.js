@@ -100,6 +100,7 @@ class SettingsNewStore {
     @action
     async _handleRouteChange() {
         this.uploadedModNames = [];
+        this.uploadError = "";
         this.settingStatus = null;
     }
 
@@ -204,7 +205,7 @@ class SettingsNewStore {
             this.uploadedModNames = modNames;
             this.uploadError = "";
 
-            this._requestSettingStatus(modNames);
+            await this._requestSettingStatus(modNames);
         } catch (err) {
             this.uploadedModNames = [];
             this.uploadError = err;

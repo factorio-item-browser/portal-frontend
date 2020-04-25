@@ -37,5 +37,6 @@
 
         background: rgba($color-box-default, $alpha-box-content);
         border-top: px-to-rem(1) solid color($color-box-default, $lightness-box-border, $alpha-box-border);
+        color: color($color-box-default, $lightness-text-primary);
     }
 }

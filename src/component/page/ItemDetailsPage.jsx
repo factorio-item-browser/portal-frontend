@@ -33,7 +33,7 @@ const ItemDetailsPage = () => {
                 <Detail>
                     <CopyTemplate
                         label={t("copy-template.rich-text-icon.label")}
-                        template={`[img=${itemStore.currentItem.type}/${itemStore.currentItem.name}]`}
+                        template={`[${itemStore.currentItem.type}=${itemStore.currentItem.name}]`}
                         description={t("copy-template.rich-text-icon.description")}
                     />
                 </Detail>

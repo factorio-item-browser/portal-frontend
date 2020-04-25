@@ -9,7 +9,7 @@
     .option-chevron {
         @include dynamic-spacing(right top, default);
 
-        color: color($color-highlight, $lightness-text-primary);
+        color: color($color-input, $lightness-text-primary);
         font-size: $text-size-option;
         pointer-events: none;
         position: absolute;

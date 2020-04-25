@@ -143,6 +143,8 @@ class RouteStore {
         for (const handler of this._routeChangeHandlers) {
             handler(state);
         }
+
+        window.scrollTo(0, 0);
     }
 
     /**

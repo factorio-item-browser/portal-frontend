@@ -9,7 +9,7 @@
     "copy-template": {
         "rich-text-icon": {
             "label": "Rich text icon:",
-            "description": "Copy&Paste this tag into the text in-game to get the icon instead."
+            "description": "Copy this tag and paste it in-game into a text to get the icon instead."
         },
         "cheat-command": {
             "label": "Cheat command:",
@@ -58,13 +58,13 @@
         "ingredients": "Ingredients",
         "machine": {
             "character-notice": "This recipe can be crafted by hand without additional machines as long as the required items are in the inventory.",
-            "crafting-speed": "Crafting speed",
-            "energy-usage": "Energy usage",
-            "fluids": "Fluids",
+            "crafting-speed": "Crafting speed:",
+            "energy-usage": "Energy usage:",
+            "fluids": "Fluids:",
             "headline": "Producible in {{count}} machine",
             "headline_plural": "Producible in {{count}} machines",
-            "items": "Items",
-            "modules": "Modules",
+            "items": "Items:",
+            "modules": "Modules:",
             "more-machines": {
                 "load": "Load more machines",
                 "loading": "Loading more machines..."

@@ -34,7 +34,7 @@ const RecipeDetailsPage = () => {
                 <Detail>
                     <CopyTemplate
                         label={t("copy-template.rich-text-icon.label")}
-                        template={`[img=recipe/${details.name}]`}
+                        template={`[recipe=${details.name}]`}
                         description={t("copy-template.rich-text-icon.description")}
                     />
                 </Detail>

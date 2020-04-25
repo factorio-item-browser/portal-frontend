@@ -13,4 +13,10 @@
         font-family: monospace;
         font-size: 1rem;
     }
+
+    .description {
+        display: block;
+        font-size: $text-size-small;
+        padding-top: $spacing-tiny;
+    }
 }

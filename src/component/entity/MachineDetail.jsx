@@ -12,7 +12,7 @@ import React from "react";
 const MachineDetail = ({ label, value }) => {
     return (
         <div className="machine-detail">
-            <span className="label">{label}:</span>
+            <span className="label">{label}</span>
             <span className="value">{value}</span>
         </div>
     );

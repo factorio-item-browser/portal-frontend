@@ -20,7 +20,6 @@ const CopyTemplate = ({ label, template, description }) => {
     return (
         <div
             className="copy-template"
-            title={description}
             onClick={() => {
                 selectText(templateRef.current);
             }}
@@ -29,6 +28,7 @@ const CopyTemplate = ({ label, template, description }) => {
             <span className="template" ref={templateRef}>
                 {template}
             </span>
+            <span className="description">{description}</span>
         </div>
     );
 };
