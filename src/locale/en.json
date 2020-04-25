@@ -91,14 +91,14 @@
         },
         "locale": {
             "label": "Language:",
-            "description": "Languages are only supported as long as the mods provide translations for them. Missing translations will fall back to English."
+            "description": "The translations of the items, recipes etc. are provided by the mods themselves. Missing translations are replaced with English, the same way they are in-game."
         },
         "mod-list": {
             "headline": "Uses {{count}} mod",
             "headline_plural": "Uses {{count}} mods",
-            "author": "Author",
-            "name": "Name",
-            "version": "Version"
+            "author": "Author:",
+            "name": "Name:",
+            "version": "Version:"
         },
         "name": {
             "label": "Setting name:"
@@ -108,7 +108,7 @@
         },
         "recipe-mode": {
             "label": "Recipe mode:",
-            "description": "The recipe mode defines how to handle recipes with multiple variants by either showing both variants (hybrid mode) or omitting the uninteresting one (normal and expensive mode).",
+            "description": "The recipe mode defines how to handle recipes with a normal and an expensive variant. Select \"Normal mode\" or \"Expensive mode\" to only display that variant, or \"Hybrid mode\" to display both variants with the expensive one being marked in red.",
             "option": {
                 "hybrid": "Hybrid mode",
                 "normal": "Normal mode",
@@ -157,12 +157,12 @@
             "description": ""
         },
         "pending": {
-            "headline": "Data export is pending.",
-            "description": "The data export of these mods has already been triggered and is currently waiting to get its turn."
+            "headline": "Data export is waiting.",
+            "description": "The data export of these mods was already triggered and is currently waiting to get its turn."
         },
         "unknown": {
             "headline": "Data is currently not available.",
-            "description": "The data for these mods is currently not available and a data export will get triggered when saving the new setting."
+            "description": "The data for these mods is currently not available and a data export gets triggered when saving the new setting."
         }
     },
     "sidebar": {

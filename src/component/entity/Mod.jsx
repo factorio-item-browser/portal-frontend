@@ -45,15 +45,15 @@ const Mod = ({ mod }) => {
                 <h3 className="entity-head">{mod.label}</h3>
                 <div className="mod-details">
                     <div className="mod-detail">
-                        <span className="label">{t("settings.mod-list.name")}:</span>
+                        <span className="label">{t("settings.mod-list.name")}</span>
                         <span className="value">{mod.name}</span>
                     </div>
                     <div className="mod-detail">
-                        <span className="label">{t("settings.mod-list.author")}:</span>
+                        <span className="label">{t("settings.mod-list.author")}</span>
                         <span className="value">{mod.author}</span>
                     </div>
                     <div className="mod-detail">
-                        <span className="label">{t("settings.mod-list.version")}:</span>
+                        <span className="label">{t("settings.mod-list.version")}</span>
                         <span className="value">{mod.version}</span>
                     </div>
                 </div>
