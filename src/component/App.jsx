@@ -24,6 +24,7 @@ import RecipeDetailsPage from "./page/RecipeDetailsPage";
 import SearchResultsPage from "./page/SearchResultsPage";
 import SettingsNewPage from "./page/SettingsNewPage";
 import SettingsPage from "./page/SettingsPage";
+import GlobalSettingStatus from "./status/GlobalSettingStatus";
 
 import "./App.scss";
 
@@ -63,7 +64,10 @@ const App = () => {
             <Header />
             <div className="content-wrapper">
                 <Sidebar />
-                <div className="content">{page}</div>
+                <div className="content">
+                    <GlobalSettingStatus />
+                    {page}
+                </div>
             </div>
             <Footer />
 

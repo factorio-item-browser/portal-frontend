@@ -24,7 +24,7 @@ const SettingsLink = () => {
             <div className="link-icon">
                 <FontAwesomeIcon icon={faCogs} />
             </div>
-            <div className="label">{t("sidebar.setting", { name: routeStore.settingName })}</div>
+            <div className="label">{t("sidebar.setting", { name: routeStore.setting.name })}</div>
         </Link>
     );
 };

@@ -150,7 +150,8 @@
         },
         "errored": {
             "headline": "Data export has failed.",
-            "description": "A previously triggered data export of these mods has failed. Sorry, but the required data cannot be made available at this point."
+            "description": "A previously triggered data export of these mods has failed. Sorry, but the required data cannot be made available at this point.",
+            "global-description": "You are viewing the unmodded Vanilla data. The data export of your mods has failed. Sorry, but the required data cannot be made available at this point."
         },
         "loading": {
             "headline": "Checking data availability...",
@@ -158,7 +159,8 @@
         },
         "pending": {
             "headline": "Data export is waiting.",
-            "description": "The data export of these mods was already triggered and is currently waiting to get its turn."
+            "description": "The data export of these mods was already triggered and is currently waiting to get its turn.",
+            "global-description": "You are viewing the unmodded Vanilla data. The data of your combination of mods is waiting to get exported from the game and is not yet available."
         },
         "unknown": {
             "headline": "Data is currently not available.",

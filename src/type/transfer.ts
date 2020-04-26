@@ -83,7 +83,7 @@ interface SearchResultsData {
 }
 
 interface SessionInitData {
-    settingName: string,
+    setting: SettingMetaData,
     settingHash: string,
     locale: string,
     sidebarEntities: SidebarEntityData[],
@@ -101,6 +101,7 @@ interface SettingDetailsData extends SettingMetaData, SettingOptionsData {
 interface SettingMetaData {
     id: string,
     name: string,
+    status: string,
 }
 
 interface SettingOptionsData {

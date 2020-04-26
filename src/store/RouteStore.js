@@ -5,7 +5,7 @@ import browserPluginFactory from "router5-plugin-browser";
 
 import { cacheManager } from "../class/CacheManager";
 import { portalApi } from "../class/PortalApi";
-import { ROUTE_INDEX, ROUTE_ITEM_DETAILS, ROUTE_RECIPE_DETAILS } from "../helper/const";
+import { ROUTE_INDEX, ROUTE_ITEM_DETAILS, ROUTE_RECIPE_DETAILS, SETTING_STATUS_AVAILABLE } from "../helper/const";
 
 /**
  * The map from the entity types to their corresponding routes.
@@ -77,11 +77,15 @@ class RouteStore {
     loadingCircleTarget = null;
 
     /**
-     * The name of the currently loaded setting.
-     * @type {string}
+     * The currently loaded setting.
+     * @type {SettingMetaData}
      */
     @observable
-    settingName = "Vanilla";
+    setting = {
+        id: "",
+        name: "Vanilla",
+        status: SETTING_STATUS_AVAILABLE,
+    };
 
     /**
      * The locale to use for the page.
@@ -154,7 +158,7 @@ class RouteStore {
      */
     @action
     _initializeSession(session) {
-        this.settingName = session.settingName;
+        this.setting = session.setting;
         this.locale = session.locale;
 
         this._cacheManager.setSettingHash(session.settingHash);
