@@ -94,4 +94,5 @@ export const STORAGE_KEY_SETTING_HASH = "setting-hash";
 
 // Environment variables
 export const CACHE_LIFETIME = process.env.CACHE_LIFETIME;
+export const INTERVAL_CHECK_SETTING_STATUS = process.env.INTERVAL_CHECK_SETTING_STATUS;
 export const PORTAL_API_URL = process.env.PORTAL_API_URI;

@@ -5,7 +5,16 @@ import browserPluginFactory from "router5-plugin-browser";
 
 import { cacheManager } from "../class/CacheManager";
 import { portalApi } from "../class/PortalApi";
-import { ROUTE_INDEX, ROUTE_ITEM_DETAILS, ROUTE_RECIPE_DETAILS, SETTING_STATUS_AVAILABLE } from "../helper/const";
+import {
+    ROUTE_INDEX,
+    ROUTE_ITEM_DETAILS,
+    ROUTE_RECIPE_DETAILS,
+    ROUTE_SETTINGS,
+    ROUTE_SETTINGS_NEW,
+    SETTING_STATUS_AVAILABLE,
+    SETTING_STATUS_PENDING,
+    SETTING_STATUS_UNKNOWN,
+} from "../helper/const";
 
 /**
  * The map from the entity types to their corresponding routes.
@@ -275,6 +284,32 @@ class RouteStore {
     @action
     showLoadingCircle(ref) {
         this.loadingCircleTarget = ref;
+    }
+
+    /**
+     * Returns whether the global setting status should be shown.
+     * @return {boolean}
+     */
+    @computed
+    get showGlobalSettingStatus() {
+        return [ROUTE_SETTINGS, ROUTE_SETTINGS_NEW].indexOf(this.currentRoute) === -1;
+    }
+
+    /**
+     * Checks the current status of the setting, if its data is still not available.
+     * @return {Promise<void>}
+     */
+    async checkSettingStatus() {
+        if (this.setting.status === SETTING_STATUS_PENDING || this.setting.status === SETTING_STATUS_UNKNOWN) {
+            const settingStatus = await this._portalApi.getSettingStatus();
+            if (settingStatus.status === SETTING_STATUS_AVAILABLE) {
+                window.location.reload();
+            } else {
+                runInAction(() => {
+                    this.setting.status = settingStatus.status;
+                });
+            }
+        }
     }
 }
 

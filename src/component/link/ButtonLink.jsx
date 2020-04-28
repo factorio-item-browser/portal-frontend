@@ -19,19 +19,11 @@ import "../common/Button.scss";
  * @constructor
  */
 const ButtonLink = ({ primary, secondary, spacing, className, children, ...props }) => {
-    const additionalClasses = {};
-    if (typeof className === "string") {
-        for (const name of className.split(" ")) {
-            additionalClasses[name] = true;
-        }
-    }
-
-    const classes = classNames({
+    const classes = classNames(className, {
         button: true,
         primary: primary,
         secondary: secondary,
         spacing: spacing,
-        ...additionalClasses,
     });
 
     return (

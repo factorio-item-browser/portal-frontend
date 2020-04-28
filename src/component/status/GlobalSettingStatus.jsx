@@ -1,8 +1,9 @@
 import { observer } from "mobx-react-lite";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
+    INTERVAL_CHECK_SETTING_STATUS,
     SETTING_STATUS_ERRORED,
     SETTING_STATUS_PENDING,
     SETTING_STATUS_UNKNOWN,
@@ -21,9 +22,16 @@ import Status from "./Status";
 const GlobalSettingStatus = () => {
     const { t } = useTranslation();
     const routeStore = useContext(RouteStore);
-
     const setting = routeStore.setting;
-    if (!setting) {
+
+    useEffect(() => {
+        const interval = window.setInterval(async () => {
+            await routeStore.checkSettingStatus();
+        }, INTERVAL_CHECK_SETTING_STATUS * 1000);
+        return () => window.clearInterval(interval);
+    }, []);
+
+    if (!setting || !routeStore.showGlobalSettingStatus) {
         return null;
     }
 
@@ -31,7 +39,7 @@ const GlobalSettingStatus = () => {
         return (
             <Status status={STATUS_WARNING}>
                 <h3>{t("setting-status.pending.headline")}</h3>
-                {t("setting-status.pending.global-description")}
+                {t("setting-status.pending.description-global")}
             </Status>
         );
     }
@@ -40,7 +48,7 @@ const GlobalSettingStatus = () => {
         return (
             <Status status={STATUS_ERROR}>
                 <h3>{t("setting-status.errored.headline")}</h3>
-                {t("setting-status.errored.global-description")}
+                {t("setting-status.errored.description-global")}
             </Status>
         );
     }

@@ -24,11 +24,12 @@ const ICON_MAP = {
  * The component representing a status box.
  * @param {string} status
  * @param {ReactDOM} children
+ * @param {string} [className]
  * @return {ReactDOM}
  * @constructor
  */
-const Status = ({ status, children }) => {
-    const classes = classNames({
+const Status = ({ status, children, className }) => {
+    const classes = classNames(className, {
         "status-box": true,
         [status]: true,
     });
@@ -43,6 +44,7 @@ const Status = ({ status, children }) => {
 
 Status.propTypes = {
     children: PropTypes.node.isRequired,
+    className: PropTypes.string,
     status: PropTypes.string.isRequired,
 };
 

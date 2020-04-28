@@ -19,6 +19,7 @@ import OptionSettingName from "./setting/option/OptionSettingName";
 import OptionsList from "./setting/option/OptionsList";
 import SaveButton from "./setting/SaveButton";
 import Section from "../common/Section";
+import ModListSettingStatus from "../status/ModListSettingStatus";
 
 /**
  * The component representing the settings page.
@@ -89,6 +90,7 @@ const SettingsPage = () => {
             </Section>
 
             <Section headline={t("settings.mod-list.headline", { count: selectedSettingDetails.mods.length })}>
+                <ModListSettingStatus setting={selectedSettingDetails} />
                 <EntityList>
                     {selectedSettingDetails.mods.map((mod) => {
                         return <Mod key={mod.name} mod={mod} />;

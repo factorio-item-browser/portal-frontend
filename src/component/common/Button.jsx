@@ -18,19 +18,11 @@ import * as PropTypes from "prop-types";
  * @constructor
  */
 const Button = ({ primary, secondary, spacing, className, children, ...props }, ref) => {
-    const additionalClasses = {};
-    if (typeof className === "string") {
-        for (const name of className.split(" ")) {
-            additionalClasses[name] = true;
-        }
-    }
-
-    const classes = classNames({
+    const classes = classNames(className, {
         button: true,
         primary: primary,
         secondary: secondary,
         spacing: spacing,
-        ...additionalClasses,
     });
 
     return (
