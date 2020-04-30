@@ -1,7 +1,6 @@
-import { observable, runInAction } from "mobx";
+import { action, computed, observable, runInAction } from "mobx";
 import { createContext } from "react";
 
-import { cacheManager } from "../class/CacheManager";
 import { portalApi } from "../class/PortalApi";
 import PaginatedList from "../class/PaginatedList";
 import { ROUTE_RECIPE_DETAILS } from "../helper/const";
@@ -13,20 +12,6 @@ import { sidebarStore } from "./SidebarStore";
  * The store managing the recipes.
  */
 class RecipeStore {
-    /**
-     * The cache of the recipe details.
-     * @type {Cache<RecipeDetailsData>}
-     * @private
-     */
-    _detailsCache;
-
-    /**
-     * The cache of the recipe machines.
-     * @type {Cache<RecipeMachinesData>}
-     * @private
-     */
-    _machinesCache;
-
     /**
      * The Portal API instance.
      * @type {PortalApi}
@@ -70,15 +55,11 @@ class RecipeStore {
 
     /**
      * Initializes the store.
-     * @param {Cache<RecipeDetailsData>} detailsCache
-     * @param {Cache<RecipeMachinesData>} machinesCache
      * @param {PortalApi} portalApi
      * @param {RouteStore} routeStore
      * @param {SidebarStore} sidebarStore
      */
-    constructor(detailsCache, machinesCache, portalApi, routeStore, sidebarStore) {
-        this._detailsCache = detailsCache;
-        this._machinesCache = machinesCache;
+    constructor(portalApi, routeStore, sidebarStore) {
         this._portalApi = portalApi;
         this._routeStore = routeStore;
         this._sidebarStore = sidebarStore;
@@ -93,60 +74,57 @@ class RecipeStore {
      * @private
      */
     async _handleRouteChange({ name }) {
-        const newMachinesList = new PaginatedList((page) => this._fetchMachinesData(name, page));
-        const [recipeDetails] = await Promise.all([this._fetchDetailsData(name), newMachinesList.requestNextPage()]);
+        const newMachinesList = new PaginatedList(
+            (page) => this._portalApi.getRecipeMachines(name, page),
+            (error) => this._handlePortalApiError(error)
+        );
 
-        runInAction(() => {
-            this.currentRecipeDetails = recipeDetails;
-            this.paginatedMachinesList = newMachinesList;
+        try {
+            const [recipeDetails] = await Promise.all([
+                this._portalApi.getRecipeDetails(name),
+                newMachinesList.requestNextPage(),
+            ]);
 
-            this._sidebarStore.addViewedEntity("recipe", recipeDetails.name, recipeDetails.label);
-        });
+            runInAction(() => {
+                this.currentRecipeDetails = recipeDetails;
+                this.paginatedMachinesList = newMachinesList;
+
+                this._sidebarStore.addViewedEntity("recipe", recipeDetails.name, recipeDetails.label);
+            });
+        } catch (e) {
+            this._handlePortalApiError(e);
+        }
     }
 
     /**
-     * Fetches the recipe data to display.
-     * @param {string} name
-     * @returns {Promise<RecipeDetailsData>}
+     * Handles the Portal API error.
+     * @param {PortalApiError} error
      * @private
      */
-    async _fetchDetailsData(name) {
-        const cacheKey = name;
-        const cachedData = this._detailsCache.read(cacheKey);
-        if (cachedData) {
-            return cachedData;
+    @action
+    _handlePortalApiError(error) {
+        if (error.code === 404) {
+            this.currentRecipeDetails = {
+                name: "",
+                label: "",
+                description: "",
+                recipe: null,
+                expensiveRecipe: null,
+            };
+        } else {
+            this._routeStore.handlePortalApiError(error);
         }
-
-        const requestedData = await this._portalApi.getRecipeDetails(name);
-        this._detailsCache.write(cacheKey, requestedData);
-        return requestedData;
     }
 
     /**
-     * Fetches the machines able to craft the recipe.
-     * @param {string} name
-     * @param {number} page
-     * @returns {Promise<RecipeMachinesData>}
-     * @private
+     * Returns whether a not found error is present.
+     * @return {boolean}
      */
-    async _fetchMachinesData(name, page) {
-        const cacheKey = `${name}-${page}`;
-        const cachedData = this._machinesCache.read(cacheKey);
-        if (cachedData) {
-            return cachedData;
-        }
-
-        const requestedData = await this._portalApi.getRecipeMachines(name, page);
-        this._machinesCache.write(cacheKey, requestedData);
-        return requestedData;
+    @computed
+    get hasNotFoundError() {
+        return this.currentRecipeDetails.name === "";
     }
 }
 
-export const recipeStore = new RecipeStore(
-    cacheManager.create("recipe"),
-    cacheManager.create("recipe-machines"),
-    portalApi,
-    routeStore,
-    sidebarStore
-);
+export const recipeStore = new RecipeStore(portalApi, routeStore, sidebarStore);
 export default createContext(recipeStore);

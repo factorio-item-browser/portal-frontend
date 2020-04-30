@@ -241,11 +241,11 @@ class SidebarStore {
      */
     @action
     updatePinnedOrder(order) {
-        order.forEach((id, index) => {
+        for (const [index, id] of order) {
             if (this.entities.has(id)) {
                 this.entities.get(id).pinnedPosition = index + 1;
             }
-        });
+        }
 
         this._sendEntities();
     }
@@ -266,14 +266,14 @@ class SidebarStore {
     @action
     _validateEntities() {
         // Renumber pinned entities.
-        this.pinnedEntities.forEach((entity, index) => {
+        for (const [index, entity] of this.pinnedEntities.entries()) {
             entity.pinnedPosition = index + 1;
-        });
+        }
 
         // Cut off excessive unpinned entities.
-        this.unpinnedEntities.slice(10).forEach((entity) => {
+        for (const entity of this.unpinnedEntities.slice(10)) {
             this.entities.delete(this.getIdForEntity(entity));
-        });
+        }
     }
 
     /**
@@ -285,7 +285,11 @@ class SidebarStore {
 
         localStorage.setItem(STORAGE_KEY_SIDEBAR_ENTITIES, JSON.stringify(entities));
         (async () => {
-            await this._portalApi.sendSidebarEntities(entities);
+            try {
+                await this._portalApi.sendSidebarEntities(entities);
+            } catch (e) {
+                // Ignore errors related to saving sidebar entities.
+            }
         })();
     }
 }

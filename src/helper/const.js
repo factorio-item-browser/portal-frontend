@@ -14,6 +14,7 @@ export const UPLOAD_ERROR_INVALID_FILE = "invalid-file";
 export const UPLOAD_ERROR_NO_MODS = "no-mods";
 
 export const ERROR_CLIENT_FAILURE = "client-failure";
+export const ERROR_INCOMPATIBLE_CLIENT = "incompatible-client";
 export const ERROR_PAGE_NOT_FOUND = "page-not-found";
 export const ERROR_SERVER_FAILURE = "server-failure";
 export const ERROR_SERVICE_NOT_AVAILABLE = "service-not-available";

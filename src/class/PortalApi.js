@@ -5,6 +5,7 @@ import {
     NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
     PORTAL_API_URL,
 } from "../helper/const";
+import { cacheManager } from "./CacheManager";
 
 /**
  * The class functioning as interface to the Portal API server.
@@ -14,14 +15,30 @@ import {
  */
 class PortalApi {
     /**
+     * The cache manager.
+     * @type {CacheManager}
+     * @private
+     */
+    _cacheManager;
+
+    /**
+     * Initializes the API instance.
+     * @param {CacheManager} cacheManager
+     */
+    constructor(cacheManager) {
+        this._cacheManager = cacheManager;
+    }
+
+    /**
      * Executes a search with the specified query.
      * @param {string} query
      * @param {number} page
      * @returns {Promise<SearchResultsData>}
+     * @throws {PortalApiError}
      */
     async search(query, page) {
-        return this._executeRequest("GET", "/search", {
-            query,
+        return await this._executeRequestWithCache("search", `${query}-${page}`, "GET", "/search", {
+            query: query,
             indexOfFirstResult: (page - 1) * NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
             numberOfResults: NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
         });
@@ -31,9 +48,10 @@ class PortalApi {
      * Fetches the style of the icons with the specified types and names.
      * @param {NamesByTypes} namesByTypes
      * @returns {Promise<IconsStyleData>}
+     * @throws {PortalApiError}
      */
     async getIconsStyle(namesByTypes) {
-        return this._executeRequest("POST", "/style/icons", namesByTypes);
+        return await this._executeRequest("POST", "/style/icons", namesByTypes);
     }
 
     /**
@@ -42,12 +60,19 @@ class PortalApi {
      * @param {string} name
      * @param {number} page
      * @returns {Promise<ItemRecipesData>}
+     * @throws {PortalApiError}
      */
     async getItemIngredientRecipes(type, name, page) {
-        return this._executeRequest("GET", `/${encodeURI(type)}/${encodeURI(name)}/ingredients`, {
-            indexOfFirstResult: (page - 1) * NUMBER_OF_ITEM_RECIPES_PER_PAGE,
-            numberOfResults: NUMBER_OF_ITEM_RECIPES_PER_PAGE,
-        });
+        return await this._executeRequestWithCache(
+            "ingredient",
+            `${type}-${name}-${page}`,
+            "GET",
+            `/${encodeURI(type)}/${encodeURI(name)}/ingredients`,
+            {
+                indexOfFirstResult: (page - 1) * NUMBER_OF_ITEM_RECIPES_PER_PAGE,
+                numberOfResults: NUMBER_OF_ITEM_RECIPES_PER_PAGE,
+            }
+        );
     }
 
     /**
@@ -56,17 +81,25 @@ class PortalApi {
      * @param {string} name
      * @param {number} page
      * @returns {Promise<ItemRecipesData>}
+     * @throws {PortalApiError}
      */
     async getItemProductRecipes(type, name, page) {
-        return this._executeRequest("GET", `/${encodeURI(type)}/${encodeURI(name)}/products`, {
-            indexOfFirstResult: (page - 1) * NUMBER_OF_ITEM_RECIPES_PER_PAGE,
-            numberOfResults: NUMBER_OF_ITEM_RECIPES_PER_PAGE,
-        });
+        return await this._executeRequestWithCache(
+            "product",
+            `${type}-${name}-${page}`,
+            "GET",
+            `/${encodeURI(type)}/${encodeURI(name)}/products`,
+            {
+                indexOfFirstResult: (page - 1) * NUMBER_OF_ITEM_RECIPES_PER_PAGE,
+                numberOfResults: NUMBER_OF_ITEM_RECIPES_PER_PAGE,
+            }
+        );
     }
 
     /**
      * Fetches random items from the server.
      * @return {Promise<EntityData[]>}
+     * @throws {PortalApiError}
      */
     async getRandom() {
         return this._executeRequest("GET", "/random", { numberOfResults: NUMBER_OF_RANDOM_ITEMS });
@@ -76,9 +109,10 @@ class PortalApi {
      * Fetches the recipe details with the specified name.
      * @param {string} name
      * @returns {Promise<RecipeDetailsData>}
+     * @throws {PortalApiError}
      */
     async getRecipeDetails(name) {
-        return this._executeRequest("GET", `/recipe/${encodeURI(name)}`);
+        return await this._executeRequestWithCache("recipe", name, "GET", `/recipe/${encodeURI(name)}`);
     }
 
     /**
@@ -86,12 +120,19 @@ class PortalApi {
      * @param {string} name
      * @param {number} page
      * @returns {Promise<RecipeMachinesData>}
+     * @throws {PortalApiError}
      */
     async getRecipeMachines(name, page) {
-        return this._executeRequest("GET", `/recipe/${encodeURI(name)}/machines`, {
-            indexOfFirstResult: (page - 1) * NUMBER_OF_MACHINES_PER_PAGE,
-            numberOfResults: NUMBER_OF_MACHINES_PER_PAGE,
-        });
+        return await this._executeRequestWithCache(
+            "machine",
+            `${name}-${page}`,
+            "GET",
+            `/recipe/${encodeURI(name)}/machines`,
+            {
+                indexOfFirstResult: (page - 1) * NUMBER_OF_MACHINES_PER_PAGE,
+                numberOfResults: NUMBER_OF_MACHINES_PER_PAGE,
+            }
+        );
     }
 
     /**
@@ -156,26 +197,57 @@ class PortalApi {
      * @param {string} type
      * @param {string} name
      * @return {Promise<EntityData>}
+     * @throws {PortalApiError}
      */
     async getTooltip(type, name) {
-        return this._executeRequest("GET", `/tooltip/${encodeURI(type)}/${encodeURI(name)}`);
+        return await this._executeRequestWithCache(
+            "tooltip",
+            `${type}-${name}`,
+            "GET",
+            `/tooltip/${encodeURI(type)}/${encodeURI(name)}`
+        );
     }
 
     /**
      * Initializes the current session.
      * @returns {Promise<SessionInitData>}
+     * @throws {PortalApiError}
      */
     async initializeSession() {
-        return this._executeRequest("GET", "/session/init");
+        return await this._executeRequest("GET", "/session/init");
     }
 
     /**
      * Sends the sidebar entities to the Portal API for persisting.
      * @param {array<SidebarEntityData>} sidebarEntities
      * @returns {Promise<void>}
+     * @throws {PortalApiError}
      */
     async sendSidebarEntities(sidebarEntities) {
         await this._executeRequest("PUT", "/sidebar/entities", sidebarEntities);
+    }
+
+    /**
+     * Executes a request with using a cache.
+     * @param {string} namespace
+     * @param {string} cacheKey
+     * @param {string} method
+     * @param {string} route
+     * @param {object} [parameters]
+     * @returns {Promise<*>}
+     * @throws {PortalApiError}
+     * @private
+     */
+    async _executeRequestWithCache(namespace, cacheKey, method, route, parameters) {
+        const cache = this._cacheManager.get(namespace);
+        const cachedData = cache.read(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
+
+        const requestedData = await this._executeRequest(method, route, parameters);
+        cache.write(cacheKey, requestedData);
+        return requestedData;
     }
 
     /**
@@ -183,29 +255,22 @@ class PortalApi {
      * @param {string} method
      * @param {string} route
      * @param {object} [parameters]
-     * @returns {Promise<string|object>}
+     * @returns {Promise<*>}
+     * @throws {PortalApiError}
      * @private
      */
     async _executeRequest(method, route, parameters) {
         const requestUrl = this._buildRequestUrl(route, method === "GET" ? parameters : undefined);
         const requestOptions = this._buildRequestOptions(method, method !== "GET" ? parameters : undefined);
 
-        const response = await fetch(requestUrl, requestOptions);
-        return this._handleResponse(response);
-    }
-
-    /**
-     * Handles the response received from the server.
-     * @param {Response} response
-     * @return {Promise<string|object>}
-     * @private
-     */
-    async _handleResponse(response) {
-        if (response.headers.get("Content-Type") === "application/json") {
-            return response.json();
-        } else {
-            return response.text();
+        let response;
+        try {
+            response = await fetch(requestUrl, requestOptions);
+        } catch (e) {
+            throw new PortalApiError(503, `Connection to server failed: ${e}`);
         }
+
+        return this._handleResponse(response);
     }
 
     /**
@@ -253,6 +318,62 @@ class PortalApi {
         }
         return options;
     }
+
+    /**
+     * Handles the response received from the server.
+     * @param {Response} response
+     * @return {Promise<string|object>}
+     * @throws {PortalApiError}
+     * @private
+     */
+    async _handleResponse(response) {
+        let content;
+        try {
+            if (response.headers.get("Content-Type") === "application/json") {
+                content = await response.json();
+            } else {
+                content = await response.text();
+            }
+        } catch (e) {
+            throw new PortalApiError(500, `Failed to parse response: ${e}`);
+        }
+
+        if (!response.ok) {
+            this._handleFailedResponse(response.status, content);
+        }
+
+        return content;
+    }
+
+    /**
+     * Handles a failed response.
+     * @param {number} statusCode
+     * @param {string|object} content
+     * @throws {PortalApiError}
+     * @private
+     */
+    _handleFailedResponse(statusCode, content) {
+        let message = content;
+        if (typeof content === "object") {
+            if (content.error && content.error.message) {
+                message = content.error.message;
+            } else {
+                message = "Unknown error";
+            }
+        }
+
+        throw new PortalApiError(statusCode, message);
+    }
 }
 
-export const portalApi = new PortalApi();
+/**
+ * The error type thrown by the PortalApi.
+ */
+export class PortalApiError extends Error {
+    constructor(statusCode, message) {
+        super(message);
+        this.code = statusCode;
+    }
+}
+
+export const portalApi = new PortalApi(cacheManager);

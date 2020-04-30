@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
+    ERROR_PAGE_NOT_FOUND,
     ROUTE_INDEX,
     ROUTE_ITEM_DETAILS,
     ROUTE_SETTINGS_NEW,
@@ -28,6 +29,8 @@ import SettingsPage from "./page/SettingsPage";
 import GlobalSettingStatus from "./status/GlobalSettingStatus";
 
 import "./App.scss";
+import ErrorBox from "./error/ErrorBox";
+import FatalError from "./error/FatalError";
 
 const PAGE_BY_ROUTES = {
     [ROUTE_INDEX]: <IndexPage />,
@@ -54,11 +57,20 @@ const App = () => {
         })();
     }, []);
 
+    if (routeStore.globalError) {
+        return <FatalError type={routeStore.globalError} />;
+    }
+
     if (routeStore.isInitiallyLoading) {
         return <LoadingBox />;
     }
 
-    const page = PAGE_BY_ROUTES[routeStore.currentRoute];
+    let page;
+    if (routeStore.hasUnknownRoute) {
+        page = <ErrorBox type={ERROR_PAGE_NOT_FOUND} />;
+    } else {
+        page = PAGE_BY_ROUTES[routeStore.currentRoute];
+    }
 
     return (
         <ErrorBoundary>

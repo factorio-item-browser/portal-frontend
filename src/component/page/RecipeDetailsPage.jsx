@@ -2,12 +2,15 @@ import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
+import { ERROR_PAGE_NOT_FOUND } from "../../helper/const";
 import RecipeStore from "../../store/RecipeStore";
+
 import DetailsHead from "../common/DetailsHead";
 import Detail from "../common/Detail";
 import CopyTemplate from "../common/CopyTemplate";
 import RecipeDetails from "./recipe/RecipeDetails";
 import RecipeMachinesList from "./recipe/RecipeMachinesList";
+import ErrorBox from "../error/ErrorBox";
 
 /**
  * The component representing the details page of a recipe.
@@ -22,6 +25,10 @@ const RecipeDetailsPage = () => {
     useEffect(() => {
         document.title = t("recipe-details.title", { label: details.label });
     }, [details.label]);
+
+    if (recipeStore.hasNotFoundError) {
+        return <ErrorBox type={ERROR_PAGE_NOT_FOUND} />;
+    }
 
     return (
         <Fragment>

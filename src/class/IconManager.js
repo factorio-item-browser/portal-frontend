@@ -109,7 +109,7 @@ class IconManager {
 
                     this._processedEntities.merge(response.processedEntities);
                 } catch (e) {
-                    // Ignore any failures to to failed style requests.
+                    // Ignore any failures to failed style requests.
                 }
                 this._pendingEntities.diff(namesByTypes);
             })();

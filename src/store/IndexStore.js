@@ -72,12 +72,15 @@ class IndexStore {
         }
 
         this.isRandomizing = true;
-        const randomItems = await this._portalApi.getRandom();
-
-        runInAction(() => {
-            this.isRandomizing = false;
-            this.randomItems = randomItems;
-        });
+        try {
+            const randomItems = await this._portalApi.getRandom();
+            runInAction(() => {
+                this.isRandomizing = false;
+                this.randomItems = randomItems;
+            });
+        } catch (e) {
+            this._routeStore.handlePortalApiError(e);
+        }
     }
 }
 

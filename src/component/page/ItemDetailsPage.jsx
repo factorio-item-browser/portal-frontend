@@ -2,12 +2,14 @@ import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
+import { ERROR_PAGE_NOT_FOUND } from "../../helper/const";
 import ItemStore from "../../store/ItemStore";
 
 import CopyTemplate from "../common/CopyTemplate";
 import Detail from "../common/Detail";
 import DetailsHead from "../common/DetailsHead";
 import ItemRecipesList from "./item/ItemRecipesList";
+import ErrorBox from "../error/ErrorBox";
 
 /**
  * The component representing the item and fluid details page.
@@ -21,6 +23,10 @@ const ItemDetailsPage = () => {
     useEffect(() => {
         document.title = t(`item-details.title.${itemStore.currentItem.type}`, { label: itemStore.currentItem.label });
     }, [itemStore.currentItem.type, itemStore.currentItem.label]);
+
+    if (itemStore.hasNotFoundError) {
+        return <ErrorBox type={ERROR_PAGE_NOT_FOUND} />;
+    }
 
     return (
         <Fragment>

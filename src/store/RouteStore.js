@@ -1,11 +1,15 @@
 import { action, computed, observable, runInAction } from "mobx";
 import { createContext } from "react";
-import { createRouter } from "router5";
+import { constants, createRouter } from "router5";
 import browserPluginFactory from "router5-plugin-browser";
 
 import { cacheManager } from "../class/CacheManager";
 import { portalApi } from "../class/PortalApi";
 import {
+    ERROR_CLIENT_FAILURE,
+    ERROR_INCOMPATIBLE_CLIENT,
+    ERROR_SERVER_FAILURE,
+    ERROR_SERVICE_NOT_AVAILABLE,
     ROUTE_INDEX,
     ROUTE_ITEM_DETAILS,
     ROUTE_RECIPE_DETAILS,
@@ -79,6 +83,13 @@ class RouteStore {
     currentRoute = "";
 
     /**
+     * The global error which occurred.
+     * @type {string}
+     */
+    @observable
+    globalError = "";
+
+    /**
      * The target which currently have the loading circle.
      * @type {React.RefObject<HTMLElement>}
      */
@@ -123,6 +134,7 @@ class RouteStore {
      */
     _createRouter() {
         const router = createRouter();
+        router.setOption("allowNotFound", true);
         router.usePlugin(browserPluginFactory());
         router.useMiddleware(this._getFetchDataHandlerMiddleware.bind(this));
         router.subscribe(this._handleChangeEvent.bind(this));
@@ -213,15 +225,44 @@ class RouteStore {
     }
 
     /**
+     * Whether we are currently viewing an unknown route.
+     * @return {boolean}
+     */
+    @computed
+    get hasUnknownRoute() {
+        return this.currentRoute === constants.UNKNOWN_ROUTE;
+    }
+
+    /**
      * Initializes the session.
      * @returns {Promise<void>}
      */
     async initializeSession() {
-        const session = await portalApi.initializeSession();
-        this._initializeSessionHandlers.forEach((handler) => {
-            handler(session);
-        });
-        this._router.start();
+        try {
+            const sessionData = await portalApi.initializeSession();
+            for (const handler of this._initializeSessionHandlers) {
+                handler(sessionData);
+            }
+            this._router.start();
+        } catch (e) {
+            this.handlePortalApiError(e);
+        }
+    }
+
+    /**
+     * Handles an error thrown by the Portal API, by displaying a fatal error box.
+     * @param {PortalApiError} error
+     */
+    handlePortalApiError(error) {
+        if (error.code === 401) {
+            this.globalError = ERROR_INCOMPATIBLE_CLIENT;
+        } else if (error.code === 409) {
+            this.globalError = ERROR_CLIENT_FAILURE;
+        } else if (error.code === 503) {
+            this.globalError = ERROR_SERVICE_NOT_AVAILABLE;
+        } else {
+            this.globalError = ERROR_SERVER_FAILURE;
+        }
     }
 
     /**

@@ -195,6 +195,19 @@ class CacheManager {
     }
 
     /**
+     * Returns the cache instance of the specified namespace.
+     * @param {string} namespace
+     * @return {Cache<T>}
+     * @template T
+     */
+    get(namespace) {
+        if (!this._caches[namespace]) {
+            this._caches[namespace] = new Cache(window.localStorage, namespace, CACHE_LIFETIME);
+        }
+        return this._caches[namespace];
+    }
+
+    /**
      * Sets the new setting hash.
      * @param {string} settingHash
      */

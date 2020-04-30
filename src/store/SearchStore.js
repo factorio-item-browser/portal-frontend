@@ -1,7 +1,6 @@
 import { action, observable, runInAction } from "mobx";
 import { createContext } from "react";
 
-import { cacheManager } from "../class/CacheManager";
 import PaginatedList from "../class/PaginatedList";
 import { portalApi } from "../class/PortalApi";
 import { ROUTE_SEARCH } from "../helper/const";
@@ -13,13 +12,6 @@ import { routeStore } from "./RouteStore";
  * The store managing everything related to the search.
  */
 class SearchStore {
-    /**
-     * The cache holding the search results.
-     * @type {Cache<SearchResultsData>}
-     * @private
-     */
-    _cache;
-
     /**
      * The Portal API instance.
      * @type {PortalApi}
@@ -92,12 +84,10 @@ class SearchStore {
 
     /**
      * Initializes the store.
-     * @param {Cache<SearchResultsData>} cache
      * @param {PortalApi} portalApi
      * @param {RouteStore} routeStore
      */
-    constructor(cache, portalApi, routeStore) {
-        this._cache = cache;
+    constructor(portalApi, routeStore) {
         this._portalApi = portalApi;
         this._routeStore = routeStore;
 
@@ -113,7 +103,11 @@ class SearchStore {
      * @private
      */
     async _handleRouteChange({ query }) {
-        const newPaginatedList = new PaginatedList((page) => this._fetchData(query, page));
+        const newPaginatedList = new PaginatedList(
+            (page) => this._portalApi.search(query, page),
+            (error) => this._routeStore.handlePortalApiError(error)
+        );
+
         const searchResultsData = await newPaginatedList.requestNextPage();
         runInAction(() => {
             this.paginatedSearchResults = newPaginatedList;
@@ -140,25 +134,6 @@ class SearchStore {
     }
 
     /**
-     * Fetches the data to the search query.
-     * @param {string} query
-     * @param {int} page
-     * @returns {Promise<SearchResultsData>}
-     * @private
-     */
-    async _fetchData(query, page) {
-        const cacheKey = `${query}-${page}`;
-        const cachedData = this._cache.read(cacheKey);
-        if (cachedData) {
-            return cachedData;
-        }
-
-        const requestedData = await this._portalApi.search(query, page);
-        this._cache.write(cacheKey, requestedData);
-        return requestedData;
-    }
-
-    /**
      * Sets the searchQuery.
      * @param searchQuery
      */
@@ -173,7 +148,7 @@ class SearchStore {
      * @return {Promise<void>}
      */
     async triggerQueryChange() {
-        this._handleQueryChange(this.searchQuery);
+        await this._handleQueryChange(this.searchQuery);
     }
 
     /**
@@ -218,5 +193,5 @@ class SearchStore {
     }
 }
 
-export const searchStore = new SearchStore(cacheManager.create("search"), portalApi, routeStore);
+export const searchStore = new SearchStore(portalApi, routeStore);
 export default createContext(searchStore);

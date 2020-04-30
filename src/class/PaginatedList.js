@@ -40,17 +40,26 @@ class PaginatedList {
 
     /**
      * The callback to request the data of a page.
-     * @type {Function}
+     * @type {function (number): *}
      * @private
      */
-    _requestPageData;
+    _dataFetcher;
+
+    /**
+     * The callback for handling an error.
+     * @type {function (PortalApiError): void}
+     * @private
+     */
+    _errorHandler;
 
     /**
      * Initializes the paginated list.
-     * @param {Function} requestPageData
+     * @param {function (number): *} dataFetcher
+     * @param {function (PortalApiError): void} errorHandler
      */
-    constructor(requestPageData) {
-        this._requestPageData = requestPageData;
+    constructor(dataFetcher, errorHandler) {
+        this._dataFetcher = dataFetcher;
+        this._errorHandler = errorHandler;
     }
 
     /**
@@ -70,17 +79,20 @@ class PaginatedList {
     async requestNextPage() {
         this.isLoading = true;
 
-        const newPage = this.currentPage + 1;
-        const data = await this._requestPageData(newPage);
+        try {
+            const newPage = this.currentPage + 1;
+            const data = await this._dataFetcher(newPage);
+            return runInAction(() => {
+                this.isLoading = false;
+                this.currentPage = newPage;
+                this.results.push(...data.results);
+                this.numberOfResults = data.numberOfResults;
 
-        return runInAction(() => {
-            this.isLoading = false;
-            this.currentPage = newPage;
-            this.results.push(...data.results);
-            this.numberOfResults = data.numberOfResults;
-
-            return data;
-        });
+                return data;
+            });
+        } catch (e) {
+            this._errorHandler(e);
+        }
     }
 }
 

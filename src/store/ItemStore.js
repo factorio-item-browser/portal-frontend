@@ -1,7 +1,6 @@
-import { computed, observable, runInAction } from "mobx";
+import { action, computed, observable, runInAction } from "mobx";
 import { createContext } from "react";
 
-import { cacheManager } from "../class/CacheManager";
 import { portalApi } from "../class/PortalApi";
 import PaginatedList from "../class/PaginatedList";
 import { ROUTE_ITEM_DETAILS } from "../helper/const";
@@ -13,13 +12,6 @@ import { sidebarStore } from "./SidebarStore";
  * The store for the items. And fluids.
  */
 class ItemStore {
-    /**
-     * The cache of the item store.
-     * @type {Cache<ItemRecipesData>}
-     * @private
-     */
-    _cache;
-
     /**
      * The Portal API instance.
      * @type {PortalApi}
@@ -69,13 +61,11 @@ class ItemStore {
 
     /**
      * Initializes the store.
-     * @param {Cache<ItemRecipesData>} cache
      * @param {PortalApi} portalApi
      * @param {RouteStore} routeStore
      * @param {SidebarStore} sidebarStore
      */
-    constructor(cache, portalApi, routeStore, sidebarStore) {
-        this._cache = cache;
+    constructor(portalApi, routeStore, sidebarStore) {
         this._portalApi = portalApi;
         this._routeStore = routeStore;
         this._sidebarStore = sidebarStore;
@@ -91,66 +81,62 @@ class ItemStore {
      * @private
      */
     async _handleRouteChange({ type, name }) {
-        const newProductsList = new PaginatedList((page) => this._fetchProductData(type, name, page));
-        const newIngredientsList = new PaginatedList((page) => this._fetchIngredientData(type, name, page));
+        const newProductsList = new PaginatedList(
+            (page) => this._portalApi.getItemProductRecipes(type, name, page),
+            (error) => this._handlePortalApiError(error)
+        );
+        const newIngredientsList = new PaginatedList(
+            (page) => this._portalApi.getItemIngredientRecipes(type, name, page),
+            (error) => this._handlePortalApiError(error)
+        );
 
         const [productsData] = await Promise.all([
             newProductsList.requestNextPage(),
             newIngredientsList.requestNextPage(),
         ]);
-        runInAction(() => {
-            this.paginatedProductRecipesList = newProductsList;
-            this.paginatedIngredientRecipesList = newIngredientsList;
+        if (productsData) {
+            runInAction(() => {
+                this.paginatedProductRecipesList = newProductsList;
+                this.paginatedIngredientRecipesList = newIngredientsList;
 
+                this.currentItem = {
+                    type: productsData.type,
+                    name: productsData.name,
+                    label: productsData.label,
+                    description: productsData.description,
+                };
+
+                this._sidebarStore.addViewedEntity(productsData.type, productsData.name, productsData.label);
+            });
+        }
+    }
+
+    /**
+     * Handles the Portal API error.
+     * @param {PortalApiError} error
+     * @private
+     */
+    @action
+    _handlePortalApiError(error) {
+        if (error.code === 404) {
             this.currentItem = {
-                type: productsData.type,
-                name: productsData.name,
-                label: productsData.label,
-                description: productsData.description,
+                type: "",
+                name: "",
+                label: "",
+                description: "",
             };
-
-            this._sidebarStore.addViewedEntity(productsData.type, productsData.name, productsData.label);
-        });
+        } else {
+            this._routeStore.handlePortalApiError(error);
+        }
     }
 
     /**
-     * Fetches the product recipes data from the API.
-     * @param {string} type
-     * @param {string} name
-     * @param {number} page
-     * @returns {Promise<ItemRecipesData>}
-     * @private
+     * Returns whether a not found error is present.
+     * @return {boolean}
      */
-    async _fetchProductData(type, name, page) {
-        const cacheKey = `${type}-${name}-products-${page}`;
-        const cachedData = this._cache.read(cacheKey);
-        if (cachedData) {
-            return cachedData;
-        }
-
-        const requestedData = await this._portalApi.getItemProductRecipes(type, name, page);
-        this._cache.write(cacheKey, requestedData);
-        return requestedData;
-    }
-
-    /**
-     * Fetches the ingredient recipes data from the API.
-     * @param {string} type
-     * @param {string} name
-     * @param {number} page
-     * @returns {Promise<ItemRecipesData>}
-     * @private
-     */
-    async _fetchIngredientData(type, name, page) {
-        const cacheKey = `${type}-${name}-ingredients-${page}`;
-        const cachedData = this._cache.read(cacheKey);
-        if (cachedData) {
-            return cachedData;
-        }
-
-        const requestedData = await this._portalApi.getItemIngredientRecipes(type, name, page);
-        this._cache.write(cacheKey, requestedData);
-        return requestedData;
+    @computed
+    get hasNotFoundError() {
+        return this.currentItem.type === "";
     }
 
     /**
@@ -173,5 +159,5 @@ class ItemStore {
     }
 }
 
-export const itemStore = new ItemStore(cacheManager.create("item"), portalApi, routeStore, sidebarStore);
+export const itemStore = new ItemStore(portalApi, routeStore, sidebarStore);
 export default createContext(itemStore);

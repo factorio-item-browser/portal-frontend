@@ -1,7 +1,6 @@
 import { action, computed, observable, runInAction } from "mobx";
 import { createContext } from "react";
 
-import { cacheManager } from "../class/CacheManager";
 import { portalApi } from "../class/PortalApi";
 
 import { routeStore } from "./RouteStore";
@@ -10,13 +9,6 @@ import { routeStore } from "./RouteStore";
  * The store managing the tooltips.
  */
 class TooltipStore {
-    /**
-     * The cache of the tooltips.
-     * @type {Cache<EntityData>}
-     * @private
-     */
-    _cache;
-
     /**
      * The portal API instance.
      * @type {PortalApi}
@@ -61,12 +53,10 @@ class TooltipStore {
 
     /**
      * Initializes the store.
-     * @param {Cache<EntityData>} cache
      * @param {PortalApi} portalApi
      * @param {RouteStore} routeStore
      */
-    constructor(cache, portalApi, routeStore) {
-        this._cache = cache;
+    constructor(portalApi, routeStore) {
         this._portalApi = portalApi;
         this._routeStore = routeStore;
 
@@ -124,13 +114,23 @@ class TooltipStore {
 
         this.requestedTarget = target;
         this.fetchedTarget = null;
-        const data = await this._fetchTooltipData(type, name);
-        runInAction(() => {
-            if (this.requestedTarget !== null && this.requestedTarget.current === target.current) {
-                this.fetchedTarget = target;
-                this.fetchedData = data;
-            }
-        });
+
+        try {
+            const data = await this._portalApi.getTooltip(type, name);
+            runInAction(() => {
+                if (this.requestedTarget !== null && this.requestedTarget.current === target.current) {
+                    this.fetchedTarget = target;
+                    this.fetchedData = data;
+                }
+            });
+        } catch (e) {
+            // Fetching the tooltip failed. So we can't do anything.
+            runInAction(() => {
+                if (this.requestedTarget.current === target.current) {
+                    this.requestedTarget = null;
+                }
+            });
+        }
     }
 
     /**
@@ -153,26 +153,7 @@ class TooltipStore {
             this.requestedTarget.current === this.fetchedTarget.current
         );
     }
-
-    /**
-     * Fetches the data for the tooltip.
-     * @param {string} type
-     * @param {string} name
-     * @return {Promise<EntityData>}
-     * @private
-     */
-    async _fetchTooltipData(type, name) {
-        const cacheKey = `${type}-${name}`;
-        const cachedData = this._cache.read(cacheKey);
-        if (cachedData) {
-            return cachedData;
-        }
-
-        const requestedData = await this._portalApi.getTooltip(type, name);
-        this._cache.write(cacheKey, requestedData);
-        return requestedData;
-    }
 }
 
-export const tooltipStore = new TooltipStore(cacheManager.create("tooltip"), portalApi, routeStore);
+export const tooltipStore = new TooltipStore(portalApi, routeStore);
 export default createContext(tooltipStore);
