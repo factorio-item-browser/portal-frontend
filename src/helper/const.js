@@ -10,8 +10,13 @@ export const BREAKPOINT_MEDIUM = 800;
 export const BREAKPOINT_LARGE = 1200;
 export const BREAKPOINT_HUGE = 1500;
 
-export const ERROR_INVALID_FILE = "invalid-file";
-export const ERROR_NO_MODS = "no-mods";
+export const UPLOAD_ERROR_INVALID_FILE = "invalid-file";
+export const UPLOAD_ERROR_NO_MODS = "no-mods";
+
+export const ERROR_CLIENT_FAILURE = "client-failure";
+export const ERROR_PAGE_NOT_FOUND = "page-not-found";
+export const ERROR_SERVER_FAILURE = "server-failure";
+export const ERROR_SERVICE_NOT_AVAILABLE = "service-not-available";
 
 export const LOCALES = {
     "af": "Afrikaans",

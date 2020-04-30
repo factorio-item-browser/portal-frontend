@@ -39,6 +39,21 @@ footer::before {
     background: url("../../image/inline/icon/clock.png") no-repeat;
 }
 
-.loading-box .loading-icon {
-    background-image: url("../../image/inline/loading.jpg");
+.error-box .error-icon {
+    &.fatal {
+        background-image: url("../../image/inline/error/machine-destroyed.jpg");
+    }
+    &.danger, &.warning, &.loading {
+        background: url("../../image/inline/error/machine.jpg") no-repeat top center;
+    }
+
+    &.danger::before {
+        background-image: url("../../image/inline/error/icon/danger.png");
+    }
+    &.fatal::before {
+        background-image: url("../../image/inline/error/icon/fatal.png");
+    }
+    &.warning::before {
+        background-image: url("../../image/inline/error/icon/warning.png");
+    }
 }

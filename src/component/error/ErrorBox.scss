@@ -1,6 +1,6 @@
 @import "../../style/import";
 
-.loading-box-wrapper {
+.error-box-wrapper {
     bottom: 0;
     align-items: center;
     display: flex;
@@ -11,7 +11,7 @@
     top: 0;
 }
 
-.loading-box {
+.error-box {
     @include dynamic-spacing(margin, large);
     @include dynamic-spacing(padding, default);
 
@@ -22,15 +22,28 @@
     display: flex;
     flex-basis: 40rem;
 
-    .loading-icon {
-        animation: loading-animation 0.8s steps(8) infinite;
-        background: transparent no-repeat 0 0;
+    .error-icon {
+        background: transparent no-repeat center center;
+        flex-shrink: 0;
         height: 128px;
         position: relative;
         width: 128px;
+
+        &.loading {
+            animation: error-machine 0.8s steps(8) infinite;
+        }
+
+        &::before {
+            animation: error-icon-blink 1s steps(2) infinite;
+            background: transparent no-repeat center center;
+            content: '';
+            height: 128px;
+            position: absolute;
+            width: 128px;
+        }
     }
 
-    .loading-message {
+    .error-message {
         flex-grow: 1;
         font-weight: bold;
 
@@ -43,7 +56,19 @@
     }
 }
 
-@keyframes loading-animation {
+@keyframes error-icon-blink {
+    0% {
+        visibility: hidden;
+    }
+    100% {
+        visibility: visible;
+    }
+}
+
+@keyframes error-machine {
+    0% {
+        background-position: 0 0;
+    }
     100% {
         background-position: 0 -1024px;
     }

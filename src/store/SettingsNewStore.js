@@ -2,8 +2,8 @@ import { createContext } from "react";
 import { action, computed, observable, runInAction } from "mobx";
 
 import {
-    ERROR_INVALID_FILE,
-    ERROR_NO_MODS,
+    UPLOAD_ERROR_INVALID_FILE,
+    UPLOAD_ERROR_NO_MODS,
     RECIPE_MODE_HYBRID,
     ROUTE_SETTINGS,
     ROUTE_SETTINGS_NEW,
@@ -149,18 +149,18 @@ class SettingsNewStore {
      */
     _parseModListJson(content) {
         if (typeof content !== "string") {
-            throw ERROR_INVALID_FILE;
+            throw UPLOAD_ERROR_INVALID_FILE;
         }
 
         let data;
         try {
             data = JSON.parse(content);
         } catch (err) {
-            throw ERROR_INVALID_FILE;
+            throw UPLOAD_ERROR_INVALID_FILE;
         }
 
         if (typeof data !== "object" || !Array.isArray(data.mods)) {
-            throw ERROR_INVALID_FILE;
+            throw UPLOAD_ERROR_INVALID_FILE;
         }
 
         const modNames = [];
@@ -170,7 +170,7 @@ class SettingsNewStore {
             }
         }
         if (modNames.length === 0) {
-            throw ERROR_NO_MODS;
+            throw UPLOAD_ERROR_NO_MODS;
         }
 
         modNames.sort((left, right) => left.localeCompare(right));

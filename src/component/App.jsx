@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -13,9 +13,10 @@ import {
 import RouteStore from "../store/RouteStore";
 
 import Tooltip from "./common/Tooltip";
+import ErrorBoundary from "./error/ErrorBoundary";
+import LoadingBox from "./error/LoadingBox";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
-import LoadingBox from "./layout/LoadingBox";
 import LoadingCircle from "./common/LoadingCircle";
 import Sidebar from "./layout/Sidebar";
 import IndexPage from "./page/IndexPage";
@@ -60,7 +61,7 @@ const App = () => {
     const page = PAGE_BY_ROUTES[routeStore.currentRoute];
 
     return (
-        <Fragment>
+        <ErrorBoundary>
             <Header />
             <div className="content-wrapper">
                 <Sidebar />
@@ -73,7 +74,7 @@ const App = () => {
 
             <LoadingCircle />
             <Tooltip />
-        </Fragment>
+        </ErrorBoundary>
     );
 };
 

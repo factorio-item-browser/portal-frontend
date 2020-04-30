@@ -20,6 +20,24 @@
         "more-recipes": "{{count}} more recipe",
         "more-recipes_plural": "{{count}} more recipes"
     },
+    "error": {
+        "client-failure": {
+            "title": "Unexpected client error",
+            "description": "The client triggered an unexpected error, like... running out of iron. Please reload the page and try again."
+        },
+        "page-not-found": {
+            "title": "Page not found",
+            "description": "The thing you are searching for does not exist."
+        },
+        "server-failure": {
+            "title": "Internal server error",
+            "description": "The server responded with some incomprehensible gibberish, maybe a new babel fish is needed. Please reload the page and try again."
+        },
+        "service-not-available": {
+            "title": "Service not available",
+            "description": "The connection to the server could not be established. Please make sure all biters are defeated and check back later."
+        }
+    },
     "footer": {
         "copyright-disclaimer": "All content and images are owned by <1>Wube Software</1> and the <3>mod authors</3> respectively."
     },
