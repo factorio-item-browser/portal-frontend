@@ -102,7 +102,7 @@ class PortalApi {
      * @throws {PortalApiError}
      */
     async getRandom() {
-        return this._executeRequest("GET", "/random", { numberOfResults: NUMBER_OF_RANDOM_ITEMS });
+        return await this._executeRequest("GET", "/random", { numberOfResults: NUMBER_OF_RANDOM_ITEMS });
     }
 
     /**
@@ -138,30 +138,33 @@ class PortalApi {
     /**
      * Fetches the settings available for the current user.
      * @return {Promise<SettingsListData>}
+     * @throws {PortalApiError}
      */
     async getSettings() {
-        return this._executeRequest("GET", "/settings");
+        return await this._executeRequest("GET", "/settings");
     }
 
     /**
      * Fetches the details to a specific setting.
      * @param {string} settingId
      * @return {Promise<SettingDetailsData>}
+     * @throws {PortalApiError}
      */
     async getSetting(settingId) {
-        return this._executeRequest("GET", `/settings/${encodeURI(settingId)}`);
+        return await this._executeRequest("GET", `/settings/${encodeURI(settingId)}`);
     }
 
     /**
      * Fetches the status of the specified combination of mods, or the current setting.
      * @param {string[]} [modNames]
      * @return {Promise<SettingStatusData>}
+     * @throws {PortalApiError}
      */
     async getSettingStatus(modNames) {
         if (Array.isArray(modNames)) {
-            return this._executeRequest("POST", "/settings/status", modNames);
+            return await this._executeRequest("POST", "/settings/status", modNames);
         }
-        return this._executeRequest("GET", "/settings/status");
+        return await this._executeRequest("GET", "/settings/status");
     }
 
     /**
@@ -169,6 +172,7 @@ class PortalApi {
      * @param {string} settingId
      * @param {SettingOptionsData} options
      * @return {Promise<void>}
+     * @throws {PortalApiError}
      */
     async saveSetting(settingId, options) {
         await this._executeRequest("PUT", `/settings/${encodeURI(settingId)}`, options);
@@ -178,6 +182,7 @@ class PortalApi {
      * Creates a new setting with the specified data.
      * @param {SettingCreateData} settingData
      * @return {Promise<void>}
+     * @throws {PortalApiError}
      */
     async createSetting(settingData) {
         await this._executeRequest("PUT", "/settings", settingData);
@@ -187,6 +192,7 @@ class PortalApi {
      * Deletes the setting with the specified id.
      * @param {string} settingId
      * @return {Promise<void>}
+     * @throws {PortalApiError}
      */
     async deleteSetting(settingId) {
         await this._executeRequest("DELETE", `/settings/${encodeURI(settingId)}`);

@@ -342,13 +342,17 @@ class RouteStore {
      */
     async checkSettingStatus() {
         if (this.setting.status === SETTING_STATUS_PENDING || this.setting.status === SETTING_STATUS_UNKNOWN) {
-            const settingStatus = await this._portalApi.getSettingStatus();
-            if (settingStatus.status === SETTING_STATUS_AVAILABLE) {
-                window.location.reload();
-            } else {
-                runInAction(() => {
-                    this.setting.status = settingStatus.status;
-                });
+            try {
+                const settingStatus = await this._portalApi.getSettingStatus();
+                if (settingStatus.status === SETTING_STATUS_AVAILABLE) {
+                    window.location.reload();
+                } else {
+                    runInAction(() => {
+                        this.setting.status = settingStatus.status;
+                    });
+                }
+            } catch (e) {
+                // Ignore any errors related to checking the setting status.
             }
         }
     }

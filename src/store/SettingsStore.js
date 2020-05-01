@@ -100,14 +100,18 @@ class SettingsStore {
     async _handleRouteChange() {
         this.isSaveButtonVisible = false;
         if (!this._currentSettingId) {
-            const settingsListData = await this._portalApi.getSettings();
-            runInAction(() => {
-                this.availableSettings = settingsListData.settings.sort((left, right) => {
-                    return left.name.localeCompare(right.name);
+            try {
+                const settingsListData = await this._portalApi.getSettings();
+                runInAction(() => {
+                    this.availableSettings = settingsListData.settings.sort((left, right) => {
+                        return left.name.localeCompare(right.name);
+                    });
+                    this._currentSettingId = settingsListData.currentSetting.id;
+                    this._addSettingDetails(settingsListData.currentSetting);
                 });
-                this._currentSettingId = settingsListData.currentSetting.id;
-                this._addSettingDetails(settingsListData.currentSetting);
-            });
+            } catch (e) {
+                this._routeStore.handlePortalApiError(e);
+            }
         }
 
         runInAction(() => {
@@ -166,8 +170,12 @@ class SettingsStore {
     @action
     async changeSettingId(settingId) {
         if (!this._allSettingDetails[settingId]) {
-            const settingDetails = await this._portalApi.getSetting(settingId);
-            this._addSettingDetails(settingDetails);
+            try {
+                const settingDetails = await this._portalApi.getSetting(settingId);
+                this._addSettingDetails(settingDetails);
+            } catch (e) {
+                this._routeStore.handlePortalApiError(e);
+            }
         }
 
         runInAction(() => {
@@ -196,8 +204,12 @@ class SettingsStore {
      */
     @action
     async saveOptions() {
-        await this._portalApi.saveSetting(this.selectedSettingId, this.selectedOptions);
-        location.reload();
+        try {
+            await this._portalApi.saveSetting(this.selectedSettingId, this.selectedOptions);
+            location.reload();
+        } catch (e) {
+            this._routeStore.handlePortalApiError(e);
+        }
     }
 
     /**
@@ -205,15 +217,21 @@ class SettingsStore {
      * @return {Promise<void>}
      */
     async deleteSelectedSetting() {
-        await this._portalApi.deleteSetting(this.selectedSettingId);
+        try {
+            await this._portalApi.deleteSetting(this.selectedSettingId);
 
-        runInAction(() => {
-            this.availableSettings = this.availableSettings.filter((setting) => setting.id !== this.selectedSettingId);
-            delete this._allSettingDetails[this.selectedSettingId];
+            runInAction(() => {
+                this.availableSettings = this.availableSettings.filter(
+                    (setting) => setting.id !== this.selectedSettingId
+                );
+                delete this._allSettingDetails[this.selectedSettingId];
 
-            this.selectedSettingId = this._currentSettingId;
-            this._applySelectedSetting();
-        });
+                this.selectedSettingId = this._currentSettingId;
+                this._applySelectedSetting();
+            });
+        } catch (e) {
+            this._routeStore.handlePortalApiError(e);
+        }
     }
 }
 

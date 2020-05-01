@@ -224,10 +224,14 @@ class SettingsNewStore {
             status: SETTING_STATUS_LOADING,
         };
 
-        const settingStatus = await this._portalApi.getSettingStatus(modNames);
-        runInAction(() => {
-            this.settingStatus = settingStatus;
-        });
+        try {
+            const settingStatus = await this._portalApi.getSettingStatus(modNames);
+            runInAction(() => {
+                this.settingStatus = settingStatus;
+            });
+        } catch (e) {
+            this._routeStore.handlePortalApiError(e);
+        }
     }
 
     /**
@@ -248,14 +252,18 @@ class SettingsNewStore {
      */
     @action
     async saveNewSetting() {
-        const settingData = {
-            ...this.newOptions,
-            modNames: this.uploadedModNames,
-        };
-        await this._portalApi.createSetting(settingData);
+        try {
+            const settingData = {
+                ...this.newOptions,
+                modNames: this.uploadedModNames,
+            };
+            await this._portalApi.createSetting(settingData);
 
-        // Hard redirect to the settings page to show the updated data.
-        location.assign(this._routeStore.buildPath(ROUTE_SETTINGS));
+            // Hard redirect to the settings page to show the updated data.
+            location.assign(this._routeStore.buildPath(ROUTE_SETTINGS));
+        } catch (e) {
+            this._routeStore.handlePortalApiError(e);
+        }
     }
 }
 
