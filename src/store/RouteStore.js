@@ -83,11 +83,11 @@ class RouteStore {
     currentRoute = "";
 
     /**
-     * The global error which occurred.
+     * The fatal error which occurred.
      * @type {string}
      */
     @observable
-    globalError = "";
+    fatalError = "";
 
     /**
      * The target which currently have the loading circle.
@@ -255,14 +255,16 @@ class RouteStore {
      */
     handlePortalApiError(error) {
         if (error.code === 401) {
-            this.globalError = ERROR_INCOMPATIBLE_CLIENT;
+            this.fatalError = ERROR_INCOMPATIBLE_CLIENT;
         } else if (error.code === 409) {
-            this.globalError = ERROR_CLIENT_FAILURE;
+            this.fatalError = ERROR_CLIENT_FAILURE;
         } else if (error.code === 503) {
-            this.globalError = ERROR_SERVICE_NOT_AVAILABLE;
+            this.fatalError = ERROR_SERVICE_NOT_AVAILABLE;
         } else {
-            this.globalError = ERROR_SERVER_FAILURE;
+            this.fatalError = ERROR_SERVER_FAILURE;
         }
+
+        console.log(error);
     }
 
     /**

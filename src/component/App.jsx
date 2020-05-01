@@ -57,8 +57,8 @@ const App = () => {
         })();
     }, []);
 
-    if (routeStore.globalError) {
-        return <FatalError type={routeStore.globalError} />;
+    if (routeStore.fatalError) {
+        return <FatalError type={routeStore.fatalError} />;
     }
 
     if (routeStore.isInitiallyLoading) {
