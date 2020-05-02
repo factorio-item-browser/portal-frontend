@@ -19,6 +19,7 @@ import OptionsList from "./setting/option/OptionsList";
 import Section from "../common/Section";
 import SettingStatus from "../status/SettingStatus";
 import TextBox from "../common/TextBox";
+import SettingsStore from "../../store/SettingsStore";
 
 /**
  * The component representing the page for creating a new setting.
@@ -27,11 +28,15 @@ import TextBox from "../common/TextBox";
  */
 const SettingsNewPage = () => {
     const { t } = useTranslation();
+    const settingsStore = useContext(SettingsStore);
     const settingsNewStore = useContext(SettingsNewStore);
 
     useEffect(() => {
         document.title = t("settings-new.title");
-        settingsNewStore.changeOptions({ name: t("settings-new.new-setting-name") });
+        settingsNewStore.changeOptions({
+            ...settingsStore.selectedOptions,
+            name: t("settings-new.new-setting-name"),
+        });
     }, []);
 
     return (

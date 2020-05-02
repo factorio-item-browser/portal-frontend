@@ -76,6 +76,9 @@ class SidebarStore {
      */
     _initializeSession({ sidebarEntities }) {
         this._assignEntities(sidebarEntities);
+
+        const entities = [...this.pinnedEntities, ...this.unpinnedEntities];
+        localStorage.setItem(STORAGE_KEY_SIDEBAR_ENTITIES, JSON.stringify(entities));
     }
 
     /**
@@ -282,8 +285,8 @@ class SidebarStore {
      */
     _sendEntities() {
         const entities = [...this.pinnedEntities, ...this.unpinnedEntities];
-
         localStorage.setItem(STORAGE_KEY_SIDEBAR_ENTITIES, JSON.stringify(entities));
+
         (async () => {
             try {
                 await this._portalApi.sendSidebarEntities(entities);
