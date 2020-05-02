@@ -24,5 +24,14 @@
         @include breakpoint(large) {
             bottom: px-to-rem(-10);
         }
+
+        &.infinite {
+            font-size: 2 * $text-size-label;
+            bottom: px-to-rem(-10);
+
+            @include breakpoint(large) {
+                bottom: px-to-rem(-20);
+            }
+        }
     }
 }

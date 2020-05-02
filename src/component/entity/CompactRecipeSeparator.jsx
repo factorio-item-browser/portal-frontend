@@ -7,6 +7,7 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { formatCraftingTime } from "../../helper/format";
 
 import "./CompactRecipeSeparator.scss";
+import { CRAFTING_TIME_INFINITE } from "../../helper/const";
 
 /**
  * Renders the element for the crafting time.
@@ -16,6 +17,10 @@ import "./CompactRecipeSeparator.scss";
 function renderCraftingTime(craftingTime) {
     if (craftingTime <= 0) {
         return null;
+    }
+
+    if (craftingTime >= CRAFTING_TIME_INFINITE) {
+        return <span className="time infinite">∞</span>
     }
 
     const formattedTime = formatCraftingTime(craftingTime);

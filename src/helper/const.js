@@ -10,8 +10,7 @@ export const BREAKPOINT_MEDIUM = 800;
 export const BREAKPOINT_LARGE = 1200;
 export const BREAKPOINT_HUGE = 1500;
 
-export const UPLOAD_ERROR_INVALID_FILE = "invalid-file";
-export const UPLOAD_ERROR_NO_MODS = "no-mods";
+export const CRAFTING_TIME_INFINITE = 100000;
 
 export const ERROR_CLIENT_FAILURE = "client-failure";
 export const ERROR_INCOMPATIBLE_CLIENT = "incompatible-client";
@@ -97,6 +96,9 @@ export const STATUS_WARNING = "warning";
 
 export const STORAGE_KEY_SIDEBAR_ENTITIES = "sidebar-entities";
 export const STORAGE_KEY_SETTING_HASH = "setting-hash";
+
+export const UPLOAD_ERROR_INVALID_FILE = "invalid-file";
+export const UPLOAD_ERROR_NO_MODS = "no-mods";
 
 // Environment variables
 export const CACHE_LIFETIME = process.env.CACHE_LIFETIME;

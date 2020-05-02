@@ -14,6 +14,10 @@
         flex-shrink: 0;
         padding-right: $spacing-default;
         text-align: right;
+
+        &.infinite {
+            font-size: 1.75rem;
+        }
     }
 
     .icon {

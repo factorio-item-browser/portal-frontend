@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { formatCraftingTime } from "../../../helper/format";
 
 import "./RecipeItem.scss";
+import { CRAFTING_TIME_INFINITE } from "../../../helper/const";
 
 /**
  * The component representing the crafting time as a recipe item.
@@ -16,9 +17,16 @@ import "./RecipeItem.scss";
 const RecipeItemTime = ({ craftingTime }) => {
     const { t } = useTranslation();
 
+    let amount;
+    if (craftingTime >= CRAFTING_TIME_INFINITE) {
+        amount = <div className="amount infinite">∞</div>;
+    } else {
+        amount = <div className="amount">{formatCraftingTime(craftingTime)}</div>;
+    }
+
     return (
         <div className="recipe-item">
-            <div className="amount">{formatCraftingTime(craftingTime)}</div>
+            {amount}
             <div className="icon icon-clock" />
             <div className="label">{t("recipe-details.time")}</div>
         </div>
