@@ -140,6 +140,9 @@ class SearchStore {
     @action
     setSearchQuery(searchQuery) {
         this.searchQuery = searchQuery;
+        if (this._isInputFocused) {
+            this.isSearchOpened = true;
+        }
         this._debounceHandleQueryChange(searchQuery);
     }
 

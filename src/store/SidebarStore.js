@@ -244,7 +244,7 @@ class SidebarStore {
      */
     @action
     updatePinnedOrder(order) {
-        for (const [index, id] of order) {
+        for (const [index, id] of order.entries()) {
             if (this.entities.has(id)) {
                 this.entities.get(id).pinnedPosition = index + 1;
             }

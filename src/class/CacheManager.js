@@ -1,6 +1,59 @@
 import { CACHE_LIFETIME, STORAGE_KEY_SETTING_HASH } from "../helper/const";
 
 /**
+ * The prefix used for the cache keys.
+ * @type {string}
+ */
+const CACHE_PREFIX = "cache";
+
+/**
+ * An utility class used by the caches and the cache manager.
+ */
+class CacheUtils {
+    /**
+     * Builds the key to use for the item.
+     * @param {string} namespace
+     * @param {string} itemKey
+     * @return {string}
+     */
+    static buildKey(namespace, itemKey) {
+        return [CACHE_PREFIX, namespace, itemKey].join("-");
+    }
+
+    /**
+     * Serializes the data for the cache.
+     * @param {*} data
+     * @param {number} lifeTime
+     * @return {string}
+     */
+    static serialize(data, lifeTime) {
+        return JSON.stringify({
+            data: data,
+            time: Date.now() + lifeTime * 1000,
+        });
+    }
+
+    /**
+     * Deserializes the value from the cache, also checking its life time.
+     * @param {string} value
+     * @return {*|null}
+     */
+    static deserialize(value) {
+        let item;
+        try {
+            item = JSON.parse(value);
+        } catch (e) {
+            return null;
+        }
+
+        if (typeof item !== "object" || item === null || !item.time || !item.data || item.time < Date.now()) {
+            return null;
+        }
+        return item.data;
+    }
+}
+
+/**
  * The class managing the local cache.
  * @template T
  */
@@ -36,65 +89,6 @@ class Cache {
         this._storage = storage;
         this._namespace = namespace;
         this._lifeTime = lifeTime;
-
-        this.cleanup();
-    }
-
-    /**
-     * Walks through all items managed by this cache.
-     * @param {function(string, string): void} callback
-     * @private
-     */
-    _walkThroughItems(callback) {
-        const prefix = this._buildCacheKey("");
-        for (const [key, value] of Object.entries(this._storage)) {
-            if (key.substr(0, prefix.length) === prefix) {
-                callback(key, value);
-            }
-        }
-    }
-
-    /**
-     * Builds the full cache key for the specified key.
-     * @param {string} key
-     * @return {string}
-     * @private
-     */
-    _buildCacheKey(key) {
-        return ["cache", this._namespace, key].join("-");
-    }
-
-    /**
-     * Deserializes the cached value, verifying it is still valid.
-     * @param {string} cacheValue
-     * @return {T|null}
-     * @private
-     */
-    _deserializeCacheValue(cacheValue) {
-        let item;
-        try {
-            item = JSON.parse(cacheValue);
-        } catch (e) {
-            return null;
-        }
-
-        if (typeof item !== "object" || item === null || !item.time || !item.data || item.time < Date.now()) {
-            return null;
-        }
-        return item.data;
-    }
-
-    /**
-     * Serializes the data for the storage.
-     * @param {T} data
-     * @return {string}
-     * @private
-     */
-    _serializeData(data) {
-        return JSON.stringify({
-            data: data,
-            time: Date.now() + this._lifeTime * 1000,
-        });
     }
 
     /**
@@ -103,7 +97,7 @@ class Cache {
      * @param {T} data
      */
     write(key, data) {
-        this._storage.setItem(this._buildCacheKey(key), this._serializeData(data));
+        this._storage.setItem(CacheUtils.buildKey(this._namespace, key), CacheUtils.serialize(data, this._lifeTime));
     }
 
     /**
@@ -112,33 +106,12 @@ class Cache {
      * @return {T|null}
      */
     read(key) {
-        const cacheKey = this._buildCacheKey(key);
-        const data = this._deserializeCacheValue(this._storage.getItem(cacheKey));
+        const cacheKey = CacheUtils.buildKey(this._namespace, key);
+        const data = CacheUtils.deserialize(this._storage.getItem(cacheKey));
         if (data === null) {
             this._storage.removeItem(cacheKey);
         }
         return data;
-    }
-
-    /**
-     * Cleans up the cache, removing all already timed out items.
-     */
-    cleanup() {
-        this._walkThroughItems((key, value) => {
-            const item = this._deserializeCacheValue(value);
-            if (item === null) {
-                this._storage.removeItem(key);
-            }
-        });
-    }
-
-    /**
-     * Clears all items from the cache.
-     */
-    clear() {
-        this._walkThroughItems((key) => {
-            this._storage.removeItem(key);
-        });
     }
 }
 
@@ -161,10 +134,18 @@ class CacheManager {
     _settingHash;
 
     /**
+     * The storage to use for all the caches.
+     * @type {Storage}
+     * @private
+     */
+    _storage = window.localStorage;
+
+    /**
      * Initializes the cache manager.
      */
     constructor() {
-        this._settingHash = window.localStorage.getItem(STORAGE_KEY_SETTING_HASH) || "";
+        this._settingHash = this._storage.getItem(STORAGE_KEY_SETTING_HASH) || "";
+        this.clean();
 
         window.addEventListener("storage", this._handleStorageChange.bind(this));
     }
@@ -181,20 +162,6 @@ class CacheManager {
     }
 
     /**
-     * Creates a new cache instance.
-     * @param {string} namespace
-     * @return {Cache<T>}
-     * @template T
-     */
-    create(namespace) {
-        if (!this._caches[namespace]) {
-            this._caches[namespace] = new Cache(window.localStorage, namespace, CACHE_LIFETIME);
-        }
-
-        return this._caches[namespace];
-    }
-
-    /**
      * Returns the cache instance of the specified namespace.
      * @param {string} namespace
      * @return {Cache<T>}
@@ -202,7 +169,7 @@ class CacheManager {
      */
     get(namespace) {
         if (!this._caches[namespace]) {
-            this._caches[namespace] = new Cache(window.localStorage, namespace, CACHE_LIFETIME);
+            this._caches[namespace] = new Cache(this._storage, namespace, CACHE_LIFETIME);
         }
         return this._caches[namespace];
     }
@@ -213,12 +180,35 @@ class CacheManager {
      */
     setSettingHash(settingHash) {
         if (settingHash !== this._settingHash) {
-            for (const cache of Object.values(this._caches)) {
-                cache.clear();
-            }
+            this.clear();
 
             this._settingHash = settingHash;
-            window.localStorage.setItem(STORAGE_KEY_SETTING_HASH, settingHash);
+            this._storage.setItem(STORAGE_KEY_SETTING_HASH, settingHash);
+        }
+    }
+
+    /**
+     * Cleans all items from the caches of which the life time is already exceeded.
+     */
+    clean() {
+        for (const [key, value] of Object.entries(this._storage)) {
+            if (key.startsWith(CACHE_PREFIX)) {
+                const item = CacheUtils.deserialize(value);
+                if (item === null) {
+                    this._storage.removeItem(key);
+                }
+            }
+        }
+    }
+
+    /**
+     * Clears all values from the cache.
+     */
+    clear() {
+        for (const key of Object.keys(this._storage)) {
+            if (key.startsWith(CACHE_PREFIX)) {
+                this._storage.removeItem(key);
+            }
         }
     }
 }
