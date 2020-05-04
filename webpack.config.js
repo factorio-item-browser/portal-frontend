@@ -2,8 +2,8 @@ const AsyncCssPlugin = require("async-css-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const dotenv = require("dotenv");
+const ExcludeAssetsPlugin = require("@ianwalter/exclude-assets-plugin");
 const HtmlInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin").default;
-const HtmlWebpackExcludeAssetsPlugin = require("html-webpack-exclude-assets-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
@@ -106,7 +106,7 @@ module.exports = (env, argv) => {
                 template: `${currentPath}/src/index.ejs`,
                 excludeAssets: [/images\.(.*)\.js$/],
             }),
-            new HtmlWebpackExcludeAssetsPlugin(),
+            new ExcludeAssetsPlugin(),
             new HtmlInlineCSSWebpackPlugin({
                 filter(fileName) {
                     return isProduction && (fileName === "index.html" || fileName.includes("main"));
@@ -115,7 +115,7 @@ module.exports = (env, argv) => {
             new ScriptExtHtmlWebpackPlugin({
                 defaultAttribute: "defer",
             }),
-            new AsyncCssPlugin(),
+            // new AsyncCssPlugin(),
         ],
         devServer: {
             contentBase: "./build",
