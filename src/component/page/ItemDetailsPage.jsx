@@ -19,10 +19,15 @@ import ErrorBox from "../error/ErrorBox";
 const ItemDetailsPage = () => {
     const itemStore = useContext(ItemStore);
     const { t } = useTranslation();
+    const item = itemStore.currentItem;
 
     useEffect(() => {
-        document.title = t(`item-details.title.${itemStore.currentItem.type}`, { label: itemStore.currentItem.label });
-    }, [itemStore.currentItem.type, itemStore.currentItem.label]);
+        if (item.type) {
+            document.title = t(`item-details.title.${item.type}`, { label: item.label });
+        } else {
+            document.title = t(`index.title`);
+        }
+    }, [item.type, item.label]);
 
     if (itemStore.hasNotFoundError) {
         return <ErrorBox type={ERROR_PAGE_NOT_FOUND} />;
@@ -31,22 +36,22 @@ const ItemDetailsPage = () => {
     return (
         <Fragment>
             <DetailsHead
-                type={itemStore.currentItem.type}
-                name={itemStore.currentItem.name}
-                title={t(`item-details.headline.${itemStore.currentItem.type}`, { label: itemStore.currentItem.label })}
+                type={item.type}
+                name={item.name}
+                title={t(`item-details.headline.${item.type}`, { label: item.label })}
             >
-                <Detail hidden={!itemStore.currentItem.description}>{itemStore.currentItem.description}</Detail>
+                <Detail hidden={!item.description}>{item.description}</Detail>
                 <Detail>
                     <CopyTemplate
                         label={t("copy-template.rich-text-icon.label")}
-                        template={`[${itemStore.currentItem.type}=${itemStore.currentItem.name}]`}
+                        template={`[${item.type}=${item.name}]`}
                         description={t("copy-template.rich-text-icon.description")}
                     />
                 </Detail>
-                <Detail hidden={itemStore.currentItem.type !== "item"}>
+                <Detail hidden={item.type !== "item"}>
                     <CopyTemplate
                         label={t("copy-template.cheat-command.label")}
-                        template={`/c game.player.insert{ name="${itemStore.currentItem.name}", count=10 }`}
+                        template={`/c game.player.insert{ name="${item.name}", count=10 }`}
                         description={t("copy-template.cheat-command.description")}
                     />
                 </Detail>

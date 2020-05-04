@@ -20,7 +20,7 @@ function renderCraftingTime(craftingTime) {
     }
 
     if (craftingTime >= CRAFTING_TIME_INFINITE) {
-        return <span className="time infinite">∞</span>
+        return <span className="time infinite">∞</span>;
     }
 
     const formattedTime = formatCraftingTime(craftingTime);

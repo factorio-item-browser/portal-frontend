@@ -23,8 +23,12 @@ const RecipeDetailsPage = () => {
     const details = recipeStore.currentRecipeDetails;
 
     useEffect(() => {
-        document.title = t("recipe-details.title", { label: details.label });
-    }, [details.label]);
+        if (details.name) {
+            document.title = t("recipe-details.title", { label: details.label });
+        } else {
+            document.title = t("index.title");
+        }
+    }, [details.name, details.label]);
 
     if (recipeStore.hasNotFoundError) {
         return <ErrorBox type={ERROR_PAGE_NOT_FOUND} />;
