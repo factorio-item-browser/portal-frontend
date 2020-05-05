@@ -71,6 +71,13 @@ class SettingsStore {
     };
 
     /**
+     * Whether we are currently loading some setting details.
+     * @type {boolean}
+     */
+    @observable
+    isLoadingSettingDetails = false;
+
+    /**
      * Whether or not the save button is visible.
      * @type {boolean}
      */
@@ -184,6 +191,7 @@ class SettingsStore {
     @action
     async changeSettingId(settingId) {
         if (!this._allSettingDetails[settingId]) {
+            this.isLoadingSettingDetails = true;
             try {
                 const settingDetails = await this._portalApi.getSetting(settingId);
                 this._addSettingDetails(settingDetails);
@@ -193,6 +201,7 @@ class SettingsStore {
         }
 
         runInAction(() => {
+            this.isLoadingSettingDetails = false;
             this.selectedSettingId = settingId;
             this._applySelectedSetting();
             this.isSaveButtonVisible = true;

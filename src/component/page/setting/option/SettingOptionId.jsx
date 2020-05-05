@@ -10,16 +10,17 @@ import { useTranslation } from "react-i18next";
  * @param {SettingMetaData[]} settings
  * @param {string} value
  * @param {function (string): void} onChange
+ * @param {boolean} isLoading
  * @return {ReactDOM}
  * @constructor
  */
-const OptionSettingId = ({ settings, value, onChange }) => {
+const OptionSettingId = ({ settings, value, onChange, isLoading }) => {
     const { t } = useTranslation();
 
     settings.slice().sort((left, right) => left.name.localeCompare(right.name));
 
     return (
-        <Option label={t("settings.current-setting.label")} useFullWidth={true} withChevron={true}>
+        <Option label={t("settings.current-setting.label")} useFullWidth withChevron isLoading={isLoading}>
             <select value={value} onChange={(event) => onChange(event.currentTarget.value)}>
                 {settings.map((setting) => {
                     return (
@@ -34,6 +35,7 @@ const OptionSettingId = ({ settings, value, onChange }) => {
 };
 
 OptionSettingId.propTypes = {
+    isLoading: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired,
     settings: PropTypes.array.isRequired,
     value: PropTypes.string.isRequired,

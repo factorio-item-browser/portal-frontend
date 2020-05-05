@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
@@ -14,17 +14,24 @@ import "./Option.scss";
  * @param {ReactDOM} [description]
  * @param {boolean} [useFullWidth]
  * @param {boolean} [withChevron]
+ * @param {boolean} [isLoading]
  * @return {ReactDOM}
  * @constructor
  */
-const Option = ({ label, children, description, useFullWidth = false, withChevron = false }) => {
+const Option = ({ label, children, description, useFullWidth = false, withChevron = false, isLoading = false }) => {
     const classes = classNames({
         "option": true,
         "full-width": useFullWidth,
     });
 
     let chevron = null;
-    if (withChevron) {
+    if (isLoading) {
+        chevron = (
+            <div className="option-chevron">
+                <FontAwesomeIcon icon={faSpinner} spin />
+            </div>
+        );
+    } else if (withChevron) {
         chevron = (
             <div className="option-chevron">
                 <FontAwesomeIcon icon={faChevronDown} />
@@ -47,6 +54,7 @@ const Option = ({ label, children, description, useFullWidth = false, withChevro
 Option.propTypes = {
     children: PropTypes.any.isRequired,
     description: PropTypes.any,
+    isLoading: PropTypes.bool,
     label: PropTypes.string.isRequired,
     useFullWidth: PropTypes.bool,
     withChevron: PropTypes.bool,

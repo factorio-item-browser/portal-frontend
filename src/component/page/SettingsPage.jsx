@@ -43,6 +43,7 @@ const SettingsPage = () => {
                         settings={settingsStore.availableSettings}
                         value={settingsStore.selectedSettingId}
                         onChange={(settingId) => settingsStore.changeSettingId(settingId)}
+                        isLoading={settingsStore.isLoadingSettingDetails}
                     />
                 </OptionsList>
 
