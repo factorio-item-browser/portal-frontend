@@ -37,7 +37,6 @@
     "router5-plugin-browser": "^8.0.1"
   },
   "devDependencies": {
-    "@ianwalter/exclude-assets-plugin": "^1.0.0",
     "@babel/core": "^7.9.6",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-decorators": "^7.8.3",
@@ -65,9 +64,10 @@
     "file-loader": "^6.0.0",
     "html-inline-css-webpack-plugin": "^1.8.0",
     "html-webpack-plugin": "^4.3.0",
+    "html-webpack-skip-assets-plugin": "0.0.2",
     "image-webpack-loader": "^6.0.0",
     "mini-css-extract-plugin": "^0.9.0",
-    "node-sass": "^4.14.0",
+    "node-sass": "^4.14.1",
     "postcss-loader": "^3.0.0",
     "prettier": "^2.0.5",
     "react-hot-loader": "^4.12.21",

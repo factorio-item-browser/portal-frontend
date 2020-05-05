@@ -1,10 +1,10 @@
-const AsyncCssPlugin = require("async-css-plugin");
+// const AsyncCssPlugin = require("async-css-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const dotenv = require("dotenv");
-const ExcludeAssetsPlugin = require("@ianwalter/exclude-assets-plugin");
 const HtmlInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin").default;
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackSkipAssetsPlugin = require('html-webpack-skip-assets-plugin').HtmlWebpackSkipAssetsPlugin;
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
@@ -104,9 +104,12 @@ module.exports = (env, argv) => {
             }),
             new HtmlWebpackPlugin({
                 template: `${currentPath}/src/index.ejs`,
-                excludeAssets: [/images\.(.*)\.js$/],
             }),
-            new ExcludeAssetsPlugin(),
+            new HtmlWebpackSkipAssetsPlugin({
+                skipAssets: [
+                    /images\.(.*)\.js$/
+                ],
+            }),
             new HtmlInlineCSSWebpackPlugin({
                 filter(fileName) {
                     return isProduction && (fileName === "index.html" || fileName.includes("main"));
