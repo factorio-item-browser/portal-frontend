@@ -45,14 +45,14 @@ const SettingsPage = () => {
                 }}
             >
                 <FontAwesomeIcon icon={faMinus} />
-                Delete setting &quot;{selectedSettingDetails.name}&quot;
+                {t("settings.current-setting.delete-setting", { name: selectedSettingDetails.name })}
             </Button>
         );
     }
 
     return (
         <Fragment>
-            <Section headline="Settings">
+            <Section headline={t("settings.headline.settings")}>
                 <OptionsList>
                     <OptionSettingId
                         settings={settingsStore.availableSettings}
@@ -65,12 +65,12 @@ const SettingsPage = () => {
                     {deleteButton}
                     <ButtonLink primary route={ROUTE_SETTINGS_NEW}>
                         <FontAwesomeIcon icon={faPlus} />
-                        Add new setting
+                        {t("settings.current-setting.add-new-setting")}
                     </ButtonLink>
                 </ButtonList>
             </Section>
 
-            <Section headline={t("settings.options.headline")}>
+            <Section headline={t("settings.headline.options")}>
                 <OptionsList>
                     <OptionSettingName
                         value={settingsStore.selectedOptions.name}
@@ -89,7 +89,7 @@ const SettingsPage = () => {
                 </OptionsList>
             </Section>
 
-            <Section headline={t("settings.mod-list.headline", { count: selectedSettingDetails.mods.length })}>
+            <Section headline={t("settings.headline.mod-list", { count: selectedSettingDetails.mods.length })}>
                 <ModListSettingStatus setting={selectedSettingDetails} />
                 <EntityList>
                     {selectedSettingDetails.mods.map((mod) => {

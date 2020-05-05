@@ -39,7 +39,7 @@
         }
     },
     "footer": {
-        "copyright-disclaimer": "All content and images are owned by <1>Wube Software</1> and the <3>mod authors</3> respectively."
+        "copyright-disclaimer": "Content and images are owned by <1>Wube Software</1> and the <3>mod authors</3> respectively."
     },
     "header": {
         "search": {
@@ -105,24 +105,27 @@
     },
     "settings": {
         "current-setting": {
+            "add-new-setting": "Add new setting",
+            "delete-setting": "Delete setting \"{{name}}\"",
             "label": "Current setting:"
+        },
+        "headline": {
+            "settings": "Settings",
+            "options": "Options",
+            "mod-list": "Uses {{count}} mod",
+            "mod-list_plural": "Uses {{count}} mods"
         },
         "locale": {
             "label": "Language:",
             "description": "The translations of the items, recipes etc. are provided by the mods themselves. Missing translations are replaced with English, the same way they are in-game."
         },
         "mod-list": {
-            "headline": "Uses {{count}} mod",
-            "headline_plural": "Uses {{count}} mods",
             "author": "Author:",
             "name": "Name:",
             "version": "Version:"
         },
         "name": {
             "label": "Setting name:"
-        },
-        "options": {
-            "headline": "Options"
         },
         "recipe-mode": {
             "label": "Recipe mode:",
@@ -137,7 +140,22 @@
         "title": "Settings - Factorio Item Browser"
     },
     "settings-new": {
+        "additional-options": {
+            "headline": "3. Additional options"
+        },
+        "cancel": "Cancel",
+        "data-availability": {
+            "description-1": "The export of data to a combination of mods is fully automated. The server will download the required mods from the mod portal, launch the game to dump all the required data, and add it to the database.",
+            "description-2": "The automatic data export has some limitations:",
+            "description-3": "If these limitations are not met the displayed data may not be accurate. When in doubt please check the data in-game.",
+            "description-4": "Please be aware that as long as the data is not available the Factorio Item Browser will display the unmodded Vanilla data. Depending on the load on the server the data export will take some time. So continue playing for now and check back later.",
+            "description-limit-1": "The export always uses the latest version of the game and the mods. Older versions are not supported.",
+            "description-limit-2": "The export uses the default settings of the mods. No changes to these settings can be made.",
+            "description-limit-3": "All mods except the base mod must be available on the Factorio Mod Portal.",
+            "headline": "2. Data availability"
+        },
         "new-setting-name": "New setting",
+        "save-new-setting": "Save new setting",
         "title": "New Setting - Factorio Item Browser",
         "upload-file": {
             "button": {
@@ -145,6 +163,9 @@
                 "select-or-drag": "Select your <1>mod-list.json</1> file or drag it here.",
                 "drop": "Drop it here."
             },
+            "description-1": "Please select your mod-list.json file from the mods directory of your game installation. This file contains a list of mods you are currently using. The Factorio Item Browser needs this combination of mods to provide you the correct data.",
+            "description-2": "In a default installation you find the mod-list.json file at the following location:",
+            "description-3": "Note: No file is uploaded to the server. The selected file gets processed directly in your browser, and only the list of mod names is send to the server.",
             "headline": "1. Combination of mods",
             "status": {
                 "error": {

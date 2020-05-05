@@ -8,6 +8,7 @@ import SettingsStore from "../../../store/SettingsStore";
 import Button from "../../common/Button";
 
 import "./SaveButton.scss";
+import { useTranslation } from "react-i18next";
 
 /**
  * The component representing the (sticky) button to save changes on the settings.
@@ -15,6 +16,7 @@ import "./SaveButton.scss";
  * @constructor
  */
 const SaveButton = () => {
+    const { t } = useTranslation();
     const settingStore = useContext(SettingsStore);
 
     if (!settingStore.isSaveButtonVisible) {
@@ -31,7 +33,7 @@ const SaveButton = () => {
             }}
         >
             <FontAwesomeIcon icon={faSave} />
-            Save Changes
+            {t("settings.save-changes")}
         </Button>
     );
 };

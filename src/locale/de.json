@@ -9,7 +9,7 @@
     "copy-template": {
         "rich-text-icon": {
             "label": "Rich-Text-Symbol:",
-            "description": "Füge diesen Code in den Text im Spiel ein, um das Symbol zu erhalten."
+            "description": "Füge diesen Code in einen Text im Spiel ein, um das Symbol zu erhalten."
         },
         "cheat-command": {
             "label": "Cheat-Befehl:",
@@ -20,8 +20,26 @@
         "more-recipes": "{{count}} weiteres Rezept",
         "more-recipes_plural": "{{count}} weitere Rezepte"
     },
+    "error": {
+        "client-failure": {
+            "title": "Unerwarteter Browser-Fehler",
+            "description": "Der Browser hat einen unerwarteten Fehler verursacht, ähnlich... dem Ausgehen von Eisen. Bitte lade die Seite neu und versuche es erneut."
+        },
+        "page-not-found": {
+            "title": "Seite nicht gefunden",
+            "description": "Wonach auch immer du gesucht hast, es existiert nicht."
+        },
+        "server-failure": {
+            "title": "Interner Serverfehler",
+            "description": "Der Server hat mit unverständlichem Geschwafel geantwortet, vielleicht muss der Babelfisch erneuert werden. Bitte lade die Seite neu und versuche es erneut."
+        },
+        "service-not-available": {
+            "title": "Service nicht verfügbar",
+            "description": "Die Verbindung zum Server konnte nicht hergestellt werden. Bitte stelle sicher, dass alle Beißer besiegt sind, und versuche es später noch einmal."
+        }
+    },
     "footer": {
-        "copyright-disclaimer": "Alle Inhalte und Bilder sind Eigentum von <1>Wube Software</1> bzw. der <3>Mod-Authoren</3>."
+        "copyright-disclaimer": "Inhalte und Bilder sind Eigentum von <1>Wube Software</1> bzw. der <3>Mod-Authoren</3>."
     },
     "header": {
         "search": {
@@ -58,13 +76,13 @@
         "ingredients": "Zutaten",
         "machine": {
             "character-notice": "Dieses Rezept kann ohne zusätzliche Maschinen direkt in der Hand hergestellt werden, solange sich die benötigten Items im Inventar befinden. ",
-            "crafting-speed": "Geschwindigkeit",
-            "energy-usage": "Energieverbrauch",
-            "fluids": "Flüssigkeiten",
+            "crafting-speed": "Geschwindigkeit:",
+            "energy-usage": "Energieverbrauch:",
+            "fluids": "Flüssigkeiten:",
             "headline": "Herstellbar in {{count}} Maschine",
             "headline_plural": "Herstellbar in {{count}} Maschinen",
-            "items": "Items",
-            "modules": "Modul-Slots",
+            "items": "Items:",
+            "modules": "Modul-Slots:",
             "more-machines": {
                 "load": "Weitere Maschinen laden",
                 "loading": "Lade weitere Maschinen..."
@@ -73,7 +91,7 @@
             "unlimited": "unbegrenzt"
         },
         "products": "Ergebnisse",
-        "time": "Zeit",
+        "time": "Zeit:",
         "title": "Rezept: {{label}} - Factorio Item Browser"
     },
     "search-results": {
@@ -87,28 +105,31 @@
     },
     "settings": {
         "current-setting": {
+            "add-new-setting": "Neue Einstellung hinzufügen",
+            "delete-setting": "Einstellung \"{{name}}\" entfernen",
             "label": "Aktuelle Einstellung:"
+        },
+        "headline": {
+            "settings": "Einstellungen",
+            "options": "Optionen",
+            "mod-list": "Verwendet {{count}} Mod",
+            "mod-list_plural": "Verwendet {{count}} Mods"
         },
         "locale": {
             "label": "Sprache:",
-            "description": "Die Sprachen werden nur unterstützt, wenn die Mods entsprechende Übersetzungen liefern. Fehlende Übersetzen werden durch Englisch ersetzt."
+            "description": "Die Übersetzungen von Items, Rezepten usw. werden von den Mods selbst bereitgestellt. Fehlende Übersetzungen werden mit Englisch ersetzt, so wie es auch im Spiel passiert."
         },
         "mod-list": {
-            "headline": "Verwendet {{count}} Mod",
-            "headline_plural": "Verwendet {{count}} Mods",
-            "author": "Author",
-            "name": "Name",
-            "version": "Version"
+            "author": "Author:",
+            "name": "Name:",
+            "version": "Version:"
         },
         "name": {
             "label": "Name der Einstellung:"
         },
-        "options": {
-            "headline": "Optionen"
-        },
         "recipe-mode": {
             "label": "Rezept-Modus:",
-            "description": "Der Rezept-Modus legt fest, wie Rezepte mit mehreren Varianten gehandhabt werden sollen, indem entweder beide Varianten angezeigt werden (Hybrid-Modus) oder die uninteresante Variante ausgeblendet wird (normaler und teurer Modus).",
+            "description": "Der Rezept-Modus legt fest, wie Rezepte behandelt werden, die sowohl eine normale als auch eine teure Variante besitzen. Wähle \"Normaler Modus\" oder \"Teurer Modus\", um nur diese Variante anzuzeigen, oder den \"Hybrid-Modus\", um beide Varianten anzuzeigen und die teure hervorheben zu lassen.",
             "option": {
                 "hybrid": "Hybrid-Modus",
                 "normal": "Normaler Modus",
@@ -118,16 +139,73 @@
         "save-changes": "Änderungen speichern",
         "title": "Einstellungen - Factorio Item Browser"
     },
-    "settings-create": {
+    "settings-new": {
+        "additional-options": {
+            "headline": "3. Zusätzliche Optionen"
+        },
+        "cancel": "Abbrechen",
+        "data-availability": {
+            "description-1": "Der Datenexport zu einer Kombination von Mods ist vollständig automatisiert. Der Server wird die benötigten Mods vom Mod-Portal herunterladen, das Spiel mit diesen Starten, die benötigten Daten auslesen und diese zur Datenbank hinzufügen.",
+            "description-2": "Der automatische Datenexport hat einige Einschränkungen:",
+            "description-3": "Wenn diese Einschränkungen nicht erfüllt sind, könnten die angezeigten Daten nicht akkurat sein. Bitte überprüfe die Daten im Zweifel mit den Werten im Spiel.",
+            "description-4": "Bitte sei dir bewusst, dass der Factorio Item Browser die unmodifizierten Daten von Vanilla anzeigen wird, solange die tatsächlichen Daten nicht noch verfügbar sind. Abhängig von der Last auf dem Server kann der Datenexport einige Zeit dauern. Spiele deshalb erstmal weiter und komme später zurück.",
+            "description-limit-1": "Der Export verwendet immer die neueste Versionen des Spiels und der Mods. Ältere Versionen werden nicht unterstützt.",
+            "description-limit-2": "Der Export verwendet die Standardeinstellungen für die Mods. Es können keine Änderungen an diesen Einstellungen vorgenommen werden.",
+            "description-limit-3": "Alle Mods, ausgenommen der Basis-Mod, müssen auf dem Factorio-Mod-Portal verfügbar sein.",
+            "headline": "2. Verfügbarkeit der Daten"
+        },
         "new-setting-name": "Neue Einstellung",
-        "title": "Einstellung erstellen - Factorio Item Browser",
+        "save-new-setting": "Neue Einstellung speichern",
+        "title": "Neue Einstellung - Factorio Item Browser",
         "upload-file": {
             "button": {
                 "select": "Wähle deine <1>mod-list.json</1>-Datei aus.",
                 "select-or-drag": "Wähle deine <1>mod-list.json</1>-Datei aus oder ziehe sie hier her.",
                 "drop": "Lasse sie hier los."
             },
-            "headline": "1. mod-list.json hochladen"
+            "description-1": "Bitte wähle deine mod-list.json-Datei aus dem mods-Verzeichnis deiner Spielinstallation aus. Diese Datei enthält eine Liste von Mods, welche du aktuell verwendest. Der Factorio Item Browser benötigt diese Kombination an Mods um dir dir richtigen Daten zur Verfügung stellen zu können.",
+            "description-2": "In einer Standardinstallation findest du die mod-list.json-Datei an folgendem Ort:",
+            "description-3": "Anmerkung: Es wird keine Datei zum Server hochgeladen. Die ausgewählte Datei wird direkt in deinem Browser verarbeitet, und nur die Liste der Modnamen wird an den Server übertragen.",
+            "headline": "1. Kombination der Mods",
+            "status": {
+                "error": {
+                    "headline": "Extrahieren der Mods fehlgeschlagen:",
+                    "message": {
+                        "invalid-file": "Die ausgewählte Datei ist ungültig und konnte nicht verarbeitet werden. Bist du sicher, dass du eine gültige mod-list.json-Datei ausgewählt hast?",
+                        "no-mods": "Die ausgewählte Datei enthielt keine Mods. Bist du sicher, dass du eine gültige mod-list.json-Datei ausgewählt hast?"
+                    }
+                },
+                "success": {
+                    "headline": "{{count}} Mod erkannt:",
+                    "headline_plural": "{{count}} Mods erkannt:"
+                }
+            }
+        }
+    },
+    "setting-status": {
+        "available": {
+            "headline": "Daten sind verfügbar.",
+            "description": "Die Daten für deine Kombination an Mods sind bereits verfügbar. Speichere deine Einstellung und leg' los!"
+        },
+        "errored": {
+            "headline": "Datenexport ist fehlgeschlagen",
+            "description": "Ein zuvor gestarteter Datenexoirt für diese Mods ist fehlgeschlagen. Sorry, aber die benötigten Daten können aktuell nicht zur Verfügung gestellt werden.",
+            "description-global": "Du betrachtest die unmodifizierten Daten von Vanilla. Der Datenexport von deinen Mods ist fehlgeschlagen. Sorry, aber die benötigten Daten können aktuell nicht zur Verfügung gestellt werden.",
+            "description-setting": "Der Datenexport für diese Einstellung ist fehlgeschlagen. Nur die unmodifizierten Daten von Vanilla sind verfügbar. Sorry, aber die benötigten Daten können aktuell nicht zur Verfügung gestellt werden."
+        },
+        "loading": {
+            "headline": "Datenverfügbarkeit wird geprüft...",
+            "description": ""
+        },
+        "pending": {
+            "headline": "Datenexport ist in der Warteschlange.",
+            "description": "Der Datenexport für diese Mods wurde bereits angelegt und wartet aktuell, bis er an der Reihe ist.",
+            "description-global": "Du betrachtest die unmodifizierten Daten von Vanilla. Die Daten für deine Kombination an Mods warten aktuell darauf, aus dem Spiel exportiert zu werden, und sind noch nicht verfügbar.",
+            "description-setting": "Die Daten für diese Einstellungen warten darauf, exportiert zu werden. Nur die unmodifizierten Daten von Vanilla sind verfügbar."
+        },
+        "unknown": {
+            "headline": "Daten sind aktuell nicht verfügbar.",
+            "description": "Die Daten für diese Kombination an Mods sind aktuell nicht verfügbar und ein Datenexport wird angelegt, sobald du die neue Einstellung speicherst."
         }
     },
     "sidebar": {

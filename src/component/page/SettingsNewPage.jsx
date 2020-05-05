@@ -43,26 +43,19 @@ const SettingsNewPage = () => {
         <Fragment>
             <Section headline={t("settings-new.upload-file.headline")}>
                 <TextBox>
-                    <p>
-                        Please select your mod-list.json file from the mods directory of your game installation. This
-                        file contains a list of mods you are currently using. The Factorio Item Browser needs this
-                        combination of mods to provide you the correct data.
-                    </p>
+                    <p>{t("settings-new.upload-file.description-1")}</p>
 
-                    <p>In a default installation you find the mod-list.json file at the following location:</p>
+                    <p>{t("settings-new.upload-file.description-2")}</p>
                     <dl>
                         <dt>Windows:</dt>
                         <dd>%APPDATA%\Factorio\mods\</dd>
                         <dt>Mac OS X:</dt>
                         <dd>~/Library/Application Support/factorio/mods/</dd>
-                        <dt>Linux distributions:</dt>
+                        <dt>Linux:</dt>
                         <dd>~/.factorio/mods/</dd>
                     </dl>
 
-                    <p>
-                        Note: No file is uploaded to the server. The selected file gets processed directly in your
-                        browser, and only the list of mod names is send to the server.
-                    </p>
+                    <p>{t("settings-new.upload-file.description-3")}</p>
                 </TextBox>
 
                 <ModListUpload />
@@ -73,35 +66,17 @@ const SettingsNewPage = () => {
             </Section>
 
             {settingsNewStore.showAvailabilityStep ? (
-                <Section headline={"2. Data availability"}>
+                <Section headline={t("settings-new.data-availability.headline")}>
                     <TextBox>
-                        <p>
-                            The export of data to a combination of mods is fully automated. The server will download the
-                            required mods from the mod portal, launch the game to dump all the required data, and add it
-                            to the database.
-                        </p>
-
-                        <p>The automatic data export has some limitations:</p>
+                        <p>{t("settings-new.data-availability.description-1")}</p>
+                        <p>{t("settings-new.data-availability.description-2")}</p>
                         <ul>
-                            <li>
-                                The export always uses the latest version of the game and the mods. Older versions are
-                                not supported.
-                            </li>
-                            <li>
-                                The export uses the default settings of the mods. No changes to these settings can be
-                                made.
-                            </li>
-                            <li>All mods except the base mod must be available on the Factorio Mod Portal.</li>
+                            <li>{t("settings-new.data-availability.description-limit-1")}</li>
+                            <li>{t("settings-new.data-availability.description-limit-2")}</li>
+                            <li>{t("settings-new.data-availability.description-limit-3")}</li>
                         </ul>
-                        <p>
-                            If these limitations are not met the displayed data may not be accurate. When in doubt
-                            please check the data in-game.
-                        </p>
-                        <p>
-                            Please be aware that as long as the data is not available the Factorio Item Browser will
-                            display the unmodded Vanilla data. Depending on the load on the server the data export will
-                            take some time. So continue playing for now and check back later.
-                        </p>
+                        <p>{t("settings-new.data-availability.description-3")}</p>
+                        <p>{t("settings-new.data-availability.description-4")}</p>
                     </TextBox>
 
                     <SettingStatus settingStatus={settingsNewStore.settingStatus} />
@@ -109,7 +84,7 @@ const SettingsNewPage = () => {
             ) : null}
 
             {settingsNewStore.showOptionsStep ? (
-                <Section headline={"3. Additional options"}>
+                <Section headline={t("settings-new.additional-options.headline")}>
                     <OptionsList>
                         <OptionSettingName
                             value={settingsNewStore.newOptions.name}
@@ -132,7 +107,7 @@ const SettingsNewPage = () => {
             <ButtonList>
                 <ButtonLink route={ROUTE_SETTINGS}>
                     <FontAwesomeIcon icon={faTimes} />
-                    Cancel
+                    {t("settings-new.cancel")}
                 </ButtonLink>
                 {settingsNewStore.showSaveButton ? (
                     <Button
@@ -142,7 +117,7 @@ const SettingsNewPage = () => {
                         }}
                     >
                         <FontAwesomeIcon icon={faSave} />
-                        Save new setting
+                        {t("settings-new.save-new-setting")}
                     </Button>
                 ) : null}
             </ButtonList>
