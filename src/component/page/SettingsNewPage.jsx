@@ -1,4 +1,4 @@
-import { faSave, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faSave, faSpinner, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext, useEffect } from "react";
@@ -38,6 +38,30 @@ const SettingsNewPage = () => {
             name: t("settings-new.new-setting-name"),
         });
     }, []);
+
+    let saveButton = null;
+    if (settingsNewStore.showSaveButton) {
+        if (settingsNewStore.isSavingNewSetting) {
+            saveButton = (
+                <Button primary>
+                    <FontAwesomeIcon icon={faSpinner} spin />
+                    {t("settings-new.saving-new-setting")}
+                </Button>
+            );
+        } else {
+            saveButton = (
+                <Button
+                    primary
+                    onClick={async () => {
+                        await settingsNewStore.saveNewSetting();
+                    }}
+                >
+                    <FontAwesomeIcon icon={faSave} />
+                    {t("settings-new.save-new-setting")}
+                </Button>
+            );
+        }
+    }
 
     return (
         <Fragment>
@@ -109,17 +133,7 @@ const SettingsNewPage = () => {
                     <FontAwesomeIcon icon={faTimes} />
                     {t("settings-new.cancel")}
                 </ButtonLink>
-                {settingsNewStore.showSaveButton ? (
-                    <Button
-                        primary
-                        onClick={async () => {
-                            await settingsNewStore.saveNewSetting();
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faSave} />
-                        {t("settings-new.save-new-setting")}
-                    </Button>
-                ) : null}
+                {saveButton}
             </ButtonList>
         </Fragment>
     );

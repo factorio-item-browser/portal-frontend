@@ -107,6 +107,7 @@
         "current-setting": {
             "add-new-setting": "Add new setting",
             "delete-setting": "Delete setting \"{{name}}\"",
+            "deleting-setting": "Deleting setting \"{{name}}\"...",
             "label": "Current setting:"
         },
         "headline": {
@@ -137,6 +138,7 @@
             }
         },
         "save-changes": "Save changes",
+        "saving-changes": "Saving changes...",
         "title": "Settings - Factorio Item Browser"
     },
     "settings-new": {
@@ -156,6 +158,7 @@
         },
         "new-setting-name": "New setting",
         "save-new-setting": "Save new setting",
+        "saving-new-setting": "Saving new setting...",
         "title": "New Setting - Factorio Item Browser",
         "upload-file": {
             "button": {

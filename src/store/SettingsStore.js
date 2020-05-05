@@ -78,6 +78,20 @@ class SettingsStore {
     isSaveButtonVisible = false;
 
     /**
+     * Whether we are currently saving the changes.
+     * @type {boolean}
+     */
+    @observable
+    isSavingChanges = false;
+
+    /**
+     * Whether we are currently deleting the selected setting.
+     * @type {boolean}
+     */
+    @observable
+    isDeletingSetting = false;
+
+    /**
      * Initializes the store.
      * @param {IconManager} iconManager
      * @param {PortalApi} portalApi
@@ -204,6 +218,7 @@ class SettingsStore {
      */
     @action
     async saveOptions() {
+        this.isSavingChanges = true;
         try {
             await this._portalApi.saveSetting(this.selectedSettingId, this.selectedOptions);
             location.reload();
@@ -217,10 +232,12 @@ class SettingsStore {
      * @return {Promise<void>}
      */
     async deleteSelectedSetting() {
+        this.isDeletingSetting = true;
         try {
             await this._portalApi.deleteSetting(this.selectedSettingId);
 
             runInAction(() => {
+                this.isDeletingSetting = false;
                 this.availableSettings = this.availableSettings.filter(
                     (setting) => setting.id !== this.selectedSettingId
                 );

@@ -80,6 +80,13 @@ class SettingsNewStore {
     };
 
     /**
+     * Whether we are currently saving the new setting.
+     * @type {boolean}
+     */
+    @observable
+    isSavingNewSetting = false;
+
+    /**
      * Initializes the store.
      * @param {PortalApi} portalApi
      * @param {RouteStore} routeStore
@@ -252,6 +259,7 @@ class SettingsNewStore {
      */
     @action
     async saveNewSetting() {
+        this.isSavingNewSetting = true;
         try {
             const settingData = {
                 ...this.newOptions,

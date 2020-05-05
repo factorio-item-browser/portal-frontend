@@ -75,7 +75,6 @@ const PaginatedListButton = ({ paginatedList, localePrefix, loadOnScroll = false
             spacing
             ref={element}
             onClick={async () => {
-                element.current.blur();
                 await paginatedList.requestNextPage();
             }}
         >

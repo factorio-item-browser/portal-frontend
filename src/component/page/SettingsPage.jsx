@@ -1,4 +1,4 @@
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faMinus, faPlus, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext, useEffect } from "react";
@@ -38,16 +38,25 @@ const SettingsPage = () => {
 
     let deleteButton = null;
     if (settingsStore.isDeleteButtonVisible) {
-        deleteButton = (
-            <Button
-                onClick={async () => {
-                    await settingsStore.deleteSelectedSetting();
-                }}
-            >
-                <FontAwesomeIcon icon={faMinus} />
-                {t("settings.current-setting.delete-setting", { name: selectedSettingDetails.name })}
-            </Button>
-        );
+        if (settingsStore.isDeletingSetting) {
+            deleteButton = (
+                <Button>
+                    <FontAwesomeIcon icon={faSpinner} spin />
+                    {t("settings.current-setting.deleting-setting", { name: selectedSettingDetails.name })}
+                </Button>
+            );
+        } else {
+            deleteButton = (
+                <Button
+                    onClick={async () => {
+                        await settingsStore.deleteSelectedSetting();
+                    }}
+                >
+                    <FontAwesomeIcon icon={faMinus} />
+                    {t("settings.current-setting.delete-setting", { name: selectedSettingDetails.name })}
+                </Button>
+            );
+        }
     }
 
     return (

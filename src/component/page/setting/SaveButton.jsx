@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSave } from "@fortawesome/free-solid-svg-icons";
+import { faSave, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 
@@ -21,6 +21,15 @@ const SaveButton = () => {
 
     if (!settingStore.isSaveButtonVisible) {
         return null;
+    }
+
+    if (settingStore.isSavingChanges) {
+        return (
+            <Button className="save-button" primary spacing>
+                <FontAwesomeIcon icon={faSpinner} spin />
+                {t("settings.saving-changes")}
+            </Button>
+        );
     }
 
     return (
