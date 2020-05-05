@@ -1,4 +1,4 @@
-import { faMinus, faPlus, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faMinus, faPlus, faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext, useEffect } from "react";
@@ -9,7 +9,6 @@ import { ROUTE_SETTINGS_NEW } from "../../helper/const";
 
 import ButtonLink from "../link/ButtonLink";
 import ButtonList from "./setting/ButtonList";
-import Button from "../common/Button";
 import EntityList from "../entity/EntityList";
 import Mod from "../entity/Mod";
 import OptionLocale from "./setting/option/OptionLocale";
@@ -17,9 +16,9 @@ import OptionRecipeMode from "./setting/option/OptionRecipeMode";
 import OptionSettingId from "./setting/option/SettingOptionId";
 import OptionSettingName from "./setting/option/OptionSettingName";
 import OptionsList from "./setting/option/OptionsList";
-import SaveButton from "./setting/SaveButton";
 import Section from "../common/Section";
 import ModListSettingStatus from "../status/ModListSettingStatus";
+import ActionButton from "../common/ActionButton";
 
 /**
  * The component representing the settings page.
@@ -36,29 +35,6 @@ const SettingsPage = () => {
         document.title = t("settings.title");
     }, []);
 
-    let deleteButton = null;
-    if (settingsStore.isDeleteButtonVisible) {
-        if (settingsStore.isDeletingSetting) {
-            deleteButton = (
-                <Button>
-                    <FontAwesomeIcon icon={faSpinner} spin />
-                    {t("settings.current-setting.deleting-setting", { name: selectedSettingDetails.name })}
-                </Button>
-            );
-        } else {
-            deleteButton = (
-                <Button
-                    onClick={async () => {
-                        await settingsStore.deleteSelectedSetting();
-                    }}
-                >
-                    <FontAwesomeIcon icon={faMinus} />
-                    {t("settings.current-setting.delete-setting", { name: selectedSettingDetails.name })}
-                </Button>
-            );
-        }
-    }
-
     return (
         <Fragment>
             <Section headline={t("settings.headline.settings")}>
@@ -71,7 +47,18 @@ const SettingsPage = () => {
                 </OptionsList>
 
                 <ButtonList right>
-                    {deleteButton}
+                    <ActionButton
+                        label={t("settings.current-setting.delete-setting", { name: selectedSettingDetails.name })}
+                        loadingLabel={t("settings.current-setting.deleting-setting", {
+                            name: selectedSettingDetails.name,
+                        })}
+                        icon={faMinus}
+                        isVisible={settingsStore.isDeleteButtonVisible}
+                        isLoading={settingsStore.isDeletingSetting}
+                        onClick={async () => {
+                            await settingsStore.deleteSelectedSetting();
+                        }}
+                    />
                     <ButtonLink primary route={ROUTE_SETTINGS_NEW}>
                         <FontAwesomeIcon icon={faPlus} />
                         {t("settings.current-setting.add-new-setting")}
@@ -107,7 +94,19 @@ const SettingsPage = () => {
                 </EntityList>
             </Section>
 
-            <SaveButton />
+            <ActionButton
+                primary
+                spacing
+                sticky
+                label={t("settings.save-changes")}
+                loadingLabel={t("settings.saving-changes")}
+                icon={faSave}
+                isVisible={settingsStore.isSaveButtonVisible}
+                isLoading={settingsStore.isSavingChanges}
+                onClick={async () => {
+                    await settingsStore.saveOptions();
+                }}
+            />
         </Fragment>
     );
 };

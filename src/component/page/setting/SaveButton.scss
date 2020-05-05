@@ -1,8 +1,0 @@
-@import "../../../style/import";
-
-.save-button {
-    @include dynamic-spacing(bottom, large);
-
-    position: sticky;
-    z-index: $zIndex-sticky-button;
-}

@@ -1,5 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React, { createRef, useEffect } from "react";
@@ -7,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 import { debounce } from "../../helper/utils";
 
-import Button from "./Button";
+import ActionButton from "./ActionButton";
 
 /**
  *
@@ -16,6 +14,7 @@ import Button from "./Button";
  */
 async function handleScroll(element, paginatedList) {
     if (
+        element.current &&
         paginatedList.hasNextPage &&
         !paginatedList.isLoading &&
         window.scrollY + window.innerHeight > element.current.offsetTop - window.innerHeight * 0.1
@@ -53,33 +52,19 @@ const PaginatedListButton = ({ paginatedList, localePrefix, loadOnScroll = false
         }
     });
 
-    // We have no additional pages, so do not display the button at all.
-    if (!paginatedList.hasNextPage) {
-        return null;
-    }
-
-    // We are already loading the next page, so show the animation.
-    if (paginatedList.isLoading) {
-        return (
-            <Button primary spacing>
-                <FontAwesomeIcon icon={faSpinner} spin />
-                {t(`${localePrefix}.loading`)}
-            </Button>
-        );
-    }
-
-    // Show the default button, waiting to be clicked.
     return (
-        <Button
+        <ActionButton
             primary
             spacing
             ref={element}
+            label={t(`${localePrefix}.load`)}
+            loadingLabel={t(`${localePrefix}.loading`)}
+            isVisible={paginatedList.hasNextPage}
+            isLoading={paginatedList.isLoading}
             onClick={async () => {
                 await paginatedList.requestNextPage();
             }}
-        >
-            {t(`${localePrefix}.load`)}
-        </Button>
+        />
     );
 };
 

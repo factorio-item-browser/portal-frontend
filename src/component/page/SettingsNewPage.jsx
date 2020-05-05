@@ -1,4 +1,4 @@
-import { faSave, faSpinner, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faSave, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext, useEffect } from "react";
@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import SettingsNewStore from "../../store/SettingsNewStore";
 import { ROUTE_SETTINGS } from "../../helper/const";
 
-import Button from "../common/Button";
 import ButtonLink from "../link/ButtonLink";
 import ButtonList from "./setting/ButtonList";
 import ModListUpload from "./settingNew/ModListUpload";
@@ -20,6 +19,7 @@ import Section from "../common/Section";
 import SettingStatus from "../status/SettingStatus";
 import TextBox from "../common/TextBox";
 import SettingsStore from "../../store/SettingsStore";
+import ActionButton from "../common/ActionButton";
 
 /**
  * The component representing the page for creating a new setting.
@@ -38,30 +38,6 @@ const SettingsNewPage = () => {
             name: t("settings-new.new-setting-name"),
         });
     }, []);
-
-    let saveButton = null;
-    if (settingsNewStore.showSaveButton) {
-        if (settingsNewStore.isSavingNewSetting) {
-            saveButton = (
-                <Button primary>
-                    <FontAwesomeIcon icon={faSpinner} spin />
-                    {t("settings-new.saving-new-setting")}
-                </Button>
-            );
-        } else {
-            saveButton = (
-                <Button
-                    primary
-                    onClick={async () => {
-                        await settingsNewStore.saveNewSetting();
-                    }}
-                >
-                    <FontAwesomeIcon icon={faSave} />
-                    {t("settings-new.save-new-setting")}
-                </Button>
-            );
-        }
-    }
 
     return (
         <Fragment>
@@ -133,7 +109,18 @@ const SettingsNewPage = () => {
                     <FontAwesomeIcon icon={faTimes} />
                     {t("settings-new.cancel")}
                 </ButtonLink>
-                {saveButton}
+
+                <ActionButton
+                    primary
+                    label={t("settings-new.save-new-setting")}
+                    loadingLabel={t("settings-new.saving-new-setting")}
+                    icon={faSave}
+                    isVisible={settingsNewStore.showSaveButton}
+                    isLoading={settingsNewStore.isSavingNewSetting}
+                    onClick={async () => {
+                        await settingsNewStore.saveNewSetting();
+                    }}
+                />
             </ButtonList>
         </Fragment>
     );
