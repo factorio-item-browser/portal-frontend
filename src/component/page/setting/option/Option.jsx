@@ -43,8 +43,10 @@ const Option = ({ label, children, description, useFullWidth = false, withChevro
         <div className={classes}>
             <div className="option-head">
                 <h3>{label}</h3>
-                {children}
-                {chevron}
+                <div className="option-element">
+                    {children}
+                    {chevron}
+                </div>
             </div>
             {description ? <div className="option-description">{description}</div> : null}
         </div>

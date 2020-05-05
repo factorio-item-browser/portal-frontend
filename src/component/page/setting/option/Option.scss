@@ -7,12 +7,13 @@
     position: relative;
 
     .option-chevron {
-        @include dynamic-spacing(right top, default);
+        @include dynamic-spacing(top, default);
 
         color: color($color-input, $lightness-text-primary);
         font-size: $text-size-option;
         pointer-events: none;
         position: absolute;
+        right: $spacing-default;
     }
 
     .option-head {
@@ -22,13 +23,21 @@
         align-items: center;
 
         h3 {
-            @include dynamic-spacing(padding, default);
+            @include dynamic-spacing(padding-top padding-bottom, default);
 
             border-right: px-to-rem(1) solid color($color-box-default, $lightness-box-border, $alpha-box-border);
             text-align: right;
             flex-basis: 16rem;
             font-size: $text-size-option;
             font-weight: bold;
+            padding-left: $spacing-default;
+            padding-right: $spacing-default;
+        }
+
+        .option-element {
+            background: color($color-input, $lightness-input-background);
+            flex-grow: 1;
+            position: relative;
         }
 
         select, input[type=text] {
@@ -38,9 +47,9 @@
             background: color($color-input, $lightness-input-background);
             border: none;
             color: color($color-input, $lightness-input-text);
-            flex-grow: 1;
             font-size: $text-size-option;
             font-weight: bold;
+            width: 100%;
 
             &:hover, &:active {
                 background: color($color-input, $lightness-input-background-hover);
@@ -69,6 +78,18 @@
                 color: color($color-box-default, $lightness-text-primary);
                 font-size: 1rem;
                 font-weight: normal;
+            }
+        }
+
+        // Display label and option on top of each other in small viewports because they do not have room horizontally.
+        @include breakpoint-until(medium) {
+            flex-wrap: wrap;
+
+            h3 {
+                border-right: none;
+                border-bottom: px-to-rem(1) solid color($color-box-default, $lightness-box-border, $alpha-box-border);
+                flex-basis: 100%;
+                text-align: left;
             }
         }
     }

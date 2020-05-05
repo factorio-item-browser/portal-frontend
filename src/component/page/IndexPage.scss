@@ -3,14 +3,12 @@
 .random-items {
     position: relative;
     .randomize {
+        bottom: 0;
         cursor: pointer;
+        font-size: $text-size-default;
+        position: absolute;
+        right: 0;
         text-align: right;
-
-        @include breakpoint(medium) {
-            position: absolute;
-            right: 0;
-            top: 0;
-        }
 
         svg {
             filter: drop-shadow($shadow-label);

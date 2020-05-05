@@ -12,21 +12,31 @@
     }
 
     dl {
-        display: flex;
-        flex-wrap: wrap;
-
         dt {
             font-weight: bold;
-            flex-basis: 15rem;
-            text-align: right;
             padding: $spacing-tiny $spacing-small;
         }
         dd {
-            flex-grow: 1;
-            flex-basis: calc(100% - 15rem);
             font-family: monospace;
             font-size: 1rem;
-            padding: $spacing-tiny $spacing-small;
+            padding: $spacing-tiny $spacing-large;
+        }
+
+        @include breakpoint(medium) {
+            display: flex;
+            flex-wrap: wrap;
+
+            dt {
+                flex-basis: 15rem;
+                flex-shrink: 0;
+                padding: $spacing-tiny $spacing-small;
+                text-align: right;
+            }
+            dd {
+                flex-basis: calc(100% - 15rem);
+                flex-grow: 1;
+                padding: $spacing-tiny $spacing-small;
+            }
         }
     }
 

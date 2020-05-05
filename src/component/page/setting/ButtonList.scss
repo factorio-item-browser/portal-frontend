@@ -4,6 +4,7 @@
     @include dynamic-spacing(padding, 0 default);
 
     display: flex;
+    flex-wrap: wrap;
 
     &.right {
         justify-content: right;
