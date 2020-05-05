@@ -1,5 +1,6 @@
 import { action, computed, observable, runInAction } from "mobx";
 import { createContext } from "react";
+import { getI18n } from "react-i18next";
 import { constants, createRouter } from "router5";
 import browserPluginFactory from "router5-plugin-browser";
 
@@ -178,11 +179,12 @@ class RouteStore {
      * @private
      */
     @action
-    _initializeSession(session) {
+    async _initializeSession(session) {
         this.setting = session.setting;
         this.locale = session.locale;
 
         this._cacheManager.setSettingHash(session.settingHash);
+        await getI18n().changeLanguage(session.locale);
     }
 
     /**

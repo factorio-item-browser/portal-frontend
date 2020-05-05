@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect } from "react";
-import { useTranslation } from "react-i18next";
 
 import {
     ROUTE_INDEX,
@@ -47,12 +46,10 @@ const PAGE_BY_ROUTES = {
  */
 const App = () => {
     const routeStore = useContext(RouteStore);
-    const { i18n } = useTranslation();
 
     useEffect(() => {
         (async () => {
             await routeStore.initializeSession();
-            await i18n.changeLanguage(routeStore.locale);
         })();
     }, []);
 
