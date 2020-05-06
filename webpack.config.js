@@ -77,7 +77,7 @@ module.exports = (env, argv) => {
                         {
                             loader: "file-loader",
                             options: {
-                                name: "asset/image/[name].[hash].[ext]",
+                                name: "asset/image/[name].[ext]",
                                 esModule: false,
                             },
                         },
@@ -96,6 +96,7 @@ module.exports = (env, argv) => {
             new CleanWebpackPlugin(),
             new CopyPlugin([
                 { from: `${currentPath}/src/root/.htaccess` },
+                { from: `${currentPath}/src/root/manifest.webmanifest` },
                 { from: `${currentPath}/src/root/opensearch.xml` },
             ]),
             new DefinePlugin(envVars),

@@ -1,0 +1,37 @@
+{
+  "name": "Factorio Item Browser",
+  "short_name": "FIB",
+  "start_url": ".",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#165868",
+  "theme_color": "#165868",
+  "description": "Browse for thousands of items and recipes in all of the mods of Factorio.",
+  "icons": [
+    {
+      "src": "asset/image/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "asset/image/favicon-128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "asset/image/favicon-144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "asset/image/favicon-160.png",
+      "sizes": "160x160",
+      "type": "image/png"
+    },
+    {
+      "src": "asset/image/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

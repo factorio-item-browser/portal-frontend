@@ -3,11 +3,11 @@ const title = "Factorio Item Browser";
 const description = "Browse for thousands of items and recipes in all of the mods of Factorio.";
 const color = "#165868";
 const openSearchUrl = "https://react.factorio-item-browser.com/opensearch.xml";
+const manifestUrl = "https://react.factorio-item-browser.com/manifest.webmanifest";
 
 const faviconSizes = [32, 128, 144, 160];
 const shortcutIconSizes = [192];
 const appleTouchIconSizes = [152, 180];
-
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,13 +21,15 @@ const appleTouchIconSizes = [152, 180];
         <meta name="theme-color" content="<%= color %>">
         <meta name="msapplication-TileColor" content="<%= color %>" />
 
-        <meta property="og:url" content="https://www.factorio-item-browser.com/">
-        <meta property="og:site_name" content="<%= title %>">
-        <meta property="og:type" content="website">
-        <meta property="og:title" content="<%= title %>">
-        <meta property="og:description" content="<%= description %>">
+        <meta property="og:url" content="https://www.factorio-item-browser.com/" />
+        <meta property="og:site_name" content="<%= title %>" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="<%= title %>" />
+        <meta property="og:description" content="<%= description %>" />
+        <meta property="og:image" content="<%= require(`./image/icon/favicon-160.png`)%>" />
 
-        <link rel="search" type="application/opensearchdescription+xml" title="FIB Search" href="<%= openSearchUrl %>">
+        <link rel="search" type="application/opensearchdescription+xml" title="FIB Search" href="<%= openSearchUrl %>" />
+        <link rel="search" href="<%= manifestUrl %>" />
         <% for (const size of faviconSizes) { %><link rel="icon" href="<%= require(`./image/icon/favicon-${size}.png`) %>" sizes="<%= size %>x<%= size %>" /><% } %>
         <% for (const size of shortcutIconSizes) { %><link rel="shortcut icon" href="<%= require(`./image/icon/favicon-${size}.png`) %>" sizes="<%= size %>x<%= size %>" /><% } %>
         <% for (const size of appleTouchIconSizes) { %><link rel="apple-touch-icon" href="<%= require(`./image/icon/favicon-${size}.png`) %>" sizes="<%= size %>x<%= size %>" /><% } %>

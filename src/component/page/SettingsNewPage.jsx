@@ -105,7 +105,7 @@ const SettingsNewPage = () => {
             ) : null}
 
             <ButtonList>
-                <ButtonLink route={ROUTE_SETTINGS}>
+                <ButtonLink route={ROUTE_SETTINGS} className={!settingsNewStore.showOptionsStep ? "spacing-fix" : null}>
                     <FontAwesomeIcon icon={faTimes} />
                     {t("settings-new.cancel")}
                 </ButtonLink>
