@@ -29,7 +29,7 @@ const appleTouchIconSizes = [152, 180];
         <meta property="og:image" content="<%= require(`./image/icon/favicon-160.png`)%>" />
 
         <link rel="search" type="application/opensearchdescription+xml" title="FIB Search" href="<%= openSearchUrl %>" />
-        <link rel="search" href="<%= manifestUrl %>" />
+        <link rel="manifest" href="<%= manifestUrl %>" />
         <% for (const size of faviconSizes) { %><link rel="icon" href="<%= require(`./image/icon/favicon-${size}.png`) %>" sizes="<%= size %>x<%= size %>" /><% } %>
         <% for (const size of shortcutIconSizes) { %><link rel="shortcut icon" href="<%= require(`./image/icon/favicon-${size}.png`) %>" sizes="<%= size %>x<%= size %>" /><% } %>
         <% for (const size of appleTouchIconSizes) { %><link rel="apple-touch-icon" href="<%= require(`./image/icon/favicon-${size}.png`) %>" sizes="<%= size %>x<%= size %>" /><% } %>
