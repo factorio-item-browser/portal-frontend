@@ -29,7 +29,7 @@ module.exports = (env, argv) => {
         entry: isProduction ? entryPoints : [entryPoints.main, entryPoints.images],
         output: {
             path: `${currentPath}/build`,
-            publicPath: isProduction ? "./" : "/",
+            publicPath: "/",
             filename: isProduction ? "asset/js/[name].[hash].js" : "asset/js/[name].js",
         },
         resolve: {
