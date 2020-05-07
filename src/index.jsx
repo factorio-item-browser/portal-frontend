@@ -7,6 +7,7 @@ import "./helper/i18n";
 
 import App from "./component/App.jsx";
 
+window.onerror = null;
 ReactDOM.render(<App />, document.getElementById("app"));
 
 /* eslint-disable no-undef */

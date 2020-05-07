@@ -24,3 +24,11 @@ html, body {
 .content {
     flex-grow: 1;
 }
+
+#incompatible-error {
+    z-index: 100;
+
+    &.hidden-error {
+        display: none;
+    }
+}

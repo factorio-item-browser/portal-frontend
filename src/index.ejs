@@ -33,6 +33,7 @@ const appleTouchIconSizes = [152, 180];
         <% for (const size of faviconSizes) { %><link rel="icon" href="<%= require(`./image/icon/icon-${size}.png`) %>" sizes="<%= size %>x<%= size %>" /><% } %>
         <% for (const size of shortcutIconSizes) { %><link rel="shortcut icon" href="<%= require(`./image/icon/icon-${size}.png`) %>" sizes="<%= size %>x<%= size %>" /><% } %>
         <% for (const size of appleTouchIconSizes) { %><link rel="apple-touch-icon" href="<%= require(`./image/icon/icon-${size}.png`) %>" sizes="<%= size %>x<%= size %>" /><% } %>
+        <script type="text/javascript">window.onerror=function(){var e=document.getElementById("incompatible-error");e&&e.classList.remove("hidden-error"),window.onerror=null};</script>
     </head>
     <body>
         <div id="app">
@@ -45,6 +46,26 @@ const appleTouchIconSizes = [152, 180];
                     </div>
                 </div>
             </div>
+            <div id="incompatible-error" class="error-box-wrapper hidden-error">
+                <div class="error-box">
+                    <div class="error-icon fatal"></div>
+                    <div class="error-message">
+                        <h2>Incompatible browser</h2>
+                        <span>The browser with its current settings you are using is not compatible with this website. Please check that you are using a modern browser, and that cookies for this domain are allowed.</span>
+                    </div>
+                </div>
+            </div>
+            <noscript>
+                <div class="error-box-wrapper">
+                    <div class="error-box">
+                        <div class="error-icon danger"></div>
+                        <div class="error-message">
+                            <h2>Javascript disabled</h2>
+                            <span>Please enable Javascript for this page to work and for the factory to grow.</span>
+                        </div>
+                    </div>
+                </div>
+            </noscript>
         </div>
     </body>
 </html>
