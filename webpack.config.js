@@ -8,6 +8,7 @@ const HtmlWebpackSkipAssetsPlugin = require('html-webpack-skip-assets-plugin').H
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 const { DefinePlugin, HotModuleReplacementPlugin } = require("webpack");
 
 module.exports = (env, argv) => {
@@ -27,6 +28,18 @@ module.exports = (env, argv) => {
 
     return {
         entry: isProduction ? entryPoints : [entryPoints.main, entryPoints.images],
+        optimization: {
+            minimizer: [
+                new TerserPlugin({
+                    terserOptions: {
+                        output: {
+                            comments: false,
+                        },
+                    },
+                    extractComments: false,
+                }),
+            ],
+        },
         output: {
             path: `${currentPath}/build`,
             publicPath: "/",
