@@ -22,8 +22,12 @@
     },
     "error": {
         "client-failure": {
-            "title": "Unexpected client error",
-            "description": "The client triggered an unexpected error, like... running out of iron. Please reload the page and try again."
+            "title": "Unexpected browser error",
+            "description": "The browser triggered an unexpected error, like... running out of iron. Please reload the page and try again."
+        },
+        "incompatible-client": {
+            "title": "Incompatible browser",
+            "description": "The browser with its current settings you are using is not compatible with this website. Please check that you are using a modern browser, and that cookies for this domain are allowed."
         },
         "page-not-found": {
             "title": "Page not found",

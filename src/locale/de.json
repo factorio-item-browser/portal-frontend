@@ -25,6 +25,10 @@
             "title": "Unerwarteter Browser-Fehler",
             "description": "Der Browser hat einen unerwarteten Fehler verursacht, ähnlich... dem Ausgehen von Eisen. Bitte lade die Seite neu und versuche es erneut."
         },
+        "incompatible-client": {
+            "title": "Inkompatibler Browser",
+            "description": "Der von der verwendete Browser mit seinen Einstellungen ist leider nicht kompatibel mit der Seite. Bitte überprüfe, dass du einen modernen Browser verwendest, und dass Cookies für diese Domain zugelassen sind."
+        },
         "page-not-found": {
             "title": "Seite nicht gefunden",
             "description": "Wonach auch immer du gesucht hast, es existiert nicht."
