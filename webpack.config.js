@@ -1,4 +1,4 @@
-// const AsyncCssPlugin = require("async-css-plugin");
+const AsyncCssPlugin = require("async-css-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const dotenv = require("dotenv");
@@ -133,7 +133,7 @@ module.exports = (env, argv) => {
             new ScriptExtHtmlWebpackPlugin({
                 defaultAttribute: "defer",
             }),
-            // new AsyncCssPlugin(),
+            new AsyncCssPlugin(),
         ],
         devServer: {
             contentBase: "./build",
