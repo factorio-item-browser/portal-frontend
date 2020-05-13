@@ -293,6 +293,13 @@ class RouteStore {
     }
 
     /**
+     * Redirects to the index page, to e.g. apply a new setting. This is a hard refresh of the page.
+     */
+    redirectToIndex() {
+        location.assign(this.buildPath(ROUTE_INDEX));
+    }
+
+    /**
      * Returns the route and params used to link to the entity.
      * @param {string} type
      * @param {string} name

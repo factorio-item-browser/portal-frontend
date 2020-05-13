@@ -5,7 +5,6 @@ import {
     UPLOAD_ERROR_INVALID_FILE,
     UPLOAD_ERROR_NO_MODS,
     RECIPE_MODE_HYBRID,
-    ROUTE_SETTINGS,
     ROUTE_SETTINGS_NEW,
     SETTING_STATUS_AVAILABLE,
     SETTING_STATUS_LOADING,
@@ -266,9 +265,7 @@ class SettingsNewStore {
                 modNames: this.uploadedModNames,
             };
             await this._portalApi.createSetting(settingData);
-
-            // Hard redirect to the settings page to show the updated data.
-            location.assign(this._routeStore.buildPath(ROUTE_SETTINGS));
+            this._routeStore.redirectToIndex();
         } catch (e) {
             this._routeStore.handlePortalApiError(e);
         }

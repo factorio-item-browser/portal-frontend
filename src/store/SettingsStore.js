@@ -230,7 +230,7 @@ class SettingsStore {
         this.isSavingChanges = true;
         try {
             await this._portalApi.saveSetting(this.selectedSettingId, this.selectedOptions);
-            location.reload();
+            this._routeStore.redirectToIndex();
         } catch (e) {
             this._routeStore.handlePortalApiError(e);
         }
