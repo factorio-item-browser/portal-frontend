@@ -5,7 +5,7 @@ import React, { Fragment, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import SettingsNewStore from "../../store/SettingsNewStore";
-import { ROUTE_SETTINGS } from "../../helper/const";
+import { ROUTE_SETTINGS, STATUS_WARNING } from "../../helper/const";
 
 import ButtonLink from "../link/ButtonLink";
 import ButtonList from "./setting/ButtonList";
@@ -20,6 +20,7 @@ import SettingStatus from "../status/SettingStatus";
 import TextBox from "../common/TextBox";
 import SettingsStore from "../../store/SettingsStore";
 import ActionButton from "../common/ActionButton";
+import Status from "../status/Status";
 
 /**
  * The component representing the page for creating a new setting.
@@ -57,6 +58,17 @@ const SettingsNewPage = () => {
 
                     <p>{t("settings-new.upload-file.description-3")}</p>
                 </TextBox>
+
+                <Status status={STATUS_WARNING}>
+                    {t("settings-new.upload-file.important-note.description-1")}
+                    <ol>
+                        <li>{t("settings-new.upload-file.important-note.step-1")}</li>
+                        <li>{t("settings-new.upload-file.important-note.step-2")}</li>
+                        <li>{t("settings-new.upload-file.important-note.step-3")}</li>
+                        <li>{t("settings-new.upload-file.important-note.step-4")}</li>
+                    </ol>
+                    {t("settings-new.upload-file.important-note.description-2")}
+                </Status>
 
                 <ModListUpload />
                 <ModListUploadStatus

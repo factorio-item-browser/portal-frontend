@@ -9,10 +9,18 @@
     color: color($color-status-default, $lightness-text-primary);
     display: flex;
 
+    ol {
+        @include dynamic-spacing(margin, default 0);
+
+        li {
+            padding: 0;
+        }
+    }
+
     .status-icon {
         @include dynamic-spacing(padding, default);
 
-        flex-shrink: 1;
+        flex-shrink: 0;
         text-align: center;
         width: ($text-size-setting-status-icon + $spacing-large);
 
