@@ -220,7 +220,7 @@ class PortalApi {
      * @throws {PortalApiError}
      */
     async initializeSession() {
-        return await this._executeRequest("GET", "/session/init");
+        return await this._executeRequest("POST", "/session/init");
     }
 
     /**
