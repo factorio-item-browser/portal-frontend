@@ -107,12 +107,14 @@ module.exports = (env, argv) => {
         plugins: [
             new HotModuleReplacementPlugin(),
             new CleanWebpackPlugin(),
-            new CopyPlugin([
-                { from: `${currentPath}/src/root/.htaccess` },
-                { from: `${currentPath}/src/root/favicon.ico` },
-                { from: `${currentPath}/src/root/manifest.webmanifest` },
-                { from: `${currentPath}/src/root/opensearch.xml` },
-            ]),
+            new CopyPlugin({
+                patterns: [
+                    { from: `${currentPath}/src/root/.htaccess` },
+                    { from: `${currentPath}/src/root/favicon.ico` },
+                    { from: `${currentPath}/src/root/manifest.webmanifest` },
+                    { from: `${currentPath}/src/root/opensearch.xml` },
+                ],
+            }),
             new DefinePlugin(envVars),
             new MiniCssExtractPlugin({
                 filename: isProduction ? "asset/css/[name].[hash].css" : "asset/css/[name].css",
