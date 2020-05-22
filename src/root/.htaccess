@@ -2,6 +2,10 @@
     RewriteEngine On
     SetEnvIf Authorization .+ HTTP_AUTHORIZATION=$0
 
+    # Redirect all unknown subdomains to www
+    RewriteCond %{HTTP_HOST} !^www\.factorio-item-browser\.com$
+    RewriteRule ^(.*)$ https://www.factorio-item-browser.com/$1 [R=307,L]
+
     # Serve actually existing files
     RewriteCond %{REQUEST_FILENAME} -s [OR]
     RewriteCond %{REQUEST_FILENAME} -l [OR]
