@@ -1,3 +1,4 @@
+import ByteBuffer from "byte-buffer";
 import { createContext } from "react";
 import { action, computed, observable, runInAction } from "mobx";
 
@@ -14,6 +15,7 @@ import {
 
 import { routeStore } from "./RouteStore";
 import { portalApi } from "../class/PortalApi";
+import SaveGameReader from "../class/SaveGameReader";
 
 /**
  * The status making a setting valid for adding.
@@ -144,78 +146,30 @@ class SettingsNewStore {
      */
     @computed
     get showSaveButton() {
-        return this.showOptionsStep;
+        return !!this.showOptionsStep;
     }
 
     /**
-     * Parsed the content as mod-list.json file and extracts the enabled mod names.
-     * @param {string|ArrayBuffer} content
-     * @return {array<string>}
-     * @private
-     */
-    _parseModListJson(content) {
-        if (typeof content !== "string") {
-            throw UPLOAD_ERROR_INVALID_FILE;
-        }
-
-        let data;
-        try {
-            data = JSON.parse(content);
-        } catch (err) {
-            throw UPLOAD_ERROR_INVALID_FILE;
-        }
-
-        if (typeof data !== "object" || !Array.isArray(data.mods)) {
-            throw UPLOAD_ERROR_INVALID_FILE;
-        }
-
-        const modNames = [];
-        for (const mod of data.mods) {
-            if (mod.enabled === true && typeof mod.name === "string" && mod.name !== "") {
-                modNames.push(mod.name);
-            }
-        }
-        if (modNames.length === 0) {
-            throw UPLOAD_ERROR_NO_MODS;
-        }
-
-        modNames.sort((left, right) => left.localeCompare(right));
-        return modNames;
-    }
-
-    /**
-     * Uploads the file, parsing it as JSON.
+     * Processes the save game.
      * @param {File} file
      */
     @action
-    uploadFile(file) {
-        this.uploadedModNames = [];
-        this.uploadError = "";
-        this.settingStatus = null;
+    async processSaveGame(file) {
+        const reader = new SaveGameReader();
+        const mods = await reader.read(file);
 
-        const fileReader = new FileReader();
-        fileReader.addEventListener("load", this._handleFileReaderLoad.bind(this));
-        fileReader.readAsText(file);
-    }
+        const modNames = [];
+        for (const mod of mods) {
+            modNames.push(mod.name);
+        }
 
-    /**
-     * Handles the load event of the file reader.
-     * @param {ProgressEvent} event
-     * @return {Promise<void>}
-     * @private
-     */
-    @action
-    async _handleFileReaderLoad(event) {
-        try {
-            const modNames = this._parseModListJson(event.target.result);
+        runInAction(async () => {
             this.uploadedModNames = modNames;
             this.uploadError = "";
+            this.settingStatus = null
 
             await this._requestSettingStatus(modNames);
-        } catch (err) {
-            this.uploadedModNames = [];
-            this.uploadError = err;
-        }
+        })
     }
 
     /**

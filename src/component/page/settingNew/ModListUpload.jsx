@@ -50,10 +50,10 @@ const ModListUpload = () => {
             onDragEnter={() => setDragCount(dragCount + 1)}
             onDragOver={(event) => event.preventDefault()}
             onDragLeave={() => setDragCount(dragCount - 1)}
-            onDrop={(event) => {
-                settingsNewStore.uploadFile(event.dataTransfer.files[0]);
+            onDrop={async (event) => {
                 setDragCount(0);
                 event.preventDefault();
+                await settingsNewStore.processSaveGame(event.dataTransfer.files[0]);
             }}
         >
             <label htmlFor={inputId}>
@@ -63,9 +63,9 @@ const ModListUpload = () => {
             <input
                 id={inputId}
                 type="file"
-                accept="application/json,.json"
+                accept="application/zip,application/octet-stream,.zip"
                 hidden={true}
-                onChange={(event) => settingsNewStore.uploadFile(event.currentTarget.files[0])}
+                onChange={async (event) => await settingsNewStore.processSaveGame(event.currentTarget.files[0])}
             />
         </div>
     );
