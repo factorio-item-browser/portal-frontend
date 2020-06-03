@@ -9,12 +9,12 @@ import { ROUTE_SETTINGS, STATUS_WARNING } from "../../helper/const";
 
 import ButtonLink from "../link/ButtonLink";
 import ButtonList from "./setting/ButtonList";
-import ModListUpload from "./settingNew/ModListUpload";
 import ModListUploadStatus from "../status/ModListUploadStatus";
 import OptionLocale from "./setting/option/OptionLocale";
 import OptionRecipeMode from "./setting/option/OptionRecipeMode";
 import OptionSettingName from "./setting/option/OptionSettingName";
 import OptionsList from "./setting/option/OptionsList";
+import SaveGameFileInput from "./settingNew/SaveGameFileInput";
 import Section from "../common/Section";
 import SettingStatus from "../status/SettingStatus";
 import TextBox from "../common/TextBox";
@@ -70,7 +70,7 @@ const SettingsNewPage = () => {
                     {t("settings-new.upload-file.important-note.description-2")}
                 </Status>
 
-                <ModListUpload />
+                <SaveGameFileInput />
                 <ModListUploadStatus
                     modNames={settingsNewStore.uploadedModNames}
                     error={settingsNewStore.uploadError}

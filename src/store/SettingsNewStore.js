@@ -42,13 +42,6 @@ class SettingsNewStore {
     _routeStore;
 
     /**
-     * Whether the current browser supports dropping files into it.
-     * @type {boolean}
-     */
-    @observable
-    isDropSupported = false;
-
-    /**
      * The list of mods which have been requested with the upload.
      * @type {array<string>}
      */
@@ -97,7 +90,6 @@ class SettingsNewStore {
         this._routeStore = routeStore;
 
         this._routeStore.addRoute(ROUTE_SETTINGS_NEW, "/settings/new", this._handleRouteChange.bind(this));
-        this._detectDropSupport();
     }
 
     /**
@@ -110,16 +102,6 @@ class SettingsNewStore {
         this.uploadedModNames = [];
         this.uploadError = "";
         this.settingStatus = null;
-    }
-
-    /**
-     * Detects whether dropping files is supported by the current browser.
-     * @private
-     */
-    @action
-    _detectDropSupport() {
-        const element = document.createElement("div");
-        this.isDropSupported = "ondragstart" in element && "ondrop" in element;
     }
 
     /**

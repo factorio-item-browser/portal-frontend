@@ -163,13 +163,9 @@
         "new-setting-name": "New setting",
         "save-new-setting": "Save new setting",
         "saving-new-setting": "Saving new setting...",
+        "select-savegame-file": "Select your savegame from Factorio 0.18",
         "title": "New Setting - Factorio Item Browser",
         "upload-file": {
-            "button": {
-                "select": "Select your <1>mod-list.json</1> file.",
-                "select-or-drag": "Select your <1>mod-list.json</1> file or drag it here.",
-                "drop": "Drop it here."
-            },
             "description-1": "Please select your mod-list.json file from the mods directory of your game installation. This file contains a list of mods you are currently using. The Factorio Item Browser needs this combination of mods to provide you the correct data.",
             "description-2": "In a default installation you find the mod-list.json file at the following location:",
             "description-3": "Note: No file is uploaded to the server. The selected file gets processed directly in your browser, and only the list of mod names is send to the server.",
