@@ -1,10 +1,7 @@
-import ByteBuffer from "byte-buffer";
 import { createContext } from "react";
 import { action, computed, observable, runInAction } from "mobx";
 
 import {
-    UPLOAD_ERROR_INVALID_FILE,
-    UPLOAD_ERROR_NO_MODS,
     RECIPE_MODE_HYBRID,
     ROUTE_SETTINGS_NEW,
     SETTING_STATUS_AVAILABLE,
@@ -42,18 +39,25 @@ class SettingsNewStore {
     _routeStore;
 
     /**
-     * The list of mods which have been requested with the upload.
-     * @type {array<string>}
+     * Whether a savegame is currently processed.
+     * @type {boolean}
      */
     @observable
-    uploadedModNames = [];
+    isSaveGameProcessing = false;
 
     /**
-     * The error which occurred while uploading the file.
+     * The mod names read from the save game.
+     * @type {string[]}
+     */
+    @observable
+    saveGameModNames = [];
+
+    /**
+     * The error which occurred during processing a save game.
      * @type {string}
      */
     @observable
-    uploadError = "";
+    saveGameError = "";
 
     /**
      * The status of the new setting.
@@ -99,18 +103,27 @@ class SettingsNewStore {
      */
     @action
     async _handleRouteChange() {
-        this.uploadedModNames = [];
-        this.uploadError = "";
+        this.saveGameModNames = [];
+        this.saveGameError = "";
         this.settingStatus = null;
     }
 
     /**
-     * Returns whether the availability step is currently visible.
+     * Returns whether the save game step is currently shown.
      * @return {boolean}
      */
     @computed
-    get showAvailabilityStep() {
-        return !!this.settingStatus;
+    get showSaveGameStep() {
+        return true;
+    }
+
+    /**
+     * Returns whether the data availability step is currently shown.
+     * @return {boolean}
+     */
+    @computed
+    get showDataAvailabilityStep() {
+        return this.saveGameModNames.length > 0 && this.settingStatus !== null;
     }
 
     /**
@@ -118,8 +131,8 @@ class SettingsNewStore {
      * @return {boolean}
      */
     @computed
-    get showOptionsStep() {
-        return this.settingStatus && VALID_SETTING_STATUS.indexOf(this.settingStatus.status) !== -1;
+    get showAdditionalOptionsStep() {
+        return this.showDataAvailabilityStep && VALID_SETTING_STATUS.indexOf(this.settingStatus?.status) !== -1;
     }
 
     /**
@@ -128,7 +141,7 @@ class SettingsNewStore {
      */
     @computed
     get showSaveButton() {
-        return !!this.showOptionsStep;
+        return !!this.showAdditionalOptionsStep;
     }
 
     /**
@@ -137,21 +150,28 @@ class SettingsNewStore {
      */
     @action
     async processSaveGame(file) {
+        this.isSaveGameProcessing = true;
+        this.saveGameModNames = [];
+        this.saveGameError = "";
+        this.newOptions.name = file.name.endsWith(".zip") ? file.name.substr(0, file.name.length - 4) : file.name;
+
         const reader = new SaveGameReader();
-        const mods = await reader.read(file);
+        try {
+            const mods = await reader.read(file);
+            const modNames = mods.map((mod) => mod.name);
 
-        const modNames = [];
-        for (const mod of mods) {
-            modNames.push(mod.name);
+            runInAction(async () => {
+                this.isSaveGameProcessing = false;
+                this.saveGameModNames = modNames;
+
+                await this._requestSettingStatus(modNames);
+            });
+        } catch (e) {
+            runInAction(() => {
+                this.isSaveGameProcessing = false;
+                this.saveGameError = e;
+            });
         }
-
-        runInAction(async () => {
-            this.uploadedModNames = modNames;
-            this.uploadError = "";
-            this.settingStatus = null
-
-            await this._requestSettingStatus(modNames);
-        })
     }
 
     /**
@@ -198,7 +218,7 @@ class SettingsNewStore {
         try {
             const settingData = {
                 ...this.newOptions,
-                modNames: this.uploadedModNames,
+                modNames: this.saveGameModNames,
             };
             await this._portalApi.createSetting(settingData);
             this._routeStore.redirectToIndex();

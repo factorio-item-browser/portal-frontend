@@ -1,11 +1,11 @@
 import classNames from "classnames";
-import { faCheck, faExclamation, faSpinner, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faExclamation, faInfo, faSpinner, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 
-import { STATUS_ERROR, STATUS_PENDING, STATUS_SUCCESS, STATUS_WARNING } from "../../helper/const";
+import { STATUS_ERROR, STATUS_INFO, STATUS_PENDING, STATUS_SUCCESS, STATUS_WARNING } from "../../helper/const";
 
 import "./Status.scss";
 
@@ -15,6 +15,7 @@ import "./Status.scss";
  */
 const ICON_MAP = {
     [STATUS_ERROR]: <FontAwesomeIcon icon={faTimes} />,
+    [STATUS_INFO]: <FontAwesomeIcon icon={faInfo} />,
     [STATUS_PENDING]: <FontAwesomeIcon icon={faSpinner} spin />,
     [STATUS_SUCCESS]: <FontAwesomeIcon icon={faCheck} />,
     [STATUS_WARNING]: <FontAwesomeIcon icon={faExclamation} />,

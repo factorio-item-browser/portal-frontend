@@ -1,5 +1,6 @@
 import ByteBuffer from "byte-buffer";
 import JSZip from "jszip";
+import { ERROR_SAVEGAME_INVALID_FILE, ERROR_SAVEGAME_UNSUPPORTED_VERSION } from "../helper/const";
 
 /**
  * A helper class wrapping the actual ByteBuffer with additional features.
@@ -24,11 +25,7 @@ class Buffer {
      * @return {Version}
      */
     readVersion() {
-        return new Version(
-            this.buffer.readUnsignedShort(),
-            this.buffer.readUnsignedShort(),
-            this.buffer.readUnsignedShort(),
-        );
+        return new Version(this.readShort(), this.readShort(), this.readShort());
     }
 
     /**
@@ -36,11 +33,7 @@ class Buffer {
      * @return {Version}
      */
     readOptimizedVersion() {
-        return new Version(
-            this.readOptimizedShort(),
-            this.readOptimizedShort(),
-            this.readOptimizedShort(),
-        );
+        return new Version(this.readOptimizedShort(), this.readOptimizedShort(), this.readOptimizedShort());
     }
 
     /**
@@ -156,7 +149,7 @@ export class Version {
      * @return {string}
      */
     toString() {
-        return `${this.major}.${this.minor}.${this.patch}`
+        return `${this.major}.${this.minor}.${this.patch}`;
     }
 
     /**
@@ -188,6 +181,10 @@ class SaveGameReader {
         const buffer = await this._extractLevelDatFile(file);
 
         this.version = buffer.readVersion();
+        if (this.version.compareTo(new Version(0, 18, 0)) < 0) {
+            throw ERROR_SAVEGAME_UNSUPPORTED_VERSION;
+        }
+
         this._seekPosition(buffer);
         return this._readMods(buffer);
     }
@@ -203,20 +200,20 @@ class SaveGameReader {
         try {
             zip = await JSZip.loadAsync(file);
         } catch (e) {
-            throw "invalid-savegame-file";
+            throw ERROR_SAVEGAME_INVALID_FILE;
         }
 
         for (const file of Object.values(zip.files)) {
             if (file.name.endsWith("/level.dat")) {
                 try {
                     return new Buffer(await file.async("uint8array"));
-                } catch(e) {
-                    throw "invalid-savegame-file";
+                } catch (e) {
+                    throw ERROR_SAVEGAME_INVALID_FILE;
                 }
             }
         }
 
-        throw "missing-level-dat-file";
+        throw ERROR_SAVEGAME_INVALID_FILE;
     }
 
     /**
