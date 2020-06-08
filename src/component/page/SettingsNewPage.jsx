@@ -5,16 +5,16 @@ import React, { Fragment, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import SettingsNewStore from "../../store/SettingsNewStore";
-import { ROUTE_SETTINGS, STATUS_WARNING } from "../../helper/const";
+import { ROUTE_SETTINGS } from "../../helper/const";
 
 import ButtonLink from "../link/ButtonLink";
 import ButtonList from "./setting/ButtonList";
 import TextBox from "../common/TextBox";
 import ActionButton from "../common/ActionButton";
-import Status from "../status/Status";
 import SaveGameStep from "./settingNew/step/SaveGameStep";
 import DataAvailabilityStep from "./settingNew/step/DataAvailabilityStep";
 import AdditionalOptionsStep from "./settingNew/step/AdditionalOptionsStep";
+import Section from "../common/Section";
 
 /**
  * The component representing the page for creating a new setting.
@@ -31,32 +31,24 @@ const SettingsNewPage = () => {
 
     return (
         <Fragment>
-            <TextBox>
-                <p>{t("settings-new.upload-file.description-1")}</p>
+            <Section headline={t("settings-new.add-new-setting")}>
+                <TextBox>
+                    <p>{t("settings-new.explanation.description-1")}</p>
 
-                <p>{t("settings-new.upload-file.description-2")}</p>
-                <dl>
-                    <dt>Windows:</dt>
-                    <dd>%APPDATA%\Factorio\mods\</dd>
-                    <dt>Mac OS X:</dt>
-                    <dd>~/Library/Application Support/factorio/mods/</dd>
-                    <dt>Linux:</dt>
-                    <dd>~/.factorio/mods/</dd>
-                </dl>
+                    <p>{t("settings-new.explanation.description-2")}</p>
+                    <dl>
+                        <dt>Windows:</dt>
+                        <dd>%APPDATA%\Factorio\saves\</dd>
+                        <dt>Mac OS X:</dt>
+                        <dd>~/Library/Application Support/factorio/saves/</dd>
+                        <dt>Linux:</dt>
+                        <dd>~/.factorio/saves/</dd>
+                    </dl>
 
-                <p>{t("settings-new.upload-file.description-3")}</p>
-            </TextBox>
-
-            <Status status={STATUS_WARNING}>
-                {t("settings-new.upload-file.important-note.description-1")}
-                <ol>
-                    <li>{t("settings-new.upload-file.important-note.step-1")}</li>
-                    <li>{t("settings-new.upload-file.important-note.step-2")}</li>
-                    <li>{t("settings-new.upload-file.important-note.step-3")}</li>
-                    <li>{t("settings-new.upload-file.important-note.step-4")}</li>
-                </ol>
-                {t("settings-new.upload-file.important-note.description-2")}
-            </Status>
+                    <p>{t("settings-new.explanation.description-3")}</p>
+                    <p>{t("settings-new.explanation.description-4")}</p>
+                </TextBox>
+            </Section>
 
             {settingsNewStore.showSaveGameStep ? <SaveGameStep /> : null}
             {settingsNewStore.showDataAvailabilityStep ? <DataAvailabilityStep /> : null}

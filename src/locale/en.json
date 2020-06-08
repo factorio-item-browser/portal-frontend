@@ -149,7 +149,14 @@
         "title": "Settings - Factorio Item Browser"
     },
     "settings-new": {
+        "add-new-setting": "Add new setting",
         "cancel": "Cancel",
+        "explanation": {
+            "description-1": "To add a new setting, you have to specify your save game file. This file contains a list of mods you are currently using. If the data to these mods is not yet available, the Factorio Item Browser will automatically export the data from the game, and add it to the website. This process will take about 15 minutes on average, but may take longer depending on the server load.",
+            "description-2": "For a default installation, you find your save games at the following location:",
+            "description-3": "Please keep in mind that Factorio as well as all mods must be up-to-date. If either is outdated, the data export may be inaccurate or may fail altogether. Also, all mods must be available on the mod portal.",
+            "description-4": "Only the experimental version 0.18 of Factorio is supported. If you are still playing Factorio 0.17, data cannot be made available for you. Sorry."
+        },
         "processing-savegame": "Processing your savegame...",
         "save-new-setting": "Save new setting",
         "savegame-error": {
