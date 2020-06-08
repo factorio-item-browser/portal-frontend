@@ -44,8 +44,9 @@
     },
     "footer": {
         "copyright-disclaimer": "Content and images are owned by <1>Wube Software</1> and the <3>mod authors</3> respectively.",
-        "join-discord": "Join the project's Discord server!",
-        "need-support": "Encountering problems or having feedback?"
+        "external-link": {
+            "discord": "Encountering problems or having feedback? Join the project's Discord server!"
+        }
     },
     "header": {
         "search": {

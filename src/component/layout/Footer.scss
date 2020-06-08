@@ -35,26 +35,4 @@ footer {
             text-decoration: underline;
         }
     }
-
-    .external-links {
-        flex-grow: 0;
-        flex-shrink: 0;
-        align-self: flex-end;
-        padding: $spacing-default;
-
-        a {
-            @include transition-default(opacity);
-
-            color: $color-footer-text;
-            font-size: $icon-size-default;
-            height: $icon-size-default;
-            opacity: $alpha-input-default;
-            width: $icon-size-default;
-
-            &:hover, &:active {
-                color: $color-footer-text;
-                opacity: $alpha-input-focused;
-            }
-        }
-    }
 }
