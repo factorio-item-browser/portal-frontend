@@ -149,7 +149,7 @@
         "title": "Einstellungen - Factorio Item Browser"
     },
     "settings-new": {
-        "add-new-setting": "Neue Einstellung hinzügen",
+        "add-new-setting": "Neue Einstellung hinzufügen",
         "cancel": "Abbrechen",
         "explanation": {
             "description-1": "Um eine neue Einstellung hinzuzufügen, musst du deine Spielstand-Datei auswählen. Diese Datei enthält eine Liste an Mods, die du aktuell verwendest. Falls die Daten zu diesen Mods noch nicht verfügbar sein sollten, wird der Factorio Item Browser diese voll automatisch aus dem Spiel exportieren und zur Webseite hinzufügen. Dieser Prozess benötigt durchschnittlich 15 Minuten, kann allerdings abhängig von der Serverlast auch länger dauern.",
