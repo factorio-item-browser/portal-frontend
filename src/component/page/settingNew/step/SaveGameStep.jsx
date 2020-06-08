@@ -20,7 +20,7 @@ const SaveGameStep = () => {
     const isProcessing = settingsNewStore.isSaveGameProcessing;
     const modNames = settingsNewStore.saveGameModNames;
 
-    let status = null;
+    let status;
     if (error !== "") {
         status = (
             <Status status={STATUS_ERROR}>

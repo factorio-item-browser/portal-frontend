@@ -28,6 +28,10 @@ const Footer = () => {
                     </a>
                     respectively.
                 </Trans>
+                <br />
+                <Trans i18nKey={"footer.support"}>
+                    Problems? <a href={process.env.DISCORD_LINK}>Discord!</a>
+                </Trans>
             </div>
         </footer>
     );

@@ -1,8 +1,11 @@
 @import "../../style/import";
 
 footer {
+    align-items: center;
     background-color: $color-water;
     bottom: 0;
+    display: flex;
+    height: $size-footer;
     left: 0;
     padding-top: px-to-rem(12);
     position: absolute;
@@ -21,6 +24,7 @@ footer {
 
 .copyright {
     color: lighten($color-concrete, 20%);
+    flex-grow: 1;
     font-size: $text-size-small;
     font-weight: bold;
     padding: $spacing-default;
