@@ -1,8 +1,10 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 import "./Footer.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 
 /**
  * The component representing the footer of the page.
@@ -10,6 +12,8 @@ import "./Footer.scss";
  * @constructor
  */
 const Footer = () => {
+    const { t } = useTranslation();
+
     const year = new Date().getFullYear();
 
     return (
@@ -29,9 +33,13 @@ const Footer = () => {
                     respectively.
                 </Trans>
                 <br />
-                <Trans i18nKey={"footer.support"}>
-                    Problems? <a href={process.env.DISCORD_LINK}>Discord!</a>
-                </Trans>
+                {t("footer.need-support")} <a href={process.env.DISCORD_LINK}>{t("footer.join-discord")}</a>
+            </div>
+
+            <div className="external-links">
+                <a href={process.env.DISCORD_LINK} title={t("footer.join-discord")}>
+                    <FontAwesomeIcon icon={faDiscord} />
+                </a>
             </div>
         </footer>
     );

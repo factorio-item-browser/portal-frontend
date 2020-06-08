@@ -44,7 +44,8 @@
     },
     "footer": {
         "copyright-disclaimer": "Inhalte und Bilder sind Eigentum von <1>Wube Software</1> bzw. der <3>Mod-Authoren</3>.",
-        "support": "Macht die Seite Probleme oder hast du Feedback? <1>Tritt dem Discord-Server des Projektes bei!</1>"
+        "join-discord": "Tritt dem Discord-Server des Projektes bei!",
+        "need-support": "Macht die Seite Probleme oder hast du Feedback?"
     },
     "header": {
         "search": {
