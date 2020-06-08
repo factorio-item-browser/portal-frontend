@@ -2,7 +2,7 @@ import { faSave, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext, useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 import SettingsNewStore from "../../store/SettingsNewStore";
 import { ROUTE_SETTINGS } from "../../helper/const";
@@ -45,7 +45,14 @@ const SettingsNewPage = () => {
                         <dd>~/.factorio/saves/</dd>
                     </dl>
 
-                    <p>{t("settings-new.explanation.description-3")}</p>
+                    <p>
+                        <Trans i18nKey="settings-new.explanation.description-3">
+                            Lorem ipsum dolor sit amet
+                            <a href="https://mods.factorio.com/" target="_blank" rel="noopener noreferrer nofollow">
+                                Factorio mod portal
+                            </a>.
+                        </Trans>
+                    </p>
                     <p>{t("settings-new.explanation.description-4")}</p>
                 </TextBox>
             </Section>
