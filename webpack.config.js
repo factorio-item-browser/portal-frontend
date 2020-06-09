@@ -20,7 +20,7 @@ module.exports = (env, argv) => {
     };
 
     const envFilePath = isProduction ? `${currentPath}/.env` : `${currentPath}/.env.development`;
-    const envFile = dotenv.config({ path: envFilePath }).parsed;
+    const envFile = dotenv.config({ path: envFilePath }).parsed || {};
     const envVars = {};
     for (const [name, value] of Object.entries(envFile)) {
         envVars[`process.env.${name}`] = JSON.stringify(value);
