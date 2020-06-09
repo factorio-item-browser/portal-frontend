@@ -1,6 +1,6 @@
 class NamesByTypesSet {
     /**
-     *
+     * The values of the set.
      * @type {Map<string,Set<string>>}
      * @private
      */
@@ -90,11 +90,9 @@ class NamesByTypesSet {
     getData() {
         const result = {};
         for (const [type, names] of this._values) {
-            const resultNames = [];
-            for (const name of names) {
-                resultNames.push(name);
+            if (names.size > 0) {
+                result[type] = [...names];
             }
-            result[type] = resultNames;
         }
         return result;
     }

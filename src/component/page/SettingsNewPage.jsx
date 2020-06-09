@@ -50,7 +50,8 @@ const SettingsNewPage = () => {
                             Lorem ipsum dolor sit amet
                             <a href="https://mods.factorio.com/" target="_blank" rel="noopener noreferrer nofollow">
                                 Factorio mod portal
-                            </a>.
+                            </a>
+                            .
                         </Trans>
                     </p>
                     <p>{t("settings-new.explanation.description-4")}</p>
