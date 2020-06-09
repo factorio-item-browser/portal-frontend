@@ -1,4 +1,4 @@
-.PHONY: help build check fix install start update
+.PHONY: help build fix install start test update
 
 help: ## Show this help.
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
