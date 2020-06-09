@@ -8,3 +8,4 @@ install:
 script:
   - jest
   - eslint src --ext js,jsx
+  - webpack --mode production
