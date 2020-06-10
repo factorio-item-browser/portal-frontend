@@ -14,6 +14,14 @@ describe("SaveGameReader", () => {
                 },
             ],
             [
+                "scenario tight-spot", // uses an additional string which must be skipped
+                "test/asset/savegame/valid/tight-spot.zip",
+                "0.18.30",
+                {
+                    base: "0.18.30",
+                },
+            ],
+            [
                 "2 mods foo and bar",
                 "test/asset/savegame/valid/2-mods.zip",
                 "0.18.30",
