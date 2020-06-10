@@ -1,16 +1,25 @@
 import { observer } from "mobx-react-lite";
 import Section from "../../../common/Section";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import SettingsNewStore from "../../../../store/SettingsNewStore";
 import OptionSettingName from "../../setting/option/OptionSettingName";
 import OptionRecipeMode from "../../setting/option/OptionRecipeMode";
 import OptionLocale from "../../setting/option/OptionLocale";
 import OptionsList from "../../setting/option/OptionsList";
+import SettingsStore from "../../../../store/SettingsStore";
 
 const AdditionalOptionsStep = () => {
     const { t } = useTranslation();
+    const settingsStore = useContext(SettingsStore);
     const settingsNewStore = useContext(SettingsNewStore);
+
+    useEffect(() => {
+        settingsNewStore.changeOptions({
+            locale: settingsStore.selectedOptions.locale,
+            recipeMode: settingsStore.selectedOptions.recipeMode,
+        });
+    }, []);
 
     return (
         <Section headline={t("settings-new.step.additional-options")}>
