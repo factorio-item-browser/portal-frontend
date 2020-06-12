@@ -14,11 +14,7 @@ html, body {
 .content-wrapper {
     display: flex;
     padding-top: $spacing-default;
-    padding-bottom: 6rem;
-
-    @include breakpoint(medium) {
-        padding-bottom: 5rem;
-    }
+    padding-bottom: ($size-footer + $spacing-huge);
 }
 
 .content {

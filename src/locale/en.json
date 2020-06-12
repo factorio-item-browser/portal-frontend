@@ -43,7 +43,10 @@
         }
     },
     "footer": {
-        "copyright-disclaimer": "Content and images are owned by <1>Wube Software</1> and the <3>mod authors</3> respectively."
+        "copyright-disclaimer": "Content and images are owned by <1>Wube Software</1> and the <3>mod authors</3> respectively.",
+        "external-link": {
+            "discord": "Encountering problems or having feedback? Join the project's Discord server!"
+        }
     },
     "header": {
         "search": {
@@ -146,56 +149,42 @@
         "title": "Settings - Factorio Item Browser"
     },
     "settings-new": {
-        "additional-options": {
-            "headline": "3. Additional options"
-        },
+        "add-new-setting": "Add new setting",
         "cancel": "Cancel",
-        "data-availability": {
-            "description-1": "The export of data to a combination of mods is fully automated. The server will download the required mods from the mod portal, launch the game to dump all the required data, and add it to the database.",
-            "description-2": "The automatic data export has some limitations:",
-            "description-3": "If these limitations are not met the displayed data may not be accurate. When in doubt please check the data in-game.",
-            "description-4": "Please be aware that as long as the data is not available the Factorio Item Browser will display the unmodded Vanilla data. Depending on the load on the server the data export will take some time. So continue playing for now and check back later.",
-            "description-limit-1": "The export always uses the latest version of the game and the mods. Older versions are not supported.",
-            "description-limit-2": "The export uses the default settings of the mods. No changes to these settings can be made.",
-            "description-limit-3": "All mods except the base mod must be available on the Factorio Mod Portal.",
-            "headline": "2. Data availability"
+        "explanation": {
+            "description-1": "To add a new setting, you have to specify your savegame file. This file contains a list of mods you are currently using. If the data to these mods is not yet available, the Factorio Item Browser will automatically export the data from the game, and add it to the website. This process will take about 15 minutes on average, but may take longer depending on the server load.",
+            "description-2": "For a default installation you find your savegames at the following location:",
+            "description-3": "Please keep in mind that Factorio as well as all mods must be up-to-date. If either is outdated, the data export may be inaccurate or may fail altogether. Also, all mods must be available on the <1>Factorio mod portal</1>.",
+            "description-4": "Only the experimental version 0.18 of Factorio is supported. If you are still playing Factorio 0.17, data cannot be made available for you. Sorry."
         },
-        "new-setting-name": "New setting",
+        "processing-savegame": "Processing your savegame...",
         "save-new-setting": "Save new setting",
-        "saving-new-setting": "Saving new setting...",
-        "title": "New Setting - Factorio Item Browser",
-        "upload-file": {
-            "button": {
-                "select": "Select your <1>mod-list.json</1> file.",
-                "select-or-drag": "Select your <1>mod-list.json</1> file or drag it here.",
-                "drop": "Drop it here."
+        "savegame-error": {
+            "invalid-file": {
+                "headline": "The selected file is not a valid Factorio savegame.",
+                "description": "Please make sure you are selecting a valid savegame file."
             },
-            "description-1": "Please select your mod-list.json file from the mods directory of your game installation. This file contains a list of mods you are currently using. The Factorio Item Browser needs this combination of mods to provide you the correct data.",
-            "description-2": "In a default installation you find the mod-list.json file at the following location:",
-            "description-3": "Note: No file is uploaded to the server. The selected file gets processed directly in your browser, and only the list of mod names is send to the server.",
-            "headline": "1. Combination of mods",
-            "important-note": {
-                "description-1": "Please make sure that your Factorio game and all installed mods are up-to-date, and that all mods are actually loaded into the game.",
-                "description-2": "If mods are not up-to-date, or any mod is not actually loaded, the data export will most likely fail. We do not want this to happen.",
-                "step-1": "Start up the game, and click on \"Mods\".",
-                "step-2": "In the \"Manage\" tab, disable all mods which are red. These mods are currently not loaded because of missing dependencies or incompatibilities.",
-                "step-3": "In the \"Updates\" tab, install all mod updates. This list should be empty.",
-                "step-4": "If you changed any mods, restart the game, and please check again."
-            },
-            "status": {
-                "error": {
-                    "headline": "Unable to extract mods:",
-                    "message": {
-                        "invalid-file": "The selected file was invalid and could not be processed. Are you sure you selected a valid mod-list.json file?",
-                        "no-mods": "The selected file did not contain any mods. Are you sure you selected a valid mod-list.json file?"
-                    }
-                },
-                "success": {
-                    "headline": "Detected {{count}} mod:",
-                    "headline_plural": "Detected {{count}} mods:"
-                }
+            "unsupported-version": {
+                "headline": "The savegame is not supported.",
+                "description": "The version of the savegame is too old and not supported by the Factorio Item Browser. Please use a savegame from Factorio 0.18 or later."
             }
-        }
+        },
+        "savegame-modlist": {
+            "headline": "Detected {{count}} mod:",
+            "headline_plural": "Detected {{count}} mods:"
+        },
+        "savegame-upload-note": {
+            "headline": "The file is not uploaded to the server!",
+            "description": "The selected savegame gets processed directly in your browser and only the extracted list of mods is send through the internet. The savegame itself will not leave your system."
+        },
+        "saving-new-setting": "Saving new setting...",
+        "select-savegame-file": "Select your savegame from Factorio 0.18",
+        "step": {
+            "additional-options": "3. Additional options",
+            "data-availability": "2. Data availability",
+            "savegame": "1. Select savegame"
+        },
+        "title": "New Setting - Factorio Item Browser"
     },
     "setting-status": {
         "available": {

@@ -2,6 +2,8 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import { Trans } from "react-i18next";
 
+import ExternalLinkIcons from "./footer/ExternalLinkIcons";
+
 import "./Footer.scss";
 
 /**
@@ -29,6 +31,8 @@ const Footer = () => {
                     respectively.
                 </Trans>
             </div>
+
+            <ExternalLinkIcons />
         </footer>
     );
 };

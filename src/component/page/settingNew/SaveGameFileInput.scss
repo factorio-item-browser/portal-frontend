@@ -1,8 +1,7 @@
 @import "../../../style/import";
 
-.mod-list-upload {
+.savegame-file-input {
     label {
-//        @include button();
         @include dynamic-spacing(margin padding, large);
         @include transition-default(background-color);
 
@@ -12,7 +11,7 @@
         cursor: pointer;
         display: block;
         font-size: $text-size-headline-small;
-        font-weight: normal;
+        font-weight: bold;
         text-align: center;
 
         @include breakpoint(large) {
@@ -21,10 +20,6 @@
 
         &:hover {
             background: color($color-button-primary, $lightness-button-primary-background-hover);
-        }
-
-        .file {
-            font-weight: bold;
         }
 
         svg {

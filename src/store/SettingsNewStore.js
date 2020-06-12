@@ -2,8 +2,6 @@ import { createContext } from "react";
 import { action, computed, observable, runInAction } from "mobx";
 
 import {
-    UPLOAD_ERROR_INVALID_FILE,
-    UPLOAD_ERROR_NO_MODS,
     RECIPE_MODE_HYBRID,
     ROUTE_SETTINGS_NEW,
     SETTING_STATUS_AVAILABLE,
@@ -14,6 +12,7 @@ import {
 
 import { routeStore } from "./RouteStore";
 import { portalApi } from "../class/PortalApi";
+import SaveGameReader from "../class/SaveGameReader";
 
 /**
  * The status making a setting valid for adding.
@@ -40,25 +39,25 @@ class SettingsNewStore {
     _routeStore;
 
     /**
-     * Whether the current browser supports dropping files into it.
+     * Whether a savegame is currently processed.
      * @type {boolean}
      */
     @observable
-    isDropSupported = false;
+    isSaveGameProcessing = false;
 
     /**
-     * The list of mods which have been requested with the upload.
-     * @type {array<string>}
+     * The mod names read from the save game.
+     * @type {string[]}
      */
     @observable
-    uploadedModNames = [];
+    saveGameModNames = [];
 
     /**
-     * The error which occurred while uploading the file.
+     * The error which occurred during processing a save game.
      * @type {string}
      */
     @observable
-    uploadError = "";
+    saveGameError = "";
 
     /**
      * The status of the new setting.
@@ -95,7 +94,6 @@ class SettingsNewStore {
         this._routeStore = routeStore;
 
         this._routeStore.addRoute(ROUTE_SETTINGS_NEW, "/settings/new", this._handleRouteChange.bind(this));
-        this._detectDropSupport();
     }
 
     /**
@@ -105,28 +103,27 @@ class SettingsNewStore {
      */
     @action
     async _handleRouteChange() {
-        this.uploadedModNames = [];
-        this.uploadError = "";
+        this.saveGameModNames = [];
+        this.saveGameError = "";
         this.settingStatus = null;
     }
 
     /**
-     * Detects whether dropping files is supported by the current browser.
-     * @private
-     */
-    @action
-    _detectDropSupport() {
-        const element = document.createElement("div");
-        this.isDropSupported = "ondragstart" in element && "ondrop" in element;
-    }
-
-    /**
-     * Returns whether the availability step is currently visible.
+     * Returns whether the save game step is currently shown.
      * @return {boolean}
      */
     @computed
-    get showAvailabilityStep() {
-        return !!this.settingStatus;
+    get showSaveGameStep() {
+        return true;
+    }
+
+    /**
+     * Returns whether the data availability step is currently shown.
+     * @return {boolean}
+     */
+    @computed
+    get showDataAvailabilityStep() {
+        return this.saveGameModNames.length > 0 && this.settingStatus !== null;
     }
 
     /**
@@ -134,8 +131,8 @@ class SettingsNewStore {
      * @return {boolean}
      */
     @computed
-    get showOptionsStep() {
-        return this.settingStatus && VALID_SETTING_STATUS.indexOf(this.settingStatus.status) !== -1;
+    get showAdditionalOptionsStep() {
+        return this.showDataAvailabilityStep && VALID_SETTING_STATUS.indexOf(this.settingStatus?.status) !== -1;
     }
 
     /**
@@ -144,77 +141,36 @@ class SettingsNewStore {
      */
     @computed
     get showSaveButton() {
-        return this.showOptionsStep;
+        return !!this.showAdditionalOptionsStep;
     }
 
     /**
-     * Parsed the content as mod-list.json file and extracts the enabled mod names.
-     * @param {string|ArrayBuffer} content
-     * @return {array<string>}
-     * @private
-     */
-    _parseModListJson(content) {
-        if (typeof content !== "string") {
-            throw UPLOAD_ERROR_INVALID_FILE;
-        }
-
-        let data;
-        try {
-            data = JSON.parse(content);
-        } catch (err) {
-            throw UPLOAD_ERROR_INVALID_FILE;
-        }
-
-        if (typeof data !== "object" || !Array.isArray(data.mods)) {
-            throw UPLOAD_ERROR_INVALID_FILE;
-        }
-
-        const modNames = [];
-        for (const mod of data.mods) {
-            if (mod.enabled === true && typeof mod.name === "string" && mod.name !== "") {
-                modNames.push(mod.name);
-            }
-        }
-        if (modNames.length === 0) {
-            throw UPLOAD_ERROR_NO_MODS;
-        }
-
-        modNames.sort((left, right) => left.localeCompare(right));
-        return modNames;
-    }
-
-    /**
-     * Uploads the file, parsing it as JSON.
+     * Processes the save game.
      * @param {File} file
      */
     @action
-    uploadFile(file) {
-        this.uploadedModNames = [];
-        this.uploadError = "";
-        this.settingStatus = null;
+    async processSaveGame(file) {
+        this.isSaveGameProcessing = true;
+        this.saveGameModNames = [];
+        this.saveGameError = "";
+        this.newOptions.name = file.name.endsWith(".zip") ? file.name.substr(0, file.name.length - 4) : file.name;
 
-        const fileReader = new FileReader();
-        fileReader.addEventListener("load", this._handleFileReaderLoad.bind(this));
-        fileReader.readAsText(file);
-    }
-
-    /**
-     * Handles the load event of the file reader.
-     * @param {ProgressEvent} event
-     * @return {Promise<void>}
-     * @private
-     */
-    @action
-    async _handleFileReaderLoad(event) {
+        const reader = new SaveGameReader();
         try {
-            const modNames = this._parseModListJson(event.target.result);
-            this.uploadedModNames = modNames;
-            this.uploadError = "";
+            const mods = await reader.read(file);
+            const modNames = mods.map((mod) => mod.name);
 
-            await this._requestSettingStatus(modNames);
-        } catch (err) {
-            this.uploadedModNames = [];
-            this.uploadError = err;
+            runInAction(async () => {
+                this.isSaveGameProcessing = false;
+                this.saveGameModNames = modNames;
+
+                await this._requestSettingStatus(modNames);
+            });
+        } catch (e) {
+            runInAction(() => {
+                this.isSaveGameProcessing = false;
+                this.saveGameError = e;
+            });
         }
     }
 
@@ -262,7 +218,7 @@ class SettingsNewStore {
         try {
             const settingData = {
                 ...this.newOptions,
-                modNames: this.uploadedModNames,
+                modNames: this.saveGameModNames,
             };
             await this._portalApi.createSetting(settingData);
             this._routeStore.redirectToIndex();

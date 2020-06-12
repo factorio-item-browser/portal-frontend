@@ -7,6 +7,10 @@
     background: color($color-box-default, $lightness-box-background, $alpha-box-content);
     box-shadow: $shadow-box;
 
+    a {
+        text-decoration: underline;
+    }
+
     dl, p:not(:last-child), ul {
         @include dynamic-spacing(margin-bottom, default);
     }

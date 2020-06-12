@@ -1,8 +1,11 @@
 @import "../../style/import";
 
 footer {
+    align-items: center;
     background-color: $color-water;
     bottom: 0;
+    display: flex;
+    height: $size-footer;
     left: 0;
     padding-top: px-to-rem(12);
     position: absolute;
@@ -17,17 +20,19 @@ footer {
         top: px-to-rem(-24);
         right: 0;
     }
-}
 
-.copyright {
-    color: lighten($color-concrete, 20%);
-    font-size: $text-size-small;
-    font-weight: bold;
-    padding: $spacing-default;
-    text-align: center;
-    text-shadow: $shadow-text;
+    .copyright {
+        color: $color-footer-text;
+        opacity: $alpha-input-default;
+        flex-grow: 1;
+        font-size: $text-size-small;
+        font-weight: bold;
+        padding: $spacing-default;
+        text-align: center;
+        text-shadow: $shadow-text;
 
-    a, a:hover, a:active, a:focus {
-        text-decoration: underline;
+        a, a:hover, a:active, a:focus {
+            text-decoration: underline;
+        }
     }
 }
