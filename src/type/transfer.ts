@@ -87,6 +87,7 @@ interface SessionInitData {
     settingHash: string,
     locale: string,
     sidebarEntities: SidebarEntityData[],
+    scriptVersion: string,
 }
 
 interface SettingCreateData extends SettingOptionsData {

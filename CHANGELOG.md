@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1 - 2020-06-17
+
+### Added
+
+- Check for currently loaded script version, including a forced reload if it is not up-to-date.
+
 ## 1.1.0 - 2020-06-12
 
 ### Added

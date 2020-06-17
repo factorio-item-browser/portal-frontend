@@ -26,6 +26,7 @@ const ExternalLinkIcons = () => {
     for (const [name, url] of Object.entries(EXTERNAL_LINKS)) {
         links.push(
             <a
+                key={name}
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer nofollow"

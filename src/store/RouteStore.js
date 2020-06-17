@@ -19,6 +19,7 @@ import {
     SETTING_STATUS_AVAILABLE,
     SETTING_STATUS_PENDING,
     SETTING_STATUS_UNKNOWN,
+    STORAGE_KEY_SCRIPT_VERSION,
 } from "../helper/const";
 
 /**
@@ -242,13 +243,53 @@ class RouteStore {
     async initializeSession() {
         try {
             const sessionData = await portalApi.initializeSession();
-            for (const handler of this._initializeSessionHandlers) {
-                handler(sessionData);
+            if (this._hasCurrentScriptVersion(sessionData.scriptVersion)) {
+                // Current script version is already loaded, so proceed as usual.
+                for (const handler of this._initializeSessionHandlers) {
+                    handler(sessionData);
+                }
+                this._router.start();
+            } else {
+                // Script version has changed, force a reload of the page to get the latest files.
+                window.location.reload();
             }
-            this._router.start();
         } catch (e) {
             this.handlePortalApiError(e);
         }
+    }
+
+    /**
+     * Checks whether the current script version is already loaded.
+     * @param {string} requiredScriptVersion
+     * @return {boolean}
+     * @private
+     */
+    _hasCurrentScriptVersion(requiredScriptVersion) {
+        if (!requiredScriptVersion) {
+            // Didn't receive any script version? Meh, disable the reload feature.
+            return true;
+        }
+
+        const currentScriptVersion = window.localStorage.getItem(STORAGE_KEY_SCRIPT_VERSION);
+        if (!currentScriptVersion) {
+            // Don't have a script version stored? Then we may be coming from a redirect. Write version and done.
+            window.localStorage.setItem(STORAGE_KEY_SCRIPT_VERSION, requiredScriptVersion);
+            return true;
+        }
+
+        if (currentScriptVersion === requiredScriptVersion) {
+            // Script version did not change, so everything is fine.
+            return true;
+        }
+
+        window.localStorage.removeItem(STORAGE_KEY_SCRIPT_VERSION);
+        if (window.localStorage.getItem(STORAGE_KEY_SCRIPT_VERSION)) {
+            // Somehow we aren't able to remove the script version. So do not reload to avoid an infinite loop.
+            return true;
+        }
+
+        // Force a reload because the script version has changed.
+        return false;
     }
 
     /**

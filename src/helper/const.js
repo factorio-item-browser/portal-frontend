@@ -100,9 +100,7 @@ export const STATUS_WARNING = "warning";
 
 export const STORAGE_KEY_SIDEBAR_ENTITIES = "sidebar-entities";
 export const STORAGE_KEY_SETTING_HASH = "setting-hash";
-
-export const UPLOAD_ERROR_INVALID_FILE = "invalid-file";
-export const UPLOAD_ERROR_NO_MODS = "no-mods";
+export const STORAGE_KEY_SCRIPT_VERSION = "script-version";
 
 // Environment variables
 export const CACHE_LIFETIME = process.env.CACHE_LIFETIME;
