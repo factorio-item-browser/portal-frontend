@@ -1,59 +1,59 @@
+// @flow
+
+import type { NamesByTypes } from "../type/transfer";
+
 class NamesByTypesSet {
     /**
-     * The values of the set.
-     * @type {Map<string,Set<string>>}
      * @private
      */
-    _values = new Map();
+    _values = new Map<string, Set<string>>();
+
+    /**
+     * @private
+     */
+    _getValuesOfType(type: string): Set<string> {
+        let values = this._values.get(type);
+        if (!values) {
+            values = new Set<string>();
+            this._values.set(type, values);
+        }
+        return values;
+    }
 
     /**
      * Adds a new type and name to the set.
-     * @param {string} type
-     * @param {string} name
      */
-    add(type, name) {
-        if (!this._values.has(type)) {
-            this._values.set(type, new Set());
-        }
-
-        this._values.get(type).add(name);
+    add(type: string, name: string): void {
+        this._getValuesOfType(type).add(name);
     }
 
     /**
      * Returns whether the combination of type and name is part of the set.
-     * @param {string} type
-     * @param {string} name
-     * @returns {boolean}
      */
-    has(type, name) {
-        return this._values.has(type) && this._values.get(type).has(name);
+    has(type: string, name: string): boolean {
+        return this._getValuesOfType(type).has(name);
     }
 
     /**
      * Removes a type and name from the set, if already there.
-     * @param {string} type
-     * @param {string} name
      */
-    remove(type, name) {
-        if (this._values.has(type)) {
-            this._values.get(type).delete(name);
-        }
+    remove(type: string, name: string): void {
+        this._getValuesOfType(type).delete(name);
     }
 
     /**
      * Clears all values from the set.
      */
-    clear() {
+    clear(): void {
         this._values.clear();
     }
 
     /**
      * Merges the names and types into the set.
-     * @param {NamesByTypes} namesByTypes
      */
-    merge(namesByTypes) {
-        for (const [type, names] of Object.entries(namesByTypes)) {
-            for (const name of names) {
+    merge(namesByTypes: NamesByTypes): void {
+        for (const type of Object.keys(namesByTypes)) {
+            for (const name of namesByTypes[type]) {
                 this.add(type, name);
             }
         }
@@ -61,11 +61,10 @@ class NamesByTypesSet {
 
     /**
      * Removes the names and types from the set.
-     * @param {NamesByTypes} namesByTypes
      */
-    diff(namesByTypes) {
-        for (const [type, names] of Object.entries(namesByTypes)) {
-            for (const name of names) {
+    diff(namesByTypes: NamesByTypes): void {
+        for (const type of Object.keys(namesByTypes)) {
+            for (const name of namesByTypes[type]) {
                 this.remove(type, name);
             }
         }
@@ -73,9 +72,8 @@ class NamesByTypesSet {
 
     /**
      * Returns the current size of the set.
-     * @returns {number}
      */
-    get size() {
+    get size(): number {
         let result = 0;
         for (const names of this._values.values()) {
             result += names.size;
@@ -85,9 +83,8 @@ class NamesByTypesSet {
 
     /**
      * Transforms the set to a plain data object.
-     * @returns {NamesByTypes}
      */
-    getData() {
+    getData(): NamesByTypes {
         const result = {};
         for (const [type, names] of this._values) {
             if (names.size > 0) {
@@ -95,18 +92,6 @@ class NamesByTypesSet {
             }
         }
         return result;
-    }
-
-    /**
-     * Iterates over all values.
-     * @returns {Generator<[string, string]>}
-     */
-    *[Symbol.iterator]() {
-        for (const [type, names] of this._values) {
-            for (const name of names) {
-                yield [type, name];
-            }
-        }
     }
 }
 
