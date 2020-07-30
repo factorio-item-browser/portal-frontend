@@ -2,10 +2,11 @@ import { action, computed, observable } from "mobx";
 import { createContext } from "react";
 
 import { portalApi } from "../class/PortalApi";
-import { ROUTE_ITEM_DETAILS, ROUTE_RECIPE_DETAILS, STORAGE_KEY_SIDEBAR_ENTITIES } from "../helper/const";
+import { ROUTE_ITEM_DETAILS, ROUTE_RECIPE_DETAILS } from "../helper/const";
 
 import { routeStore } from "./RouteStore";
 import { tooltipStore } from "./TooltipStore";
+import { storageManager } from "../class/StorageManager";
 
 /**
  * The store managing all the data of the sidebar.
@@ -24,6 +25,13 @@ class SidebarStore {
      * @private
      */
     _routeStore;
+
+    /**
+     * The storage manager.
+     * @type {StorageManager}
+     * @private
+     */
+    _storageManager;
 
     /**
      * The tooltip store.
@@ -57,16 +65,18 @@ class SidebarStore {
      * Initializes the store.
      * @param {PortalApi} portalApi
      * @param {RouteStore} routeStore
+     * @param {StorageManager} storageManager
      * @param {TooltipStore} tooltipStore
      */
-    constructor(portalApi, routeStore, tooltipStore) {
+    constructor(portalApi, routeStore, storageManager, tooltipStore) {
         this._portalApi = portalApi;
         this._routeStore = routeStore;
+        this._storageManager = storageManager;
         this._tooltipStore = tooltipStore;
 
         this._routeStore.addInitializeSessionHandler(this._initializeSession.bind(this));
         this._routeStore.addRouteChangeHandler(this._handleRouteChange.bind(this));
-        window.addEventListener("storage", this._handleStorage.bind(this));
+        this._storageManager.sidebarEntitiesChangeHandler = this._handleSidebarEntitiesChange.bind(this);
     }
 
     /**
@@ -77,8 +87,7 @@ class SidebarStore {
     _initializeSession({ sidebarEntities }) {
         this._assignEntities(sidebarEntities);
 
-        const entities = [...this.pinnedEntities, ...this.unpinnedEntities];
-        localStorage.setItem(STORAGE_KEY_SIDEBAR_ENTITIES, JSON.stringify(entities));
+        this._storageManager.sidebarEntities = [...this.pinnedEntities, ...this.unpinnedEntities];
     }
 
     /**
@@ -103,17 +112,15 @@ class SidebarStore {
     }
 
     /**
-     * Handles the storage events.
-     * @param {StorageEvent} event
+     * Handles the change of the sidebar entities (e.g. in another tab).
+     * @param {SidebarEntityData[]} entities
      * @private
      */
-    _handleStorage(event) {
-        if (event.key === STORAGE_KEY_SIDEBAR_ENTITIES) {
-            try {
-                this._assignEntities(JSON.parse(event.newValue));
-            } catch (e) {
-                // Ignore any errors.
-            }
+    _handleSidebarEntitiesChange(entities) {
+        try {
+            this._assignEntities(entities);
+        } catch (e) {
+            // Ignore any errors.
         }
     }
 
@@ -285,7 +292,7 @@ class SidebarStore {
      */
     _sendEntities() {
         const entities = [...this.pinnedEntities, ...this.unpinnedEntities];
-        localStorage.setItem(STORAGE_KEY_SIDEBAR_ENTITIES, JSON.stringify(entities));
+        this._storageManager.sidebarEntities = entities;
 
         (async () => {
             try {
@@ -297,5 +304,5 @@ class SidebarStore {
     }
 }
 
-export const sidebarStore = new SidebarStore(portalApi, routeStore, tooltipStore);
+export const sidebarStore = new SidebarStore(portalApi, routeStore, storageManager, tooltipStore);
 export default createContext(sidebarStore);

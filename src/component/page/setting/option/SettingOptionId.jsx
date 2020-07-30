@@ -24,7 +24,7 @@ const OptionSettingId = ({ settings, value, onChange, isLoading }) => {
             <select value={value} onChange={(event) => onChange(event.currentTarget.value)}>
                 {settings.map((setting) => {
                     return (
-                        <option key={setting.id} value={setting.id}>
+                        <option key={setting.combinationId} value={setting.combinationId}>
                             {setting.name}
                         </option>
                     );

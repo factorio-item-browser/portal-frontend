@@ -127,7 +127,7 @@ class SettingsStore {
                     this.availableSettings = settingsListData.settings.sort((left, right) => {
                         return left.name.localeCompare(right.name);
                     });
-                    this._currentSettingId = settingsListData.currentSetting.id;
+                    this._currentSettingId = settingsListData.currentSetting.combinationId;
                     this._addSettingDetails(settingsListData.currentSetting);
                 });
             } catch (e) {
@@ -147,7 +147,7 @@ class SettingsStore {
      * @private
      */
     _addSettingDetails(settingDetails) {
-        this._allSettingDetails[settingDetails.id] = settingDetails;
+        this._allSettingDetails[settingDetails.combinationId] = settingDetails;
     }
 
     /**
@@ -180,7 +180,7 @@ class SettingsStore {
      */
     @computed
     get isDeleteButtonVisible() {
-        return this._currentSettingId !== this.selectedSettingDetails.id;
+        return this._currentSettingId !== this.selectedSettingDetails.combinationId;
     }
 
     /**
@@ -248,7 +248,7 @@ class SettingsStore {
             runInAction(() => {
                 this.isDeletingSetting = false;
                 this.availableSettings = this.availableSettings.filter(
-                    (setting) => setting.id !== this.selectedSettingId
+                    (setting) => setting.combinationId !== this.selectedSettingId
                 );
                 delete this._allSettingDetails[this.selectedSettingId];
 

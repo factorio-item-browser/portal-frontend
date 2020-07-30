@@ -4,7 +4,6 @@ import { getI18n } from "react-i18next";
 import { constants, createRouter } from "router5";
 import browserPluginFactory from "router5-plugin-browser";
 
-import { cacheManager } from "../class/CacheManager";
 import { portalApi } from "../class/PortalApi";
 import {
     ERROR_CLIENT_FAILURE,
@@ -19,8 +18,9 @@ import {
     SETTING_STATUS_AVAILABLE,
     SETTING_STATUS_PENDING,
     SETTING_STATUS_UNKNOWN,
-    STORAGE_KEY_SCRIPT_VERSION,
 } from "../helper/const";
+import { storageManager } from "../class/StorageManager";
+import CombinationId from "../class/CombinationId";
 
 /**
  * The map from the entity types to their corresponding routes.
@@ -37,18 +37,18 @@ const entityTypeToRouteMap = {
  */
 class RouteStore {
     /**
-     * The cache manager.
-     * @type {CacheManager}
-     * @private
-     */
-    _cacheManager;
-
-    /**
      * The portal API instance.
      * @type {PortalApi}
      * @private
      */
     _portalApi;
+
+    /**
+     * The storage manager.
+     * @type {StorageManager}
+     * @private
+     */
+    _storageManager;
 
     /**
      * The change handlers of the routes.
@@ -59,7 +59,7 @@ class RouteStore {
 
     /**
      * The handlers for initialising the session.
-     * @type {(function(SessionInitData): void)[]}
+     * @type {(function(InitData): void)[]}
      * @private
      */
     _initializeSessionHandlers = [];
@@ -118,12 +118,12 @@ class RouteStore {
 
     /**
      * Initializes the route store.
-     * @param {CacheManager} cacheManager
      * @param {PortalApi} portalApi
+     * @param {StorageManager} storageManager
      */
-    constructor(cacheManager, portalApi) {
-        this._cacheManager = cacheManager;
+    constructor(portalApi, storageManager) {
         this._portalApi = portalApi;
+        this._storageManager = storageManager;
 
         this._router = this._createRouter();
         this.addInitializeSessionHandler(this._initializeSession.bind(this));
@@ -176,7 +176,7 @@ class RouteStore {
 
     /**
      * Initializes the session
-     * @param {SessionInitData} session
+     * @param {InitData} session
      * @private
      */
     @action
@@ -184,7 +184,9 @@ class RouteStore {
         this.setting = session.setting;
         this.locale = session.locale;
 
-        this._cacheManager.setSettingHash(session.settingHash);
+        this._storageManager.combinationId = CombinationId.fromFull(session.setting.combinationId);
+
+        //this._cacheManager.setSettingHash(session.settingHash);
         await getI18n().changeLanguage(session.locale);
     }
 
@@ -204,7 +206,7 @@ class RouteStore {
 
     /**
      * Adds a handler for initializing the session.
-     * @param {function(SessionInitData): void} handler
+     * @param {function(InitData): void} handler
      */
     addInitializeSessionHandler(handler) {
         this._initializeSessionHandlers.push(handler);
@@ -270,10 +272,10 @@ class RouteStore {
             return true;
         }
 
-        const currentScriptVersion = window.localStorage.getItem(STORAGE_KEY_SCRIPT_VERSION);
+        const currentScriptVersion = this._storageManager.scriptVersion;
         if (!currentScriptVersion) {
             // Don't have a script version stored? Then we may be coming from a redirect. Write version and done.
-            window.localStorage.setItem(STORAGE_KEY_SCRIPT_VERSION, requiredScriptVersion);
+            this._storageManager.scriptVersion = requiredScriptVersion;
             return true;
         }
 
@@ -282,8 +284,8 @@ class RouteStore {
             return true;
         }
 
-        window.localStorage.removeItem(STORAGE_KEY_SCRIPT_VERSION);
-        if (window.localStorage.getItem(STORAGE_KEY_SCRIPT_VERSION)) {
+        this._storageManager.scriptVersion = "";
+        if (this._storageManager.scriptVersion) {
             // Somehow we aren't able to remove the script version. So do not reload to avoid an infinite loop.
             return true;
         }
@@ -410,5 +412,5 @@ class RouteStore {
     }
 }
 
-export const routeStore = new RouteStore(cacheManager, portalApi);
+export const routeStore = new RouteStore(portalApi, storageManager);
 export default createContext(routeStore);
