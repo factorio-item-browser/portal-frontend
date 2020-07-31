@@ -1,79 +1,73 @@
+// @flow
+
 import { action, computed, observable, runInAction } from "mobx";
 import { createContext } from "react";
+import { State } from "router5";
 
-import { portalApi } from "../class/PortalApi";
+import { PortalApi, portalApi, PortalApiError } from "../class/PortalApi";
 import PaginatedList from "../class/PaginatedList";
+import { router, Router } from "../class/Router";
 import { ROUTE_RECIPE_DETAILS } from "../const/route";
+import type { MachineData, RecipeDetailsData, RecipeMachinesData } from "../type/transfer";
 
-import { routeStore } from "./RouteStore";
-import { sidebarStore } from "./SidebarStore";
+import { RouteStore, routeStore } from "./RouteStore";
+import { SidebarStore, sidebarStore } from "./SidebarStore";
+
+const emptyRecipeDetails: RecipeDetailsData = {
+    name: "",
+    label: "",
+    description: "",
+};
+const emptyRecipeMachinesData: RecipeMachinesData = {
+    results: [],
+    numberOfResults: 0,
+};
 
 /**
  * The store managing the recipes.
  */
-class RecipeStore {
+export class RecipeStore {
     /**
-     * The Portal API instance.
-     * @type {PortalApi}
      * @private
      */
-    _portalApi;
+    _portalApi: PortalApi;
 
     /**
-     * The route store.
-     * @type {RouteStore}
      * @private
      */
-    _routeStore;
+    _routeStore: RouteStore;
 
     /**
-     * The sidebar store.
-     * @type {SidebarStore}
      * @private
      */
-    _sidebarStore;
+    _sidebarStore: SidebarStore;
 
     /**
      * The current recipe details to be displayed.
-     * @type {RecipeDetailsData}
      */
     @observable
-    currentRecipeDetails = {
-        name: "",
-        label: "",
-        description: "",
-        recipe: null,
-        expensiveRecipe: null,
-    };
+    currentRecipeDetails: RecipeDetailsData = emptyRecipeDetails;
 
     /**
      * The paginated list of machines able to craft the current recipe.
-     * @type PaginatedList<RecipeMachinesData,MachineData>
      */
     @observable
-    paginatedMachinesList;
+    paginatedMachinesList: PaginatedList<MachineData, RecipeMachinesData>;
 
-    /**
-     * Initializes the store.
-     * @param {PortalApi} portalApi
-     * @param {RouteStore} routeStore
-     * @param {SidebarStore} sidebarStore
-     */
-    constructor(portalApi, routeStore, sidebarStore) {
+    constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore, sidebarStore: SidebarStore) {
         this._portalApi = portalApi;
         this._routeStore = routeStore;
         this._sidebarStore = sidebarStore;
 
-        this._routeStore.addRoute(ROUTE_RECIPE_DETAILS, "/recipe/:name", this._handleRouteChange.bind(this));
+        router.addRoute(ROUTE_RECIPE_DETAILS, "/recipe/:name", this._handleRouteChange.bind(this));
     }
 
     /**
-     * Handles the change of the route.
-     * @param {string} name
-     * @returns {Promise<void>}
      * @private
      */
-    async _handleRouteChange({ name }) {
+    async _handleRouteChange(state: State): Promise<void> {
+        const { name } = state.params;
+
         const newMachinesList = new PaginatedList(
             (page) => this._portalApi.getRecipeMachines(name, page),
             (error) => this._handlePortalApiError(error)
@@ -85,7 +79,7 @@ class RecipeStore {
                 newMachinesList.requestNextPage(),
             ]);
 
-            runInAction(() => {
+            runInAction((): void => {
                 this.currentRecipeDetails = recipeDetails;
                 this.paginatedMachinesList = newMachinesList;
 
@@ -97,34 +91,26 @@ class RecipeStore {
     }
 
     /**
-     * Handles the Portal API error.
-     * @param {PortalApiError} error
      * @private
      */
     @action
-    _handlePortalApiError(error) {
+    _handlePortalApiError(error: PortalApiError): RecipeMachinesData {
         if (error.code === 404) {
-            this.currentRecipeDetails = {
-                name: "",
-                label: "",
-                description: "",
-                recipe: null,
-                expensiveRecipe: null,
-            };
+            this.currentRecipeDetails = emptyRecipeDetails;
         } else {
             this._routeStore.handlePortalApiError(error);
         }
+        return emptyRecipeMachinesData;
     }
 
     /**
      * Returns whether a not found error is present.
-     * @return {boolean}
      */
     @computed
-    get hasNotFoundError() {
+    get hasNotFoundError(): boolean {
         return this.currentRecipeDetails.name === "";
     }
 }
 
-export const recipeStore = new RecipeStore(portalApi, routeStore, sidebarStore);
-export default createContext(recipeStore);
+export const recipeStore = new RecipeStore(portalApi, router, routeStore, sidebarStore);
+export default createContext<RecipeStore>(recipeStore);

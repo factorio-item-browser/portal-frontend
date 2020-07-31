@@ -12,15 +12,6 @@ export const BREAKPOINT_HUGE = 1500;
 
 export const CRAFTING_TIME_INFINITE = 100000;
 
-export const ERROR_CLIENT_FAILURE = "client-failure";
-export const ERROR_INCOMPATIBLE_CLIENT = "incompatible-client";
-export const ERROR_PAGE_NOT_FOUND = "page-not-found";
-export const ERROR_SERVER_FAILURE = "server-failure";
-export const ERROR_SERVICE_NOT_AVAILABLE = "service-not-available";
-
-export const ERROR_SAVEGAME_INVALID_FILE = "invalid-file";
-export const ERROR_SAVEGAME_UNSUPPORTED_VERSION = "unsupported-version";
-
 export const LOCALES = {
     "af": "Afrikaans",
     "ar": "العَرَبِيَّة",

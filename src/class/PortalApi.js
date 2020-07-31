@@ -11,6 +11,7 @@ import { storageManager, StorageManager } from "./StorageManager";
 import type {
     EntityData,
     IconsStyleData,
+    InitData,
     ItemRecipesData,
     ItemType,
     NamesByTypes,
@@ -45,7 +46,7 @@ export class PortalApi {
      * Initializes the current session.
      * @throws {PortalApiError}
      */
-    async initializeSession(): Promise<void> {
+    async initializeSession(): Promise<InitData> {
         return await this._executeRequest("POST", "/init");
     }
 

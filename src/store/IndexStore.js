@@ -6,12 +6,13 @@ import { createContext } from "react";
 import { PortalApi, portalApi } from "../class/PortalApi";
 import { ROUTE_INDEX } from "../const/route";
 import type { EntityData } from "../type/transfer";
-import RouteStore, { routeStore } from "./RouteStore";
+import { RouteStore, routeStore } from "./RouteStore";
+import { router, Router } from "../class/Router";
 
 /**
  * The store of the index page.
  */
-class IndexStore {
+export class IndexStore {
     /**
      * @private
      */
@@ -28,11 +29,11 @@ class IndexStore {
     @observable
     isRandomizing: boolean = false;
 
-    constructor(portalApi: PortalApi, routeStore: RouteStore) {
+    constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore) {
         this._portalApi = portalApi;
         this._routeStore = routeStore;
 
-        this._routeStore.addRoute(ROUTE_INDEX, "/", this._handleRouteChange.bind(this));
+        router.addRoute(ROUTE_INDEX, "/", this._handleRouteChange.bind(this));
     }
 
     /**
@@ -63,5 +64,5 @@ class IndexStore {
     }
 }
 
-export const indexStore = new IndexStore(portalApi, routeStore);
+export const indexStore = new IndexStore(portalApi, router, routeStore);
 export default createContext<IndexStore>(indexStore);

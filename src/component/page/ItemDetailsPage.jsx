@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import { ERROR_PAGE_NOT_FOUND } from "../../helper/const";
+import { ERROR_PAGE_NOT_FOUND } from "../../const/error";
 import ItemStore from "../../store/ItemStore";
 
 import CopyTemplate from "../common/CopyTemplate";

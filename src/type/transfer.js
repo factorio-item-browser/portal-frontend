@@ -4,6 +4,11 @@ export type ItemType = "item" | "fluid";
 export type NamesByTypes = { [string]: string[] };
 export type SidebarEntityType = "item" | "fluid" | "recipe";
 
+export interface ResultsData<T> {
+    results: T[];
+    numberOfResults: number;
+}
+
 export interface EntityData {
     type: string;
     name: string;
@@ -25,13 +30,11 @@ export interface InitData {
     scriptVersion: string;
 }
 
-export interface ItemRecipesData {
+export interface ItemRecipesData extends ResultsData<EntityData> {
     type: ItemType;
     name: string;
     label: string;
     description: string;
-    results: EntityData[];
-    numberOfResults: number;
 }
 
 export interface MachineData {
@@ -74,15 +77,10 @@ export interface RecipeItemData {
     amount: number;
 }
 
-export interface RecipeMachinesData {
-    results: MachineData[];
-    numberOfResults: number;
-}
+export interface RecipeMachinesData extends ResultsData<MachineData> {}
 
-export interface SearchResultsData {
+export interface SearchResultsData extends ResultsData<EntityData> {
     query: string;
-    results: EntityData[];
-    numberOfResults: number;
 }
 
 export interface SettingCreateData extends SettingOptionsData {

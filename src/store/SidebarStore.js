@@ -1,110 +1,97 @@
+// @flow
+
 import { action, computed, observable } from "mobx";
 import { createContext } from "react";
+import { State } from "router5";
 
-import { portalApi } from "../class/PortalApi";
+import { PortalApi, portalApi } from "../class/PortalApi";
 import { ROUTE_ITEM_DETAILS, ROUTE_RECIPE_DETAILS } from "../const/route";
 
-import { routeStore } from "./RouteStore";
-import { tooltipStore } from "./TooltipStore";
-import { storageManager } from "../class/StorageManager";
+import { RouteStore, routeStore } from "./RouteStore";
+import { TooltipStore, tooltipStore } from "./TooltipStore";
+import { StorageManager, storageManager } from "../class/StorageManager";
+import type { InitData, SidebarEntityData, SidebarEntityType } from "../type/transfer";
+import { router, Router } from "../class/Router";
 
 /**
  * The store managing all the data of the sidebar.
  */
-class SidebarStore {
+export class SidebarStore {
     /**
-     * The Portal API instance.
-     * @type {PortalApi}
      * @private
      */
-    _portalApi;
+    _portalApi: PortalApi;
 
     /**
-     * The route store.
-     * @type {RouteStore}
      * @private
      */
-    _routeStore;
+    _storageManager: StorageManager;
 
     /**
-     * The storage manager.
-     * @type {StorageManager}
      * @private
      */
-    _storageManager;
-
-    /**
-     * The tooltip store.
-     * @type {TooltipStore}
-     * @private
-     */
-    _tooltipStore;
+    _tooltipStore: TooltipStore;
 
     /**
      * The entities of the sidebar.
      * @type {Map<string,SidebarEntityData>}
      */
     @observable
-    entities = new Map();
+    entities: Map<string, SidebarEntityData> = new Map();
 
     /**
      * The id of the entity which is currently highlighted.
      * @type {string}
      */
     @observable
-    highlightedEntityId = "";
+    highlightedEntityId: string = "";
 
     /**
      * Whether the sidebar has been opened on mobile.
      * @type {boolean}
      */
     @observable
-    isSidebarOpened = false;
+    isSidebarOpened: boolean = false;
 
-    /**
-     * Initializes the store.
-     * @param {PortalApi} portalApi
-     * @param {RouteStore} routeStore
-     * @param {StorageManager} storageManager
-     * @param {TooltipStore} tooltipStore
-     */
-    constructor(portalApi, routeStore, storageManager, tooltipStore) {
+    constructor(
+        portalApi: PortalApi,
+        router: Router,
+        routeStore: RouteStore,
+        storageManager: StorageManager,
+        tooltipStore: TooltipStore
+    ) {
         this._portalApi = portalApi;
-        this._routeStore = routeStore;
         this._storageManager = storageManager;
         this._tooltipStore = tooltipStore;
 
-        this._routeStore.addInitializeSessionHandler(this._initializeSession.bind(this));
-        this._routeStore.addRouteChangeHandler(this._handleRouteChange.bind(this));
-        this._storageManager.sidebarEntitiesChangeHandler = this._handleSidebarEntitiesChange.bind(this);
+        router.addGlobalChangeHandler(this._handleGlobalRouteChange.bind(this));
+        routeStore.addInitHandler(this._handleInit.bind(this));
+        storageManager.sidebarEntitiesChangeHandler = this._handleSidebarEntitiesChange.bind(this);
     }
 
     /**
-     * Initializes the sidebar from the session.
-     * @param {SidebarEntityData[]} sidebarEntities
      * @private
      */
-    _initializeSession({ sidebarEntities }) {
-        this._assignEntities(sidebarEntities);
+    _handleInit(data: InitData): void {
+        this._assignEntities(data.sidebarEntities);
 
         this._storageManager.sidebarEntities = [...this.pinnedEntities, ...this.unpinnedEntities];
     }
 
     /**
-     * Handles the change of the route.
-     * @param {State} route
      * @private
      */
     @action
-    _handleRouteChange({ route }) {
+    _handleGlobalRouteChange(state: State) {
         this.closeSidebar();
+        const { type, name } = state.params;
 
-        switch (route.name) {
+        switch (state.name) {
             case ROUTE_RECIPE_DETAILS:
-                this.highlightedEntityId = `recipe-${route.params.name}`;
+                this.highlightedEntityId = `recipe-${name}`;
                 break;
             case ROUTE_ITEM_DETAILS:
-                this.highlightedEntityId = `${route.params.type}-${route.params.name}`;
+                this.highlightedEntityId = `${type}-${name}`;
                 break;
             default:
                 this.highlightedEntityId = "";
@@ -113,10 +100,9 @@ class SidebarStore {
 
     /**
      * Handles the change of the sidebar entities (e.g. in another tab).
-     * @param {SidebarEntityData[]} entities
      * @private
      */
-    _handleSidebarEntitiesChange(entities) {
+    _handleSidebarEntitiesChange(entities: SidebarEntityData[]): void {
         try {
             this._assignEntities(entities);
         } catch (e) {
@@ -124,29 +110,21 @@ class SidebarStore {
         }
     }
 
-    /**
-     * Opens the sidebar on the mobile view.
-     */
     @action
-    openSidebar() {
+    openSidebar(): void {
         this.isSidebarOpened = true;
     }
 
-    /**
-     * Closes the sidebar on the mobile view.
-     */
     @action
-    closeSidebar() {
+    closeSidebar(): void {
         this.isSidebarOpened = false;
     }
 
     /**
-     * Assigns the entities to the store.
-     * @param {SidebarEntityData[]} entities
      * @private
      */
     @action
-    _assignEntities(entities) {
+    _assignEntities(entities: SidebarEntityData[]): void {
         this.entities.clear();
         for (const entity of entities) {
             this.entities.set(this.getIdForEntity(entity), entity);
@@ -156,10 +134,9 @@ class SidebarStore {
 
     /**
      * The entities pinned to the sidebar.
-     * @return {SidebarEntityData[]}
      */
     @computed
-    get pinnedEntities() {
+    get pinnedEntities(): SidebarEntityData[] {
         const entities = this._filterEntities((entity) => entity.pinnedPosition > 0);
         entities.sort((left, right) => left.pinnedPosition - right.pinnedPosition);
         return entities;
@@ -167,22 +144,18 @@ class SidebarStore {
 
     /**
      * The entities currently not pinned to the sidebar.
-     * @return {SidebarEntityData[]}
      */
     @computed
-    get unpinnedEntities() {
+    get unpinnedEntities(): SidebarEntityData[] {
         const entities = this._filterEntities((entity) => entity.pinnedPosition === 0);
         entities.sort((left, right) => right.lastViewTime.localeCompare(left.lastViewTime));
         return entities;
     }
 
     /**
-     * Filters the entities using the predicate.
-     * @param {function(SidebarEntityData): boolean} predicate
-     * @return {SidebarEntityData[]}
      * @private
      */
-    _filterEntities(predicate) {
+    _filterEntities(predicate: (SidebarEntityData) => boolean): SidebarEntityData[] {
         const result = [];
         for (const entity of this.entities.values()) {
             if (predicate(entity)) {
@@ -194,10 +167,9 @@ class SidebarStore {
 
     /**
      * Pins an entity to the bottom of the list.
-     * @param {SidebarEntityData} entity
      */
     @action
-    pinEntity(entity) {
+    pinEntity(entity: SidebarEntityData): void {
         entity.pinnedPosition = this.pinnedEntities.length + 1;
 
         this._tooltipStore.hideTooltip();
@@ -207,10 +179,9 @@ class SidebarStore {
 
     /**
      * Unpins an entity from the sidebar.
-     * @param {SidebarEntityData} entity
      */
     @action
-    unpinEntity(entity) {
+    unpinEntity(entity: SidebarEntityData): void {
         entity.pinnedPosition = 0;
 
         this._tooltipStore.hideTooltip();
@@ -220,22 +191,19 @@ class SidebarStore {
 
     /**
      * Adds a viewed entity to the sidebar, or updated an already existing entity in it.
-     * @param {string} type
-     * @param {string} name
-     * @param {string} label
      */
     @action
-    addViewedEntity(type, name, label) {
+    addViewedEntity(type: SidebarEntityType, name: string, label: string) {
         const id = `${type}-${name}`;
-        if (this.entities.has(id)) {
-            const entity = this.entities.get(id);
+        const entity = this.entities.get(id);
+        if (entity) {
             entity.label = label;
             entity.lastViewTime = new Date().toISOString();
         } else {
             this.entities.set(id, {
-                type,
-                name,
-                label,
+                type: type,
+                name: name,
+                label: label,
                 pinnedPosition: 0,
                 lastViewTime: new Date().toISOString(),
             });
@@ -247,13 +215,13 @@ class SidebarStore {
 
     /**
      * Updates the order of the pinned entities.
-     * @param {string[]} order
      */
     @action
-    updatePinnedOrder(order) {
+    updatePinnedOrder(order: string[]): void {
         for (const [index, id] of order.entries()) {
-            if (this.entities.has(id)) {
-                this.entities.get(id).pinnedPosition = index + 1;
+            const entity = this.entities.get(id);
+            if (entity) {
+                entity.pinnedPosition = index + 1;
             }
         }
 
@@ -262,19 +230,16 @@ class SidebarStore {
 
     /**
      * Returns the id used for the entity.
-     * @param {SidebarEntityData} entity
-     * @returns {string}
      */
-    getIdForEntity(entity) {
+    getIdForEntity(entity: SidebarEntityData): string {
         return `${entity.type}-${entity.name}`;
     }
 
     /**
-     * Validates all entities of the sidebar.
      * @private
      */
     @action
-    _validateEntities() {
+    _validateEntities(): void {
         // Renumber pinned entities.
         for (const [index, entity] of this.pinnedEntities.entries()) {
             entity.pinnedPosition = index + 1;
@@ -290,11 +255,11 @@ class SidebarStore {
      * Sends the current entities to the Portal API.
      * @private
      */
-    _sendEntities() {
+    _sendEntities(): void {
         const entities = [...this.pinnedEntities, ...this.unpinnedEntities];
         this._storageManager.sidebarEntities = entities;
 
-        (async () => {
+        (async (): Promise<void> => {
             try {
                 await this._portalApi.sendSidebarEntities(entities);
             } catch (e) {
@@ -304,5 +269,5 @@ class SidebarStore {
     }
 }
 
-export const sidebarStore = new SidebarStore(portalApi, routeStore, storageManager, tooltipStore);
-export default createContext(sidebarStore);
+export const sidebarStore = new SidebarStore(portalApi, router, routeStore, storageManager, tooltipStore);
+export default createContext<SidebarStore>(sidebarStore);

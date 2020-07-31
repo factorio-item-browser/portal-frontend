@@ -9,7 +9,7 @@ import {
     ERROR_PAGE_NOT_FOUND,
     ERROR_SERVER_FAILURE,
     ERROR_SERVICE_NOT_AVAILABLE,
-} from "../../helper/const";
+} from "../../const/error";
 
 import "./ErrorBox.scss";
 

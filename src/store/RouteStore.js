@@ -1,115 +1,75 @@
+// @flow
+
 import { action, computed, observable, runInAction } from "mobx";
 import { createContext } from "react";
 import { getI18n } from "react-i18next";
-import { constants, createRouter } from "router5";
-import browserPluginFactory from "router5-plugin-browser";
+import { constants } from "router5";
 
-import { portalApi } from "../class/PortalApi";
+import { PortalApi, portalApi, PortalApiError } from "../class/PortalApi";
+import { SETTING_STATUS_AVAILABLE, SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN } from "../helper/const";
 import {
     ERROR_CLIENT_FAILURE,
     ERROR_INCOMPATIBLE_CLIENT,
     ERROR_SERVER_FAILURE,
     ERROR_SERVICE_NOT_AVAILABLE,
-    SETTING_STATUS_AVAILABLE,
-    SETTING_STATUS_PENDING,
-    SETTING_STATUS_UNKNOWN,
-} from "../helper/const";
-import {
-    ROUTE_INDEX,
-    ROUTE_ITEM_DETAILS,
-    ROUTE_RECIPE_DETAILS,
-    ROUTE_SETTINGS,
-    ROUTE_SETTINGS_NEW,
-} from "../const/route";
-import { storageManager } from "../class/StorageManager";
+} from "../const/error";
+import { ROUTE_INDEX, ROUTE_SETTINGS, ROUTE_SETTINGS_NEW } from "../const/route";
+import { StorageManager, storageManager } from "../class/StorageManager";
 import CombinationId from "../class/CombinationId";
+import { router, Router } from "../class/Router";
+import type { InitData, SettingMetaData } from "../type/transfer";
 
-const SHORT_ROUTE_SUFFIX = "-short";
-const ROUTE_PARAM_COMBINATION_ID = "combination-id";
-
-/**
- * The map from the entity types to their corresponding routes.
- * @type {Object<string, string>}
- */
-const MAP_ENTITY_TYPE_TO_ROUTE = {
-    item: ROUTE_ITEM_DETAILS,
-    fluid: ROUTE_ITEM_DETAILS,
-    recipe: ROUTE_RECIPE_DETAILS,
-};
+type InitHandler = (InitData) => void;
+type LoadingRef = { current: ?HTMLElement };
 
 /**
  * The store handling the pages, including routing between them.
  */
-class RouteStore {
+export class RouteStore {
     /**
-     * The portal API instance.
-     * @type {PortalApi}
      * @private
      */
-    _portalApi;
+    _portalApi: PortalApi;
 
     /**
-     * The storage manager.
-     * @type {StorageManager}
      * @private
      */
-    _storageManager;
+    _router: Router;
 
     /**
-     * The change handlers of the routes.
-     * @type {object<string,Function>}
      * @private
      */
-    _changeHandlers = {};
+    _storageManager: StorageManager;
 
     /**
-     * The handlers for initialising the session.
-     * @type {(function(InitData): void)[]}
      * @private
      */
-    _initializeSessionHandlers = [];
-
-    /**
-     * The handlers called on every route change.
-     * @type {function[]}
-     * @private
-     */
-    _routeChangeHandlers = [];
-
-    /**
-     * The router of the store.
-     * @type {Router}
-     */
-    _router;
+    _initHandlers: Set<InitHandler> = new Set();
 
     /**
      * The current route which is displayed.
-     * @type {string}
      */
     @observable
-    currentRoute = "";
+    currentRoute: string = "";
 
     /**
      * The fatal error which occurred.
-     * @type {string}
      */
     @observable
-    fatalError = "";
+    fatalError: string = "";
 
     /**
      * The target which currently have the loading circle.
-     * @type {React.RefObject<HTMLElement>}
      */
     @observable
-    loadingCircleTarget = null;
+    loadingCircleTarget: ?LoadingRef = null;
 
     /**
      * The currently loaded setting.
-     * @type {SettingMetaData}
      */
     @observable
-    setting = {
-        id: "",
+    setting: SettingMetaData = {
+        combinationId: "",
         name: "Vanilla",
         status: SETTING_STATUS_AVAILABLE,
     };
@@ -119,67 +79,23 @@ class RouteStore {
      * @type {string}
      */
     @observable
-    locale = "en";
+    locale: string = "en";
 
-    /**
-     * Initializes the route store.
-     * @param {PortalApi} portalApi
-     * @param {StorageManager} storageManager
-     */
-    constructor(portalApi, storageManager) {
+    constructor(portalApi: PortalApi, router: Router, storageManager: StorageManager) {
         this._portalApi = portalApi;
+        this._router = router;
         this._storageManager = storageManager;
 
-        this._router = this._createRouter();
-        this.addInitializeSessionHandler(this._initializeSession.bind(this));
+        this._router.addGlobalChangeHandler(this._handleRouteChange.bind(this));
+        this.addInitHandler(this._initializeSession.bind(this));
     }
 
     /**
-     * Creates the router to use.
-     * @returns {Router}
-     * @private
-     */
-    _createRouter() {
-        const router = createRouter();
-        router.setOption("allowNotFound", true);
-        router.usePlugin(browserPluginFactory());
-        router.useMiddleware(this._getFetchDataHandlerMiddleware.bind(this));
-        router.subscribe(this._handleChangeEvent.bind(this));
-        return router;
-    }
-
-    /**
-     * The middleware for handling the route changes.
-     * @returns {function(State): boolean | Promise<any>}
-     * @private
-     */
-    _getFetchDataHandlerMiddleware() {
-        return (toState) => {
-            let result = true;
-            if (this._changeHandlers[toState.name]) {
-                result = this._changeHandlers[toState.name](toState.params);
-            }
-            return result;
-        };
-    }
-
-    /**
-     * Handles the change event of the router.
-     * @param {SubscribeState} state
      * @private
      */
     @action
-    _handleChangeEvent(state) {
-        if (state.route.name.endsWith(SHORT_ROUTE_SUFFIX)) {
-            this.currentRoute = state.route.name.substr(0, state.route.name.length - SHORT_ROUTE_SUFFIX.length);
-        } else {
-            this.currentRoute = state.route.name;
-        }
-
-        for (const handler of this._routeChangeHandlers) {
-            handler(state);
-        }
-
+    _handleRouteChange() {
+        this.currentRoute = this._router.currentRoute;
         window.scrollTo(0, 0);
     }
 
@@ -189,59 +105,37 @@ class RouteStore {
      * @private
      */
     @action
-    async _initializeSession(session) {
+    async _initializeSession(session: InitData) {
         this.setting = session.setting;
         this.locale = session.locale;
-
-        const combinationId = CombinationId.fromFull(session.setting.combinationId);
-
-        this._storageManager.combinationId = combinationId;
-        this._router.setOption("defaultParams", {
-            [ROUTE_PARAM_COMBINATION_ID]: combinationId.toShort(),
-        });
 
         //this._cacheManager.setSettingHash(session.settingHash);
         await getI18n().changeLanguage(session.locale);
     }
 
     /**
-     * Adds a route to be handled.
-     * @param {string} name
-     * @param {string} path
-     * @param {Function} [changeHandler]
+     * @deprecated
      */
-    addRoute(name, path, changeHandler) {
-        this._router.add([
-            {
-                name,
-                path: `/:${ROUTE_PARAM_COMBINATION_ID}${path}`,
-            },
-            {
-                name: name + SHORT_ROUTE_SUFFIX,
-                path,
-            },
-        ]);
-
-        if (changeHandler) {
-            this._changeHandlers[name] = changeHandler;
-            this._changeHandlers[name + SHORT_ROUTE_SUFFIX] = changeHandler;
-        }
+    addRoute(name: string, path: string, changeHandler: Function) {
+        this._router.addRoute(name, path, changeHandler);
     }
 
     /**
      * Adds a handler for initializing the session.
-     * @param {function(InitData): void} handler
      */
-    addInitializeSessionHandler(handler) {
-        this._initializeSessionHandlers.push(handler);
+    addInitHandler(handler: InitHandler): void {
+        this._initHandlers.add(handler);
+    }
+
+    get router(): Router {
+        return this._router;
     }
 
     /**
-     * Adds a handler called on every route change.
-     * @param {function} handler
+     * @deprecated
      */
-    addRouteChangeHandler(handler) {
-        this._routeChangeHandlers.push(handler);
+    addRouteChangeHandler(handler: Function) {
+        this._router.addGlobalChangeHandler(handler);
     }
 
     /**
@@ -266,15 +160,19 @@ class RouteStore {
      * Initializes the session.
      * @returns {Promise<void>}
      */
-    async initializeSession() {
+    async initializeSession(): Promise<void> {
         try {
-            const sessionData = await portalApi.initializeSession();
-            if (this._hasCurrentScriptVersion(sessionData.scriptVersion)) {
+            const initData = await portalApi.initializeSession();
+            if (this._hasCurrentScriptVersion(initData.scriptVersion)) {
                 // Current script version is already loaded, so proceed as usual.
-                for (const handler of this._initializeSessionHandlers) {
-                    handler(sessionData);
+                const combinationId = CombinationId.fromFull(initData.setting.combinationId);
+                this._storageManager.combinationId = combinationId;
+
+                for (const handler of this._initHandlers) {
+                    handler(initData);
                 }
-                this._router.start();
+
+                this._router.start(combinationId);
             } else {
                 // Script version has changed, force a reload of the page to get the latest files.
                 window.location.reload();
@@ -286,11 +184,9 @@ class RouteStore {
 
     /**
      * Checks whether the current script version is already loaded.
-     * @param {string} requiredScriptVersion
-     * @return {boolean}
      * @private
      */
-    _hasCurrentScriptVersion(requiredScriptVersion) {
+    _hasCurrentScriptVersion(requiredScriptVersion: string): boolean {
         if (!requiredScriptVersion) {
             // Didn't receive any script version? Meh, disable the reload feature.
             return true;
@@ -320,9 +216,8 @@ class RouteStore {
 
     /**
      * Handles an error thrown by the Portal API, by displaying a fatal error box.
-     * @param {PortalApiError} error
      */
-    handlePortalApiError(error) {
+    handlePortalApiError(error: PortalApiError): void {
         if (error.code === 401) {
             this.fatalError = ERROR_INCOMPATIBLE_CLIENT;
         } else if (error.code === 409) {
@@ -337,69 +232,31 @@ class RouteStore {
     }
 
     /**
-     * Navigates to the specified route.
-     * @param {string} route
-     * @param {Object} [params]
+     * @deprecated
      */
-    navigateTo(route, params) {
-        if (this._storageManager.combinationId) {
-            params = {
-                [ROUTE_PARAM_COMBINATION_ID]: this._storageManager.combinationId.toShort(),
-                ...params,
-            };
-        }
-
-        this._router.navigate(route, params, () => {
-            runInAction(() => {
-                this.loadingCircleTarget = null;
-            });
-        });
+    navigateTo(route: string, params: any): void {
+        this._router.navigateTo(route, params);
     }
 
     /**
-     * Builds the path to the specified route.
-     * @param {string} route
-     * @param {Object} [params]
-     * @returns {string}
+     * @deprecated
      */
-    buildPath(route, params) {
-        if (this._storageManager.combinationId) {
-            params = {
-                [ROUTE_PARAM_COMBINATION_ID]: this._storageManager.combinationId.toShort(),
-                ...params,
-            };
-        }
+    buildPath(route: string, params: any): string {
         return this._router.buildPath(route, params);
     }
 
     /**
-     * Redirects to the index page, to e.g. apply a new setting. This is a hard refresh of the page.
-     * @param {CombinationId} [combinationId]
+     * @deprecated
      */
-    redirectToIndex(combinationId) {
-        const params = combinationId ? { ROUTE_PARAM_COMBINATION_ID: combinationId.toShort() } : undefined;
-        location.assign(this.buildPath(ROUTE_INDEX, params));
+    redirectToIndex(combinationId?: CombinationId): void {
+        this._router.redirectToIndex(combinationId);
     }
 
     /**
-     * Returns the route and params used to link to the entity.
-     * @param {string} type
-     * @param {string} name
-     * @returns {{route: string, params: Object<string,any>}}
+     * @deprecated
      */
-    getRouteAndParamsForEntity(type, name) {
-        const route = MAP_ENTITY_TYPE_TO_ROUTE[type];
-        if (route) {
-            return {
-                route: route,
-                params: { type: type, name: name },
-            };
-        }
-
-        return {
-            route: ROUTE_INDEX,
-            params: {},
-        };
+    getRouteAndParamsForEntity(type: string, name: string) {
+        return this._router.getRouteAndParamsForEntity(type, name);
     }
 
     /**
@@ -413,27 +270,24 @@ class RouteStore {
 
     /**
      * Shows the loading circle overlaying the passed reference object.
-     * @param {React.RefObject<HTMLElement>} ref
      */
     @action
-    showLoadingCircle(ref) {
+    showLoadingCircle(ref: LoadingRef): void {
         this.loadingCircleTarget = ref;
     }
 
     /**
      * Returns whether the global setting status should be shown.
-     * @return {boolean}
      */
     @computed
-    get showGlobalSettingStatus() {
+    get showGlobalSettingStatus(): boolean {
         return ![ROUTE_SETTINGS, ROUTE_SETTINGS_NEW].includes(this.currentRoute);
     }
 
     /**
      * Checks the current status of the setting, if its data is still not available.
-     * @return {Promise<void>}
      */
-    async checkSettingStatus() {
+    async checkSettingStatus(): Promise<void> {
         if ([SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN].includes(this.setting.status)) {
             try {
                 const settingStatus = await this._portalApi.getSettingStatus();
@@ -451,5 +305,5 @@ class RouteStore {
     }
 }
 
-export const routeStore = new RouteStore(portalApi, storageManager);
-export default createContext(routeStore);
+export const routeStore = new RouteStore(portalApi, router, storageManager);
+export default createContext<RouteStore>(routeStore);

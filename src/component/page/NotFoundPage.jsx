@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import { ERROR_PAGE_NOT_FOUND } from "../../helper/const";
+import { ERROR_PAGE_NOT_FOUND } from "../../const/error";
 
 import ErrorBox from "../error/ErrorBox";
 

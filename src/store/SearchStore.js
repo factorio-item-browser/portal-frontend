@@ -1,111 +1,110 @@
+// @flow
+
 import { action, observable, runInAction } from "mobx";
 import { createContext } from "react";
+import { State } from "router5";
 
 import PaginatedList from "../class/PaginatedList";
-import { portalApi } from "../class/PortalApi";
+import { PortalApi, portalApi, PortalApiError } from "../class/PortalApi";
 import { ROUTE_SEARCH } from "../const/route";
 import { debounce } from "../helper/utils";
+import type { EntityData, SearchResultsData } from "../type/transfer";
 
-import { routeStore } from "./RouteStore";
+import { RouteStore, routeStore } from "./RouteStore";
+import { router, Router } from "../class/Router";
+
+const emptySearchResultsData: SearchResultsData = {
+    query: "",
+    results: [],
+    numberOfResults: 0,
+};
 
 /**
  * The store managing everything related to the search.
  */
-class SearchStore {
+export class SearchStore {
     /**
-     * The Portal API instance.
-     * @type {PortalApi}
      * @private
      */
-    _portalApi;
+    _portalApi: PortalApi;
 
     /**
-     * The route store.
-     * @type {RouteStore}
      * @private
      */
-    _routeStore;
+    _router: Router;
+
+    /**
+     * @private
+     */
+    _routeStore: RouteStore;
 
     /**
      * The debounce handler for handling the query change.
-     * @type {Function}
      * @private
      */
-    _debounceHandleQueryChange;
+    _debounceHandleQueryChange: (string) => Promise<void>;
 
     /**
-     * Whether the search input element is currently focused.
-     * @type {boolean}
      * @private
      */
-    _isInputFocused = false;
+    _isInputFocused: boolean = false;
 
     /**
      * The current search query entered into the search field.
-     * @type {string}
      */
     @observable
-    searchQuery = "";
+    searchQuery: string = "";
 
     /**
      * The search query which has currently been requested.
-     * @type {string}
      */
     @observable
-    requestedSearchQuery = "";
+    requestedSearchQuery: string = "";
 
     /**
      * Whether the search bar has been opened on mobile.
-     * @type {boolean}
      */
     @observable
-    isSearchOpened = false;
+    isSearchOpened: boolean = false;
 
     /**
      * Whether the search is currently loading results.
-     * @type {boolean}
      */
     @observable
-    isLoading = false;
+    isLoading: boolean = false;
 
     /**
      * The currently executed search query.
-     * @type {string}
      */
     @observable
-    currentlyExecutedQuery = "";
+    currentlyExecutedQuery: string = "";
 
     /**
      * The paginated search results.
-     * @type {PaginatedList<SearchResultsData,EntityData>|null}
      */
     @observable
-    paginatedSearchResults;
+    paginatedSearchResults: PaginatedList<EntityData, SearchResultsData>;
 
-    /**
-     * Initializes the store.
-     * @param {PortalApi} portalApi
-     * @param {RouteStore} routeStore
-     */
-    constructor(portalApi, routeStore) {
+    constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore) {
         this._portalApi = portalApi;
+        this._router = router;
         this._routeStore = routeStore;
 
         this._debounceHandleQueryChange = debounce(this._handleQueryChange, 500, this);
-        this._routeStore.addRoute(ROUTE_SEARCH, "/search/*query", this._handleRouteChange.bind(this));
-        this._routeStore.addRouteChangeHandler(this._handleGeneralRouteChange.bind(this));
+
+        router.addRoute(ROUTE_SEARCH, "/search/*query", this._handleRouteChange.bind(this));
+        router.addGlobalChangeHandler(this._handleGlobalRouteChange.bind(this));
     }
 
     /**
-     * Handles the change of the route.
-     * @param {string} query
-     * @returns {Promise<void>}
      * @private
      */
-    async _handleRouteChange({ query }) {
+    async _handleRouteChange(state: State): Promise<void> {
+        const { query } = state.params;
+
         const newPaginatedList = new PaginatedList(
             (page) => this._portalApi.search(query, page),
-            (error) => this._routeStore.handlePortalApiError(error)
+            (error) => this._handlePortalApiError(error)
         );
 
         const searchResultsData = await newPaginatedList.requestNextPage();
@@ -120,81 +119,68 @@ class SearchStore {
         });
     }
 
-    /**
-     * Handles a general (maybe not-search related) route change.
-     * @param {State} route
-     * @private
-     */
     @action
-    _handleGeneralRouteChange({ route }) {
-        if (route.name !== ROUTE_SEARCH && !this._isInputFocused) {
+    _handleGlobalRouteChange(state: State) {
+        if (state.name !== ROUTE_SEARCH && !this._isInputFocused) {
             this.searchQuery = "";
             this.requestedSearchQuery = "";
         }
     }
 
-    /**
-     * Sets the searchQuery.
-     * @param searchQuery
-     */
     @action
-    setSearchQuery(searchQuery) {
+    async setSearchQuery(searchQuery: string): Promise<void> {
         this.searchQuery = searchQuery;
         if (this._isInputFocused) {
             this.isSearchOpened = true;
         }
-        this._debounceHandleQueryChange(searchQuery);
+        await this._debounceHandleQueryChange(searchQuery);
     }
 
     /**
      * Triggers the query to be changed without waiting for the debounce.
-     * @return {Promise<void>}
      */
-    async triggerQueryChange() {
+    async triggerQueryChange(): Promise<void> {
         await this._handleQueryChange(this.searchQuery);
     }
 
     /**
      * Handles the (debounced) change of the query, triggering the search.
-     * @param {string} query
-     * @returns {Promise<void>}
      * @private
      */
     @action
-    async _handleQueryChange(query) {
+    async _handleQueryChange(query: string): Promise<void> {
         if (query.length < 2 || query === this.requestedSearchQuery) {
             return;
         }
 
         this.requestedSearchQuery = query;
         this.isLoading = true;
-        this._routeStore.navigateTo(ROUTE_SEARCH, { query: query });
+        this._router.navigateTo(ROUTE_SEARCH, { query: query });
     }
 
     /**
-     * Sets whether the input is currently focused.
-     * @param {boolean} isInputFocused
+     * @private
      */
-    set isInputFocused(isInputFocused) {
+    @action
+    _handlePortalApiError(error: PortalApiError): SearchResultsData {
+        this._routeStore.handlePortalApiError(error);
+        return emptySearchResultsData;
+    }
+
+    set isInputFocused(isInputFocused: boolean): void {
         this._isInputFocused = isInputFocused;
     }
 
-    /**
-     * Opens the search bar on the mobile view.
-     */
     @action
-    openSearch() {
+    openSearch(): void {
         this.isSearchOpened = true;
     }
 
-    /**
-     * Closes the search bar on the mobile view.
-     */
     @action
-    closeSearch() {
+    closeSearch(): void {
         this.isSearchOpened = false;
     }
 }
 
-export const searchStore = new SearchStore(portalApi, routeStore);
-export default createContext(searchStore);
+export const searchStore = new SearchStore(portalApi, router, routeStore);
+export default createContext<SearchStore>(searchStore);
