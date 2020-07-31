@@ -3,7 +3,7 @@ import { createContext } from "react";
 
 import PaginatedList from "../class/PaginatedList";
 import { portalApi } from "../class/PortalApi";
-import { ROUTE_SEARCH } from "../helper/const";
+import { ROUTE_SEARCH } from "../const/route";
 import { debounce } from "../helper/utils";
 
 import { routeStore } from "./RouteStore";

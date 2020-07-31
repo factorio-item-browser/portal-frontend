@@ -8,7 +8,7 @@ import {
     ROUTE_RECIPE_DETAILS,
     ROUTE_SEARCH,
     ROUTE_SETTINGS,
-} from "../helper/const";
+} from "../const/route";
 import RouteStore from "../store/RouteStore";
 
 import Tooltip from "./common/Tooltip";

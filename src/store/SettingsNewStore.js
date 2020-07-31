@@ -3,12 +3,12 @@ import { action, computed, observable, runInAction } from "mobx";
 
 import {
     RECIPE_MODE_HYBRID,
-    ROUTE_SETTINGS_NEW,
     SETTING_STATUS_AVAILABLE,
     SETTING_STATUS_LOADING,
     SETTING_STATUS_PENDING,
     SETTING_STATUS_UNKNOWN,
 } from "../helper/const";
+import { ROUTE_SETTINGS_NEW } from "../const/route";
 
 import { routeStore } from "./RouteStore";
 import { portalApi } from "../class/PortalApi";
@@ -221,7 +221,7 @@ class SettingsNewStore {
                 modNames: this.saveGameModNames,
             };
             await this._portalApi.createSetting(settingData);
-            this._routeStore.redirectToIndex();
+            this._routeStore.redirectToIndex(/* @todo need combinationId */);
         } catch (e) {
             this._routeStore.handlePortalApiError(e);
         }

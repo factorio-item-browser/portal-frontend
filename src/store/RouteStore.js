@@ -10,23 +10,28 @@ import {
     ERROR_INCOMPATIBLE_CLIENT,
     ERROR_SERVER_FAILURE,
     ERROR_SERVICE_NOT_AVAILABLE,
+    SETTING_STATUS_AVAILABLE,
+    SETTING_STATUS_PENDING,
+    SETTING_STATUS_UNKNOWN,
+} from "../helper/const";
+import {
     ROUTE_INDEX,
     ROUTE_ITEM_DETAILS,
     ROUTE_RECIPE_DETAILS,
     ROUTE_SETTINGS,
     ROUTE_SETTINGS_NEW,
-    SETTING_STATUS_AVAILABLE,
-    SETTING_STATUS_PENDING,
-    SETTING_STATUS_UNKNOWN,
-} from "../helper/const";
+} from "../const/route";
 import { storageManager } from "../class/StorageManager";
 import CombinationId from "../class/CombinationId";
+
+const SHORT_ROUTE_SUFFIX = "-short";
+const ROUTE_PARAM_COMBINATION_ID = "combination-id";
 
 /**
  * The map from the entity types to their corresponding routes.
  * @type {Object<string, string>}
  */
-const entityTypeToRouteMap = {
+const MAP_ENTITY_TYPE_TO_ROUTE = {
     item: ROUTE_ITEM_DETAILS,
     fluid: ROUTE_ITEM_DETAILS,
     recipe: ROUTE_RECIPE_DETAILS,
@@ -165,7 +170,11 @@ class RouteStore {
      */
     @action
     _handleChangeEvent(state) {
-        this.currentRoute = state.route.name;
+        if (state.route.name.endsWith(SHORT_ROUTE_SUFFIX)) {
+            this.currentRoute = state.route.name.substr(0, state.route.name.length - SHORT_ROUTE_SUFFIX.length);
+        } else {
+            this.currentRoute = state.route.name;
+        }
 
         for (const handler of this._routeChangeHandlers) {
             handler(state);
@@ -184,7 +193,12 @@ class RouteStore {
         this.setting = session.setting;
         this.locale = session.locale;
 
-        this._storageManager.combinationId = CombinationId.fromFull(session.setting.combinationId);
+        const combinationId = CombinationId.fromFull(session.setting.combinationId);
+
+        this._storageManager.combinationId = combinationId;
+        this._router.setOption("defaultParams", {
+            [ROUTE_PARAM_COMBINATION_ID]: combinationId.toShort(),
+        });
 
         //this._cacheManager.setSettingHash(session.settingHash);
         await getI18n().changeLanguage(session.locale);
@@ -197,10 +211,20 @@ class RouteStore {
      * @param {Function} [changeHandler]
      */
     addRoute(name, path, changeHandler) {
-        this._router.add([{ name, path }]);
+        this._router.add([
+            {
+                name,
+                path: `/:${ROUTE_PARAM_COMBINATION_ID}${path}`,
+            },
+            {
+                name: name + SHORT_ROUTE_SUFFIX,
+                path,
+            },
+        ]);
 
         if (changeHandler) {
             this._changeHandlers[name] = changeHandler;
+            this._changeHandlers[name + SHORT_ROUTE_SUFFIX] = changeHandler;
         }
     }
 
@@ -318,6 +342,13 @@ class RouteStore {
      * @param {Object} [params]
      */
     navigateTo(route, params) {
+        if (this._storageManager.combinationId) {
+            params = {
+                [ROUTE_PARAM_COMBINATION_ID]: this._storageManager.combinationId.toShort(),
+                ...params,
+            };
+        }
+
         this._router.navigate(route, params, () => {
             runInAction(() => {
                 this.loadingCircleTarget = null;
@@ -332,14 +363,22 @@ class RouteStore {
      * @returns {string}
      */
     buildPath(route, params) {
+        if (this._storageManager.combinationId) {
+            params = {
+                [ROUTE_PARAM_COMBINATION_ID]: this._storageManager.combinationId.toShort(),
+                ...params,
+            };
+        }
         return this._router.buildPath(route, params);
     }
 
     /**
      * Redirects to the index page, to e.g. apply a new setting. This is a hard refresh of the page.
+     * @param {CombinationId} [combinationId]
      */
-    redirectToIndex() {
-        location.assign(this.buildPath(ROUTE_INDEX));
+    redirectToIndex(combinationId) {
+        const params = combinationId ? { ROUTE_PARAM_COMBINATION_ID: combinationId.toShort() } : undefined;
+        location.assign(this.buildPath(ROUTE_INDEX, params));
     }
 
     /**
@@ -349,7 +388,7 @@ class RouteStore {
      * @returns {{route: string, params: Object<string,any>}}
      */
     getRouteAndParamsForEntity(type, name) {
-        const route = entityTypeToRouteMap[type];
+        const route = MAP_ENTITY_TYPE_TO_ROUTE[type];
         if (route) {
             return {
                 route: route,
@@ -387,7 +426,7 @@ class RouteStore {
      */
     @computed
     get showGlobalSettingStatus() {
-        return [ROUTE_SETTINGS, ROUTE_SETTINGS_NEW].indexOf(this.currentRoute) === -1;
+        return ![ROUTE_SETTINGS, ROUTE_SETTINGS_NEW].includes(this.currentRoute);
     }
 
     /**
@@ -395,7 +434,7 @@ class RouteStore {
      * @return {Promise<void>}
      */
     async checkSettingStatus() {
-        if (this.setting.status === SETTING_STATUS_PENDING || this.setting.status === SETTING_STATUS_UNKNOWN) {
+        if ([SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN].includes(this.setting.status)) {
             try {
                 const settingStatus = await this._portalApi.getSettingStatus();
                 if (settingStatus.status === SETTING_STATUS_AVAILABLE) {

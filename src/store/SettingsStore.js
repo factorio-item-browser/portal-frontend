@@ -3,8 +3,10 @@ import { createContext } from "react";
 
 import { iconManager } from "../class/IconManager";
 import { portalApi } from "../class/PortalApi";
-import { RECIPE_MODE_HYBRID, ROUTE_SETTINGS } from "../helper/const";
+import { RECIPE_MODE_HYBRID } from "../helper/const";
 import { routeStore } from "./RouteStore";
+import CombinationId from "../class/CombinationId";
+import { ROUTE_SETTINGS } from "../const/route";
 
 /**
  * The store managing the settings and the settings page.
@@ -230,7 +232,7 @@ class SettingsStore {
         this.isSavingChanges = true;
         try {
             await this._portalApi.saveSetting(this.selectedSettingId, this.selectedOptions);
-            this._routeStore.redirectToIndex();
+            this._routeStore.redirectToIndex(CombinationId.fromFull(this.selectedSettingId));
         } catch (e) {
             this._routeStore.handlePortalApiError(e);
         }

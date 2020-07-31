@@ -79,13 +79,6 @@ export const RECIPE_MODE_NORMAL = "normal";
 export const RECIPE_MODE_EXPENSIVE = "expensive";
 export const RECIPE_MODES = [RECIPE_MODE_HYBRID, RECIPE_MODE_NORMAL, RECIPE_MODE_EXPENSIVE];
 
-export const ROUTE_INDEX = "index";
-export const ROUTE_ITEM_DETAILS = "itemDetails";
-export const ROUTE_RECIPE_DETAILS = "recipeDetails";
-export const ROUTE_SEARCH = "search";
-export const ROUTE_SETTINGS = "settings";
-export const ROUTE_SETTINGS_NEW = "settingsNew";
-
 export const SETTING_STATUS_AVAILABLE = "available";
 export const SETTING_STATUS_ERRORED = "errored";
 export const SETTING_STATUS_LOADING = "loading";
@@ -97,10 +90,6 @@ export const STATUS_INFO = "info";
 export const STATUS_PENDING = "pending";
 export const STATUS_SUCCESS = "success";
 export const STATUS_WARNING = "warning";
-
-export const STORAGE_KEY_SIDEBAR_ENTITIES = "sidebar-entities";
-export const STORAGE_KEY_SETTING_HASH = "setting-hash";
-export const STORAGE_KEY_SCRIPT_VERSION = "script-version";
 
 // Environment variables
 export const CACHE_LIFETIME = process.env.CACHE_LIFETIME;

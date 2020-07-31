@@ -5,7 +5,7 @@ import React, { Fragment, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import SettingsStore from "../../store/SettingsStore";
-import { ROUTE_SETTINGS_NEW } from "../../helper/const";
+import { ROUTE_SETTINGS_NEW } from "../../const/route";
 
 import ButtonLink from "../link/ButtonLink";
 import ButtonList from "./setting/ButtonList";

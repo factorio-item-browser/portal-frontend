@@ -3,7 +3,7 @@ import { createContext } from "react";
 
 import { portalApi } from "../class/PortalApi";
 import PaginatedList from "../class/PaginatedList";
-import { ROUTE_RECIPE_DETAILS } from "../helper/const";
+import { ROUTE_RECIPE_DETAILS } from "../const/route";
 
 import { routeStore } from "./RouteStore";
 import { sidebarStore } from "./SidebarStore";
