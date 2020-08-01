@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import Section from "../../../common/Section";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import SettingsNewStore from "../../../../store/SettingsNewStore";
+import { settingsNewStoreContext } from "../../../../store/SettingsNewStore";
 import {
     SETTING_STATUS_AVAILABLE,
     SETTING_STATUS_ERRORED,
@@ -35,7 +35,7 @@ const STATUS_MAP = {
  */
 const DataAvailabilityStep = () => {
     const { t } = useTranslation();
-    const settingsNewStore = useContext(SettingsNewStore);
+    const settingsNewStore = useContext(settingsNewStoreContext);
 
     const status = settingsNewStore.settingStatus?.status;
     if (!status) {

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 
-import SidebarStore from "../../../store/SidebarStore";
+import { sidebarStoreContext } from "../../../store/SidebarStore";
 
 import "./HeaderIcon.scss";
 
@@ -13,7 +13,7 @@ import "./HeaderIcon.scss";
  * @constructor
  */
 const SidebarIcon = () => {
-    const sidebarStore = useContext(SidebarStore);
+    const sidebarStore = useContext(sidebarStoreContext);
 
     return (
         <div

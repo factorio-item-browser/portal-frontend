@@ -65,4 +65,4 @@ export class IndexStore {
 }
 
 export const indexStore = new IndexStore(portalApi, router, routeStore);
-export default createContext<IndexStore>(indexStore);
+export const indexStoreContext = createContext<IndexStore>(indexStore);

@@ -306,4 +306,4 @@ export class RouteStore {
 }
 
 export const routeStore = new RouteStore(portalApi, router, storageManager);
-export default createContext<RouteStore>(routeStore);
+export const routeStoreContext = new createContext<RouteStore>(routeStore);

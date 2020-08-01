@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 
-import SearchStore from "../../../store/SearchStore";
+import { searchStoreContext } from "../../../store/SearchStore";
 
 import "./HeaderIcon.scss";
 
@@ -13,7 +13,7 @@ import "./HeaderIcon.scss";
  * @constructor
  */
 const SearchIcon = () => {
-    const searchStore = useContext(SearchStore);
+    const searchStore = useContext(searchStoreContext);
 
     return (
         <div

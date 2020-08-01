@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 
-import RouteStore from "../../store/RouteStore";
+import { routeStoreContext } from "../../store/RouteStore";
 
 import "./LoadingCircle.scss";
 
@@ -13,7 +13,7 @@ import "./LoadingCircle.scss";
  * @constructor
  */
 const LoadingCircle = () => {
-    const routeStore = useContext(RouteStore);
+    const routeStore = useContext(routeStoreContext);
 
     if (routeStore.loadingCircleTarget === null) {
         return null;

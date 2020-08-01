@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 
-import SidebarStore from "../../../store/SidebarStore";
+import { sidebarStoreContext } from "../../../store/SidebarStore";
 
 import "./SidebarCloseOverlay.scss";
 
@@ -11,7 +11,7 @@ import "./SidebarCloseOverlay.scss";
  * @constructor
  */
 const SidebarCloseOverlay = () => {
-    const sidebarStore = useContext(SidebarStore);
+    const sidebarStore = useContext(sidebarStoreContext);
 
     if (!sidebarStore.isSidebarOpened) {
         return null;

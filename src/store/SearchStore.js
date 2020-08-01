@@ -183,4 +183,4 @@ export class SearchStore {
 }
 
 export const searchStore = new SearchStore(portalApi, router, routeStore);
-export default createContext<SearchStore>(searchStore);
+export const searchStoreContext = createContext<SearchStore>(searchStore);

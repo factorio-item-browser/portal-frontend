@@ -132,4 +132,4 @@ export class TooltipStore {
 }
 
 export const tooltipStore = new TooltipStore(portalApi, router);
-export default createContext<TooltipStore>(tooltipStore);
+export const tooltipStoreContext = createContext<TooltipStore>(tooltipStore);

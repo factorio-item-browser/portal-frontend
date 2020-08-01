@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import IndexStore from "../../store/IndexStore";
+import { indexStoreContext } from "../../store/IndexStore";
 import EntityList from "../entity/EntityList";
 import Entity from "../entity/Entity";
 
@@ -16,7 +16,7 @@ import "./IndexPage.scss";
  * @constructor
  */
 const IndexPage = () => {
-    const indexStore = useContext(IndexStore);
+    const indexStore = useContext(indexStoreContext);
     const { t } = useTranslation();
 
     useEffect(() => {

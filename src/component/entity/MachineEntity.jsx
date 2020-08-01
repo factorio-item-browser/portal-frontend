@@ -4,13 +4,13 @@ import React, { createRef, useContext } from "react";
 import { useTranslation } from "react-i18next";
 
 import { formatCraftingSpeed, formatEnergyUsage } from "../../helper/format";
+import { tooltipStoreContext } from "../../store/TooltipStore";
 import EntityLink from "../link/EntityLink";
 import Icon from "../common/Icon";
 
 import MachineDetail from "./MachineDetail";
 
 import "./MachineEntity.scss";
-import TooltipStore from "../../store/TooltipStore";
 
 /**
  * Formats the number.
@@ -36,7 +36,7 @@ function formatNumber(number, t) {
  */
 const MachineEntity = ({ machine }) => {
     const { t } = useTranslation();
-    const tooltipStore = useContext(TooltipStore);
+    const tooltipStore = useContext(tooltipStoreContext);
 
     const iconRef = createRef();
 

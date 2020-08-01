@@ -3,7 +3,7 @@ import * as PropTypes from "prop-types";
 import React, { createRef, useContext } from "react";
 
 import { formatAmount } from "../../../helper/format";
-import TooltipStore from "../../../store/TooltipStore";
+import { tooltipStoreContext } from "../../../store/TooltipStore";
 
 import Icon from "../../common/Icon";
 import EntityLink from "../../link/EntityLink";
@@ -17,7 +17,7 @@ import "./RecipeItem.scss";
  * @constructor
  */
 const RecipeItem = ({ item }) => {
-    const tooltipStore = useContext(TooltipStore);
+    const tooltipStore = useContext(tooltipStoreContext);
     const iconRef = createRef();
 
     return (

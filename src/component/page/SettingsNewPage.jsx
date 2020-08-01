@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext, useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
-import SettingsNewStore from "../../store/SettingsNewStore";
+import { settingsNewStoreContext } from "../../store/SettingsNewStore";
 import { ROUTE_SETTINGS } from "../../const/route";
 
 import ButtonLink from "../link/ButtonLink";
@@ -23,7 +23,7 @@ import Section from "../common/Section";
  */
 const SettingsNewPage = () => {
     const { t } = useTranslation();
-    const settingsNewStore = useContext(SettingsNewStore);
+    const settingsNewStore = useContext(settingsNewStoreContext);
 
     useEffect(() => {
         document.title = t("settings-new.title");

@@ -5,7 +5,7 @@ import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 
 import { ROUTE_SETTINGS } from "../../../const/route";
-import RouteStore from "../../../store/RouteStore";
+import { routeStoreContext } from "../../../store/RouteStore";
 import Link from "../../link/Link";
 
 import "./SettingsLink.scss";
@@ -16,7 +16,7 @@ import "./SettingsLink.scss";
  * @constructor
  */
 const SettingsLink = () => {
-    const routeStore = useContext(RouteStore);
+    const routeStore = useContext(routeStoreContext);
     const { t } = useTranslation();
 
     return (

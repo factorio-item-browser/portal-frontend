@@ -10,7 +10,7 @@ import {
     STATUS_ERROR,
     STATUS_WARNING,
 } from "../../helper/const";
-import RouteStore from "../../store/RouteStore";
+import { routeStoreContext } from "../../store/RouteStore";
 
 import Status from "./Status";
 
@@ -21,7 +21,7 @@ import Status from "./Status";
  */
 const GlobalSettingStatus = () => {
     const { t } = useTranslation();
-    const routeStore = useContext(RouteStore);
+    const routeStore = useContext(routeStoreContext);
     const setting = routeStore.setting;
 
     useEffect(() => {

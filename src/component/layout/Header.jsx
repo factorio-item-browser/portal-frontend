@@ -3,8 +3,8 @@ import React, { useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 
 import { BREAKPOINT_LARGE } from "../../helper/const";
-import RouteStore from "../../store/RouteStore";
-import SearchStore from "../../store/SearchStore";
+import { routeStoreContext } from "../../store/RouteStore";
+import { searchStoreContext } from "../../store/SearchStore";
 
 import HeaderLogo from "./header/HeaderLogo";
 import HeaderSearch from "./header/HeaderSearch";
@@ -20,8 +20,8 @@ import "./Header.scss";
  * @constructor
  */
 const Header = () => {
-    const routeStore = useContext(RouteStore);
-    const searchStore = useContext(SearchStore);
+    const routeStore = useContext(routeStoreContext);
+    const searchStore = useContext(searchStoreContext);
     const isLarge = useMediaQuery({ minWidth: BREAKPOINT_LARGE });
 
     // Index page with big logo and search box.

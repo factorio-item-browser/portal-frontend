@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import SearchStore from "../../store/SearchStore";
+import { searchStoreContext } from "../../store/SearchStore";
 
 import Section from "../common/Section";
 import Entity from "../entity/Entity";
@@ -16,7 +16,7 @@ import PaginatedListButton from "../common/PaginatedListButton";
  */
 const SearchResultsPage = () => {
     const { t } = useTranslation();
-    const searchStore = useContext(SearchStore);
+    const searchStore = useContext(searchStoreContext);
 
     useEffect(() => {
         document.title = t("search-results.title", { query: searchStore.currentlyExecutedQuery });

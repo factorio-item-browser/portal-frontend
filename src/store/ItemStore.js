@@ -155,4 +155,4 @@ export class ItemStore {
 }
 
 export const itemStore = new ItemStore(portalApi, router, routeStore, sidebarStore);
-export default createContext<ItemStore>(itemStore);
+export const itemStoreContext = createContext<ItemStore>(itemStore);

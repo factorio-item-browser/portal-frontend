@@ -5,12 +5,12 @@ import React, { createRef, useContext, useEffect } from "react";
 
 import { iconManager } from "../../class/IconManager";
 import { formatAmount } from "../../helper/format";
-import TooltipStore from "../../store/TooltipStore";
+import { itemStoreContext } from "../../store/ItemStore";
+import { tooltipStoreContext } from "../../store/TooltipStore";
 
 import EntityLink from "../link/EntityLink";
 
 import "./Icon.scss";
-import ItemStore from "../../store/ItemStore";
 
 /**
  * Renders the element for the amount.
@@ -37,8 +37,8 @@ function renderAmount(amount) {
  * @constructor
  */
 const Icon = ({ type, name, amount = 0, transparent = false, linked = false }, ref) => {
-    const itemStore = useContext(ItemStore);
-    const tooltipStore = useContext(TooltipStore);
+    const itemStore = useContext(itemStoreContext);
+    const tooltipStore = useContext(tooltipStoreContext);
 
     const classes = classNames({
         "icon": true,

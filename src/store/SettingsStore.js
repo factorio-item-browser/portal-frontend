@@ -222,4 +222,4 @@ class SettingsStore {
 }
 
 export const settingsStore = new SettingsStore(iconManager, portalApi, router, routeStore);
-export default createContext<SettingsStore>(settingsStore);
+export const settingsStoreContext = createContext<SettingsStore>(settingsStore);

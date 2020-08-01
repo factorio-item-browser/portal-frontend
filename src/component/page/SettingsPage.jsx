@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import SettingsStore from "../../store/SettingsStore";
+import { settingsStoreContext } from "../../store/SettingsStore";
 import { ROUTE_SETTINGS_NEW } from "../../const/route";
 
 import ButtonLink from "../link/ButtonLink";
@@ -26,7 +26,7 @@ import ActionButton from "../common/ActionButton";
  * @constructor
  */
 const SettingsPage = () => {
-    const settingsStore = useContext(SettingsStore);
+    const settingsStore = useContext(settingsStoreContext);
     const { t } = useTranslation();
 
     const selectedSettingDetails = settingsStore.selectedSettingDetails;

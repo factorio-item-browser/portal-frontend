@@ -3,7 +3,7 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 
-import SidebarStore from "../../../store/SidebarStore";
+import { sidebarStoreContext } from "../../../store/SidebarStore";
 
 import "./SidebarCloseIcon.scss";
 
@@ -13,7 +13,7 @@ import "./SidebarCloseIcon.scss";
  * @constructor
  */
 const SidebarCloseIcon = () => {
-    const sidebarStore = useContext(SidebarStore);
+    const sidebarStore = useContext(sidebarStoreContext);
 
     return (
         <div

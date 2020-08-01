@@ -4,8 +4,8 @@ import React, { Fragment, useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 
 import { BREAKPOINT_LARGE } from "../../helper/const";
-import RouteStore from "../../store/RouteStore";
-import SidebarStore from "../../store/SidebarStore";
+import { routeStoreContext } from "../../store/RouteStore";
+import { sidebarStoreContext } from "../../store/SidebarStore";
 
 import PinnedEntityList from "./sidebar/PinnedEntityList";
 import SettingsButton from "./sidebar/SettingsButton";
@@ -21,8 +21,8 @@ import "./Sidebar.scss";
  * @constructor
  */
 const Sidebar = () => {
-    const routeStore = useContext(RouteStore);
-    const sidebarStore = useContext(SidebarStore);
+    const routeStore = useContext(routeStoreContext);
+    const sidebarStore = useContext(sidebarStoreContext);
     const isLarge = useMediaQuery({ minWidth: BREAKPOINT_LARGE });
 
     const classes = classNames({

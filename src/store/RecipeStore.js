@@ -113,4 +113,4 @@ export class RecipeStore {
 }
 
 export const recipeStore = new RecipeStore(portalApi, router, routeStore, sidebarStore);
-export default createContext<RecipeStore>(recipeStore);
+export const recipeStoreContext = createContext<RecipeStore>(recipeStore);

@@ -3,7 +3,7 @@ import React, { Fragment, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import { ERROR_PAGE_NOT_FOUND } from "../../const/error";
-import RecipeStore from "../../store/RecipeStore";
+import { recipeStoreContext } from "../../store/RecipeStore";
 
 import DetailsHead from "../common/DetailsHead";
 import Detail from "../common/Detail";
@@ -18,7 +18,7 @@ import ErrorBox from "../error/ErrorBox";
  * @constructor
  */
 const RecipeDetailsPage = () => {
-    const recipeStore = useContext(RecipeStore);
+    const recipeStore = useContext(recipeStoreContext);
     const { t } = useTranslation();
     const details = recipeStore.currentRecipeDetails;
 

@@ -3,7 +3,7 @@ import React, { Fragment, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import { ERROR_PAGE_NOT_FOUND } from "../../const/error";
-import ItemStore from "../../store/ItemStore";
+import { itemStoreContext } from "../../store/ItemStore";
 
 import CopyTemplate from "../common/CopyTemplate";
 import Detail from "../common/Detail";
@@ -17,7 +17,7 @@ import ErrorBox from "../error/ErrorBox";
  * @constructor
  */
 const ItemDetailsPage = () => {
-    const itemStore = useContext(ItemStore);
+    const itemStore = useContext(itemStoreContext);
     const { t } = useTranslation();
     const item = itemStore.currentItem;
 

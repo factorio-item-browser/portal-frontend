@@ -270,4 +270,4 @@ export class SidebarStore {
 }
 
 export const sidebarStore = new SidebarStore(portalApi, router, routeStore, storageManager, tooltipStore);
-export default createContext<SidebarStore>(sidebarStore);
+export const sidebarStoreContext = createContext<SidebarStore>(sidebarStore);

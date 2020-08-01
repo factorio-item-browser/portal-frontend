@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React, { createRef, useContext } from "react";
 
-import RouteStore from "../../store/RouteStore";
+import { routeStoreContext } from "../../store/RouteStore";
 
 /**
  * The component creating a link to another route.
@@ -15,7 +15,7 @@ import RouteStore from "../../store/RouteStore";
  * @constructor
  */
 const Link = ({ route, params, children, ...props }, ref) => {
-    const routeStore = useContext(RouteStore);
+    const routeStore = useContext(routeStoreContext);
     const path = routeStore.buildPath(route, params);
 
     ref = ref || createRef();

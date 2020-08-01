@@ -173,4 +173,4 @@ class SettingsNewStore {
 }
 
 export const settingsNewStore = new SettingsNewStore(portalApi, router, routeStore);
-export default createContext<SettingsNewStore>(settingsNewStore);
+export const settingsNewStoreContext = createContext<SettingsNewStore>(settingsNewStore);

@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import Section from "../../../common/Section";
 import { useTranslation } from "react-i18next";
 import React, { useContext } from "react";
-import SettingsNewStore from "../../../../store/SettingsNewStore";
+import { settingsNewStoreContext } from "../../../../store/SettingsNewStore";
 import SaveGameFileInput from "../SaveGameFileInput";
 import { STATUS_ERROR, STATUS_INFO, STATUS_PENDING, STATUS_SUCCESS } from "../../../../helper/const";
 import Status from "../../../status/Status";
@@ -14,7 +14,7 @@ import Status from "../../../status/Status";
  */
 const SaveGameStep = () => {
     const { t } = useTranslation();
-    const settingsNewStore = useContext(SettingsNewStore);
+    const settingsNewStore = useContext(settingsNewStoreContext);
 
     const error = settingsNewStore.saveGameError;
     const isProcessing = settingsNewStore.isSaveGameProcessing;

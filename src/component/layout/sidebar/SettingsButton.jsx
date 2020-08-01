@@ -5,7 +5,7 @@ import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 
 import { ROUTE_SETTINGS } from "../../../const/route";
-import RouteStore from "../../../store/RouteStore";
+import { routeStoreContext } from "../../../store/RouteStore";
 
 import ButtonLink from "../../link/ButtonLink";
 
@@ -17,7 +17,7 @@ import "./SettingsButton.scss";
  * @constructor
  */
 const SettingsButton = () => {
-    const routeStore = useContext(RouteStore);
+    const routeStore = useContext(routeStoreContext);
     const { t } = useTranslation();
 
     return (

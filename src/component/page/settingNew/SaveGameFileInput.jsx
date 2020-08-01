@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 
-import SettingsNewStore from "../../../store/SettingsNewStore";
+import { settingsNewStoreContext } from "../../../store/SettingsNewStore";
 
 import "./SaveGameFileInput.scss";
 
@@ -15,7 +15,7 @@ import "./SaveGameFileInput.scss";
  */
 const SaveGameFileInput = () => {
     const { t } = useTranslation();
-    const settingsNewStore = useContext(SettingsNewStore);
+    const settingsNewStore = useContext(settingsNewStoreContext);
     const inputId = "savegame-file-input";
 
     return (

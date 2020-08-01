@@ -2,17 +2,17 @@ import { observer } from "mobx-react-lite";
 import Section from "../../../common/Section";
 import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import SettingsNewStore from "../../../../store/SettingsNewStore";
+import { settingsNewStoreContext } from "../../../../store/SettingsNewStore";
 import OptionSettingName from "../../setting/option/OptionSettingName";
 import OptionRecipeMode from "../../setting/option/OptionRecipeMode";
 import OptionLocale from "../../setting/option/OptionLocale";
 import OptionsList from "../../setting/option/OptionsList";
-import SettingsStore from "../../../../store/SettingsStore";
+import { settingsStoreContext } from "../../../../store/SettingsStore";
 
 const AdditionalOptionsStep = () => {
     const { t } = useTranslation();
-    const settingsStore = useContext(SettingsStore);
-    const settingsNewStore = useContext(SettingsNewStore);
+    const settingsStore = useContext(settingsStoreContext);
+    const settingsNewStore = useContext(settingsNewStoreContext);
 
     useEffect(() => {
         settingsNewStore.changeOptions({

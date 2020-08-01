@@ -9,7 +9,7 @@ import {
     ROUTE_SEARCH,
     ROUTE_SETTINGS,
 } from "../const/route";
-import RouteStore from "../store/RouteStore";
+import { routeStoreContext } from "../store/RouteStore";
 
 import Tooltip from "./common/Tooltip";
 import ErrorBoundary from "./error/ErrorBoundary";
@@ -45,7 +45,7 @@ const PAGE_BY_ROUTES = {
  * @constructor
  */
 const App = () => {
-    const routeStore = useContext(RouteStore);
+    const routeStore = useContext(routeStoreContext);
 
     useEffect(() => {
         (async () => {
