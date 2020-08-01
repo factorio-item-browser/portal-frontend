@@ -1,10 +1,9 @@
-import classNames from "classnames";
 import { faCheck, faExclamation, faInfo, faSpinner, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
-
 import { STATUS_ERROR, STATUS_INFO, STATUS_PENDING, STATUS_SUCCESS, STATUS_WARNING } from "../../helper/const";
 
 import "./Status.scss";

@@ -2,9 +2,7 @@ import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-
 import { LOCALES } from "../../../../helper/const";
-
 import Option from "./Option";
 
 /**

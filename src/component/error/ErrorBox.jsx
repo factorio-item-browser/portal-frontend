@@ -3,7 +3,6 @@ import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-
 import {
     ERROR_CLIENT_FAILURE,
     ERROR_PAGE_NOT_FOUND,

@@ -2,11 +2,9 @@ import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext } from "react";
 import { useMediaQuery } from "react-responsive";
-
 import { BREAKPOINT_LARGE } from "../../helper/const";
 import { routeStoreContext } from "../../store/RouteStore";
 import { sidebarStoreContext } from "../../store/SidebarStore";
-
 import PinnedEntityList from "./sidebar/PinnedEntityList";
 import SettingsButton from "./sidebar/SettingsButton";
 import SidebarCloseIcon from "./sidebar/SidebarCloseIcon";

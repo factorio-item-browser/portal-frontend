@@ -1,8 +1,11 @@
 // @flow
 
-import { createContext } from "react";
 import { action, computed, observable, runInAction } from "mobx";
-
+import { createContext } from "react";
+import { PortalApi, portalApi } from "../class/PortalApi";
+import { router, Router } from "../class/Router";
+import SaveGameReader from "../class/SaveGameReader";
+import { ROUTE_SETTINGS_NEW } from "../const/route";
 import {
     RECIPE_MODE_HYBRID,
     SETTING_STATUS_AVAILABLE,
@@ -10,13 +13,8 @@ import {
     SETTING_STATUS_PENDING,
     SETTING_STATUS_UNKNOWN,
 } from "../helper/const";
-import { ROUTE_SETTINGS_NEW } from "../const/route";
-
-import { RouteStore, routeStore } from "./RouteStore";
-import { PortalApi, portalApi } from "../class/PortalApi";
-import SaveGameReader from "../class/SaveGameReader";
 import type { SettingOptionsData, SettingStatusData } from "../type/transfer";
-import { router, Router } from "../class/Router";
+import { RouteStore, routeStore } from "./RouteStore";
 
 /**
  * The status making a setting valid for adding.

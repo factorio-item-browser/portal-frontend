@@ -1,13 +1,12 @@
+import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-
 import Icon from "../common/Icon";
 
 import "./Mod.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Builds the external link to the mod.

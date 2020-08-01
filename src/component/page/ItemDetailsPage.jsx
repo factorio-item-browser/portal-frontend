@@ -1,15 +1,13 @@
 import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-
 import { ERROR_PAGE_NOT_FOUND } from "../../const/error";
 import { itemStoreContext } from "../../store/ItemStore";
-
 import CopyTemplate from "../common/CopyTemplate";
 import Detail from "../common/Detail";
 import DetailsHead from "../common/DetailsHead";
-import ItemRecipesList from "./item/ItemRecipesList";
 import ErrorBox from "../error/ErrorBox";
+import ItemRecipesList from "./item/ItemRecipesList";
 
 /**
  * The component representing the item and fluid details page.

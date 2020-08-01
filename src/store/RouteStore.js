@@ -4,9 +4,10 @@ import { action, computed, observable, runInAction } from "mobx";
 import { createContext } from "react";
 import { getI18n } from "react-i18next";
 import { constants } from "router5";
-
+import CombinationId from "../class/CombinationId";
 import { PortalApi, portalApi, PortalApiError } from "../class/PortalApi";
-import { SETTING_STATUS_AVAILABLE, SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN } from "../helper/const";
+import { router, Router } from "../class/Router";
+import { StorageManager, storageManager } from "../class/StorageManager";
 import {
     ERROR_CLIENT_FAILURE,
     ERROR_INCOMPATIBLE_CLIENT,
@@ -14,9 +15,7 @@ import {
     ERROR_SERVICE_NOT_AVAILABLE,
 } from "../const/error";
 import { ROUTE_INDEX, ROUTE_SETTINGS, ROUTE_SETTINGS_NEW } from "../const/route";
-import { StorageManager, storageManager } from "../class/StorageManager";
-import CombinationId from "../class/CombinationId";
-import { router, Router } from "../class/Router";
+import { SETTING_STATUS_AVAILABLE, SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN } from "../helper/const";
 import type { InitData, SettingMetaData } from "../type/transfer";
 
 type InitHandler = (InitData) => void;

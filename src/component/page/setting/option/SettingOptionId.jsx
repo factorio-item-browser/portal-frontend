@@ -1,9 +1,8 @@
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
-
-import Option from "./Option";
 import { useTranslation } from "react-i18next";
+import Option from "./Option";
 
 /**
  * The component representing the settings as option.

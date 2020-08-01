@@ -1,16 +1,14 @@
 import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-
 import { ERROR_PAGE_NOT_FOUND } from "../../const/error";
 import { recipeStoreContext } from "../../store/RecipeStore";
-
-import DetailsHead from "../common/DetailsHead";
-import Detail from "../common/Detail";
 import CopyTemplate from "../common/CopyTemplate";
+import Detail from "../common/Detail";
+import DetailsHead from "../common/DetailsHead";
+import ErrorBox from "../error/ErrorBox";
 import RecipeDetails from "./recipe/RecipeDetails";
 import RecipeMachinesList from "./recipe/RecipeMachinesList";
-import ErrorBox from "../error/ErrorBox";
 
 /**
  * The component representing the details page of a recipe.

@@ -1,6 +1,6 @@
-import classNames from "classnames";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";

@@ -1,10 +1,9 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faSpinner, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
-
 import { BREAKPOINT_LARGE } from "../../../helper/const";
 import { routeStoreContext } from "../../../store/RouteStore";
 import { searchStoreContext } from "../../../store/SearchStore";

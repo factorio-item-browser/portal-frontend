@@ -1,8 +1,8 @@
 // @flow
 
-import CombinationId from "./CombinationId";
-import type { SidebarEntityData } from "../type/transfer";
 import { CACHE_LIFETIME } from "../helper/const";
+import type { SidebarEntityData } from "../type/transfer";
+import CombinationId from "./CombinationId";
 
 const KEY_SCRIPT_VERSION = "script-version";
 const KEY_SIDEBAR_ENTITIES = "sidebar-entities";

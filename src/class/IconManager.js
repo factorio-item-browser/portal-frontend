@@ -1,6 +1,6 @@
-import { portalApi } from "./PortalApi";
-import NamesByTypesSet from "./NamesByTypesSet";
 import { debounce } from "../helper/utils";
+import NamesByTypesSet from "./NamesByTypesSet";
+import { portalApi } from "./PortalApi";
 
 const NUMBER_OF_ICONS_PER_REQUEST = 128;
 

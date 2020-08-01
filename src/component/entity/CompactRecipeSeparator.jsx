@@ -1,13 +1,12 @@
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-
+import { CRAFTING_TIME_INFINITE } from "../../helper/const";
 import { formatCraftingTime } from "../../helper/format";
 
 import "./CompactRecipeSeparator.scss";
-import { CRAFTING_TIME_INFINITE } from "../../helper/const";
 
 /**
  * Renders the element for the crafting time.

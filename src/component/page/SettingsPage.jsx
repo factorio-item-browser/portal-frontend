@@ -3,22 +3,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-
-import { settingsStoreContext } from "../../store/SettingsStore";
 import { ROUTE_SETTINGS_NEW } from "../../const/route";
-
-import ButtonLink from "../link/ButtonLink";
-import ButtonList from "./setting/ButtonList";
+import { settingsStoreContext } from "../../store/SettingsStore";
+import ActionButton from "../common/ActionButton";
+import Section from "../common/Section";
 import EntityList from "../entity/EntityList";
 import Mod from "../entity/Mod";
+import ButtonLink from "../link/ButtonLink";
+import ModListSettingStatus from "../status/ModListSettingStatus";
+import ButtonList from "./setting/ButtonList";
 import OptionLocale from "./setting/option/OptionLocale";
 import OptionRecipeMode from "./setting/option/OptionRecipeMode";
-import OptionSettingId from "./setting/option/SettingOptionId";
 import OptionSettingName from "./setting/option/OptionSettingName";
 import OptionsList from "./setting/option/OptionsList";
-import Section from "../common/Section";
-import ModListSettingStatus from "../status/ModListSettingStatus";
-import ActionButton from "../common/ActionButton";
+import OptionSettingId from "./setting/option/SettingOptionId";
 
 /**
  * The component representing the settings page.

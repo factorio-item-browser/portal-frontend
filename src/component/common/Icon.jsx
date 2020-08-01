@@ -2,12 +2,10 @@ import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React, { createRef, useContext, useEffect } from "react";
-
 import { iconManager } from "../../class/IconManager";
 import { formatAmount } from "../../helper/format";
 import { itemStoreContext } from "../../store/ItemStore";
 import { tooltipStoreContext } from "../../store/TooltipStore";
-
 import EntityLink from "../link/EntityLink";
 
 import "./Icon.scss";

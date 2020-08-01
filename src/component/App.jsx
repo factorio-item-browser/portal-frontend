@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect } from "react";
-
 import {
     ROUTE_INDEX,
     ROUTE_ITEM_DETAILS,
@@ -10,14 +9,13 @@ import {
     ROUTE_SETTINGS,
 } from "../const/route";
 import { routeStoreContext } from "../store/RouteStore";
-
+import LoadingCircle from "./common/LoadingCircle";
 import Tooltip from "./common/Tooltip";
 import ErrorBoundary from "./error/ErrorBoundary";
 import FatalError from "./error/FatalError";
 import LoadingBox from "./error/LoadingBox";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
-import LoadingCircle from "./common/LoadingCircle";
 import Sidebar from "./layout/Sidebar";
 import IndexPage from "./page/IndexPage";
 import ItemDetailsPage from "./page/ItemDetailsPage";

@@ -3,15 +3,13 @@
 import { action, computed, observable } from "mobx";
 import { createContext } from "react";
 import { State } from "router5";
-
 import { PortalApi, portalApi } from "../class/PortalApi";
+import { router, Router } from "../class/Router";
+import { StorageManager, storageManager } from "../class/StorageManager";
 import { ROUTE_ITEM_DETAILS, ROUTE_RECIPE_DETAILS } from "../const/route";
-
+import type { InitData, SidebarEntityData, SidebarEntityType } from "../type/transfer";
 import { RouteStore, routeStore } from "./RouteStore";
 import { TooltipStore, tooltipStore } from "./TooltipStore";
-import { StorageManager, storageManager } from "../class/StorageManager";
-import type { InitData, SidebarEntityData, SidebarEntityType } from "../type/transfer";
-import { router, Router } from "../class/Router";
 
 /**
  * The store managing all the data of the sidebar.

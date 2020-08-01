@@ -2,13 +2,12 @@ import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { createRef, useContext, useEffect, useLayoutEffect } from "react";
-
+import { useMediaQuery } from "react-responsive";
+import { BREAKPOINT_MEDIUM } from "../../helper/const";
 import { tooltipStoreContext } from "../../store/TooltipStore";
 import Entity from "../entity/Entity";
 
 import "./Tooltip.scss";
-import { useMediaQuery } from "react-responsive";
-import { BREAKPOINT_MEDIUM } from "../../helper/const";
 
 /**
  * The margin used by the tooltip chevron.

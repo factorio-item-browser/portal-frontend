@@ -1,10 +1,9 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-
 import logo from "../../../image/logo.png";
+import IndexLink from "../../link/IndexLink";
 
 import "./HeaderLogo.scss";
-import IndexLink from "../../link/IndexLink";
 
 /**
  * The component representing the main header logo.

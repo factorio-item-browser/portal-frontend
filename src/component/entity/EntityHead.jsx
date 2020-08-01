@@ -2,9 +2,9 @@ import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 import Icon from "../common/Icon";
+import EntityLink from "../link/EntityLink";
 
 import "./EntityHead.scss";
-import EntityLink from "../link/EntityLink";
 
 /**
  * The component representing the head of an entity box.

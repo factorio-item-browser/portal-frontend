@@ -1,8 +1,8 @@
 // @flow
 
 import { action, computed, observable, runInAction } from "mobx";
-import { PortalApiError } from "./PortalApi";
 import type { ResultsData } from "../type/transfer";
+import { PortalApiError } from "./PortalApi";
 
 type DataFetcher<T> = (number) => Promise<T>;
 type ErrorHandler<T> = (PortalApiError) => T;

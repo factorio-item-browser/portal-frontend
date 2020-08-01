@@ -7,7 +7,6 @@ import {
     NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
     PORTAL_API_URL,
 } from "../helper/const";
-import { storageManager, StorageManager } from "./StorageManager";
 import type {
     EntityData,
     IconsStyleData,
@@ -25,6 +24,7 @@ import type {
     SettingStatusData,
     SidebarEntityData,
 } from "../type/transfer";
+import { storageManager, StorageManager } from "./StorageManager";
 
 type Parameters = { ... } | any[];
 

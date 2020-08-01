@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React, { createRef } from "react";
-
 import { selectText } from "../../helper/utils";
 
 import "./CopyTemplate.scss";

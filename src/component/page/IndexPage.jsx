@@ -3,10 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-
 import { indexStoreContext } from "../../store/IndexStore";
-import EntityList from "../entity/EntityList";
 import Entity from "../entity/Entity";
+import EntityList from "../entity/EntityList";
 
 import "./IndexPage.scss";
 

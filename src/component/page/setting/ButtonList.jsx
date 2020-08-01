@@ -1,9 +1,9 @@
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
+import * as PropTypes from "prop-types";
 import React from "react";
 
 import "./ButtonList.scss";
-import * as PropTypes from "prop-types";
 
 /**
  * THe component representing a simple list of buttons.

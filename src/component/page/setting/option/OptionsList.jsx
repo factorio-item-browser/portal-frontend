@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
+import * as PropTypes from "prop-types";
 import React from "react";
 
 import "./OptionsList.scss";
-import * as PropTypes from "prop-types";
 
 /**
  * The component representing the list of additional options to a setting.

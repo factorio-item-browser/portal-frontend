@@ -2,9 +2,7 @@
 
 import { action, computed, observable, runInAction } from "mobx";
 import { createContext } from "react";
-
 import { PortalApi, portalApi } from "../class/PortalApi";
-
 import { router, Router } from "../class/Router";
 import type { EntityData } from "../type/transfer";
 

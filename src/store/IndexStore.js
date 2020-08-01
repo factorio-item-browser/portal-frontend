@@ -2,12 +2,11 @@
 
 import { action, observable, runInAction } from "mobx";
 import { createContext } from "react";
-
 import { PortalApi, portalApi } from "../class/PortalApi";
+import { router, Router } from "../class/Router";
 import { ROUTE_INDEX } from "../const/route";
 import type { EntityData } from "../type/transfer";
 import { RouteStore, routeStore } from "./RouteStore";
-import { router, Router } from "../class/Router";
 
 /**
  * The store of the index page.

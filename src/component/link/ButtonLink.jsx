@@ -2,7 +2,6 @@ import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
-
 import Link from "./Link";
 
 import "../common/Button.scss";

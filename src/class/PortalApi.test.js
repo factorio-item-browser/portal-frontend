@@ -1,10 +1,10 @@
 // @flow
 
 import "isomorphic-fetch";
+import type { SettingCreateData, SettingOptionsData, SidebarEntityData } from "../type/transfer";
+import CombinationId from "./CombinationId";
 import { PortalApi } from "./PortalApi";
 import { storageManager } from "./StorageManager";
-import CombinationId from "./CombinationId";
-import type { SettingCreateData, SettingOptionsData, SidebarEntityData } from "../type/transfer";
 
 describe("PortalApi", (): void => {
     describe("endpoints", (): void => {

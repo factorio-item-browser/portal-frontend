@@ -1,11 +1,10 @@
-import { observer } from "mobx-react-lite";
 import classNames from "classnames";
+import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-
-import CompactRecipeSeparator from "./CompactRecipeSeparator";
 import Icon from "../common/Icon";
+import CompactRecipeSeparator from "./CompactRecipeSeparator";
 
 import "./CompactRecipe.scss";
 

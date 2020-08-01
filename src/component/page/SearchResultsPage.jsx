@@ -1,13 +1,11 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-
 import { searchStoreContext } from "../../store/SearchStore";
-
+import PaginatedListButton from "../common/PaginatedListButton";
 import Section from "../common/Section";
 import Entity from "../entity/Entity";
 import EntityList from "../entity/EntityList";
-import PaginatedListButton from "../common/PaginatedListButton";
 
 /**
  * The component representing the page listing search results.

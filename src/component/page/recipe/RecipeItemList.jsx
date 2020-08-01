@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
-
 import RecipeItem from "./RecipeItem";
 import RecipeItemTime from "./RecipeItemTime";
 

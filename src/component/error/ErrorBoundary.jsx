@@ -1,8 +1,6 @@
 import * as PropTypes from "prop-types";
 import React, { Component } from "react";
-
 import { ERROR_CLIENT_FAILURE } from "../../const/error";
-
 import FatalError from "./FatalError";
 
 /**

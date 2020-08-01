@@ -3,18 +3,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext, useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
-
-import { settingsNewStoreContext } from "../../store/SettingsNewStore";
 import { ROUTE_SETTINGS } from "../../const/route";
-
+import { settingsNewStoreContext } from "../../store/SettingsNewStore";
+import ActionButton from "../common/ActionButton";
+import Section from "../common/Section";
+import TextBox from "../common/TextBox";
 import ButtonLink from "../link/ButtonLink";
 import ButtonList from "./setting/ButtonList";
-import TextBox from "../common/TextBox";
-import ActionButton from "../common/ActionButton";
-import SaveGameStep from "./settingNew/step/SaveGameStep";
-import DataAvailabilityStep from "./settingNew/step/DataAvailabilityStep";
 import AdditionalOptionsStep from "./settingNew/step/AdditionalOptionsStep";
-import Section from "../common/Section";
+import DataAvailabilityStep from "./settingNew/step/DataAvailabilityStep";
+import SaveGameStep from "./settingNew/step/SaveGameStep";
 
 /**
  * The component representing the page for creating a new setting.

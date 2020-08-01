@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
-
 import Icon from "./Icon";
 
 import "./DetailsHead.scss";

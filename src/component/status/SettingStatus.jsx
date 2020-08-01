@@ -2,7 +2,6 @@ import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-
 import {
     SETTING_STATUS_AVAILABLE,
     SETTING_STATUS_ERRORED,
@@ -14,7 +13,6 @@ import {
     STATUS_SUCCESS,
     STATUS_WARNING,
 } from "../../helper/const";
-
 import Status from "./Status";
 
 /**

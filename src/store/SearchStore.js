@@ -3,15 +3,13 @@
 import { action, observable, runInAction } from "mobx";
 import { createContext } from "react";
 import { State } from "router5";
-
 import PaginatedList from "../class/PaginatedList";
 import { PortalApi, portalApi, PortalApiError } from "../class/PortalApi";
+import { router, Router } from "../class/Router";
 import { ROUTE_SEARCH } from "../const/route";
 import { debounce } from "../helper/utils";
 import type { EntityData, SearchResultsData } from "../type/transfer";
-
 import { RouteStore, routeStore } from "./RouteStore";
-import { router, Router } from "../class/Router";
 
 const emptySearchResultsData: SearchResultsData = {
     query: "",

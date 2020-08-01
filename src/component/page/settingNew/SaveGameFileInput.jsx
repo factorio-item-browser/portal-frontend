@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-
 import { settingsNewStoreContext } from "../../../store/SettingsNewStore";
 
 import "./SaveGameFileInput.scss";

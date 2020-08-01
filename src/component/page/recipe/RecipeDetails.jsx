@@ -4,7 +4,6 @@ import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
-
 import { BREAKPOINT_MEDIUM } from "../../../helper/const";
 import RecipeItemList from "./RecipeItemList";
 import RecipeItemSeparator from "./RecipeItemSeparator";

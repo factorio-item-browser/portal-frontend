@@ -2,7 +2,6 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
-
 import { searchStoreContext } from "../../../store/SearchStore";
 
 import "./HeaderIcon.scss";

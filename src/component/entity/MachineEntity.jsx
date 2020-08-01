@@ -2,12 +2,10 @@ import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React, { createRef, useContext } from "react";
 import { useTranslation } from "react-i18next";
-
 import { formatCraftingSpeed, formatEnergyUsage } from "../../helper/format";
 import { tooltipStoreContext } from "../../store/TooltipStore";
-import EntityLink from "../link/EntityLink";
 import Icon from "../common/Icon";
-
+import EntityLink from "../link/EntityLink";
 import MachineDetail from "./MachineDetail";
 
 import "./MachineEntity.scss";

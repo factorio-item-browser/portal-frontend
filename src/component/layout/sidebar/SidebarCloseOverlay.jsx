@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
-
 import { sidebarStoreContext } from "../../../store/SidebarStore";
 
 import "./SidebarCloseOverlay.scss";

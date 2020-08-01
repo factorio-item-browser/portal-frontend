@@ -1,9 +1,8 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCogs } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-
 import { ROUTE_SETTINGS } from "../../../const/route";
 import { routeStoreContext } from "../../../store/RouteStore";
 import Link from "../../link/Link";

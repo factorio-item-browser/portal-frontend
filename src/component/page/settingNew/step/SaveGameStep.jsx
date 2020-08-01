@@ -1,11 +1,11 @@
 import { observer } from "mobx-react-lite";
-import Section from "../../../common/Section";
-import { useTranslation } from "react-i18next";
 import React, { useContext } from "react";
-import { settingsNewStoreContext } from "../../../../store/SettingsNewStore";
-import SaveGameFileInput from "../SaveGameFileInput";
+import { useTranslation } from "react-i18next";
 import { STATUS_ERROR, STATUS_INFO, STATUS_PENDING, STATUS_SUCCESS } from "../../../../helper/const";
+import { settingsNewStoreContext } from "../../../../store/SettingsNewStore";
+import Section from "../../../common/Section";
 import Status from "../../../status/Status";
+import SaveGameFileInput from "../SaveGameFileInput";
 
 /**
  * The step for selecting the save game to read the mod lsit from.

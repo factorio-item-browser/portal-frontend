@@ -2,15 +2,14 @@
 
 import { action, computed, observable, runInAction } from "mobx";
 import { createContext } from "react";
-
+import CombinationId from "../class/CombinationId";
 import { IconManager, iconManager } from "../class/IconManager";
 import { PortalApi, portalApi } from "../class/PortalApi";
-import { RECIPE_MODE_HYBRID } from "../helper/const";
-import { RouteStore, routeStore } from "./RouteStore";
-import CombinationId from "../class/CombinationId";
-import { ROUTE_SETTINGS } from "../const/route";
-import type { SettingDetailsData, SettingMetaData, SettingOptionsData } from "../type/transfer";
 import { router, Router } from "../class/Router";
+import { ROUTE_SETTINGS } from "../const/route";
+import { RECIPE_MODE_HYBRID } from "../helper/const";
+import type { SettingDetailsData, SettingMetaData, SettingOptionsData } from "../type/transfer";
+import { RouteStore, routeStore } from "./RouteStore";
 
 /**
  * The store managing the settings and the settings page.

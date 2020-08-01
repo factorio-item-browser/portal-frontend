@@ -2,12 +2,10 @@ import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-
 import { NUMBER_OF_RECIPES_PER_ENTITY } from "../../helper/const";
 import EntityLink from "../link/EntityLink";
-
-import EntityHead from "./EntityHead";
 import CompactRecipe from "./CompactRecipe";
+import EntityHead from "./EntityHead";
 
 import "./Entity.scss";
 

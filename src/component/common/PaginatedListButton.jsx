@@ -2,9 +2,7 @@ import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React, { createRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-
 import { debounce } from "../../helper/utils";
-
 import ActionButton from "./ActionButton";
 
 /**

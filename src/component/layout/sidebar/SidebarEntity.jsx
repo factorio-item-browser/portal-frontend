@@ -1,15 +1,14 @@
-import classNames from "classnames";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbtack, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React, { createRef, useContext } from "react";
 import { useTranslation } from "react-i18next";
-
-import Icon from "../../common/Icon";
 import { sidebarStoreContext } from "../../../store/SidebarStore";
-import EntityLink from "../../link/EntityLink";
 import { tooltipStoreContext } from "../../../store/TooltipStore";
+import Icon from "../../common/Icon";
+import EntityLink from "../../link/EntityLink";
 
 import "./SidebarEntity.scss";
 

@@ -1,10 +1,8 @@
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React, { createRef, useContext } from "react";
-
 import { formatAmount } from "../../../helper/format";
 import { tooltipStoreContext } from "../../../store/TooltipStore";
-
 import Icon from "../../common/Icon";
 import EntityLink from "../../link/EntityLink";
 

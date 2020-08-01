@@ -1,16 +1,14 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { useMediaQuery } from "react-responsive";
-
 import { BREAKPOINT_LARGE } from "../../helper/const";
 import { routeStoreContext } from "../../store/RouteStore";
 import { searchStoreContext } from "../../store/SearchStore";
-
 import HeaderLogo from "./header/HeaderLogo";
 import HeaderSearch from "./header/HeaderSearch";
-import SidebarIcon from "./header/SidebarIcon";
 import SearchIcon from "./header/SearchIcon";
 import SettingsLink from "./header/SettingsLink";
+import SidebarIcon from "./header/SidebarIcon";
 
 import "./Header.scss";
 
