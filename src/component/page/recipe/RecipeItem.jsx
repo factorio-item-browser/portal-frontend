@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React, { createRef, useContext } from "react";
-import { formatAmount } from "../../../helper/format";
+import { Formatter } from "../../../class/Formatter";
 import { tooltipStoreContext } from "../../../store/TooltipStore";
 import Icon from "../../common/Icon";
 import EntityLink from "../../link/EntityLink";
@@ -30,7 +30,7 @@ const RecipeItem = ({ item }) => {
                 tooltipStore.hideTooltip();
             }}
         >
-            <div className="amount">{formatAmount(item.amount)}</div>
+            <div className="amount">{Formatter.formatAmount(item.amount)}</div>
             <Icon type={item.type} name={item.name} transparent={true} ref={iconRef} />
             <div className="label">{item.label}</div>
         </EntityLink>
