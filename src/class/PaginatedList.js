@@ -13,7 +13,7 @@ type ErrorHandler<T> = (PortalApiError) => T;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class PaginatedList<TEntity, TData: ResultsData<TEntity>> {
+class PaginatedList<TEntity, TData: { ...ResultsData<TEntity>, ... }> {
     @observable
     results: TEntity[] = [];
 

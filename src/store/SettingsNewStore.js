@@ -1,3 +1,5 @@
+// @flow
+
 import { createContext } from "react";
 import { action, computed, observable, runInAction } from "mobx";
 
@@ -10,9 +12,11 @@ import {
 } from "../helper/const";
 import { ROUTE_SETTINGS_NEW } from "../const/route";
 
-import { routeStore } from "./RouteStore";
-import { portalApi } from "../class/PortalApi";
+import { RouteStore, routeStore } from "./RouteStore";
+import { PortalApi, portalApi } from "../class/PortalApi";
 import SaveGameReader from "../class/SaveGameReader";
+import type { SettingOptionsData, SettingStatusData } from "../type/transfer";
+import { router, Router } from "../class/Router";
 
 /**
  * The status making a setting valid for adding.
@@ -25,131 +29,79 @@ const VALID_SETTING_STATUS = [SETTING_STATUS_AVAILABLE, SETTING_STATUS_PENDING, 
  */
 class SettingsNewStore {
     /**
-     * The portal API instance.
-     * @type {PortalApi}
      * @private
      */
-    _portalApi;
+    _portalApi: PortalApi;
 
     /**
-     * The route store.
-     * @type {RouteStore}
      * @private
      */
-    _routeStore;
+    _router: Router;
 
     /**
-     * Whether a savegame is currently processed.
-     * @type {boolean}
+     * @private
      */
-    @observable
-    isSaveGameProcessing = false;
+    _routeStore: RouteStore;
 
-    /**
-     * The mod names read from the save game.
-     * @type {string[]}
-     */
     @observable
-    saveGameModNames = [];
+    isSaveGameProcessing: boolean = false;
 
-    /**
-     * The error which occurred during processing a save game.
-     * @type {string}
-     */
     @observable
-    saveGameError = "";
+    saveGameModNames: string[] = [];
 
-    /**
-     * The status of the new setting.
-     * @type {?SettingStatusData}
-     */
     @observable
-    settingStatus = null;
+    saveGameError: string = "";
 
-    /**
-     * The options to use for the new setting.
-     * @type {SettingOptionsData}
-     */
     @observable
-    newOptions = {
+    settingStatus: ?SettingStatusData = null;
+
+    @observable
+    newOptions: SettingOptionsData = {
         name: "",
         recipeMode: RECIPE_MODE_HYBRID,
         locale: "en",
     };
 
-    /**
-     * Whether we are currently saving the new setting.
-     * @type {boolean}
-     */
     @observable
-    isSavingNewSetting = false;
+    isSavingNewSetting: boolean = false;
 
-    /**
-     * Initializes the store.
-     * @param {PortalApi} portalApi
-     * @param {RouteStore} routeStore
-     */
-    constructor(portalApi, routeStore) {
+    constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore) {
         this._portalApi = portalApi;
+        this._router = router;
         this._routeStore = routeStore;
 
-        this._routeStore.addRoute(ROUTE_SETTINGS_NEW, "/settings/new", this._handleRouteChange.bind(this));
+        router.addRoute(ROUTE_SETTINGS_NEW, "/settings/new", this._handleRouteChange.bind(this));
     }
 
-    /**
-     * Handles the change of the route.
-     * @returns {Promise<void>}
-     * @private
-     */
     @action
-    async _handleRouteChange() {
+    async _handleRouteChange(): Promise<void> {
         this.saveGameModNames = [];
         this.saveGameError = "";
         this.settingStatus = null;
     }
 
-    /**
-     * Returns whether the save game step is currently shown.
-     * @return {boolean}
-     */
     @computed
-    get showSaveGameStep() {
+    get showSaveGameStep(): boolean {
         return true;
     }
 
-    /**
-     * Returns whether the data availability step is currently shown.
-     * @return {boolean}
-     */
     @computed
-    get showDataAvailabilityStep() {
+    get showDataAvailabilityStep(): boolean {
         return this.saveGameModNames.length > 0 && this.settingStatus !== null;
     }
 
-    /**
-     * Returns whether the options step is currently visible.
-     * @return {boolean}
-     */
     @computed
-    get showAdditionalOptionsStep() {
+    get showAdditionalOptionsStep(): boolean {
         return this.showDataAvailabilityStep && VALID_SETTING_STATUS.indexOf(this.settingStatus?.status) !== -1;
     }
 
-    /**
-     * Returns whether the save button is currently visible.
-     * @return {boolean}
-     */
     @computed
-    get showSaveButton() {
+    get showSaveButton(): boolean {
         return !!this.showAdditionalOptionsStep;
     }
 
-    /**
-     * Processes the save game.
-     * @param {File} file
-     */
     @action
-    async processSaveGame(file) {
+    async processSaveGame(file: File): Promise<void> {
         this.isSaveGameProcessing = true;
         this.saveGameModNames = [];
         this.saveGameError = "";
@@ -175,13 +127,10 @@ class SettingsNewStore {
     }
 
     /**
-     * Requests the status of the setting consisting of the specified mod names.
-     * @param {string[]} modNames
-     * @return {Promise<void>}
      * @private
      */
     @action
-    async _requestSettingStatus(modNames) {
+    async _requestSettingStatus(modNames: string[]): Promise<void> {
         this.settingStatus = {
             status: SETTING_STATUS_LOADING,
         };
@@ -196,12 +145,8 @@ class SettingsNewStore {
         }
     }
 
-    /**
-     * Changes the specified options.
-     * @param {Partial<SettingOptionsData>} options
-     */
     @action
-    changeOptions(options) {
+    changeOptions(options: $Shape<SettingOptionsData>): void {
         this.newOptions = {
             ...this.newOptions,
             ...options,
@@ -210,10 +155,9 @@ class SettingsNewStore {
 
     /**
      * Saves the new settings, pushing them to the server and redirecting afterwards.
-     * @return {Promise<void>}
      */
     @action
-    async saveNewSetting() {
+    async saveNewSetting(): Promise<void> {
         this.isSavingNewSetting = true;
         try {
             const settingData = {
@@ -221,12 +165,12 @@ class SettingsNewStore {
                 modNames: this.saveGameModNames,
             };
             await this._portalApi.createSetting(settingData);
-            this._routeStore.redirectToIndex(/* @todo need combinationId */);
+            this._router.redirectToIndex(/* @todo need combinationId */);
         } catch (e) {
             this._routeStore.handlePortalApiError(e);
         }
     }
 }
 
-export const settingsNewStore = new SettingsNewStore(portalApi, routeStore);
-export default createContext(settingsNewStore);
+export const settingsNewStore = new SettingsNewStore(portalApi, router, routeStore);
+export default createContext<SettingsNewStore>(settingsNewStore);

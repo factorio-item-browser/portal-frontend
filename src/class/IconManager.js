@@ -10,7 +10,7 @@ const NUMBER_OF_ICONS_PER_REQUEST = 128;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class IconManager {
+export class IconManager {
     /**
      * The portal API instance.
      * @type {PortalApi}

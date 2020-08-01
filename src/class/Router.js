@@ -135,8 +135,11 @@ export class Router {
      * Redirects to the index page, to e.g. apply a new setting. This is a hard refresh of the page.
      */
     redirectToIndex(combinationId?: CombinationId): void {
-        const params = combinationId ? { [PARAM_COMBINATION_ID]: combinationId.toShort() } : undefined;
-        location.assign(this.buildPath(ROUTE_INDEX, params));
+        if (combinationId) {
+            location.assign(this.buildPath(ROUTE_INDEX, { [PARAM_COMBINATION_ID]: combinationId.toShort() }));
+        } else {
+            location.assign(this.buildPath(ROUTE_INDEX + SHORT_ROUTE_SUFFIX));
+        }
     }
 
     /**
