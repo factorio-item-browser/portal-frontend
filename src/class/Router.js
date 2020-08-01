@@ -76,10 +76,7 @@ export class Router {
      */
     _handleChangeEvent(state: SubscribeState): void {
         this._currentRoute = this._unifyRouteName(state.route.name);
-
-        for (const handler of this._globalChangeHandlers) {
-            handler(state.route);
-        }
+        this._executeGlobalChangeHandlers(state.route);
     }
 
     /**
@@ -91,6 +88,12 @@ export class Router {
         }
 
         return name;
+    }
+
+    _executeGlobalChangeHandlers(state: State): void {
+        for (const handler of this._globalChangeHandlers) {
+            handler(state);
+        }
     }
 
     start(combinationId: CombinationId): void {
@@ -121,6 +124,13 @@ export class Router {
         if (changeHandler) {
             this._changeHandlers.set(name, changeHandler);
         }
+    }
+
+    isActive(route: string, params?: Params): boolean {
+        return (
+            this._router.isActive(route, this._prepareParams(params)) ||
+            this._router.isActive(route + SHORT_ROUTE_SUFFIX, params)
+        );
     }
 
     navigateTo(route: string, params?: Params): void {

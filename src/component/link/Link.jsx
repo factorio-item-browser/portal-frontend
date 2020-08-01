@@ -25,11 +25,12 @@ const Link = ({ route, params, children, ...props }, ref) => {
             href={path}
             {...props}
             onClick={(event) => {
-                routeStore.showLoadingCircle(ref);
-
                 event.preventDefault();
                 event.stopPropagation();
-                routeStore.router.navigateTo(route, params);
+                if (!routeStore.router.isActive(route, params)) {
+                    routeStore.showLoadingCircle(ref);
+                    routeStore.router.navigateTo(route, params);
+                }
                 return false;
             }}
         >

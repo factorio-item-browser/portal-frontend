@@ -85,7 +85,7 @@ export class RouteStore {
         this._router = router;
         this._storageManager = storageManager;
 
-        this._router.addGlobalChangeHandler(this._handleRouteChange.bind(this));
+        this._router.addGlobalChangeHandler(this._handleGlobalRouteChange.bind(this));
         this.addInitHandler(this._initializeSession.bind(this));
     }
 
@@ -93,8 +93,9 @@ export class RouteStore {
      * @private
      */
     @action
-    _handleRouteChange() {
+    _handleGlobalRouteChange() {
         this.currentRoute = this._router.currentRoute;
+        this.loadingCircleTarget = null;
         window.scrollTo(0, 0);
     }
 
