@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { CRAFTING_TIME_INFINITE } from "../../../helper/const";
+import { CRAFTING_TIME_INFINITE } from "../../../const/config";
 import { formatCraftingTime } from "../../../helper/format";
 
 import "./RecipeItem.scss";

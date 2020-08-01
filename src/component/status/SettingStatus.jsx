@@ -8,11 +8,8 @@ import {
     SETTING_STATUS_LOADING,
     SETTING_STATUS_PENDING,
     SETTING_STATUS_UNKNOWN,
-    STATUS_ERROR,
-    STATUS_PENDING,
-    STATUS_SUCCESS,
-    STATUS_WARNING,
-} from "../../helper/const";
+} from "../../const/settingStatus";
+import { STATUS_ERROR, STATUS_PENDING, STATUS_SUCCESS, STATUS_WARNING } from "../../const/status";
 import Status from "./Status";
 
 /**

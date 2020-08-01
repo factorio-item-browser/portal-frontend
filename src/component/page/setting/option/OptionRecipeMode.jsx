@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { RECIPE_MODES } from "../../../../helper/const";
+import { RECIPE_MODES } from "../../../../const/recipeMode";
 import Option from "./Option";
 
 /**

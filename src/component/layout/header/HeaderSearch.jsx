@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
-import { BREAKPOINT_LARGE } from "../../../helper/const";
+import { BREAKPOINT_LARGE } from "../../../const/breakpoint";
 import { routeStoreContext } from "../../../store/RouteStore";
 import { searchStoreContext } from "../../../store/SearchStore";
 

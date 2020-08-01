@@ -16,7 +16,7 @@ import Link from "./Link";
  */
 const EntityLink = ({ type, name, children, ...props }, ref) => {
     const routeStore = useContext(routeStoreContext);
-    const { route, params } = routeStore.getRouteAndParamsForEntity(type, name);
+    const { route, params } = routeStore.router.getRouteAndParamsForEntity(type, name);
 
     return (
         <Link route={route} params={params} {...props} ref={ref}>

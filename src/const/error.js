@@ -1,3 +1,5 @@
+// @flow
+
 export const ERROR_CLIENT_FAILURE = "client-failure";
 export const ERROR_INCOMPATIBLE_CLIENT = "incompatible-client";
 export const ERROR_PAGE_NOT_FOUND = "page-not-found";

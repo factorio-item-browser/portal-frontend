@@ -2,13 +2,8 @@ import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import {
-    SETTING_STATUS_ERRORED,
-    SETTING_STATUS_PENDING,
-    SETTING_STATUS_UNKNOWN,
-    STATUS_ERROR,
-    STATUS_WARNING,
-} from "../../helper/const";
+import { SETTING_STATUS_ERRORED, SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN } from "../../const/settingStatus";
+import { STATUS_ERROR, STATUS_WARNING } from "../../const/status";
 import Status from "./Status";
 
 import "./ModListSettingStatus.scss";

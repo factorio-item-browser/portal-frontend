@@ -6,8 +6,8 @@ import CombinationId from "../class/CombinationId";
 import { IconManager, iconManager } from "../class/IconManager";
 import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
+import { RECIPE_MODE_HYBRID } from "../const/recipeMode";
 import { ROUTE_SETTINGS } from "../const/route";
-import { RECIPE_MODE_HYBRID } from "../helper/const";
 import type { SettingDetailsData, SettingMetaData, SettingOptionsData } from "../type/transfer";
 import { RouteStore, routeStore } from "./RouteStore";
 

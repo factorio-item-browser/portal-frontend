@@ -15,7 +15,7 @@ import { routeStoreContext } from "../../store/RouteStore";
  */
 const Link = ({ route, params, children, ...props }, ref) => {
     const routeStore = useContext(routeStoreContext);
-    const path = routeStore.buildPath(route, params);
+    const path = routeStore.router.buildPath(route, params);
 
     ref = ref || createRef();
 
@@ -29,7 +29,7 @@ const Link = ({ route, params, children, ...props }, ref) => {
 
                 event.preventDefault();
                 event.stopPropagation();
-                routeStore.navigateTo(route, params);
+                routeStore.router.navigateTo(route, params);
                 return false;
             }}
         >

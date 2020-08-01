@@ -5,14 +5,14 @@ import { createContext } from "react";
 import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import SaveGameReader from "../class/SaveGameReader";
+import { RECIPE_MODE_HYBRID } from "../const/recipeMode";
 import { ROUTE_SETTINGS_NEW } from "../const/route";
 import {
-    RECIPE_MODE_HYBRID,
     SETTING_STATUS_AVAILABLE,
     SETTING_STATUS_LOADING,
     SETTING_STATUS_PENDING,
     SETTING_STATUS_UNKNOWN,
-} from "../helper/const";
+} from "../const/settingStatus";
 import type { SettingOptionsData, SettingStatusData } from "../type/transfer";
 import { RouteStore, routeStore } from "./RouteStore";
 

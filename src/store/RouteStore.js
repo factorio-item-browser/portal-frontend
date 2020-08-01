@@ -15,7 +15,7 @@ import {
     ERROR_SERVICE_NOT_AVAILABLE,
 } from "../const/error";
 import { ROUTE_INDEX, ROUTE_SETTINGS, ROUTE_SETTINGS_NEW } from "../const/route";
-import { SETTING_STATUS_AVAILABLE, SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN } from "../helper/const";
+import { SETTING_STATUS_AVAILABLE, SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN } from "../const/settingStatus";
 import type { InitData, SettingMetaData } from "../type/transfer";
 
 type InitHandler = (InitData) => void;
@@ -113,13 +113,6 @@ export class RouteStore {
     }
 
     /**
-     * @deprecated
-     */
-    addRoute(name: string, path: string, changeHandler: Function) {
-        this._router.addRoute(name, path, changeHandler);
-    }
-
-    /**
      * Adds a handler for initializing the session.
      */
     addInitHandler(handler: InitHandler): void {
@@ -128,13 +121,6 @@ export class RouteStore {
 
     get router(): Router {
         return this._router;
-    }
-
-    /**
-     * @deprecated
-     */
-    addRouteChangeHandler(handler: Function) {
-        this._router.addGlobalChangeHandler(handler);
     }
 
     /**
@@ -228,34 +214,6 @@ export class RouteStore {
         }
 
         console.log(error);
-    }
-
-    /**
-     * @deprecated
-     */
-    navigateTo(route: string, params: any): void {
-        this._router.navigateTo(route, params);
-    }
-
-    /**
-     * @deprecated
-     */
-    buildPath(route: string, params: any): string {
-        return this._router.buildPath(route, params);
-    }
-
-    /**
-     * @deprecated
-     */
-    redirectToIndex(combinationId?: CombinationId): void {
-        this._router.redirectToIndex(combinationId);
-    }
-
-    /**
-     * @deprecated
-     */
-    getRouteAndParamsForEntity(type: string, name: string) {
-        return this._router.getRouteAndParamsForEntity(type, name);
     }
 
     /**

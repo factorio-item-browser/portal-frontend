@@ -1,6 +1,6 @@
 // @flow
 
-import { CACHE_LIFETIME } from "../helper/const";
+import { CACHE_LIFETIME } from "../const/config";
 import type { SidebarEntityData } from "../type/transfer";
 import CombinationId from "./CombinationId";
 

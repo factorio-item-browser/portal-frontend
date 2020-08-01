@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { createRef, useContext, useEffect, useLayoutEffect } from "react";
 import { useMediaQuery } from "react-responsive";
-import { BREAKPOINT_MEDIUM } from "../../helper/const";
+import { BREAKPOINT_MEDIUM } from "../../const/breakpoint";
 import { tooltipStoreContext } from "../../store/TooltipStore";
 import Entity from "../entity/Entity";
 

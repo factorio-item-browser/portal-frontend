@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
-import { CRAFTING_TIME_INFINITE } from "../../helper/const";
+import { CRAFTING_TIME_INFINITE } from "../../const/config";
 import { formatCraftingTime } from "../../helper/format";
 
 import "./CompactRecipeSeparator.scss";

@@ -1,12 +1,12 @@
 // @flow
 
 import {
-    NUMBER_OF_MACHINES_PER_PAGE,
     NUMBER_OF_ITEM_RECIPES_PER_PAGE,
+    NUMBER_OF_MACHINES_PER_PAGE,
     NUMBER_OF_RANDOM_ITEMS,
     NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
     PORTAL_API_URL,
-} from "../helper/const";
+} from "../const/config";
 import type {
     EntityData,
     IconsStyleData,

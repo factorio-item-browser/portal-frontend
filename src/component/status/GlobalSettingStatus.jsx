@@ -1,14 +1,9 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import {
-    INTERVAL_CHECK_SETTING_STATUS,
-    SETTING_STATUS_ERRORED,
-    SETTING_STATUS_PENDING,
-    SETTING_STATUS_UNKNOWN,
-    STATUS_ERROR,
-    STATUS_WARNING,
-} from "../../helper/const";
+import { INTERVAL_CHECK_SETTING_STATUS } from "../../const/config";
+import { SETTING_STATUS_ERRORED, SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN } from "../../const/settingStatus";
+import { STATUS_ERROR, STATUS_WARNING } from "../../const/status";
 import { routeStoreContext } from "../../store/RouteStore";
 import Status from "./Status";
 

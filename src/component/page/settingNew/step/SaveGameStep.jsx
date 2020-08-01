@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { STATUS_ERROR, STATUS_INFO, STATUS_PENDING, STATUS_SUCCESS } from "../../../../helper/const";
+import { STATUS_ERROR, STATUS_INFO, STATUS_PENDING, STATUS_SUCCESS } from "../../../../const/status";
 import { settingsNewStoreContext } from "../../../../store/SettingsNewStore";
 import Section from "../../../common/Section";
 import Status from "../../../status/Status";
