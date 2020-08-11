@@ -21,6 +21,8 @@ import type { InitData, SettingMetaData } from "../type/transfer";
 type InitHandler = (InitData) => void;
 type LoadingRef = { current: ?HTMLElement };
 
+const REGEX_PATH_COMBINATION_ID = /^\/([0-9a-zA-Z]{22})(\/|$)/;
+
 /**
  * The store handling the pages, including routing between them.
  */
@@ -147,6 +149,7 @@ export class RouteStore {
      * @returns {Promise<void>}
      */
     async initializeSession(): Promise<void> {
+        this._detectInitialCombinationId();
         try {
             const initData = await portalApi.initializeSession();
             if (this._hasCurrentScriptVersion(initData.scriptVersion)) {
@@ -165,6 +168,16 @@ export class RouteStore {
             }
         } catch (e) {
             this.handlePortalApiError(e);
+        }
+    }
+
+    /**
+     * @private
+     */
+    _detectInitialCombinationId(): void {
+        const match = window.location.pathname.match(REGEX_PATH_COMBINATION_ID);
+        if (match && match[1]) {
+            this._storageManager.combinationId = CombinationId.fromShort(match[1]);
         }
     }
 
