@@ -1,10 +1,11 @@
 # Changelog
 
-## Unreleased
+## 1.1.2 - 2020-08-14
 
 ### Changed
 
 - Image of broken machine for fatal error messages.
+- Some wordings when adding a setting to match the now released Factorio 1.0 version.
 
 ## 1.1.1 - 2020-06-17
 

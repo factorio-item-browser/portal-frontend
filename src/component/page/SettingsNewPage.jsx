@@ -52,7 +52,6 @@ const SettingsNewPage = () => {
                             .
                         </Trans>
                     </p>
-                    <p>{t("settings-new.explanation.description-4")}</p>
                 </TextBox>
             </Section>
 
