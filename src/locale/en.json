@@ -154,8 +154,7 @@
         "explanation": {
             "description-1": "To add a new setting, you have to specify your savegame file. This file contains a list of mods you are currently using. If the data to these mods is not yet available, the Factorio Item Browser will automatically export the data from the game, and add it to the website. This process will take about 15 minutes on average, but may take longer depending on the server load.",
             "description-2": "For a default installation you find your savegames at the following location:",
-            "description-3": "Please keep in mind that Factorio as well as all mods must be up-to-date. If either is outdated, the data export may be inaccurate or may fail altogether. Also, all mods must be available on the <1>Factorio mod portal</1>.",
-            "description-4": "Only the experimental version 0.18 of Factorio is supported. If you are still playing Factorio 0.17, data cannot be made available for you. Sorry."
+            "description-3": "Please keep in mind that Factorio as well as all mods must be up-to-date. If either is outdated, the data export may be inaccurate or may fail altogether. Also, all mods must be available on the <1>Factorio mod portal</1>."
         },
         "processing-savegame": "Processing your savegame...",
         "save-new-setting": "Save new setting",
@@ -166,7 +165,7 @@
             },
             "unsupported-version": {
                 "headline": "The savegame is not supported.",
-                "description": "The version of the savegame is too old and not supported by the Factorio Item Browser. Please use a savegame from Factorio 0.18 or later."
+                "description": "The savegame is from the alpha versions of Factorio, which are not supported by the Factorio Item Browser. Please select a savegame from Factorio 1.0 or newer."
             }
         },
         "savegame-modlist": {
@@ -178,7 +177,7 @@
             "description": "The selected savegame gets processed directly in your browser and only the extracted list of mods is send through the internet. The savegame itself will not leave your system."
         },
         "saving-new-setting": "Saving new setting...",
-        "select-savegame-file": "Select your savegame from Factorio 0.18",
+        "select-savegame-file": "Select your Factorio savegame",
         "step": {
             "additional-options": "3. Additional options",
             "data-availability": "2. Data availability",
