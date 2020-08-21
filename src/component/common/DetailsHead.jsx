@@ -1,20 +1,23 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
 import Icon from "./Icon";
 
 import "./DetailsHead.scss";
 
+type Props = {
+    type: string,
+    name: string,
+    title: string,
+    children?: React$Node,
+};
+
 /**
  * The component representing the head of a details page.
- * @param {string} type
- * @param {string} name
- * @param {string} title
- * @param {ReactDOM} [children]
- * @returns {ReactDOM}
  * @constructor
  */
-const DetailsHead = ({ type, name, title, children }) => {
+const DetailsHead = ({ type, name, title, children }: Props): React$Node => {
     return (
         <div className="details-head">
             <div className="head">
@@ -26,11 +29,4 @@ const DetailsHead = ({ type, name, title, children }) => {
     );
 };
 
-DetailsHead.propTypes = {
-    type: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    children: PropTypes.node,
-};
-
-export default observer(DetailsHead);
+export default (observer(DetailsHead): typeof DetailsHead);

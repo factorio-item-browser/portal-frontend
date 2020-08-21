@@ -11,5 +11,10 @@ flow-typed
 esproposal.decorators=ignore
 esproposal.optional_chaining=enable
 exact_by_default=true
+module.file_ext=.js
+module.file_ext=.json
+module.file_ext=.jsx
+module.file_ext=.scss
+module.name_mapper.extension='scss' -> 'empty/object'
 
 [strict]

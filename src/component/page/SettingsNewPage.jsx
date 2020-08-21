@@ -1,9 +1,10 @@
 import { faSave, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { Fragment, useContext } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ROUTE_SETTINGS } from "../../const/route";
+import { useDocumentTitle } from "../../helper/hooks";
 import { settingsNewStoreContext } from "../../store/SettingsNewStore";
 import ActionButton from "../common/ActionButton";
 import Section from "../common/Section";
@@ -23,9 +24,7 @@ const SettingsNewPage = () => {
     const { t } = useTranslation();
     const settingsNewStore = useContext(settingsNewStoreContext);
 
-    useEffect(() => {
-        document.title = t("settings-new.title");
-    }, []);
+    useDocumentTitle("settings-new.title");
 
     return (
         <Fragment>

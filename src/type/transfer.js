@@ -24,7 +24,7 @@ export type IconsStyleData = {
 
 export type InitData = {
     setting: SettingMetaData,
-    settingHash: string,
+    lastUsedSetting?: SettingMetaData,
     locale: string,
     sidebarEntities: SidebarEntityData[],
     scriptVersion: string,

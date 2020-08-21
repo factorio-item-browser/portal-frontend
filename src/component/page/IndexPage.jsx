@@ -1,8 +1,11 @@
+// @flow
+
 import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
+import { useDocumentTitle } from "../../helper/hooks";
 import { indexStoreContext } from "../../store/IndexStore";
 import Entity from "../entity/Entity";
 import EntityList from "../entity/EntityList";
@@ -11,16 +14,13 @@ import "./IndexPage.scss";
 
 /**
  * The component representing the index page.
- * @return {ReactDOM}
  * @constructor
  */
-const IndexPage = () => {
+const IndexPage = (): React$Node => {
     const indexStore = useContext(indexStoreContext);
     const { t } = useTranslation();
 
-    useEffect(() => {
-        document.title = t("index.title");
-    }, []);
+    useDocumentTitle();
 
     return (
         <section className="random-items">
@@ -40,4 +40,4 @@ const IndexPage = () => {
     );
 };
 
-export default observer(IndexPage);
+export default (observer(IndexPage): typeof IndexPage);

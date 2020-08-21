@@ -1,7 +1,8 @@
 import { observer } from "mobx-react-lite";
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { Fragment, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { ERROR_PAGE_NOT_FOUND } from "../../const/error";
+import { useDocumentTitle } from "../../helper/hooks";
 import { itemStoreContext } from "../../store/ItemStore";
 import CopyTemplate from "../common/CopyTemplate";
 import Detail from "../common/Detail";
@@ -11,7 +12,6 @@ import ItemRecipesList from "./item/ItemRecipesList";
 
 /**
  * The component representing the item and fluid details page.
- * @returns {ReactDOM}
  * @constructor
  */
 const ItemDetailsPage = () => {
@@ -19,13 +19,7 @@ const ItemDetailsPage = () => {
     const { t } = useTranslation();
     const item = itemStore.currentItem;
 
-    useEffect(() => {
-        if (item.type) {
-            document.title = t(`item-details.title.${item.type}`, { label: item.label });
-        } else {
-            document.title = t(`index.title`);
-        }
-    }, [item.type, item.label]);
+    useDocumentTitle(item.label ? `item-details.title.${item.type}` : null, { label: item.label });
 
     if (itemStore.hasNotFoundError) {
         return <ErrorBox type={ERROR_PAGE_NOT_FOUND} />;

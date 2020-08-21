@@ -1,7 +1,8 @@
 import { observer } from "mobx-react-lite";
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { Fragment, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { ERROR_PAGE_NOT_FOUND } from "../../const/error";
+import { useDocumentTitle } from "../../helper/hooks";
 import { recipeStoreContext } from "../../store/RecipeStore";
 import CopyTemplate from "../common/CopyTemplate";
 import Detail from "../common/Detail";
@@ -20,13 +21,7 @@ const RecipeDetailsPage = () => {
     const { t } = useTranslation();
     const details = recipeStore.currentRecipeDetails;
 
-    useEffect(() => {
-        if (details.name) {
-            document.title = t("recipe-details.title", { label: details.label });
-        } else {
-            document.title = t("index.title");
-        }
-    }, [details.name, details.label]);
+    useDocumentTitle(details.label ? "recipe-details.title" : null, { label: details.label });
 
     if (recipeStore.hasNotFoundError) {
         return <ErrorBox type={ERROR_PAGE_NOT_FOUND} />;

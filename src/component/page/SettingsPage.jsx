@@ -1,9 +1,10 @@
 import { faMinus, faPlus, faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { Fragment, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { ROUTE_SETTINGS_NEW } from "../../const/route";
+import { useDocumentTitle } from "../../helper/hooks";
 import { settingsStoreContext } from "../../store/SettingsStore";
 import ActionButton from "../common/ActionButton";
 import Section from "../common/Section";
@@ -29,9 +30,7 @@ const SettingsPage = () => {
 
     const selectedSettingDetails = settingsStore.selectedSettingDetails;
 
-    useEffect(() => {
-        document.title = t("settings.title");
-    }, []);
+    useDocumentTitle("settings.title");
 
     return (
         <Fragment>
