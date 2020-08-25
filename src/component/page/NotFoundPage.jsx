@@ -3,7 +3,7 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { ERROR_PAGE_NOT_FOUND } from "../../const/error";
-import { useDocumentTitle } from "../../helper/hooks";
+import { useDocumentTitle } from "../../util/hooks";
 import ErrorBox from "../error/ErrorBox";
 
 /**

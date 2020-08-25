@@ -2,8 +2,8 @@ import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Formatter } from "../../../class/Formatter";
 import { CRAFTING_TIME_INFINITE } from "../../../const/config";
+import { formatCraftingTime } from "../../../util/format";
 
 import "./RecipeItem.scss";
 
@@ -20,7 +20,7 @@ const RecipeItemTime = ({ craftingTime }) => {
     if (craftingTime >= CRAFTING_TIME_INFINITE) {
         amount = <div className="amount infinite">∞</div>;
     } else {
-        amount = <div className="amount">{Formatter.formatCraftingTime(craftingTime)}</div>;
+        amount = <div className="amount">{formatCraftingTime(craftingTime)}</div>;
     }
 
     return (

@@ -73,6 +73,7 @@ export class RouteStore {
         combinationId: "",
         name: "Vanilla",
         status: SETTING_STATUS_AVAILABLE,
+        isTemporary: false,
     };
 
     /**

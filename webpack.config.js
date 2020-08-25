@@ -105,7 +105,7 @@ module.exports = (env, argv) => {
             ],
         },
         plugins: [
-            new HotModuleReplacementPlugin(),
+            ...(isProduction ? [] : [new HotModuleReplacementPlugin()]),
             new CleanWebpackPlugin(),
             new CopyPlugin({
                 patterns: [

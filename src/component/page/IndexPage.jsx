@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { useDocumentTitle } from "../../helper/hooks";
 import { indexStoreContext } from "../../store/IndexStore";
+import { useDocumentTitle } from "../../util/hooks";
 import Entity from "../entity/Entity";
 import EntityList from "../entity/EntityList";
 

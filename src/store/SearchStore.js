@@ -3,11 +3,11 @@
 import { action, observable, runInAction } from "mobx";
 import { createContext } from "react";
 import { State } from "router5";
+import { debounce } from "throttle-debounce";
 import PaginatedList from "../class/PaginatedList";
 import { PortalApi, portalApi, PortalApiError } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import { ROUTE_SEARCH } from "../const/route";
-import { debounce } from "../helper/utils";
 import type { EntityData, SearchResultsData } from "../type/transfer";
 import { RouteStore, routeStore } from "./RouteStore";
 
@@ -40,7 +40,7 @@ export class SearchStore {
      * The debounce handler for handling the query change.
      * @private
      */
-    _debounceHandleQueryChange: (string) => Promise<void>;
+    _debouncedHandleQueryChange: (string) => Promise<void>;
 
     /**
      * @private
@@ -88,7 +88,7 @@ export class SearchStore {
         this._router = router;
         this._routeStore = routeStore;
 
-        this._debounceHandleQueryChange = debounce(this._handleQueryChange, 500, this);
+        this._debouncedHandleQueryChange = debounce(500, this._handleQueryChange.bind(this));
 
         router.addRoute(ROUTE_SEARCH, "/search/*query", this._handleRouteChange.bind(this));
         router.addGlobalChangeHandler(this._handleGlobalRouteChange.bind(this));
@@ -131,7 +131,7 @@ export class SearchStore {
         if (this._isInputFocused) {
             this.isSearchOpened = true;
         }
-        await this._debounceHandleQueryChange(searchQuery);
+        await this._debouncedHandleQueryChange(searchQuery);
     }
 
     /**

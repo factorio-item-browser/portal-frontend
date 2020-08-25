@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
-import { Formatter } from "../../class/Formatter";
 import { CRAFTING_TIME_INFINITE } from "../../const/config";
+import { formatCraftingTime } from "../../util/format";
 
 import "./CompactRecipeSeparator.scss";
 
@@ -22,7 +22,7 @@ function renderCraftingTime(craftingTime) {
         return <span className="time infinite">∞</span>;
     }
 
-    const formattedTime = Formatter.formatCraftingTime(craftingTime);
+    const formattedTime = formatCraftingTime(craftingTime);
     return <span className="time">{formattedTime}</span>;
 }
 

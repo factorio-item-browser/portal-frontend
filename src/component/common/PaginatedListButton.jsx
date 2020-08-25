@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React, { createRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { debounce } from "../../helper/utils";
+import { debounce } from "throttle-debounce";
 import ActionButton from "./ActionButton";
 
 /**
@@ -35,17 +35,13 @@ const PaginatedListButton = ({ paginatedList, localePrefix, loadOnScroll = false
 
     useEffect(() => {
         if (loadOnScroll) {
-            const debounceHandleScroll = debounce(
-                async () => {
-                    await handleScroll(element, paginatedList);
-                },
-                100,
-                this
-            );
+            const debouncedHandleScroll = debounce(100, async () => {
+                await handleScroll(element, paginatedList);
+            });
 
-            window.addEventListener("scroll", debounceHandleScroll);
+            window.addEventListener("scroll", debouncedHandleScroll);
             return () => {
-                window.removeEventListener("scroll", debounceHandleScroll);
+                window.removeEventListener("scroll", debouncedHandleScroll);
             };
         }
     });

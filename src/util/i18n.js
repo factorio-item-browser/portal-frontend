@@ -1,9 +1,11 @@
+// @flow
+
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import localeDe from "../locale/de";
-import localeEn from "../locale/en";
+import localeDe from "../locale/de.json";
+import localeEn from "../locale/en.json";
 
-(async () => {
+(async (): Promise<void> => {
     await i18n.use(initReactI18next).init({
         resources: {
             en: {

@@ -2,10 +2,10 @@ import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React, { createRef, useContext, useEffect } from "react";
-import { Formatter } from "../../class/Formatter";
 import { iconManager } from "../../class/IconManager";
 import { itemStoreContext } from "../../store/ItemStore";
 import { tooltipStoreContext } from "../../store/TooltipStore";
+import { formatAmount } from "../../util/format";
 import EntityLink from "../link/EntityLink";
 
 import "./Icon.scss";
@@ -20,7 +20,7 @@ function renderAmount(amount) {
         return null;
     }
 
-    return <span className="amount">{Formatter.formatAmount(amount)}</span>;
+    return <span className="amount">{formatAmount(amount)}</span>;
 }
 
 /**

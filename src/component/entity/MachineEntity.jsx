@@ -2,8 +2,8 @@ import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React, { createRef, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { Formatter } from "../../class/Formatter";
 import { tooltipStoreContext } from "../../store/TooltipStore";
+import { formatCraftingSpeed, formatEnergyUsage } from "../../util/format";
 import Icon from "../common/Icon";
 import EntityLink from "../link/EntityLink";
 import MachineDetail from "./MachineDetail";
@@ -48,7 +48,7 @@ const MachineEntity = ({ machine }) => {
                 <div className="machine-details">
                     <MachineDetail
                         label={t("recipe-details.machine.crafting-speed")}
-                        value={Formatter.formatCraftingSpeed(machine.craftingSpeed)}
+                        value={formatCraftingSpeed(machine.craftingSpeed)}
                     />
                     <MachineDetail
                         label={t("recipe-details.machine.items")}
@@ -83,7 +83,7 @@ const MachineEntity = ({ machine }) => {
             <div className="machine-details">
                 <MachineDetail
                     label={t("recipe-details.machine.crafting-speed")}
-                    value={Formatter.formatCraftingSpeed(machine.craftingSpeed)}
+                    value={formatCraftingSpeed(machine.craftingSpeed)}
                 />
                 <MachineDetail
                     label={t("recipe-details.machine.items")}
@@ -99,7 +99,7 @@ const MachineEntity = ({ machine }) => {
                 />
                 <MachineDetail
                     label={t("recipe-details.machine.energy-usage")}
-                    value={Formatter.formatEnergyUsage(machine.energyUsage, machine.energyUsageUnit)}
+                    value={formatEnergyUsage(machine.energyUsage, machine.energyUsageUnit)}
                 />
             </div>
         </div>

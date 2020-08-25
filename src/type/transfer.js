@@ -103,6 +103,7 @@ export type SettingMetaData = {
     combinationId: string,
     name: string,
     status: string,
+    isTemporary: boolean,
 };
 
 export type SettingOptionsData = {

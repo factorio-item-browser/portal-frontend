@@ -1,7 +1,7 @@
 // @flow
 
+import { debounce } from "throttle-debounce";
 import { NUMBER_OF_ICONS_PER_REQUEST } from "../const/config";
-import { debounce } from "../helper/utils";
 import type { IconsStyleData } from "../type/transfer";
 import NamesByTypesSet from "./NamesByTypesSet";
 import { PortalApi, portalApi } from "./PortalApi";
@@ -54,7 +54,7 @@ export class IconManager {
     constructor(portalApi: PortalApi) {
         this._portalApi = portalApi;
 
-        this._debounceRequestStyle = debounce(this._requestStyle, 10, this);
+        this._debounceRequestStyle = debounce(10, this._requestStyle.bind(this));
         this._styleElement = document.createElement("style");
         document.head?.appendChild(this._styleElement);
     }
