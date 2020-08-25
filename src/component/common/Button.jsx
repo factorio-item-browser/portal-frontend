@@ -1,24 +1,29 @@
+// @flow
+
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
 
 import "./Button.scss";
 
+type Props = {
+    primary?: boolean,
+    secondary?: boolean,
+    spacing?: boolean,
+    sticky?: boolean,
+    className?: string,
+    children: React$Node,
+    ...
+};
+
 /**
  * The component representing a simple button to click on like there is no tomorrow.
- * @param {boolean} [primary]
- * @param {boolean} [secondary]
- * @param {boolean} [spacing]
- * @param {boolean} [sticky]
- * @param {string} [className]
- * @param {ReactDOM} children
- * @param {any} props
- * @param {React.RefObject<HTMLElement>} ref
- * @return {ReactDOM}
  * @constructor
  */
-const Button = ({ primary, secondary, spacing, sticky, className, children, ...props }, ref) => {
+const Button = (
+    { primary, secondary, spacing, sticky, className, children, ...props }: Props,
+    ref: React$Ref<any>
+): React$Node => {
     const classes = classNames(className, {
         button: true,
         primary: primary,
@@ -28,19 +33,10 @@ const Button = ({ primary, secondary, spacing, sticky, className, children, ...p
     });
 
     return (
-        <div className={classes} {...props} ref={ref}>
+        <div {...props} className={classes} ref={ref}>
             {children}
         </div>
     );
 };
 
-Button.propTypes = {
-    children: PropTypes.any.isRequired,
-    className: PropTypes.string,
-    primary: PropTypes.bool,
-    secondary: PropTypes.bool,
-    spacing: PropTypes.bool,
-    sticky: PropTypes.bool,
-};
-
-export default observer(Button, { forwardRef: true });
+export default (observer(Button, { forwardRef: true }): typeof Button);

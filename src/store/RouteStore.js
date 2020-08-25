@@ -19,7 +19,7 @@ import { SETTING_STATUS_AVAILABLE, SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOW
 import type { InitData, SettingMetaData } from "../type/transfer";
 
 type InitHandler = (InitData) => void;
-type LoadingRef = { current: ?HTMLElement };
+export type LoadingCircleRef = { current: HTMLElement };
 
 const REGEX_PATH_COMBINATION_ID = /^\/([0-9a-zA-Z]{22})(\/|$)/;
 
@@ -63,7 +63,7 @@ export class RouteStore {
      * The target which currently have the loading circle.
      */
     @observable
-    loadingCircleTarget: ?LoadingRef = null;
+    loadingCircleTarget: ?LoadingCircleRef = null;
 
     /**
      * The currently loaded setting.
@@ -243,7 +243,7 @@ export class RouteStore {
      * Shows the loading circle overlaying the passed reference object.
      */
     @action
-    showLoadingCircle(ref: LoadingRef): void {
+    showLoadingCircle(ref: LoadingCircleRef): void {
         this.loadingCircleTarget = ref;
     }
 

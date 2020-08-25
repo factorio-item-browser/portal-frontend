@@ -78,7 +78,7 @@ const App = () => {
             </div>
             <Footer />
 
-            <LoadingCircle />
+            <LoadingCircle target={routeStore.loadingCircleTarget} />
             <Tooltip />
         </ErrorBoundary>
     );

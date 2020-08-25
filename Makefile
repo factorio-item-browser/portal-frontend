@@ -11,7 +11,7 @@ fix: ## Tries to fix code style issues.
 
 install: ## Installs the dependencies of the project.
 	npm install
-	npx flow-typed install jest
+	npx flow-typed install jest classnames
 
 start: ## Starts the development server with hot reloading.
 	npm start

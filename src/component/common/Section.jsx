@@ -1,18 +1,21 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
 
 import "./Section.scss";
 
+type Props = {
+    headline: string,
+    children: React$Node,
+    ...
+};
+
 /**
  * The component representing a section with an underlined headline.
- * @param {string} headline
- * @param {ReactDOM} children
- * @param {any} props
- * @returns {ReactDOM}
  * @constructor
  */
-const Section = ({ headline, children, ...props }) => {
+const Section = ({ headline, children, ...props }: Props): React$Node => {
     return (
         <section {...props}>
             <h2>{headline}</h2>
@@ -21,9 +24,4 @@ const Section = ({ headline, children, ...props }) => {
     );
 };
 
-Section.propTypes = {
-    headline: PropTypes.string.isRequired,
-    children: PropTypes.node.isRequired,
-};
-
-export default observer(Section);
+export default (observer(Section): typeof Section);

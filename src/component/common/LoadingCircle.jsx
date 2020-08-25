@@ -1,29 +1,30 @@
+// @flow
+
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
-import React, { useContext } from "react";
-import { routeStoreContext } from "../../store/RouteStore";
+import React from "react";
+import type { LoadingCircleRef } from "../../store/RouteStore";
 
 import "./LoadingCircle.scss";
 
+type Props = {
+    target: ?LoadingCircleRef,
+};
+
 /**
- * The component representing the loading circle when the next page is loaded.
- * @return {ReactDOM|null}
+ * The component representing a loading circle above the target element.
  * @constructor
  */
-const LoadingCircle = () => {
-    const routeStore = useContext(routeStoreContext);
-
-    if (routeStore.loadingCircleTarget === null) {
+const LoadingCircle = ({ target }: Props): React$Node => {
+    if (!target) {
         return null;
     }
 
-    const target = routeStore.loadingCircleTarget.current;
-    const rect = target.getBoundingClientRect();
-
+    const rect = target.current.getBoundingClientRect();
     return (
         <div
-            className="loading-circle"
+            className={"loading-circle"}
             style={{
                 height: rect.height,
                 left: rect.left + window.scrollX,
@@ -36,4 +37,4 @@ const LoadingCircle = () => {
     );
 };
 
-export default observer(LoadingCircle);
+export default (observer(LoadingCircle): typeof LoadingCircle);
