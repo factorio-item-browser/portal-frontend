@@ -1,20 +1,23 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
 import Icon from "../common/Icon";
 import EntityLink from "../link/EntityLink";
 
 import "./EntityHead.scss";
 
+type Props = {
+    type: string,
+    name: string,
+    label: string,
+};
+
 /**
  * The component representing the head of an entity box.
- * @param {string} type
- * @param {string} name
- * @param {string} label
- * @returns {ReactDOM}
  * @constructor
  */
-const EntityHead = ({ type, name, label }) => {
+const EntityHead = ({ type, name, label }: Props): React$Node => {
     return (
         <EntityLink type={type} name={name} className="entity-head">
             <Icon type={type} name={name} transparent={true} />
@@ -23,10 +26,4 @@ const EntityHead = ({ type, name, label }) => {
     );
 };
 
-EntityHead.propTypes = {
-    type: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-};
-
-export default observer(EntityHead);
+export default (observer(EntityHead): typeof EntityHead);

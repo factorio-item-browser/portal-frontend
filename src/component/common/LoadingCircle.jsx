@@ -17,7 +17,7 @@ type Props = {
  * @constructor
  */
 const LoadingCircle = ({ target }: Props): React$Node => {
-    if (!target) {
+    if (!target || !target.current) {
         return null;
     }
 

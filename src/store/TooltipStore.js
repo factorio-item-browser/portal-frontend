@@ -6,7 +6,7 @@ import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import type { EntityData } from "../type/transfer";
 
-type TargetRef = { current: ?HTMLElement };
+export type TargetRef = { current: ?Element };
 
 /**
  * The store managing the tooltips.

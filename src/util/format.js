@@ -1,5 +1,7 @@
 // @flow
 
+import i18next from "i18next";
+
 /**
  * Formats the specified amount to a nice human-readable string.
  */
@@ -45,4 +47,17 @@ export function formatCraftingTime(craftingTime: number): string {
  */
 export function formatEnergyUsage(energyUsage: number, energyUsageUnit: string): string {
     return Math.round(energyUsage * 1000) / 1000 + energyUsageUnit;
+}
+
+/**
+ * Formats the number of slots of a machine.
+ */
+export function formatMachineSlots(slots: number): string {
+    if (slots === 0) {
+        return i18next.t("recipe-details.machine.none");
+    }
+    if (slots === 255) {
+        return i18next.t("recipe-details.machine.unlimited");
+    }
+    return `${slots}`;
 }

@@ -1,5 +1,7 @@
 // @flow
 
+import { faDiscord, IconDefinition } from "@fortawesome/free-brands-svg-icons";
+
 export const COMBINATION_ID_VANILLA = "2f4a45fa-a509-a9d1-aae6-ffcf984a7a76";
 export const CRAFTING_TIME_INFINITE = 100000;
 export const NUMBER_OF_ICONS_PER_REQUEST = 128;
@@ -13,3 +15,15 @@ export const NUMBER_OF_SEARCH_RESULTS_PER_PAGE = 24;
 export const CACHE_LIFETIME = parseInt(process.env.CACHE_LIFETIME || "", 10);
 export const INTERVAL_CHECK_SETTING_STATUS = parseInt(process.env.INTERVAL_CHECK_SETTING_STATUS || "", 10);
 export const PORTAL_API_URL = process.env.PORTAL_API_URI || "";
+
+export const FOOTER_ICONS: {
+    name: string,
+    url: string,
+    icon: IconDefinition,
+}[] = [
+    {
+        name: "discord",
+        url: process.env.DISCORD_LINK || "",
+        icon: faDiscord,
+    },
+];

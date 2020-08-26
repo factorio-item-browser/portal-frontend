@@ -1,20 +1,16 @@
+// @flow
+
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import type { RecipeData, RecipeItemData } from "../../type/transfer";
 import Icon from "../common/Icon";
 import CompactRecipeSeparator from "./CompactRecipeSeparator";
 
 import "./CompactRecipe.scss";
 
-/**
- * Renders a single item of the recipe.
- * @param {RecipeItemData} item
- * @param {number} index
- * @returns {ReactDOM}
- */
-function renderItem(item, index) {
+function mapItem(item: RecipeItemData, index: number): React$Node {
     return (
         <Icon
             key={`${item.type}-${item.name}-${index}`}
@@ -27,13 +23,15 @@ function renderItem(item, index) {
     );
 }
 
+type Props = {
+    recipe: RecipeData,
+};
+
 /**
  * The component representing one compact recipe of an entity.
- * @param {RecipeData} recipe
- * @returns {ReactNode}
  * @constructor
  */
-const CompactRecipe = ({ recipe }) => {
+const CompactRecipe = ({ recipe }: Props): React$Node => {
     const { t } = useTranslation();
     const classes = classNames({
         "compact-recipe": true,
@@ -42,16 +40,12 @@ const CompactRecipe = ({ recipe }) => {
 
     return (
         <div className={classes}>
-            {recipe.ingredients.map(renderItem)}
+            {recipe.ingredients.map(mapItem)}
             <CompactRecipeSeparator craftingTime={recipe.craftingTime} />
-            {recipe.products.map(renderItem)}
+            {recipe.products.map(mapItem)}
             {recipe.isExpensive ? <span className="mode">{t("box-label.expensive")}</span> : null}
         </div>
     );
 };
 
-CompactRecipe.propTypes = {
-    recipe: PropTypes.object.isRequired,
-};
-
-export default observer(CompactRecipe);
+export default (observer(CompactRecipe): typeof CompactRecipe);

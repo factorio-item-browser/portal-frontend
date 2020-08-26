@@ -3,6 +3,7 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { Trans } from "react-i18next";
+import ExternalLink from "../link/ExternalLink";
 import ExternalLinkIcons from "./footer/ExternalLinkIcons";
 
 import "./Footer.scss";
@@ -21,13 +22,9 @@ const Footer = (): React$Node => {
                 <br />
                 <Trans i18nKey="footer.copyright-disclaimer">
                     All content and images are owned by
-                    <a href="https://www.factorio.com/" target="_blank" rel="noopener noreferrer nofollow">
-                        Wube Software
-                    </a>
+                    <ExternalLink url="https://www.factorio.com/">Wube Software</ExternalLink>
                     and the
-                    <a href="https://mods.factorio.com/" target="_blank" rel="noopener noreferrer nofollow">
-                        mod authors
-                    </a>
+                    <ExternalLink url="https://mods.factorio.com/">mod authors</ExternalLink>
                     respectively.
                 </Trans>
             </div>

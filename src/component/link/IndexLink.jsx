@@ -1,26 +1,25 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
 import { ROUTE_INDEX } from "../../const/route";
 import Link from "./Link";
 
+type Props = {
+    children: React$Node,
+    ...
+};
+
 /**
  * The component representing a link to the index page.
- * @param {ReactDOM} children
- * @param {any} props
- * @returns {ReactDOM}
  * @constructor
  */
-const IndexLink = ({ children, ...props }) => {
+const IndexLink = ({ children, ...props }: Props): React$Node => {
     return (
-        <Link route={ROUTE_INDEX} {...props}>
+        <Link {...props} route={ROUTE_INDEX}>
             {children}
         </Link>
     );
 };
 
-IndexLink.propTypes = {
-    children: PropTypes.node.isRequired,
-};
-
-export default observer(IndexLink);
+export default (observer(IndexLink): typeof IndexLink);

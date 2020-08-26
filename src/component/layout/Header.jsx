@@ -1,3 +1,5 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { useMediaQuery } from "react-responsive";
@@ -14,10 +16,9 @@ import "./Header.scss";
 
 /**
  * The component representing the header of the page.
- * @returns {ReactNode}
  * @constructor
  */
-const Header = () => {
+const Header = (): React$Node => {
     const routeStore = useContext(routeStoreContext);
     const searchStore = useContext(searchStoreContext);
     const isLarge = useMediaQuery({ minWidth: BREAKPOINT_LARGE });
@@ -62,4 +63,4 @@ const Header = () => {
     );
 };
 
-export default observer(Header);
+export default (observer(Header): typeof Header);

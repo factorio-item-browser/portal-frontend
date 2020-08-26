@@ -1,6 +1,8 @@
+// @flow
+
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import React, { Fragment, useContext } from "react";
+import React, { useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import { BREAKPOINT_LARGE } from "../../const/breakpoint";
 import { routeStoreContext } from "../../store/RouteStore";
@@ -18,7 +20,7 @@ import "./Sidebar.scss";
  * @returns {ReactDOM}
  * @constructor
  */
-const Sidebar = () => {
+const Sidebar = (): React$Node => {
     const routeStore = useContext(routeStoreContext);
     const sidebarStore = useContext(sidebarStoreContext);
     const isLarge = useMediaQuery({ minWidth: BREAKPOINT_LARGE });
@@ -33,7 +35,7 @@ const Sidebar = () => {
     }
 
     return (
-        <Fragment>
+        <>
             <div className={classes}>
                 {isLarge ? null : <SidebarCloseIcon />}
                 <SettingsButton />
@@ -42,8 +44,8 @@ const Sidebar = () => {
                 <UnpinnedEntityList />
             </div>
             {isLarge ? null : <SidebarCloseOverlay />}
-        </Fragment>
+        </>
     );
 };
 
-export default observer(Sidebar);
+export default (observer(Sidebar): typeof Sidebar);

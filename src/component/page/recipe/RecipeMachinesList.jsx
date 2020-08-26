@@ -4,6 +4,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import PaginatedListButton from "../../common/PaginatedListButton";
 import Section from "../../common/Section";
+import CharacterMachineEntity from "../../entity/CharacterMachineEntity";
 import EntityList from "../../entity/EntityList";
 import MachineEntity from "../../entity/MachineEntity";
 
@@ -24,6 +25,9 @@ const RecipeMachinesList = ({ paginatedList }) => {
         <Section headline={t("recipe-details.machine.headline", { count: paginatedList.numberOfResults })}>
             <EntityList>
                 {paginatedList.results.map((machine) => {
+                    if (machine.name === "character") {
+                        return <CharacterMachineEntity key={machine.name} machine={machine} />;
+                    }
                     return <MachineEntity key={machine.name} machine={machine} />;
                 })}
             </EntityList>

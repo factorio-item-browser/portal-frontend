@@ -1,12 +1,14 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
 import React from "react";
 
 /**
  * The component showing the initial loading box.
- * @return {ReactDOM}
  * @constructor
  */
-const LoadingBox = () => {
+const LoadingBox = (): React$Node => {
+    // We are not using the translator here, because the loading box is displayed before the language is known.
     return (
         <div className="error-box-wrapper">
             <div className="error-box">
@@ -20,4 +22,4 @@ const LoadingBox = () => {
     );
 };
 
-export default observer(LoadingBox);
+export default (observer(LoadingBox): typeof LoadingBox);

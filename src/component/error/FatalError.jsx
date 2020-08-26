@@ -1,15 +1,18 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
 import ErrorBox from "./ErrorBox";
 
+type Props = {
+    type: string,
+};
+
 /**
  * The component representing a fatal error, replacing the whole page including layout.
- * @param {string} type
- * @return {ReactDOM}
  * @constructor
  */
-const FatalError = ({ type }) => {
+const FatalError = ({ type }: Props): React$Node => {
     return (
         <div className="error-box-wrapper">
             <ErrorBox type={type} />
@@ -17,8 +20,4 @@ const FatalError = ({ type }) => {
     );
 };
 
-FatalError.propTypes = {
-    type: PropTypes.string.isRequired,
-};
-
-export default observer(FatalError);
+export default (observer(FatalError): typeof FatalError);

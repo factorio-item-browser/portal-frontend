@@ -1,34 +1,34 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
-import React, { createRef, useContext } from "react";
-import { tooltipStoreContext } from "../../../store/TooltipStore";
+import React, { createRef } from "react";
+import type { RecipeItemData } from "../../../type/transfer";
 import { formatAmount } from "../../../util/format";
+import { useTooltip } from "../../../util/hooks";
 import Icon from "../../common/Icon";
 import EntityLink from "../../link/EntityLink";
 
 import "./RecipeItem.scss";
 
+type Props = {
+    item: RecipeItemData,
+};
+
 /**
  * The component representing exactly one item of the recipe details.
- * @param {RecipeItemData} item
- * @returns {ReactDOM}
  * @constructor
  */
-const RecipeItem = ({ item }) => {
-    const tooltipStore = useContext(tooltipStoreContext);
+const RecipeItem = ({ item }: Props): React$Node => {
     const iconRef = createRef();
+    const { showTooltip, hideTooltip } = useTooltip(item.type, item.name, iconRef);
 
     return (
         <EntityLink
             className="recipe-item"
             type={item.type}
             name={item.name}
-            onMouseEnter={async () => {
-                await tooltipStore.showTooltip(iconRef, item.type, item.name);
-            }}
-            onMouseLeave={() => {
-                tooltipStore.hideTooltip();
-            }}
+            onMouseEnter={showTooltip}
+            onMouseLeave={hideTooltip}
         >
             <div className="amount">{formatAmount(item.amount)}</div>
             <Icon type={item.type} name={item.name} transparent={true} ref={iconRef} />
@@ -37,8 +37,4 @@ const RecipeItem = ({ item }) => {
     );
 };
 
-RecipeItem.propTypes = {
-    item: PropTypes.object.isRequired,
-};
-
-export default observer(RecipeItem);
+export default (observer(RecipeItem): typeof RecipeItem);

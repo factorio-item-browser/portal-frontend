@@ -1,33 +1,37 @@
-import * as PropTypes from "prop-types";
+// @flow
+
 import React, { Component } from "react";
 import { ERROR_CLIENT_FAILURE } from "../../const/error";
 import FatalError from "./FatalError";
+
+type Props = {
+    children: React$Node,
+};
+
+type State = {
+    error: ?Error,
+};
 
 /**
  * The error boundary of everything. If any component fails, then the boundary will replace the page with a nice error
  * box.
  */
-class ErrorBoundary extends Component {
+class ErrorBoundary extends Component<Props, State> {
     state = {
         error: null,
-        errorInfo: null,
     };
 
-    componentDidCatch(error, errorInfo) {
-        this.setState({ error, errorInfo });
+    componentDidCatch(error: Error): void {
+        this.setState({ error });
     }
 
-    render() {
-        if (this.state.errorInfo) {
+    render(): React$Node {
+        if (this.state.error) {
             return <FatalError type={ERROR_CLIENT_FAILURE} />;
         }
 
         return this.props.children;
     }
 }
-
-ErrorBoundary.propTypes = {
-    children: PropTypes.node.isRequired,
-};
 
 export default ErrorBoundary;

@@ -2,16 +2,11 @@
 
 import { createRouter, Middleware, Params, Router as Router5, State, SubscribeState } from "router5";
 import browserPluginFactory from "router5-plugin-browser";
-import { ROUTE_INDEX, ROUTE_ITEM_DETAILS, ROUTE_RECIPE_DETAILS } from "../const/route";
+import { ROUTE_INDEX } from "../const/route";
 import CombinationId from "./CombinationId";
 
 type ChangeHandler = (State) => boolean | Promise<any>;
 
-const MAP_ENTITY_TYPE_TO_ROUTE = {
-    item: ROUTE_ITEM_DETAILS,
-    fluid: ROUTE_ITEM_DETAILS,
-    recipe: ROUTE_RECIPE_DETAILS,
-};
 const PARAM_COMBINATION_ID = "combination-id";
 const SHORT_ROUTE_SUFFIX = "-short";
 
@@ -167,24 +162,6 @@ export class Router {
             };
         }
         return params;
-    }
-
-    /**
-     * Returns the route and params used to link to the entity.
-     */
-    getRouteAndParamsForEntity(type: string, name: string): { route: string, params: Params } {
-        const route = MAP_ENTITY_TYPE_TO_ROUTE[type];
-        if (route) {
-            return {
-                route: route,
-                params: { type, name },
-            };
-        }
-
-        return {
-            route: ROUTE_INDEX,
-            params: {},
-        };
     }
 }
 
