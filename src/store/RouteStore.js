@@ -16,10 +16,10 @@ import {
 } from "../const/error";
 import { ROUTE_INDEX, ROUTE_SETTINGS, ROUTE_SETTINGS_NEW } from "../const/route";
 import { SETTING_STATUS_AVAILABLE, SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN } from "../const/settingStatus";
+import type { ElementRef } from "../type/common";
 import type { InitData, SettingMetaData } from "../type/transfer";
 
 type InitHandler = (InitData) => void;
-export type LoadingCircleRef = { current: ?Element };
 
 const REGEX_PATH_COMBINATION_ID = /^\/([0-9a-zA-Z]{22})(\/|$)/;
 
@@ -63,7 +63,7 @@ export class RouteStore {
      * The target which currently have the loading circle.
      */
     @observable
-    loadingCircleTarget: ?LoadingCircleRef = null;
+    loadingCircleTarget: ?ElementRef = null;
 
     /**
      * The currently loaded setting.
@@ -244,7 +244,7 @@ export class RouteStore {
      * Shows the loading circle overlaying the passed reference object.
      */
     @action
-    showLoadingCircle(ref: ?LoadingCircleRef): void {
+    showLoadingCircle(ref: ?ElementRef): void {
         this.loadingCircleTarget = ref;
     }
 

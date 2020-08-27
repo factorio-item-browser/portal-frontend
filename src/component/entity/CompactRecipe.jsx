@@ -5,20 +5,18 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import type { RecipeData, RecipeItemData } from "../../type/transfer";
-import Icon from "../common/Icon";
+import CompactRecipeIcon from "../icon/CompactRecipeIcon";
 import CompactRecipeSeparator from "./CompactRecipeSeparator";
 
 import "./CompactRecipe.scss";
 
 function mapItem(item: RecipeItemData, index: number): React$Node {
     return (
-        <Icon
+        <CompactRecipeIcon
             key={`${item.type}-${item.name}-${index}`}
             type={item.type}
             name={item.name}
             amount={item.amount}
-            transparent={false}
-            linked={true}
         />
     );
 }

@@ -4,9 +4,8 @@ import { action, computed, observable, runInAction } from "mobx";
 import { createContext } from "react";
 import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
+import type { ElementRef } from "../type/common";
 import type { EntityData } from "../type/transfer";
-
-export type TargetRef = { current: ?Element };
 
 /**
  * The store managing the tooltips.
@@ -26,13 +25,13 @@ export class TooltipStore {
      * The target for which a tooltip was requested. This target may still be waiting for its data.
      */
     @observable
-    requestedTarget: ?TargetRef = null;
+    requestedTarget: ?ElementRef = null;
 
     /**
      * The target for which the data has been fetched. This target has its data available.
      */
     @observable
-    fetchedTarget: ?TargetRef = null;
+    fetchedTarget: ?ElementRef = null;
 
     /**
      * The fetched data for the tooltip.
@@ -82,7 +81,7 @@ export class TooltipStore {
      * Shows the tooltip on the target with the type and name.
      */
     @action
-    async showTooltip(target: TargetRef, type: string, name: string): Promise<void> {
+    async showTooltip(target: ElementRef, type: string, name: string): Promise<void> {
         if (!this.isEnabled) {
             return;
         }

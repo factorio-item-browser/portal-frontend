@@ -2,7 +2,7 @@
 
 import { observer } from "mobx-react-lite";
 import React from "react";
-import Icon from "./Icon";
+import Icon from "../icon/Icon";
 
 import "./DetailsHead.scss";
 
@@ -21,7 +21,7 @@ const DetailsHead = ({ type, name, title, children }: Props): React$Node => {
     return (
         <div className="details-head">
             <div className="head">
-                <Icon type={type} name={name} transparent={true} />
+                <Icon type={type} name={name} />
                 <h1>{title}</h1>
             </div>
             {children}

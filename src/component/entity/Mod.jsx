@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import type { ModData } from "../../type/transfer";
-import Icon from "../common/Icon";
+import Icon from "../icon/Icon";
 import ExternalLink from "../link/ExternalLink";
 
 import "./Mod.scss";
@@ -32,7 +32,7 @@ const Mod = ({ mod }: Props): React$Node => {
     return (
         <ExternalLink className="entity mod-entity" url={buildExternalModLink(mod)}>
             <div className="mod-icon">
-                <Icon type="mod" name={mod.name} transparent={true} />
+                <Icon type="mod" name={mod.name} />
             </div>
 
             <div className="mod-content">

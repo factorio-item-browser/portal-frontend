@@ -1,8 +1,13 @@
 @import "../../style/import";
 
-.icon {
+.compact-recipe-icon {
+    @include dynamic-spacing(margin, default);
+
+    background-color: color($color-box-default, $lightness-icon-background);
     background-size: cover;
     background-repeat: no-repeat;
+    border: px-to-rem(1) solid color($color-box-default, $lightness-box-border);
+    box-shadow: $shadow-box;
     box-sizing: content-box;
     display: block;
     height: $icon-size-default;
@@ -10,12 +15,6 @@
     text-decoration: none;
     width: $icon-size-default;
     z-index: $zIndex-icon;
-
-    &.with-background {
-        border: px-to-rem(1) solid color($color-box-default, $lightness-box-border);
-        background-color: color($color-box-default, $lightness-icon-background);
-        box-shadow: $shadow-box;
-    }
 
     .amount {
         color: color($color-box-default, $lightness-shadowed-label-text);
@@ -34,10 +33,8 @@
     }
 
     &.highlighted {
-        &.with-background {
-            border: px-to-rem(1) solid color($color-highlight, $lightness-box-border);
-            background-color: color($color-highlight, $lightness-icon-background);
-        }
+        border: px-to-rem(1) solid color($color-highlight, $lightness-box-border);
+        background-color: color($color-highlight, $lightness-icon-background);
 
         .amount {
             color: color($color-highlight, $lightness-shadowed-label-text);

@@ -3,7 +3,7 @@
 import { observer } from "mobx-react-lite";
 import React, { createRef, useCallback, useContext } from "react";
 import { routeStoreContext } from "../../store/RouteStore";
-import type { LoadingCircleRef } from "../../store/RouteStore";
+import type { ElementRef } from "../../type/common";
 
 type Props = {
     route: string,
@@ -16,7 +16,7 @@ type Props = {
  * The component creating a link to another route.
  * @constructor
  */
-const Link = ({ route, params, children, ...props }: Props, ref: ?LoadingCircleRef): React$Node => {
+const Link = ({ route, params, children, ...props }: Props, ref: ?ElementRef): React$Node => {
     const routeStore = useContext(routeStoreContext);
     const path = routeStore.router.buildPath(route, params);
 

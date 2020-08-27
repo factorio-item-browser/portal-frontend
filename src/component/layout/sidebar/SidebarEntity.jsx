@@ -7,7 +7,7 @@ import React, { createRef, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { sidebarStoreContext } from "../../../store/SidebarStore";
 import { tooltipStoreContext } from "../../../store/TooltipStore";
-import Icon from "../../common/Icon";
+import Icon from "../../icon/Icon";
 import EntityLink from "../../link/EntityLink";
 
 import "./SidebarEntity.scss";
@@ -94,7 +94,7 @@ const SidebarEntity = ({ entity }) => {
                 tooltipStore.hideTooltip();
             }}
         >
-            <Icon type={entity.type} name={entity.name} transparent={true} ref={iconRef} />
+            <Icon type={entity.type} name={entity.name} ref={iconRef} />
             <span className="label">{entity.label}</span>
 
             {entity.pinnedPosition > 0 ? renderUnpinAction(entity) : renderPinAction(entity)}

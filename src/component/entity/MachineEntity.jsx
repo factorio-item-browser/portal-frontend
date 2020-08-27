@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import type { MachineData } from "../../type/transfer";
 import { formatCraftingSpeed, formatEnergyUsage, formatMachineSlots } from "../../util/format";
 import { useTooltip } from "../../util/hooks";
-import Icon from "../common/Icon";
+import Icon from "../icon/Icon";
 import EntityLink from "../link/EntityLink";
 
 import "./MachineEntity.scss";
@@ -34,7 +34,7 @@ const MachineEntity = ({ machine }: Props): React$Node => {
                 onMouseEnter={showTooltip}
                 onMouseLeave={hideTooltip}
             >
-                <Icon type="machine" name={machine.name} transparent={true} ref={iconRef} />
+                <Icon type="machine" name={machine.name} ref={iconRef} />
                 <h3>{machine.label}</h3>
             </EntityLink>
 

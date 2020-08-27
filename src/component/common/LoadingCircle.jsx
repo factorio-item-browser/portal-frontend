@@ -4,12 +4,12 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import type { LoadingCircleRef } from "../../store/RouteStore";
+import type { ElementRef } from "../../type/common";
 
 import "./LoadingCircle.scss";
 
 type Props = {
-    target: ?LoadingCircleRef,
+    target: ?ElementRef,
 };
 
 /**

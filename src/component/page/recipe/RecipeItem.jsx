@@ -5,7 +5,7 @@ import React, { createRef } from "react";
 import type { RecipeItemData } from "../../../type/transfer";
 import { formatAmount } from "../../../util/format";
 import { useTooltip } from "../../../util/hooks";
-import Icon from "../../common/Icon";
+import Icon from "../../icon/Icon";
 import EntityLink from "../../link/EntityLink";
 
 import "./RecipeItem.scss";
@@ -31,7 +31,7 @@ const RecipeItem = ({ item }: Props): React$Node => {
             onMouseLeave={hideTooltip}
         >
             <div className="amount">{formatAmount(item.amount)}</div>
-            <Icon type={item.type} name={item.name} transparent={true} ref={iconRef} />
+            <Icon type={item.type} name={item.name} ref={iconRef} />
             <div className="label">{item.label}</div>
         </EntityLink>
     );

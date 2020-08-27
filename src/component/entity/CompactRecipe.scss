@@ -19,9 +19,6 @@
         text-transform: uppercase;
     }
 
-    .icon {
-        @include dynamic-spacing(margin, default);
-    }
 
     &.expensive {
         background-color: color($color-recipe-expensive, $lightness-box-background, $alpha-box-content);

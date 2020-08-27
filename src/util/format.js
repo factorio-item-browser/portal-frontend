@@ -50,6 +50,13 @@ export function formatEnergyUsage(energyUsage: number, energyUsageUnit: string):
 }
 
 /**
+ * Formats the type and name to the CSS class used for the icon.
+ */
+export function formatIconClass(type: string, name: string): string {
+    return `icon-${type}-${name}`.replace(/ /g, "_");
+}
+
+/**
  * Formats the number of slots of a machine.
  */
 export function formatMachineSlots(slots: number): string {

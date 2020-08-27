@@ -5,7 +5,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import type { MachineData } from "../../type/transfer";
 import { formatCraftingSpeed, formatMachineSlots } from "../../util/format";
-import Icon from "../common/Icon";
+import Icon from "../icon/Icon";
 
 type Props = {
     machine: MachineData,
@@ -21,7 +21,7 @@ const CharacterMachineEntity = ({ machine }: Props): React$Node => {
     return (
         <div className="entity machine-entity">
             <div className="entity-head">
-                <Icon type="machine" name={machine.name} transparent={true} />
+                <Icon type="machine" name={machine.name} />
                 <h3>{machine.label}</h3>
             </div>
 

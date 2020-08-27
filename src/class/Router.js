@@ -93,8 +93,8 @@ export class Router {
 
     start(combinationId: CombinationId): void {
         this._combinationId = combinationId;
-        this._router.start((err: any, state: State): void => {
-            if (state.name.endsWith(SHORT_ROUTE_SUFFIX)) {
+        this._router.start((err?: any, state?: State): void => {
+            if (state && state.name.endsWith(SHORT_ROUTE_SUFFIX)) {
                 this.navigateTo(this._unifyRouteName(state.name), state.params);
             }
         });

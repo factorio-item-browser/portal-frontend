@@ -1,6 +1,14 @@
 // @flow
 
-import { formatAmount, formatCraftingSpeed, formatCraftingTime, formatEnergyUsage } from "./format";
+import i18next from "i18next";
+import {
+    formatAmount,
+    formatCraftingSpeed,
+    formatCraftingTime,
+    formatEnergyUsage,
+    formatIconClass,
+    formatMachineSlots,
+} from "./format";
 
 describe("format", (): void => {
     describe("formatAmount", (): void => {
@@ -54,6 +62,37 @@ describe("format", (): void => {
             [42.123456, "MW", "42.123MW"],
         ])("%f %s", (energyUsage: number, energyUsageUnit: string, expectedResult: string): void => {
             const result = formatEnergyUsage(energyUsage, energyUsageUnit);
+
+            expect(result).toBe(expectedResult);
+        });
+    });
+
+    describe("formatIconClass", (): void => {
+        test.each([
+            ["foo", "bar", "icon-foo-bar"],
+            ["abc def", "ghi jkl", "icon-abc_def-ghi_jkl"],
+        ])("%s %s", (type: string, name: string, expectedResult: string): void => {
+            const result = formatIconClass(type, name);
+
+            expect(result).toBe(expectedResult);
+        });
+    });
+
+    describe("formatMachineSlots", (): void => {
+        test.each([
+            [42, "42"],
+            [0, "none"],
+            [255, "unlimited"],
+        ])("%d", (slots: number, expectedResult: string): void => {
+            jest.spyOn(i18next, "t").mockImplementation((key: string): string => {
+                const values = {
+                    "recipe-details.machine.none": "none",
+                    "recipe-details.machine.unlimited": "unlimited",
+                };
+                return values[key] || "";
+            });
+
+            const result = formatMachineSlots(slots);
 
             expect(result).toBe(expectedResult);
         });
