@@ -1,18 +1,20 @@
+// @flow
+
 import { faMinus, faPlus, faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
-import React, { Fragment, useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { ROUTE_SETTINGS_NEW } from "../../const/route";
 import { settingsStoreContext } from "../../store/SettingsStore";
 import { useDocumentTitle } from "../../util/hooks";
-import ActionButton from "../common/ActionButton";
+import ActionButton from "../button/ActionButton";
+import ButtonGroup from "../button/ButtonGroup";
+import LinkedButton from "../button/LinkedButton";
 import Section from "../common/Section";
 import EntityList from "../entity/EntityList";
 import Mod from "../entity/Mod";
-import ButtonLink from "../link/ButtonLink";
 import ModListSettingStatus from "../status/ModListSettingStatus";
-import ButtonList from "./setting/ButtonList";
 import OptionLocale from "./setting/option/OptionLocale";
 import OptionRecipeMode from "./setting/option/OptionRecipeMode";
 import OptionSettingName from "./setting/option/OptionSettingName";
@@ -21,19 +23,24 @@ import OptionSettingId from "./setting/option/SettingOptionId";
 
 /**
  * The component representing the settings page.
- * @return {ReactDOM}
  * @constructor
  */
-const SettingsPage = () => {
+const SettingsPage = (): React$Node => {
     const settingsStore = useContext(settingsStoreContext);
     const { t } = useTranslation();
-
     const selectedSettingDetails = settingsStore.selectedSettingDetails;
 
     useDocumentTitle("settings.title");
 
+    const handleSaveClick = useCallback(async (): Promise<void> => {
+        await settingsStore.saveOptions();
+    }, []);
+    const handleDeleteClick = useCallback(async (): Promise<void> => {
+        await settingsStore.deleteSelectedSetting();
+    }, []);
+
     return (
-        <Fragment>
+        <>
             <Section headline={t("settings.headline.settings")}>
                 <OptionsList>
                     <OptionSettingId
@@ -44,7 +51,7 @@ const SettingsPage = () => {
                     />
                 </OptionsList>
 
-                <ButtonList right>
+                <ButtonGroup right spacing>
                     <ActionButton
                         label={t("settings.current-setting.delete-setting", { name: selectedSettingDetails.name })}
                         loadingLabel={t("settings.current-setting.deleting-setting", {
@@ -53,15 +60,16 @@ const SettingsPage = () => {
                         icon={faMinus}
                         isVisible={settingsStore.isDeleteButtonVisible}
                         isLoading={settingsStore.isDeletingSetting}
-                        onClick={async () => {
-                            await settingsStore.deleteSelectedSetting();
-                        }}
+                        onClick={handleDeleteClick}
                     />
-                    <ButtonLink primary route={ROUTE_SETTINGS_NEW}>
-                        <FontAwesomeIcon icon={faPlus} />
-                        {t("settings.current-setting.add-new-setting")}
-                    </ButtonLink>
-                </ButtonList>
+
+                    <LinkedButton
+                        primary
+                        label={t("settings.current-setting.add-new-setting")}
+                        icon={<FontAwesomeIcon icon={faPlus} />}
+                        route={ROUTE_SETTINGS_NEW}
+                    />
+                </ButtonGroup>
             </Section>
 
             <Section headline={t("settings.headline.options")}>
@@ -94,19 +102,15 @@ const SettingsPage = () => {
 
             <ActionButton
                 primary
-                spacing
-                sticky
                 label={t("settings.save-changes")}
                 loadingLabel={t("settings.saving-changes")}
                 icon={faSave}
                 isVisible={settingsStore.isSaveButtonVisible}
                 isLoading={settingsStore.isSavingChanges}
-                onClick={async () => {
-                    await settingsStore.saveOptions();
-                }}
+                onClick={handleSaveClick}
             />
-        </Fragment>
+        </>
     );
 };
 
-export default observer(SettingsPage);
+export default (observer(SettingsPage): typeof SettingsPage);

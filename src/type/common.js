@@ -1,3 +1,3 @@
 // @flow
 
-export type ElementRef = { current: ?Element };
+export type ElementRef = { current: ?HTMLElement };

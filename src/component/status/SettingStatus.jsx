@@ -1,5 +1,6 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -10,12 +11,9 @@ import {
     SETTING_STATUS_UNKNOWN,
 } from "../../const/settingStatus";
 import { STATUS_ERROR, STATUS_PENDING, STATUS_SUCCESS, STATUS_WARNING } from "../../const/status";
+import type { SettingStatusData } from "../../type/transfer";
 import Status from "./Status";
 
-/**
- * The map of the setting status to the actual box status.
- * @type {Object<string, string>}
- */
 const STATUS_MAP = {
     [SETTING_STATUS_AVAILABLE]: STATUS_SUCCESS,
     [SETTING_STATUS_ERRORED]: STATUS_ERROR,
@@ -24,13 +22,15 @@ const STATUS_MAP = {
     [SETTING_STATUS_UNKNOWN]: STATUS_WARNING,
 };
 
+type Props = {
+    settingStatus?: SettingStatusData,
+};
+
 /**
  * The component representing the status of a setting.
- * @param {?SettingStatusData} settingStatus
- * @return {ReactDOM|null}
  * @constructor
  */
-const SettingStatus = ({ settingStatus }) => {
+const SettingStatus = ({ settingStatus }: Props): React$Node => {
     const { t } = useTranslation();
 
     if (!settingStatus) {
@@ -45,8 +45,4 @@ const SettingStatus = ({ settingStatus }) => {
     );
 };
 
-SettingStatus.propTypes = {
-    settingStatus: PropTypes.object,
-};
-
-export default observer(SettingStatus);
+export default (observer(SettingStatus): typeof SettingStatus);

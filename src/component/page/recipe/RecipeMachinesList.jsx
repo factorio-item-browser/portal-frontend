@@ -1,20 +1,25 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import PaginatedListButton from "../../common/PaginatedListButton";
+import PaginatedList from "../../../class/PaginatedList";
+import type { MachineData, RecipeMachinesData } from "../../../type/transfer";
+import PaginatedListButton from "../../button/PaginatedListButton";
 import Section from "../../common/Section";
 import CharacterMachineEntity from "../../entity/CharacterMachineEntity";
 import EntityList from "../../entity/EntityList";
 import MachineEntity from "../../entity/MachineEntity";
 
+type Props = {
+    paginatedList: PaginatedList<MachineData, RecipeMachinesData>,
+};
+
 /**
  * The component representing a list of machines.
- * @param {PaginatedList<RecipeMachinesData,MachineData>}paginatedList
- * @returns {ReactDOM|null}
  * @constructor
  */
-const RecipeMachinesList = ({ paginatedList }) => {
+const RecipeMachinesList = ({ paginatedList }: Props): React$Node => {
     const { t } = useTranslation();
 
     if (paginatedList.numberOfResults === 0) {
@@ -36,8 +41,4 @@ const RecipeMachinesList = ({ paginatedList }) => {
     );
 };
 
-RecipeMachinesList.propTypes = {
-    paginatedList: PropTypes.object.isRequired,
-};
-
-export default observer(RecipeMachinesList);
+export default (observer(RecipeMachinesList): typeof RecipeMachinesList);

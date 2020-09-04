@@ -77,6 +77,17 @@ export class RouteStore {
     };
 
     /**
+     * The last used setting in case the current one is temporary.
+     */
+    @observable
+    lastUsedSetting: SettingMetaData = {
+        combinationId: "",
+        name: "Vanilla",
+        status: SETTING_STATUS_AVAILABLE,
+        isTemporary: false,
+    };
+
+    /**
      * The locale to use for the page.
      * @type {string}
      */
@@ -110,6 +121,7 @@ export class RouteStore {
     @action
     async _initializeSession(session: InitData) {
         this.setting = session.setting;
+        this.lastUsedSetting = session.lastUsedSetting || session.setting;
         this.locale = session.locale;
 
         //this._cacheManager.setSettingHash(session.settingHash);

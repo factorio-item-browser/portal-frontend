@@ -1,19 +1,20 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { searchStoreContext } from "../../store/SearchStore";
 import { useDocumentTitle } from "../../util/hooks";
-import PaginatedListButton from "../common/PaginatedListButton";
+import PaginatedListButton from "../button/PaginatedListButton";
 import Section from "../common/Section";
 import Entity from "../entity/Entity";
 import EntityList from "../entity/EntityList";
 
 /**
  * The component representing the page listing search results.
- * @returns {ReactDOM}
  * @constructor
  */
-const SearchResultsPage = () => {
+const SearchResultsPage = (): React$Node => {
     const { t } = useTranslation();
     const searchStore = useContext(searchStoreContext);
 
@@ -45,4 +46,4 @@ const SearchResultsPage = () => {
     );
 };
 
-export default observer(SearchResultsPage);
+export default (observer(SearchResultsPage): typeof SearchResultsPage);

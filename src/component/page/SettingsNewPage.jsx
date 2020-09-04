@@ -1,18 +1,17 @@
 // @flow
 
 import { faSave, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
-import React, { Fragment, useContext } from "react";
+import React, { Fragment, useCallback, useContext } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ROUTE_SETTINGS } from "../../const/route";
 import { settingsNewStoreContext } from "../../store/SettingsNewStore";
 import { useDocumentTitle } from "../../util/hooks";
-import ActionButton from "../common/ActionButton";
+import ActionButton from "../button/ActionButton";
+import ButtonGroup from "../button/ButtonGroup";
+import LinkedButton from "../button/LinkedButton";
 import Section from "../common/Section";
 import TextBox from "../common/TextBox";
-import ButtonLink from "../link/ButtonLink";
-import ButtonList from "./setting/ButtonList";
 import AdditionalOptionsStep from "./settingNew/step/AdditionalOptionsStep";
 import DataAvailabilityStep from "./settingNew/step/DataAvailabilityStep";
 import SaveGameStep from "./settingNew/step/SaveGameStep";
@@ -27,6 +26,9 @@ const SettingsNewPage = () => {
     const settingsNewStore = useContext(settingsNewStoreContext);
 
     useDocumentTitle("settings-new.title");
+    const handleSaveClick = useCallback(async (): Promise<void> => {
+        await settingsNewStore.saveNewSetting();
+    }, []);
 
     return (
         <Fragment>
@@ -60,14 +62,8 @@ const SettingsNewPage = () => {
             {settingsNewStore.showDataAvailabilityStep ? <DataAvailabilityStep /> : null}
             {settingsNewStore.showAdditionalOptionsStep ? <AdditionalOptionsStep /> : null}
 
-            <ButtonList>
-                <ButtonLink
-                    route={ROUTE_SETTINGS}
-                    className={!settingsNewStore.showAdditionalOptionsStep ? "spacing-fix" : null}
-                >
-                    <FontAwesomeIcon icon={faTimes} />
-                    {t("settings-new.cancel")}
-                </ButtonLink>
+            <ButtonGroup spacing>
+                <LinkedButton label={t("settings-new.cancel")} icon={faTimes} route={ROUTE_SETTINGS} />
 
                 <ActionButton
                     primary
@@ -76,11 +72,9 @@ const SettingsNewPage = () => {
                     icon={faSave}
                     isVisible={settingsNewStore.showSaveButton}
                     isLoading={settingsNewStore.isSavingNewSetting}
-                    onClick={async () => {
-                        await settingsNewStore.saveNewSetting();
-                    }}
+                    onClick={handleSaveClick}
                 />
-            </ButtonList>
+            </ButtonGroup>
         </Fragment>
     );
 };

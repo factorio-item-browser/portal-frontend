@@ -1,19 +1,25 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import PaginatedListButton from "../../common/PaginatedListButton";
+import PaginatedList from "../../../class/PaginatedList";
+import type { EntityData, ItemRecipesData } from "../../../type/transfer";
+import PaginatedListButton from "../../button/PaginatedListButton";
 import Section from "../../common/Section";
 import Entity from "../../entity/Entity";
 import EntityList from "../../entity/EntityList";
 
+type Props = {
+    paginatedList: PaginatedList<EntityData, ItemRecipesData>,
+    headlineLocaleKey: string,
+};
+
 /**
  * The component representing the recipe list of an item.
- * @param {PaginatedList<ItemRecipesList,EntityData>} paginatedList
- * @param {string} headlineLocaleKey
  * @constructor
  */
-const ItemRecipesList = ({ paginatedList, headlineLocaleKey }) => {
+const ItemRecipesList = ({ paginatedList, headlineLocaleKey }: Props): React$Node => {
     const { t } = useTranslation();
 
     if (paginatedList.numberOfResults === 0) {
@@ -32,9 +38,4 @@ const ItemRecipesList = ({ paginatedList, headlineLocaleKey }) => {
     );
 };
 
-ItemRecipesList.propTypes = {
-    paginatedList: PropTypes.object.isRequired,
-    headlineLocaleKey: PropTypes.string.isRequired,
-};
-
-export default observer(ItemRecipesList);
+export default (observer(ItemRecipesList): typeof ItemRecipesList);

@@ -1,11 +1,13 @@
-@import "../../../style/import";
+@import "../../style/import";
 
-.settings-button {
+.sidebar-button {
     @include dynamic-spacing(padding, small default);
 
     align-items: center;
     display: flex;
+    font-size: $text-size-label;
     font-weight: bold;
+    margin-bottom: $spacing-default;
     position: relative;
     text-align: left;
 

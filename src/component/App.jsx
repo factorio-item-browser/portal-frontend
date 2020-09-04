@@ -1,3 +1,5 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect } from "react";
 import {
@@ -8,7 +10,7 @@ import {
     ROUTE_SEARCH,
     ROUTE_SETTINGS,
 } from "../const/route";
-import { routeStoreContext } from "../store/RouteStore";
+import { RouteStore, routeStoreContext } from "../store/RouteStore";
 import LoadingCircle from "./common/LoadingCircle";
 import Tooltip from "./common/Tooltip";
 import ErrorBoundary from "./error/ErrorBoundary";
@@ -25,6 +27,7 @@ import SearchResultsPage from "./page/SearchResultsPage";
 import SettingsNewPage from "./page/SettingsNewPage";
 import SettingsPage from "./page/SettingsPage";
 import GlobalSettingStatus from "./status/GlobalSettingStatus";
+import TemporarySettingStatus from "./status/TemporarySettingStatus";
 
 import "./App.scss";
 
@@ -39,11 +42,10 @@ const PAGE_BY_ROUTES = {
 
 /**
  * The component representing the whole application.
- * @returns {ReactDOM}
  * @constructor
  */
-const App = () => {
-    const routeStore = useContext(routeStoreContext);
+const App = (): React$Node => {
+    const routeStore = useContext<RouteStore>(routeStoreContext);
 
     useEffect(() => {
         (async () => {
@@ -72,7 +74,15 @@ const App = () => {
             <div className="content-wrapper">
                 <Sidebar />
                 <div className="content">
-                    <GlobalSettingStatus />
+                    {routeStore.showGlobalSettingStatus ? (
+                        <>
+                            <TemporarySettingStatus
+                                setting={routeStore.setting}
+                                lastUsedSetting={routeStore.lastUsedSetting}
+                            />
+                            <GlobalSettingStatus />
+                        </>
+                    ) : null}
                     {page}
                 </div>
             </div>
@@ -84,4 +94,4 @@ const App = () => {
     );
 };
 
-export default observer(App);
+export default (observer(App): typeof App);

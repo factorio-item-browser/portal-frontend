@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import React, { createRef, useContext } from "react";
 import { itemStoreContext } from "../../store/ItemStore";
 import type { ElementRef } from "../../type/common";
-import { formatAmount, formatIconClass } from "../../util/format";
+import { formatAmount } from "../../util/format";
 import { useIcon, useTooltip } from "../../util/hooks";
 import EntityLink from "../link/EntityLink";
 
@@ -25,13 +25,13 @@ const CompactRecipeIcon = ({ type, name, amount }: Props, ref: ?ElementRef): Rea
     const itemStore = useContext(itemStoreContext);
     const iconRef = ref || createRef();
     const { showTooltip, hideTooltip } = useTooltip(type, name, iconRef);
+    const iconClass = useIcon(type, name);
 
     const classes = classNames({
         "compact-recipe-icon": true,
-        [formatIconClass(type, name)]: true,
+        [iconClass]: true,
         "highlighted": itemStore.highlightedEntity.type === type && itemStore.highlightedEntity.name === name,
     });
-    useIcon(type, name);
 
     return (
         <EntityLink

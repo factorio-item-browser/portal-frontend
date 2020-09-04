@@ -217,5 +217,12 @@
         "headline-last-viewed": "Zuletzt angesehen",
         "headline-pinned": "Angeheftet",
         "setting": "Einstellung: {{name}}"
+    },
+    "temporary-setting": {
+        "headline": "Du betrachtes eine temporäre Einstellung.",
+        "description-1": "Die aktuelle Kombination von Mods ist noch nicht in deinem Profil gespeichert. Füge die Einstellung zu deinem Profil hinzu, wenn du diese behalten möchtest.",
+        "description-2": "Temporäre Einstellungen werden nach einer kurzer Zeit entfernt.",
+        "button-undo": "Wechsle zurück zu \"{{name}}\"",
+        "button-add": "Temporäre Einstellung hinzufügen"
     }
 }

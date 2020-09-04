@@ -1,10 +1,12 @@
-@import "../../../style/import";
+@import "../../style/import";
 
-.button-list {
-    @include dynamic-spacing(padding, 0 default);
-
+.button-group {
     display: flex;
     flex-wrap: wrap;
+
+    &.spacing {
+        @include dynamic-spacing(padding, 0 default);
+    }
 
     &.right {
         justify-content: right;

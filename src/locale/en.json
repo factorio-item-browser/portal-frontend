@@ -217,5 +217,12 @@
         "headline-last-viewed": "Last viewed",
         "headline-pinned": "Pinned",
         "setting": "Setting: {{name}}"
+    },
+    "temporary-setting": {
+        "headline": "You are viewing a temporary setting.",
+        "description-1": "The current combination of mods hat not yet been saved to your profile. Add the setting to your profile if you want to keep it.",
+        "description-2": "Temporary settings will get cleaned after a short amount of time.",
+        "button-undo": "Change back to \"{{name}}\"",
+        "button-add": "Add temporary setting"
     }
 }
