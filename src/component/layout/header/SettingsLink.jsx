@@ -1,3 +1,5 @@
+// @flow
+
 import { faCogs } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
@@ -11,10 +13,9 @@ import "./SettingsLink.scss";
 
 /**
  * The component representing the link to the settings in the big header.
- * @return {ReactDOM}
  * @constructor
  */
-const SettingsLink = () => {
+const SettingsLink = (): React$Node => {
     const routeStore = useContext(routeStoreContext);
     const { t } = useTranslation();
 
@@ -28,4 +29,4 @@ const SettingsLink = () => {
     );
 };
 
-export default observer(SettingsLink);
+export default (observer(SettingsLink): typeof SettingsLink);

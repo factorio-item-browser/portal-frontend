@@ -41,6 +41,7 @@ describe("format", (): void => {
 
     describe("formatCraftingTime", (): void => {
         test.each([
+            [0, ""],
             [12.34, "12.34s"],
             [12.3456, "12.35s"],
             [720, "12min"],

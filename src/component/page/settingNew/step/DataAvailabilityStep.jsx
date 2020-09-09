@@ -1,3 +1,5 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,10 +29,9 @@ const STATUS_MAP = {
 
 /**
  * The component representing the step for checking the data availability.
- * @return {ReactDOM|null}
  * @constructor
  */
-const DataAvailabilityStep = () => {
+const DataAvailabilityStep = (): React$Node => {
     const { t } = useTranslation();
     const settingsNewStore = useContext(settingsNewStoreContext);
 
@@ -49,4 +50,4 @@ const DataAvailabilityStep = () => {
     );
 };
 
-export default observer(DataAvailabilityStep);
+export default (observer(DataAvailabilityStep): typeof DataAvailabilityStep);

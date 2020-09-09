@@ -1,10 +1,11 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
-import React, { createRef } from "react";
+import React, { createRef, useCallback } from "react";
 
 import "./CopyTemplate.scss";
 
-function selectText(element) {
+function selectText(element: Element): void {
     const selection = window.getSelection();
     const range = document.createRange();
     range.selectNodeContents(element);
@@ -12,24 +13,27 @@ function selectText(element) {
     selection.addRange(range);
 }
 
+type Props = {
+    label: string,
+    template: string,
+    description?: string,
+};
+
 /**
  * The component representing a template of some text for easy copying.
- * @param {string} label
- * @param {string} template
- * @param {string} description
- * @returns {ReactDOM}
  * @constructor
  */
-const CopyTemplate = ({ label, template, description }) => {
+const CopyTemplate = ({ label, template, description }: Props): React$Node => {
     const templateRef = createRef();
 
+    const handleClick = useCallback(() => {
+        if (templateRef.current) {
+            selectText(templateRef.current);
+        }
+    }, [templateRef]);
+
     return (
-        <div
-            className="copy-template"
-            onClick={() => {
-                selectText(templateRef.current);
-            }}
-        >
+        <div className="copy-template" onClick={handleClick}>
             <span className="label">{label}</span>
             <span className="template" ref={templateRef}>
                 {template}
@@ -39,10 +43,4 @@ const CopyTemplate = ({ label, template, description }) => {
     );
 };
 
-CopyTemplate.propTypes = {
-    label: PropTypes.string.isRequired,
-    template: PropTypes.string.isRequired,
-    description: PropTypes.string,
-};
-
-export default observer(CopyTemplate);
+export default (observer(CopyTemplate): typeof CopyTemplate);

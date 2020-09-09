@@ -1,3 +1,5 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -9,7 +11,11 @@ import OptionRecipeMode from "../../setting/option/OptionRecipeMode";
 import OptionSettingName from "../../setting/option/OptionSettingName";
 import OptionsList from "../../setting/option/OptionsList";
 
-const AdditionalOptionsStep = () => {
+/**
+ * The component representing the step for setting additional options.
+ * @constructor
+ */
+const AdditionalOptionsStep = (): React$Node => {
     const { t } = useTranslation();
     const settingsStore = useContext(settingsStoreContext);
     const settingsNewStore = useContext(settingsNewStoreContext);
@@ -43,4 +49,4 @@ const AdditionalOptionsStep = () => {
     );
 };
 
-export default observer(AdditionalOptionsStep);
+export default (observer(AdditionalOptionsStep): typeof AdditionalOptionsStep);

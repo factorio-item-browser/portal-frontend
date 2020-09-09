@@ -1,29 +1,31 @@
+// @flow
+
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import { sidebarStoreContext } from "../../../store/SidebarStore";
 
 import "./SidebarCloseIcon.scss";
 
 /**
  * The component representing the close icon of the sidebar for mobile users.
- * @returns {ReactDOM}
  * @constructor
  */
-const SidebarCloseIcon = () => {
+const SidebarCloseIcon = (): React$Node => {
     const sidebarStore = useContext(sidebarStoreContext);
+    const handleClick = useCallback((): void => {
+        sidebarStore.closeSidebar();
+    }, []);
 
     return (
         <div
             className="sidebar-close-icon"
-            onClick={() => {
-                sidebarStore.closeSidebar();
-            }}
+            onClick={handleClick}
         >
             <FontAwesomeIcon icon={faTimes} />
         </div>
     );
 };
 
-export default observer(SidebarCloseIcon);
+export default (observer(SidebarCloseIcon): typeof SidebarCloseIcon);

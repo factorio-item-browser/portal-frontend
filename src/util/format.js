@@ -29,6 +29,9 @@ export function formatCraftingSpeed(craftingSpeed: number): string {
  * Formats the crafting time to a nice human-readable string.
  */
 export function formatCraftingTime(craftingTime: number): string {
+    if (craftingTime <= 0) {
+        return "";
+    }
     if (craftingTime <= 600) {
         return Math.round(craftingTime * 100) / 100 + "s";
     }

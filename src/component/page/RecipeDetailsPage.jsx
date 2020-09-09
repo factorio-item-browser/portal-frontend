@@ -1,3 +1,5 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
 import React, { Fragment, useContext } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,15 +15,14 @@ import RecipeMachinesList from "./recipe/RecipeMachinesList";
 
 /**
  * The component representing the details page of a recipe.
- * @returns {ReactDOM}
  * @constructor
  */
-const RecipeDetailsPage = () => {
+const RecipeDetailsPage = (): React$Node => {
     const recipeStore = useContext(recipeStoreContext);
     const { t } = useTranslation();
     const details = recipeStore.currentRecipeDetails;
 
-    useDocumentTitle(details.label ? "recipe-details.title" : null, { label: details.label });
+    useDocumentTitle(details.label ? "recipe-details.title" : "", { label: details.label });
 
     if (recipeStore.hasNotFoundError) {
         return <ErrorBox type={ERROR_PAGE_NOT_FOUND} />;
@@ -52,4 +53,4 @@ const RecipeDetailsPage = () => {
     );
 };
 
-export default observer(RecipeDetailsPage);
+export default (observer(RecipeDetailsPage): typeof RecipeDetailsPage);

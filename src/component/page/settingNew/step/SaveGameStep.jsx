@@ -1,3 +1,5 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
@@ -8,11 +10,10 @@ import Status from "../../../status/Status";
 import SaveGameFileInput from "../SaveGameFileInput";
 
 /**
- * The step for selecting the save game to read the mod lsit from.
- * @return {ReactDOM}
+ * The step for selecting the save game to read the mod list from.
  * @constructor
  */
-const SaveGameStep = () => {
+const SaveGameStep = (): React$Node => {
     const { t } = useTranslation();
     const settingsNewStore = useContext(settingsNewStoreContext);
 
@@ -58,4 +59,4 @@ const SaveGameStep = () => {
     );
 };
 
-export default observer(SaveGameStep);
+export default (observer(SaveGameStep): typeof SaveGameStep);
