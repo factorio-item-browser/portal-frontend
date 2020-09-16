@@ -93,7 +93,7 @@ export type SettingCreateData = {
 };
 
 export type SettingDetailsData = {
-    ...SettingDetailsData,
+    ...SettingMetaData,
     ...SettingOptionsData,
     mods: ModData[],
     modIconsStyle: IconsStyleData,

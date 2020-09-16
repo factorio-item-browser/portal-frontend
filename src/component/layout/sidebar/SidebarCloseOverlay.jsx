@@ -20,12 +20,7 @@ const SidebarCloseOverlay = (): React$Node => {
         return null;
     }
 
-    return (
-        <div
-            className="sidebar-close-overlay"
-            onClick={handleClick}
-        />
-    );
+    return <div className="sidebar-close-overlay" onClick={handleClick} />;
 };
 
 export default (observer(SidebarCloseOverlay): typeof SidebarCloseOverlay);

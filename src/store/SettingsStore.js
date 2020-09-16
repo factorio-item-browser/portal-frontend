@@ -11,6 +11,20 @@ import { ROUTE_SETTINGS } from "../const/route";
 import type { SettingDetailsData, SettingMetaData, SettingOptionsData } from "../type/transfer";
 import { RouteStore, routeStore } from "./RouteStore";
 
+const emptySettingDetails: SettingDetailsData = {
+    combinationId: "",
+    name: "",
+    status: "",
+    isTemporary: true,
+    locale: "",
+    recipeMode: "",
+    mods: [],
+    modIconsStyle: {
+        processedEntities: {},
+        style: "",
+    },
+};
+
 /**
  * The store managing the settings and the settings page.
  */
@@ -70,7 +84,7 @@ class SettingsStore {
     isLoadingSettingDetails: boolean = false;
 
     @observable
-    isSaveButtonVisible: boolean = false;
+    isChangingToSetting: boolean = false;
 
     @observable
     isSavingChanges: boolean = false;
@@ -92,7 +106,6 @@ class SettingsStore {
      */
     @action
     async _handleRouteChange(): Promise<void> {
-        this.isSaveButtonVisible = false;
         if (!this._currentSettingId) {
             try {
                 const settingsListData = await this._portalApi.getSettings();
@@ -145,12 +158,28 @@ class SettingsStore {
             return details;
         }
 
-        return {};
+        return emptySettingDetails;
+    }
+
+    @computed
+    get isChangeButtonVisible(): boolean {
+        return this.selectedSettingDetails.combinationId !== this._currentSettingId;
     }
 
     @computed
     get isDeleteButtonVisible(): boolean {
         return this._currentSettingId !== this.selectedSettingDetails.combinationId;
+    }
+
+    @computed
+    get isSaveButtonVisible(): boolean {
+        const setting = this.selectedSettingDetails;
+
+        return (
+            setting.name !== this.selectedOptions.name ||
+            setting.locale !== this.selectedOptions.locale ||
+            setting.recipeMode !== this.selectedOptions.recipeMode
+        );
     }
 
     /**
@@ -172,7 +201,6 @@ class SettingsStore {
             this.isLoadingSettingDetails = false;
             this.selectedSettingId = combinationId;
             this._applySelectedSetting();
-            this.isSaveButtonVisible = true;
         });
     }
 
@@ -182,12 +210,14 @@ class SettingsStore {
             ...this.selectedOptions,
             ...options,
         };
-        this.isSaveButtonVisible = true;
     }
 
-    /**
-     * Saves the options and reloads the page on success.
-     */
+    @action
+    changeToSelectedSetting(): void {
+        this.isChangingToSetting = true;
+        this._router.redirectToIndex(CombinationId.fromFull(this.selectedSettingId));
+    }
+
     @action
     async saveOptions(): Promise<void> {
         this.isSavingChanges = true;

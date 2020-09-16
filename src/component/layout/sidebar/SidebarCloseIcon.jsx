@@ -19,10 +19,7 @@ const SidebarCloseIcon = (): React$Node => {
     }, []);
 
     return (
-        <div
-            className="sidebar-close-icon"
-            onClick={handleClick}
-        >
+        <div className="sidebar-close-icon" onClick={handleClick}>
             <FontAwesomeIcon icon={faTimes} />
         </div>
     );

@@ -20,7 +20,7 @@ const SaveGameFileInput = (): React$Node => {
     const inputId = "savegame-file-input";
 
     const handleChange = useCallback(async (event: SyntheticInputEvent<HTMLInputElement>): Promise<void> => {
-        await settingsNewStore.processSaveGame(event.currentTarget.files[0])
+        await settingsNewStore.processSaveGame(event.currentTarget.files[0]);
     }, []);
 
     return (

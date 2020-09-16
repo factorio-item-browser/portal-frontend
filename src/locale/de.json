@@ -111,6 +111,8 @@
         "title": "Suche: {{query}} - Factorio Item Browser"
     },
     "settings": {
+        "change-to-setting": "Zu \"{{name}}\" wechseln",
+        "changing-to-setting": "Wechsle zu \"{{name}}\"...",
         "current-setting": {
             "add-new-setting": "Neue Einstellung hinzufügen",
             "delete-setting": "Einstellung \"{{name}}\" entfernen",
@@ -118,10 +120,10 @@
             "label": "Aktuelle Einstellung:"
         },
         "headline": {
-            "settings": "Einstellungen",
-            "options": "Optionen",
-            "mod-list": "Verwendet {{count}} Mod",
-            "mod-list_plural": "Verwendet {{count}} Mods"
+            "mod-list": "\"{{name}}\" verwendet {{count}} Mod",
+            "mod-list_plural": "\"{{name}}\" verwendet {{count}} Mods",
+            "options": "Optionen für \"{{name}}\"",
+            "settings": "Einstellungen"
         },
         "locale": {
             "label": "Sprache:",
@@ -144,8 +146,10 @@
                 "expensive": "Teurer Modus"
             }
         },
-        "save-changes": "Änderungen speichern",
-        "saving-changes": "Änderungen werden gespeichert...",
+        "save-options": "Optionen speichern",
+        "save-and-change": "Optionen speichern und zu \"{{name}}\" wechseln",
+        "saving-options": "Speichere Optionen...",
+        "saving-and-changing": "Speichere Optionen und wechsle zu \"{{name}}\"...",
         "title": "Einstellungen - Factorio Item Browser"
     },
     "settings-new": {
