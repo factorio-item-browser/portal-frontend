@@ -90,7 +90,7 @@ export class SearchStore {
 
         this._debouncedHandleQueryChange = debounce(500, this._handleQueryChange.bind(this));
 
-        router.addRoute(ROUTE_SEARCH, "/search/*query", this._handleRouteChange.bind(this));
+        router.addRoute(ROUTE_SEARCH, "/search/:query", this._handleRouteChange.bind(this));
         router.addGlobalChangeHandler(this._handleGlobalRouteChange.bind(this));
     }
 
@@ -99,7 +99,6 @@ export class SearchStore {
      */
     async _handleRouteChange(state: State): Promise<void> {
         const { query } = state.params;
-
         const newPaginatedList = new PaginatedList(
             (page) => this._portalApi.search(query, page),
             (error) => this._handlePortalApiError(error)

@@ -7,8 +7,8 @@ import CombinationId from "./CombinationId";
 
 type ChangeHandler = (State) => boolean | Promise<any>;
 
-const PARAM_COMBINATION_ID = "combination-id";
-const SHORT_ROUTE_SUFFIX = "-short";
+const PARAM_COMBINATION_ID = "combinationId";
+const SHORT_ROUTE_SUFFIX = "_short";
 
 export class Router {
     /**
