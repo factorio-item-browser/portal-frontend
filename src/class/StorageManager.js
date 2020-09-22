@@ -48,6 +48,14 @@ class CacheUtils {
             }
         }
     }
+
+    static clear(storage: Storage, predicate: (string) => boolean): void {
+        for (const key of Object.keys(storage)) {
+            if (key.startsWith(KEY_CACHE) && predicate(key)) {
+                storage.removeItem(key);
+            }
+        }
+    }
 }
 
 class SidebarEntitiesUtils {
@@ -77,7 +85,10 @@ export class StorageManager {
     /** @private */
     _sidebarEntitiesChangeHandler: (SidebarEntityData[]) => void = (): void => {};
     /** @private */
-    _cleanups: (() => void)[] = [(): void => CacheUtils.clean(this._storage), (): void => this._clearItems(KEY_CACHE)];
+    _cleanups: (() => void)[] = [
+        (): void => CacheUtils.clean(this._storage),
+        (): void => CacheUtils.clear(this._storage, (): boolean => true),
+    ];
 
     constructor(storage: Storage) {
         this._storage = storage;
@@ -117,15 +128,6 @@ export class StorageManager {
                     throw e;
                 }
                 cleanup();
-            }
-        }
-    }
-
-    /** @private */
-    _clearItems(prefix: string): void {
-        for (const key of Object.keys(this._storage)) {
-            if (key.startsWith(prefix)) {
-                this._storage.removeItem(key);
             }
         }
     }
@@ -189,6 +191,11 @@ export class StorageManager {
         }
 
         return CacheUtils.deserialize<T>(serializedData);
+    }
+
+    clearCombination(combinationId: CombinationId): void {
+        const prefix = [KEY_CACHE, combinationId.toShort()].join("-");
+        CacheUtils.clear(this._storage, (key: string): boolean => key.startsWith(prefix));
     }
 }
 

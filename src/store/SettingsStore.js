@@ -6,6 +6,7 @@ import CombinationId from "../class/CombinationId";
 import { IconManager, iconManager } from "../class/IconManager";
 import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
+import { storageManager, StorageManager } from "../class/StorageManager";
 import { RECIPE_MODE_HYBRID } from "../const/recipeMode";
 import { ROUTE_SETTINGS } from "../const/route";
 import type { SettingDetailsData, SettingMetaData, SettingOptionsData } from "../type/transfer";
@@ -50,6 +51,11 @@ class SettingsStore {
     _routeStore: RouteStore;
 
     /**
+     * @private
+     */
+    _storageManager: StorageManager;
+
+    /**
      * The id of the currently active setting.
      * @private
      */
@@ -92,11 +98,18 @@ class SettingsStore {
     @observable
     isDeletingSetting: boolean = false;
 
-    constructor(iconManager: IconManager, portalApi: PortalApi, router: Router, routeStore: RouteStore) {
+    constructor(
+        iconManager: IconManager,
+        portalApi: PortalApi,
+        router: Router,
+        routeStore: RouteStore,
+        storageManager: StorageManager
+    ) {
         this._iconManager = iconManager;
         this._portalApi = portalApi;
         this._router = router;
         this._routeStore = routeStore;
+        this._storageManager = storageManager;
 
         router.addRoute(ROUTE_SETTINGS, "/settings", this._handleRouteChange.bind(this));
     }
@@ -215,6 +228,8 @@ class SettingsStore {
     @action
     changeToSelectedSetting(): void {
         this.isChangingToSetting = true;
+
+        this._storageManager.clearCombination(CombinationId.fromFull(this.selectedSettingId));
         this._router.redirectToIndex(CombinationId.fromFull(this.selectedSettingId));
     }
 
@@ -222,8 +237,11 @@ class SettingsStore {
     async saveOptions(): Promise<void> {
         this.isSavingChanges = true;
         try {
+            const combinationId = CombinationId.fromFull(this.selectedSettingId);
+
+            this._storageManager.clearCombination(combinationId);
             await this._portalApi.saveSetting(this.selectedSettingId, this.selectedOptions);
-            this._router.redirectToIndex(CombinationId.fromFull(this.selectedSettingId));
+            this._router.redirectToIndex(combinationId);
         } catch (e) {
             this._routeStore.handlePortalApiError(e);
         }
@@ -232,6 +250,7 @@ class SettingsStore {
     async deleteSelectedSetting(): Promise<void> {
         this.isDeletingSetting = true;
         try {
+            this._storageManager.clearCombination(CombinationId.fromFull(this.selectedSettingId));
             await this._portalApi.deleteSetting(this.selectedSettingId);
 
             runInAction(() => {
@@ -250,5 +269,5 @@ class SettingsStore {
     }
 }
 
-export const settingsStore = new SettingsStore(iconManager, portalApi, router, routeStore);
+export const settingsStore = new SettingsStore(iconManager, portalApi, router, routeStore, storageManager);
 export const settingsStoreContext = createContext<SettingsStore>(settingsStore);
