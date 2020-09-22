@@ -43,6 +43,7 @@ const TemporarySettingStatus = ({ setting, lastUsedSetting }: Props): React$Node
                         label={t("temporary-setting.button-undo", { name: lastUsedSetting.name })}
                         icon={faUndo}
                         onClick={handleRevertClick}
+                        secondary
                     />
                     <LinkedButton
                         route={ROUTE_SETTINGS}

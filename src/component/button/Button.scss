@@ -3,7 +3,7 @@
 .button {
     @include transition-default(background-color);
 
-    background: color($color-button-default, $lightness-button-background);
+    background: color($color-button-default, $lightness-box-background, $alpha-box-content);
     box-shadow: $shadow-box;
     color: color($color-button-default, $lightness-button-text);
     cursor: pointer;
@@ -15,7 +15,6 @@
 
     &:hover {
         background: color($color-button-default, $lightness-button-background-hover);
-        color: color($color-button-default, $lightness-button-text);
     }
 
     svg {
@@ -36,11 +35,11 @@
     }
 
     &.secondary {
-        background: color($color-button-secondary, $lightness-button-background);
+        background: color($color-button-secondary, $lightness-button-secondary-background);
         color: color($color-button-secondary, $lightness-button-text);
 
         &:hover {
-            background: color($color-button-secondary, $lightness-button-background-hover);
+            background: color($color-button-secondary, $lightness-button-secondary-background-hover);
         }
     }
 }

@@ -111,6 +111,8 @@
         "title": "Search: {{query}} - Factorio Item Browser"
     },
     "settings": {
+        "add-temporary": "Add temporary setting",
+        "adding-temporary": "Adding temporary setting...",
         "change-to-setting": "Change to \"{{name}}\"",
         "changing-to-setting": "Changing to \"{{name}}\"...",
         "current-setting": {
@@ -122,7 +124,10 @@
         "headline": {
             "mod-list": "\"{{name}}\" uses {{count}} mod",
             "mod-list_plural": "\"{{name}}\" uses {{count}} mods",
+            "mod-list-temporary": "Temporary setting uses {{count}} mod",
+            "mod-list-temporary_plural": "Temporary setting uses {{count}} mods",
             "options": "Options for \"{{name}}\"",
+            "options-temporary": "Options for temporary setting",
             "settings": "Settings"
         },
         "locale": {
@@ -135,7 +140,7 @@
             "version": "Version:"
         },
         "name": {
-            "label": "Setting name:"
+            "label": "Name:"
         },
         "recipe-mode": {
             "label": "Recipe mode:",
@@ -146,8 +151,8 @@
                 "expensive": "Expensive mode"
             }
         },
-        "save-options": "Save options",
         "save-and-change": "Save options and change to \"{{name}}\"",
+        "save-options": "Save options",
         "saving-options": "Saving options...",
         "saving-and-changing": "Saving options and changing to \"{{name}}\"...",
         "title": "Settings - Factorio Item Browser"

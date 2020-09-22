@@ -189,6 +189,7 @@ class SettingsStore {
         const setting = this.selectedSettingDetails;
 
         return (
+            setting.isTemporary ||
             setting.name !== this.selectedOptions.name ||
             setting.locale !== this.selectedOptions.locale ||
             setting.recipeMode !== this.selectedOptions.recipeMode

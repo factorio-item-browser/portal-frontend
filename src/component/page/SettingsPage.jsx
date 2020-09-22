@@ -28,6 +28,7 @@ const SettingsPage = (): React$Node => {
     const settingsStore = useContext(settingsStoreContext);
     const { t } = useTranslation();
     const selectedSettingDetails = settingsStore.selectedSettingDetails;
+    const isTemporary = selectedSettingDetails.isTemporary;
     const areOptionsChanged = settingsStore.isChangeButtonVisible;
 
     useDocumentTitle("settings.title");
@@ -77,7 +78,6 @@ const SettingsPage = (): React$Node => {
                     />
 
                     <LinkedButton
-                        primary
                         label={t("settings.current-setting.add-new-setting")}
                         icon={faPlus}
                         route={ROUTE_SETTINGS_NEW}
@@ -85,7 +85,10 @@ const SettingsPage = (): React$Node => {
                 </ButtonGroup>
             </Section>
 
-            <Section headline={t("settings.headline.options", { name: selectedSettingDetails.name })}>
+            <Section headline={t(
+                isTemporary ? "settings.headline.options-temporary" : "settings.headline.options",
+                { name: selectedSettingDetails.name },
+            )}>
                 <OptionsList>
                     <OptionSettingName
                         value={settingsStore.selectedOptions.name}
@@ -103,7 +106,16 @@ const SettingsPage = (): React$Node => {
                     />
                 </OptionsList>
 
-                <ActionButton
+                { isTemporary ? <ActionButton
+                    primary
+                    spacing
+                    label={t("settings.add-temporary")}
+                    loadingLabel={t("settings.adding-temporary")}
+                    icon={faPlus}
+                    isVisible={settingsStore.isSaveButtonVisible}
+                    isLoading={settingsStore.isSavingChanges}
+                    onClick={handleSaveClick}
+                /> : <ActionButton
                     primary
                     spacing
                     label={t(areOptionsChanged ? "settings.save-and-change" : "settings.save-options", {
@@ -116,11 +128,11 @@ const SettingsPage = (): React$Node => {
                     isVisible={settingsStore.isSaveButtonVisible}
                     isLoading={settingsStore.isSavingChanges}
                     onClick={handleSaveClick}
-                />
+                /> }
             </Section>
 
             <Section
-                headline={t("settings.headline.mod-list", {
+                headline={t(isTemporary ? "settings.headline.mod-list-temporary" : "settings.headline.mod-list", {
                     count: selectedSettingDetails.mods.length,
                     name: selectedSettingDetails.name,
                 })}
