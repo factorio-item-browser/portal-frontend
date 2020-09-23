@@ -154,7 +154,7 @@ class SettingsStore {
     _applySelectedSetting() {
         const selectedSetting = this.selectedSettingDetails;
 
-        this.selectedOptions.name = selectedSetting.name;
+        this.selectedOptions.name = selectedSetting.isTemporary ? "" : selectedSetting.name;
         this.selectedOptions.locale = selectedSetting.locale;
         this.selectedOptions.recipeMode = selectedSetting.recipeMode;
 

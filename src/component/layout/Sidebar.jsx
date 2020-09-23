@@ -10,6 +10,7 @@ import { BREAKPOINT_LARGE } from "../../const/breakpoint";
 import { ROUTE_SETTINGS } from "../../const/route";
 import { routeStoreContext } from "../../store/RouteStore";
 import { sidebarStoreContext } from "../../store/SidebarStore";
+import { getTranslatedSettingName } from "../../util/setting";
 import SidebarButton from "../button/SidebarButton";
 import PinnedEntityList from "./sidebar/PinnedEntityList";
 import SidebarCloseIcon from "./sidebar/SidebarCloseIcon";
@@ -46,7 +47,7 @@ const Sidebar = (): React$Node => {
                     primary
                     route={ROUTE_SETTINGS}
                     icon={faCogs}
-                    label={t("sidebar.setting", { name: routeStore.setting.name })}
+                    label={t("sidebar.setting", { name: getTranslatedSettingName(routeStore.setting) })}
                 />
 
                 <PinnedEntityList />

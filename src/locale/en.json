@@ -110,6 +110,9 @@
         },
         "title": "Search: {{query}} - Factorio Item Browser"
     },
+    "setting-name": {
+        "temporary": "Temporary"
+    },
     "settings": {
         "add-temporary": "Add temporary setting",
         "adding-temporary": "Adding temporary setting...",

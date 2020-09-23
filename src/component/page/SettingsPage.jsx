@@ -16,9 +16,9 @@ import Mod from "../entity/Mod";
 import ModListSettingStatus from "../status/ModListSettingStatus";
 import OptionLocale from "./setting/option/OptionLocale";
 import OptionRecipeMode from "./setting/option/OptionRecipeMode";
+import OptionSettingId from "./setting/option/OptionSettingId";
 import OptionSettingName from "./setting/option/OptionSettingName";
 import OptionsList from "./setting/option/OptionsList";
-import OptionSettingId from "./setting/option/SettingOptionId";
 
 /**
  * The component representing the settings page.

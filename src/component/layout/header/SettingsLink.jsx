@@ -7,6 +7,7 @@ import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { ROUTE_SETTINGS } from "../../../const/route";
 import { routeStoreContext } from "../../../store/RouteStore";
+import { getTranslatedSettingName } from "../../../util/setting";
 import Link from "../../link/Link";
 
 import "./SettingsLink.scss";
@@ -24,7 +25,7 @@ const SettingsLink = (): React$Node => {
             <div className="link-icon">
                 <FontAwesomeIcon icon={faCogs} />
             </div>
-            <div className="label">{t("sidebar.setting", { name: routeStore.setting.name })}</div>
+            <div className="label">{t("sidebar.setting", { name: getTranslatedSettingName(routeStore.setting) })}</div>
         </Link>
     );
 };
