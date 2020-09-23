@@ -6,7 +6,7 @@
     box-shadow: $shadow-box;
     position: relative;
 
-    .option-chevron {
+    .chevron {
         @include dynamic-spacing(top, default);
 
         color: color($color-input, $lightness-text-primary);
@@ -16,7 +16,7 @@
         right: $spacing-default;
     }
 
-    .option-head {
+    .head {
         background: $color-box-default;
         color: color($color-box-default, $lightness-text-primary);
         display: flex;
@@ -34,7 +34,7 @@
             padding-right: $spacing-default;
         }
 
-        .option-element {
+        .input {
             background: color($color-input, $lightness-input-background);
             flex-grow: 1;
             position: relative;
@@ -51,7 +51,7 @@
             font-weight: bold;
             width: 100%;
 
-            &:hover, &:active {
+            &:hover, &:focus, &:active {
                 background: color($color-input, $lightness-input-background-hover);
             }
         }
@@ -94,11 +94,22 @@
         }
     }
 
-    .option-description {
+    .description {
         @include dynamic-spacing(padding, default);
 
         background: color($color-box-default, $lightness-box-background, $alpha-box-content);
         border-top: px-to-rem(1) solid color($color-box-default, $lightness-box-border, $alpha-box-border);
         color: color($color-box-default, $lightness-text-primary);
+    }
+
+    &.error {
+        .input, input[type=text], select {
+            background: color($color-input-error, $lightness-input-background);
+            color: color($color-input-error, $lightness-input-text);
+
+            &:hover, &:focus {
+                background: color($color-input-error, $lightness-input-background-hover);
+            }
+        }
     }
 }

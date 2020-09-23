@@ -1,21 +1,20 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
 
 import "./OptionsList.scss";
 
+type Props = {
+    children: React$Node,
+};
+
 /**
  * The component representing the list of additional options to a setting.
- * @param {ReactDOM} children
- * @return {ReactDOM}
  * @constructor
  */
-const OptionsList = ({ children }) => {
+const OptionsList = ({ children }: Props): React$Node => {
     return <div className="options-list">{children}</div>;
 };
 
-OptionsList.propTypes = {
-    children: PropTypes.any.isRequired,
-};
-
-export default observer(OptionsList);
+export default (observer(OptionsList): typeof OptionsList);

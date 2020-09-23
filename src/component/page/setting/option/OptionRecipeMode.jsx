@@ -1,42 +1,36 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { RECIPE_MODES } from "../../../../const/recipeMode";
-import Option from "./Option";
+import SelectOption from "./SelectOption";
+import type { Item } from "./SelectOption";
+
+type Props = {
+    value: string,
+    onChange: (string) => void,
+};
 
 /**
  * The component representing the recipe mode option.
- * @param {string} value
- * @param {function (string): void} onChange
- * @return {ReactDOM}
  * @constructor
  */
-const OptionRecipeMode = ({ value, onChange }) => {
+const OptionRecipeMode = ({ value, onChange }: Props): React$Node => {
     const { t } = useTranslation();
 
     return (
-        <Option
+        <SelectOption
             label={t("settings.recipe-mode.label")}
             description={t("settings.recipe-mode.description")}
-            withChevron={true}
-        >
-            <select value={value} onChange={(event) => onChange(event.currentTarget.value)}>
-                {RECIPE_MODES.map((recipeMode) => {
-                    return (
-                        <option key={recipeMode} value={recipeMode}>
-                            {t(`settings.recipe-mode.option.${recipeMode}`)}
-                        </option>
-                    );
-                })}
-            </select>
-        </Option>
+            items={RECIPE_MODES.map((recipeMode: string): Item => ({
+                value: recipeMode,
+                label: t(`settings.recipe-mode.option.${recipeMode}`),
+            }))}
+            value={value}
+            onChange={onChange}
+        />
     );
 };
 
-OptionRecipeMode.propTypes = {
-    onChange: PropTypes.func.isRequired,
-    value: PropTypes.string.isRequired,
-};
-
-export default observer(OptionRecipeMode);
+export default (observer(OptionRecipeMode): typeof OptionRecipeMode);

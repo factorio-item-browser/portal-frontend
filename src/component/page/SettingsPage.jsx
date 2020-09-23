@@ -51,7 +51,7 @@ const SettingsPage = (): React$Node => {
                         settings={settingsStore.availableSettings}
                         value={settingsStore.selectedSettingId}
                         onChange={(settingId) => settingsStore.changeSettingId(settingId)}
-                        isLoading={settingsStore.isLoadingSettingDetails}
+                        loading={settingsStore.isLoadingSettingDetails}
                     />
                 </OptionsList>
 
@@ -85,10 +85,11 @@ const SettingsPage = (): React$Node => {
                 </ButtonGroup>
             </Section>
 
-            <Section headline={t(
-                isTemporary ? "settings.headline.options-temporary" : "settings.headline.options",
-                { name: selectedSettingDetails.name },
-            )}>
+            <Section
+                headline={t(isTemporary ? "settings.headline.options-temporary" : "settings.headline.options", {
+                    name: selectedSettingDetails.name,
+                })}
+            >
                 <OptionsList>
                     <OptionSettingName
                         value={settingsStore.selectedOptions.name}
@@ -106,29 +107,36 @@ const SettingsPage = (): React$Node => {
                     />
                 </OptionsList>
 
-                { isTemporary ? <ActionButton
-                    primary
-                    spacing
-                    label={t("settings.add-temporary")}
-                    loadingLabel={t("settings.adding-temporary")}
-                    icon={faPlus}
-                    isVisible={settingsStore.isSaveButtonVisible}
-                    isLoading={settingsStore.isSavingChanges}
-                    onClick={handleSaveClick}
-                /> : <ActionButton
-                    primary
-                    spacing
-                    label={t(areOptionsChanged ? "settings.save-and-change" : "settings.save-options", {
-                        name: selectedSettingDetails.name,
-                    })}
-                    loadingLabel={t(areOptionsChanged ? "settings.saving-and-changing" : "settings.saving-options", {
-                        name: selectedSettingDetails.name,
-                    })}
-                    icon={faSave}
-                    isVisible={settingsStore.isSaveButtonVisible}
-                    isLoading={settingsStore.isSavingChanges}
-                    onClick={handleSaveClick}
-                /> }
+                {isTemporary ? (
+                    <ActionButton
+                        primary
+                        spacing
+                        label={t("settings.add-temporary")}
+                        loadingLabel={t("settings.adding-temporary")}
+                        icon={faPlus}
+                        isVisible={settingsStore.isSaveButtonVisible}
+                        isLoading={settingsStore.isSavingChanges}
+                        onClick={handleSaveClick}
+                    />
+                ) : (
+                    <ActionButton
+                        primary
+                        spacing
+                        label={t(areOptionsChanged ? "settings.save-and-change" : "settings.save-options", {
+                            name: selectedSettingDetails.name,
+                        })}
+                        loadingLabel={t(
+                            areOptionsChanged ? "settings.saving-and-changing" : "settings.saving-options",
+                            {
+                                name: selectedSettingDetails.name,
+                            }
+                        )}
+                        icon={faSave}
+                        isVisible={settingsStore.isSaveButtonVisible}
+                        isLoading={settingsStore.isSavingChanges}
+                        onClick={handleSaveClick}
+                    />
+                )}
             </Section>
 
             <Section

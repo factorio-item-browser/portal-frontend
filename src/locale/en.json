@@ -140,7 +140,8 @@
             "version": "Version:"
         },
         "name": {
-            "label": "Name:"
+            "label": "Name:",
+            "placeholder": "Please enter a name for the setting."
         },
         "recipe-mode": {
             "label": "Recipe mode:",

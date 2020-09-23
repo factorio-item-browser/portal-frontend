@@ -1,29 +1,32 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import Option from "./Option";
+import InputOption from "./InputOption";
+
+type Props = {
+    value: string,
+    onChange: (string) => void,
+};
 
 /**
  * The component representing the setting name as option.
- * @param {string} value
- * @param {function (string): void} onChange
- * @return {ReactDOM}
  * @constructor
  */
-const OptionSettingName = ({ value, onChange }) => {
+const OptionSettingName = ({ value, onChange }: Props): React$Node => {
     const { t } = useTranslation();
 
     return (
-        <Option label={t("settings.name.label")} useFullWidth={true}>
-            <input type="text" value={value} onChange={(event) => onChange(event.currentTarget.value)} />
-        </Option>
+        <InputOption
+            label={t("settings.name.label")}
+            placeholder={t("settings.name.placeholder")}
+            value={value}
+            onChange={onChange}
+            fullWidth
+            error={value === ""}
+        />
     );
 };
 
-OptionSettingName.propTypes = {
-    onChange: PropTypes.func.isRequired,
-    value: PropTypes.string.isRequired,
-};
-
-export default observer(OptionSettingName);
+export default (observer(OptionSettingName): typeof OptionSettingName);

@@ -95,7 +95,7 @@ class SettingsNewStore {
 
     @computed
     get showSaveButton(): boolean {
-        return !!this.showAdditionalOptionsStep;
+        return !!this.showAdditionalOptionsStep && this.newOptions.name !== "";
     }
 
     @action
@@ -110,7 +110,7 @@ class SettingsNewStore {
             const mods = await reader.read(file);
             const modNames = mods.map((mod) => mod.name);
 
-            runInAction(async () => {
+            await runInAction(async () => {
                 this.isSaveGameProcessing = false;
                 this.saveGameModNames = modNames;
 

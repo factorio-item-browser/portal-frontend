@@ -188,6 +188,10 @@ class SettingsStore {
     get isSaveButtonVisible(): boolean {
         const setting = this.selectedSettingDetails;
 
+        if (this.selectedOptions.name === "") {
+            return false;
+        }
+
         return (
             setting.isTemporary ||
             setting.name !== this.selectedOptions.name ||

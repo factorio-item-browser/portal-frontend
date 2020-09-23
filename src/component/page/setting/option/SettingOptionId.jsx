@@ -1,43 +1,45 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import Option from "./Option";
+import type { SettingMetaData } from "../../../../type/transfer";
+import SelectOption from "./SelectOption";
+import type { Item } from "./SelectOption";
+
+function createSettingItems(settings: SettingMetaData[]): Item[] {
+    const items = settings.map((setting: SettingMetaData): Item => ({
+        value: setting.combinationId,
+        label: setting.name, // @todo Translate "Vanilla" and "Temporary"
+    }));
+    items.sort((left: Item, right: Item): number => left.label.localeCompare(right.label));
+    return items;
+}
+
+type Props = {
+    settings: SettingMetaData[],
+    value: string,
+    onChange: (string) => void | Promise<void>,
+    loading?: boolean,
+};
 
 /**
  * The component representing the settings as option.
- * @param {SettingMetaData[]} settings
- * @param {string} value
- * @param {function (string): void} onChange
- * @param {boolean} isLoading
- * @return {ReactDOM}
  * @constructor
  */
-const OptionSettingId = ({ settings, value, onChange, isLoading }) => {
+const OptionSettingId = ({ settings, value, onChange, loading }: Props): React$Node => {
     const { t } = useTranslation();
 
-    settings.slice().sort((left, right) => left.name.localeCompare(right.name));
-
     return (
-        <Option label={t("settings.current-setting.label")} useFullWidth withChevron isLoading={isLoading}>
-            <select value={value} onChange={(event) => onChange(event.currentTarget.value)}>
-                {settings.map((setting) => {
-                    return (
-                        <option key={setting.combinationId} value={setting.combinationId}>
-                            {setting.name}
-                        </option>
-                    );
-                })}
-            </select>
-        </Option>
+        <SelectOption
+            items={createSettingItems(settings)}
+            label={t("settings.current-setting.label")}
+            value={value}
+            onChange={onChange}
+            loading={loading}
+            fullWidth
+        />
     );
 };
 
-OptionSettingId.propTypes = {
-    isLoading: PropTypes.bool.isRequired,
-    onChange: PropTypes.func.isRequired,
-    settings: PropTypes.array.isRequired,
-    value: PropTypes.string.isRequired,
-};
-
-export default observer(OptionSettingId);
+export default (observer(OptionSettingId): typeof OptionSettingId);
