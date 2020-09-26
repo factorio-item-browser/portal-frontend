@@ -2,6 +2,7 @@
 
 import { action, computed, observable, runInAction } from "mobx";
 import { createContext } from "react";
+import CombinationId from "../class/CombinationId";
 import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import SaveGameReader from "../class/SaveGameReader";
@@ -98,6 +99,11 @@ class SettingsNewStore {
         return !!this.showAdditionalOptionsStep && this.newOptions.name !== "";
     }
 
+    @computed
+    get hasExistingSetting(): boolean {
+        return !!this.settingStatus?.existingSetting;
+    }
+
     @action
     async processSaveGame(file: File): Promise<void> {
         this.isSaveGameProcessing = true;
@@ -137,6 +143,12 @@ class SettingsNewStore {
             const settingStatus = await this._portalApi.getSettingStatus(modNames);
             runInAction(() => {
                 this.settingStatus = settingStatus;
+
+                if (settingStatus.existingSetting) {
+                    this.newOptions.name = settingStatus.existingSetting.name;
+                    this.newOptions.locale = settingStatus.existingSetting.locale;
+                    this.newOptions.recipeMode = settingStatus.existingSetting.recipeMode;
+                }
             });
         } catch (e) {
             this._routeStore.handlePortalApiError(e);
@@ -164,6 +176,25 @@ class SettingsNewStore {
             };
             await this._portalApi.createSetting(settingData);
             this._router.redirectToIndex(/* @todo need combinationId */);
+        } catch (e) {
+            this._routeStore.handlePortalApiError(e);
+        }
+    }
+
+    /**
+     * Saves the options and changes to the already existing setting.
+     */
+    @action
+    async changeToSetting(): Promise<void> {
+        const setting = this.settingStatus?.existingSetting;
+        if (!setting) {
+            return;
+        }
+
+        this.isSavingNewSetting = true;
+        try {
+            await this._portalApi.saveSetting(setting.combinationId, this.newOptions);
+            this._router.redirectToIndex(CombinationId.fromFull(setting.combinationId));
         } catch (e) {
             this._routeStore.handlePortalApiError(e);
         }

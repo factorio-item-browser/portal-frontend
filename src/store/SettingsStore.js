@@ -29,7 +29,7 @@ const emptySettingDetails: SettingDetailsData = {
 /**
  * The store managing the settings and the settings page.
  */
-class SettingsStore {
+export class SettingsStore {
     /**
      * @private
      */

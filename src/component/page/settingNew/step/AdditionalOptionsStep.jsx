@@ -1,11 +1,12 @@
 // @flow
 
 import { observer } from "mobx-react-lite";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
+import { STATUS_INFO } from "../../../../const/status";
 import { settingsNewStoreContext } from "../../../../store/SettingsNewStore";
-import { settingsStoreContext } from "../../../../store/SettingsStore";
 import Section from "../../../common/Section";
+import Status from "../../../status/Status";
 import OptionLocale from "../../setting/option/OptionLocale";
 import OptionRecipeMode from "../../setting/option/OptionRecipeMode";
 import OptionSettingName from "../../setting/option/OptionSettingName";
@@ -17,18 +18,17 @@ import OptionsList from "../../setting/option/OptionsList";
  */
 const AdditionalOptionsStep = (): React$Node => {
     const { t } = useTranslation();
-    const settingsStore = useContext(settingsStoreContext);
     const settingsNewStore = useContext(settingsNewStoreContext);
-
-    useEffect(() => {
-        settingsNewStore.changeOptions({
-            locale: settingsStore.selectedOptions.locale,
-            recipeMode: settingsStore.selectedOptions.recipeMode,
-        });
-    }, []);
 
     return (
         <Section headline={t("settings-new.step.additional-options")}>
+            {settingsNewStore.hasExistingSetting ? (
+                <Status status={STATUS_INFO}>
+                    <h3>{t("settings-new.existing-setting.headline")}</h3>
+                    {t("settings-new.existing-setting.description")}
+                </Status>
+            ) : null}
+
             <OptionsList>
                 <OptionSettingName
                     value={settingsNewStore.newOptions.name}

@@ -163,6 +163,12 @@
     "settings-new": {
         "add-new-setting": "Neue Einstellung hinzufügen",
         "cancel": "Abbrechen",
+        "change-to-setting": "Zu \"{{name}}\" wechseln",
+        "changing-to-setting": "Wechsle zu \"{{name}}\"...",
+        "existing-setting": {
+            "headline": "Du hast bereits eine Einstellung mit diesen Mods.",
+            "description": "Es ist nicht möglich, mehrere Einstellungen mit denselben Mods zu haben. Bitte nutze stattdessen die vorhandene Einstellung."
+        },
         "explanation": {
             "description-1": "Um eine neue Einstellung hinzuzufügen, musst du deine Spielstand-Datei auswählen. Diese Datei enthält eine Liste an Mods, die du aktuell verwendest. Falls die Daten zu diesen Mods noch nicht verfügbar sein sollten, wird der Factorio Item Browser diese voll automatisch aus dem Spiel exportieren und zur Webseite hinzufügen. Dieser Prozess benötigt durchschnittlich 15 Minuten, kann allerdings abhängig von der Serverlast auch länger dauern.",
             "description-2": "In einer Standardinstallation findest du deine Spielstände an folgendem Ort:",

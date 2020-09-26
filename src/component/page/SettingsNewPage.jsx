@@ -1,11 +1,12 @@
 // @flow
 
-import { faSave, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faSave, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
-import React, { Fragment, useCallback, useContext } from "react";
+import React, { Fragment, useCallback, useContext, useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ROUTE_SETTINGS } from "../../const/route";
 import { settingsNewStoreContext } from "../../store/SettingsNewStore";
+import { settingsStoreContext } from "../../store/SettingsStore";
 import { useDocumentTitle } from "../../util/hooks";
 import ActionButton from "../button/ActionButton";
 import ButtonGroup from "../button/ButtonGroup";
@@ -18,17 +19,38 @@ import SaveGameStep from "./settingNew/step/SaveGameStep";
 
 /**
  * The component representing the page for creating a new setting.
- * @return {ReactDOM}
  * @constructor
  */
-const SettingsNewPage = () => {
+const SettingsNewPage = (): React$Node => {
     const { t } = useTranslation();
     const settingsNewStore = useContext(settingsNewStoreContext);
+    const settingsStore = useContext(settingsStoreContext);
 
     useDocumentTitle("settings-new.title");
-    const handleSaveClick = useCallback(async (): Promise<void> => {
-        await settingsNewStore.saveNewSetting();
+    useEffect((): void => {
+        settingsNewStore.changeOptions({
+            locale: settingsStore.selectedOptions.locale,
+            recipeMode: settingsStore.selectedOptions.recipeMode,
+        });
     }, []);
+    const handleSaveClick = useCallback(async (): Promise<void> => {
+        if (settingsNewStore.hasExistingSetting) {
+            await settingsNewStore.changeToSetting();
+        } else {
+            await settingsNewStore.saveNewSetting();
+        }
+    }, []);
+
+    let label;
+    let loadingLabel;
+    if (settingsNewStore.hasExistingSetting) {
+        const settingName = settingsNewStore.settingStatus?.existingSetting?.name;
+        label = t("settings-new.change-to-setting", { name: settingName });
+        loadingLabel = t("settings-new.changing-to-setting", { name: settingName });
+    } else {
+        label = t("settings-new.save-new-setting");
+        loadingLabel = t("settings-new.saving-new-setting");
+    }
 
     return (
         <Fragment>
@@ -64,12 +86,11 @@ const SettingsNewPage = () => {
 
             <ButtonGroup spacing>
                 <LinkedButton label={t("settings-new.cancel")} icon={faTimes} route={ROUTE_SETTINGS} />
-
                 <ActionButton
                     primary
-                    label={t("settings-new.save-new-setting")}
-                    loadingLabel={t("settings-new.saving-new-setting")}
-                    icon={faSave}
+                    label={label}
+                    loadingLabel={loadingLabel}
+                    icon={settingsNewStore.hasExistingSetting ? faArrowRight : faSave}
                     isVisible={settingsNewStore.showSaveButton}
                     isLoading={settingsNewStore.isSavingNewSetting}
                     onClick={handleSaveClick}

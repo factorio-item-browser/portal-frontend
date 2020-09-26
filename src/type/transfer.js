@@ -115,6 +115,7 @@ export type SettingOptionsData = {
 export type SettingStatusData = {
     status: string,
     exportTime?: string,
+    existingSetting?: SettingDetailsData,
 };
 
 export type SettingsListData = {

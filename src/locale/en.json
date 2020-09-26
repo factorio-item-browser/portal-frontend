@@ -164,6 +164,12 @@
     "settings-new": {
         "add-new-setting": "Add new setting",
         "cancel": "Cancel",
+        "change-to-setting": "Change to \"{{name}}\"",
+        "changing-to-setting": "Changing to \"{{name}}\"...",
+        "existing-setting": {
+            "headline": "You already have a setting using these mods.",
+            "description": "It is not possible to create another setting using the same mods. Please use the existing one instead."
+        },
         "explanation": {
             "description-1": "To add a new setting, you have to specify your savegame file. This file contains a list of mods you are currently using. If the data to these mods is not yet available, the Factorio Item Browser will automatically export the data from the game, and add it to the website. This process will take about 15 minutes on average, but may take longer depending on the server load.",
             "description-2": "For a default installation you find your savegames at the following location:",
