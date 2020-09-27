@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.2.0 - 2020-09-27
+
+### Added
+
+- Combination id to the URL of all pages.
+- Temporary settings when a new combination id is encountered in the URL.
+
+### Changes
+
+- Adapted to the changes made to the API to enable temporary setttings.
+
 ## 1.1.2 - 2020-08-14
 
 ### Changed
