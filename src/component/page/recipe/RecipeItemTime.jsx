@@ -2,11 +2,10 @@ import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-
-import { formatCraftingTime } from "../../../helper/format";
+import { CRAFTING_TIME_INFINITE } from "../../../const/config";
+import { formatCraftingTime } from "../../../util/format";
 
 import "./RecipeItem.scss";
-import { CRAFTING_TIME_INFINITE } from "../../../helper/const";
 
 /**
  * The component representing the crafting time as a recipe item.

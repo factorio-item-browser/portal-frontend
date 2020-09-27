@@ -1,86 +1,89 @@
+// @flow
+
 import { action, computed, observable, runInAction } from "mobx";
 import { createContext } from "react";
-
-import { portalApi } from "../class/PortalApi";
+import { State } from "router5";
 import PaginatedList from "../class/PaginatedList";
-import { ROUTE_ITEM_DETAILS } from "../helper/const";
+import { PortalApi, portalApi, PortalApiError } from "../class/PortalApi";
+import { router, Router } from "../class/Router";
+import { ROUTE_ITEM_DETAILS } from "../const/route";
+import type { EntityData, ItemRecipesData, ItemType } from "../type/transfer";
+import { RouteStore, routeStore } from "./RouteStore";
+import { SidebarStore, sidebarStore } from "./SidebarStore";
 
-import { routeStore } from "./RouteStore";
-import { sidebarStore } from "./SidebarStore";
+interface Item {
+    type: ItemType;
+    name: string;
+    label: string;
+    description: string;
+}
+
+const emptyItem: Item = {
+    type: "item",
+    name: "",
+    label: "",
+    description: "",
+};
+const emptyItemRecipesData: ItemRecipesData = {
+    type: "item",
+    name: "",
+    label: "",
+    description: "",
+    results: [],
+    numberOfResults: 0,
+};
 
 /**
  * The store for the items. And fluids.
  */
-class ItemStore {
+export class ItemStore {
     /**
-     * The Portal API instance.
-     * @type {PortalApi}
      * @private
      */
-    _portalApi;
+    _portalApi: PortalApi;
 
     /**
-     * The route store.
-     * @type {RouteStore}
      * @private
      */
-    _routeStore;
+    _routeStore: RouteStore;
 
     /**
-     * The sidebar store.
-     * @type {SidebarStore}
      * @private
      */
-    _sidebarStore;
+    _sidebarStore: SidebarStore;
 
     /**
      * The paginated list of product recipes.
-     * @type {PaginatedList<ItemRecipesData,EntityData>}
      */
     @observable
-    paginatedProductRecipesList;
+    paginatedProductRecipesList: PaginatedList<EntityData, ItemRecipesData>;
 
     /**
      * The paginated list of ingredient recipes.
-     * @type {PaginatedList<ItemRecipesData,EntityData>}
      */
     @observable
-    paginatedIngredientRecipesList;
+    paginatedIngredientRecipesList: PaginatedList<EntityData, ItemRecipesData>;
 
     /**
      * The current item details.
-     * @type {{name: string, description: string, label: string, type: string}}
      */
     @observable
-    currentItem = {
-        type: "",
-        name: "",
-        label: "",
-        description: "",
-    };
+    currentItem: Item = emptyItem;
 
-    /**
-     * Initializes the store.
-     * @param {PortalApi} portalApi
-     * @param {RouteStore} routeStore
-     * @param {SidebarStore} sidebarStore
-     */
-    constructor(portalApi, routeStore, sidebarStore) {
+    constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore, sidebarStore: SidebarStore) {
         this._portalApi = portalApi;
         this._routeStore = routeStore;
         this._sidebarStore = sidebarStore;
 
-        this._routeStore.addRoute(ROUTE_ITEM_DETAILS, "/:type<item|fluid>/:name", this._handleRouteChange.bind(this));
+        router.addRoute(ROUTE_ITEM_DETAILS, "/:type<item|fluid>/:name", this._handleRouteChange.bind(this));
     }
 
     /**
-     * Handles the change of the route.
-     * @param {string} type
-     * @param {string} name
-     * @returns {Promise<void>}
      * @private
      */
-    async _handleRouteChange({ type, name }) {
+    async _handleRouteChange(state: State): Promise<void> {
+        const { type, name } = state.params;
+
         const newProductsList = new PaginatedList(
             (page) => this._portalApi.getItemProductRecipes(type, name, page),
             (error) => this._handlePortalApiError(error)
@@ -94,7 +97,8 @@ class ItemStore {
             newProductsList.requestNextPage(),
             newIngredientsList.requestNextPage(),
         ]);
-        if (productsData) {
+
+        if (productsData.name !== "") {
             runInAction(() => {
                 this.paginatedProductRecipesList = newProductsList;
                 this.paginatedIngredientRecipesList = newIngredientsList;
@@ -112,39 +116,28 @@ class ItemStore {
     }
 
     /**
-     * Handles the Portal API error.
-     * @param {PortalApiError} error
      * @private
      */
     @action
-    _handlePortalApiError(error) {
+    _handlePortalApiError(error: PortalApiError): ItemRecipesData {
         if (error.code === 404) {
-            this.currentItem = {
-                type: "",
-                name: "",
-                label: "",
-                description: "",
-            };
+            this.currentItem = emptyItem;
         } else {
             this._routeStore.handlePortalApiError(error);
         }
+        return emptyItemRecipesData;
     }
 
-    /**
-     * Returns whether a not found error is present.
-     * @return {boolean}
-     */
     @computed
-    get hasNotFoundError() {
-        return this.currentItem.type === "";
+    get hasNotFoundError(): boolean {
+        return this.currentItem.name === "";
     }
 
     /**
      * Returns the entity to highlight.
-     * @return {{name: string, type: string}}
      */
     @computed
-    get highlightedEntity() {
+    get highlightedEntity(): { type: string, name: string } {
         if (this._routeStore.currentRoute !== ROUTE_ITEM_DETAILS) {
             return {
                 type: "",
@@ -159,5 +152,5 @@ class ItemStore {
     }
 }
 
-export const itemStore = new ItemStore(portalApi, routeStore, sidebarStore);
-export default createContext(itemStore);
+export const itemStore = new ItemStore(portalApi, router, routeStore, sidebarStore);
+export const itemStoreContext = createContext<ItemStore>(itemStore);

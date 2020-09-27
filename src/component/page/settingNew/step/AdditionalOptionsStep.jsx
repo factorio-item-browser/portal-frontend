@@ -1,28 +1,34 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import Section from "../../../common/Section";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import SettingsNewStore from "../../../../store/SettingsNewStore";
-import OptionSettingName from "../../setting/option/OptionSettingName";
-import OptionRecipeMode from "../../setting/option/OptionRecipeMode";
+import { STATUS_INFO } from "../../../../const/status";
+import { settingsNewStoreContext } from "../../../../store/SettingsNewStore";
+import Section from "../../../common/Section";
+import Status from "../../../status/Status";
 import OptionLocale from "../../setting/option/OptionLocale";
+import OptionRecipeMode from "../../setting/option/OptionRecipeMode";
+import OptionSettingName from "../../setting/option/OptionSettingName";
 import OptionsList from "../../setting/option/OptionsList";
-import SettingsStore from "../../../../store/SettingsStore";
 
-const AdditionalOptionsStep = () => {
+/**
+ * The component representing the step for setting additional options.
+ * @constructor
+ */
+const AdditionalOptionsStep = (): React$Node => {
     const { t } = useTranslation();
-    const settingsStore = useContext(SettingsStore);
-    const settingsNewStore = useContext(SettingsNewStore);
-
-    useEffect(() => {
-        settingsNewStore.changeOptions({
-            locale: settingsStore.selectedOptions.locale,
-            recipeMode: settingsStore.selectedOptions.recipeMode,
-        });
-    }, []);
+    const settingsNewStore = useContext(settingsNewStoreContext);
 
     return (
         <Section headline={t("settings-new.step.additional-options")}>
+            {settingsNewStore.hasExistingSetting ? (
+                <Status status={STATUS_INFO}>
+                    <h3>{t("settings-new.existing-setting.headline")}</h3>
+                    {t("settings-new.existing-setting.description")}
+                </Status>
+            ) : null}
+
             <OptionsList>
                 <OptionSettingName
                     value={settingsNewStore.newOptions.name}
@@ -43,4 +49,4 @@ const AdditionalOptionsStep = () => {
     );
 };
 
-export default observer(AdditionalOptionsStep);
+export default (observer(AdditionalOptionsStep): typeof AdditionalOptionsStep);

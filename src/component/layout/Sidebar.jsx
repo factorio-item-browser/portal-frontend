@@ -1,14 +1,18 @@
+// @flow
+
+import { faCogs } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import React, { Fragment, useContext } from "react";
+import React, { useContext } from "react";
+import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
-
-import { BREAKPOINT_LARGE } from "../../helper/const";
-import RouteStore from "../../store/RouteStore";
-import SidebarStore from "../../store/SidebarStore";
-
+import { BREAKPOINT_LARGE } from "../../const/breakpoint";
+import { ROUTE_SETTINGS } from "../../const/route";
+import { routeStoreContext } from "../../store/RouteStore";
+import { sidebarStoreContext } from "../../store/SidebarStore";
+import { getTranslatedSettingName } from "../../util/setting";
+import SidebarButton from "../button/SidebarButton";
 import PinnedEntityList from "./sidebar/PinnedEntityList";
-import SettingsButton from "./sidebar/SettingsButton";
 import SidebarCloseIcon from "./sidebar/SidebarCloseIcon";
 import SidebarCloseOverlay from "./sidebar/SidebarCloseOverlay";
 import UnpinnedEntityList from "./sidebar/UnpinnedEntityList";
@@ -20,9 +24,10 @@ import "./Sidebar.scss";
  * @returns {ReactDOM}
  * @constructor
  */
-const Sidebar = () => {
-    const routeStore = useContext(RouteStore);
-    const sidebarStore = useContext(SidebarStore);
+const Sidebar = (): React$Node => {
+    const { t } = useTranslation();
+    const routeStore = useContext(routeStoreContext);
+    const sidebarStore = useContext(sidebarStoreContext);
     const isLarge = useMediaQuery({ minWidth: BREAKPOINT_LARGE });
 
     const classes = classNames({
@@ -35,17 +40,22 @@ const Sidebar = () => {
     }
 
     return (
-        <Fragment>
+        <>
             <div className={classes}>
                 {isLarge ? null : <SidebarCloseIcon />}
-                <SettingsButton />
+                <SidebarButton
+                    primary
+                    route={ROUTE_SETTINGS}
+                    icon={faCogs}
+                    label={t("sidebar.setting", { name: getTranslatedSettingName(routeStore.setting) })}
+                />
 
                 <PinnedEntityList />
                 <UnpinnedEntityList />
             </div>
             {isLarge ? null : <SidebarCloseOverlay />}
-        </Fragment>
+        </>
     );
 };
 
-export default observer(Sidebar);
+export default (observer(Sidebar): typeof Sidebar);

@@ -1,10 +1,9 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
-import { ReactSortable } from "react-sortablejs";
 import { useTranslation } from "react-i18next";
-
-import SidebarStore from "../../../store/SidebarStore";
-import TooltipStore from "../../../store/TooltipStore";
+import { ReactSortable } from "react-sortablejs";
+import { sidebarStoreContext } from "../../../store/SidebarStore";
+import { tooltipStoreContext } from "../../../store/TooltipStore";
 import SidebarEntity from "./SidebarEntity";
 
 import "./SidebarList.scss";
@@ -16,8 +15,8 @@ import "./SidebarList.scss";
  */
 const UnpinnedEntityList = () => {
     const { t } = useTranslation();
-    const sidebarStore = useContext(SidebarStore);
-    const tooltipStore = useContext(TooltipStore);
+    const sidebarStore = useContext(sidebarStoreContext);
+    const tooltipStore = useContext(tooltipStoreContext);
 
     if (sidebarStore.unpinnedEntities.length === 0) {
         return null;

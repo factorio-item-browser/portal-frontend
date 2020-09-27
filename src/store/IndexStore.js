@@ -1,72 +1,51 @@
+// @flow
+
 import { action, observable, runInAction } from "mobx";
 import { createContext } from "react";
-
-import { portalApi } from "../class/PortalApi";
-import { ROUTE_INDEX } from "../helper/const";
-
-import { routeStore } from "./RouteStore";
+import { PortalApi, portalApi } from "../class/PortalApi";
+import { router, Router } from "../class/Router";
+import { ROUTE_INDEX } from "../const/route";
+import type { EntityData } from "../type/transfer";
+import { RouteStore, routeStore } from "./RouteStore";
 
 /**
  * The store of the index page.
  */
-class IndexStore {
+export class IndexStore {
     /**
-     * The Portal API instance.
-     * @type {PortalApi}
      * @private
      */
-    _portalApi;
+    _portalApi: PortalApi;
 
     /**
-     * The route store.
-     * @type {RouteStore}
      * @private
      */
-    _routeStore;
+    _routeStore: RouteStore;
 
-    /**
-     * The random items.
-     * @type {EntityData[]}
-     */
     @observable
-    randomItems = [];
+    randomItems: EntityData[] = [];
 
-    /**
-     * Whether we are currently randomizing the icons.
-     * @type {boolean}
-     */
     @observable
-    isRandomizing = false;
+    isRandomizing: boolean = false;
 
-    /**
-     * Initializes the index store.
-     * @param {PortalApi} portalApi
-     * @param {RouteStore} routeStore
-     */
-    constructor(portalApi, routeStore) {
+    constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore) {
         this._portalApi = portalApi;
         this._routeStore = routeStore;
 
-        this._routeStore.addRoute(ROUTE_INDEX, "/", this._handleRouteChange.bind(this));
+        router.addRoute(ROUTE_INDEX, "/", this._handleRouteChange.bind(this));
     }
 
     /**
-     * Handles the route change to the index page.
-     * @return {Promise<void>}
      * @private
      */
-    async _handleRouteChange() {
+    async _handleRouteChange(): Promise<void> {
         if (this.randomItems.length === 0) {
             await this.randomizeItems();
         }
     }
 
-    /**
-     * Randomizes the items on the index page.
-     * @return {Promise<void>}
-     */
     @action
-    async randomizeItems() {
+    async randomizeItems(): Promise<void> {
         if (this.isRandomizing) {
             return;
         }
@@ -74,7 +53,7 @@ class IndexStore {
         this.isRandomizing = true;
         try {
             const randomItems = await this._portalApi.getRandom();
-            runInAction(() => {
+            runInAction((): void => {
                 this.isRandomizing = false;
                 this.randomItems = randomItems;
             });
@@ -84,5 +63,5 @@ class IndexStore {
     }
 }
 
-export const indexStore = new IndexStore(portalApi, routeStore);
-export default createContext(indexStore);
+export const indexStore = new IndexStore(portalApi, router, routeStore);
+export const indexStoreContext = createContext<IndexStore>(indexStore);

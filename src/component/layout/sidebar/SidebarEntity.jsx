@@ -1,15 +1,14 @@
-import classNames from "classnames";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbtack, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import * as PropTypes from "prop-types";
 import React, { createRef, useContext } from "react";
 import { useTranslation } from "react-i18next";
-
-import Icon from "../../common/Icon";
-import SidebarStore from "../../../store/SidebarStore";
+import { sidebarStoreContext } from "../../../store/SidebarStore";
+import { tooltipStoreContext } from "../../../store/TooltipStore";
+import Icon from "../../icon/Icon";
 import EntityLink from "../../link/EntityLink";
-import TooltipStore from "../../../store/TooltipStore";
 
 import "./SidebarEntity.scss";
 
@@ -20,7 +19,7 @@ import "./SidebarEntity.scss";
  */
 function renderPinAction(entity) {
     const { t } = useTranslation();
-    const sidebarStore = useContext(SidebarStore);
+    const sidebarStore = useContext(sidebarStoreContext);
 
     return (
         <div
@@ -45,7 +44,7 @@ function renderPinAction(entity) {
  */
 function renderUnpinAction(entity) {
     const { t } = useTranslation();
-    const sidebarStore = useContext(SidebarStore);
+    const sidebarStore = useContext(sidebarStoreContext);
 
     return (
         <div
@@ -71,8 +70,8 @@ function renderUnpinAction(entity) {
  */
 const SidebarEntity = ({ entity }) => {
     const { t } = useTranslation();
-    const sidebarStore = useContext(SidebarStore);
-    const tooltipStore = useContext(TooltipStore);
+    const sidebarStore = useContext(sidebarStoreContext);
+    const tooltipStore = useContext(tooltipStoreContext);
 
     const iconRef = createRef();
     const entityId = sidebarStore.getIdForEntity(entity);
@@ -95,7 +94,7 @@ const SidebarEntity = ({ entity }) => {
                 tooltipStore.hideTooltip();
             }}
         >
-            <Icon type={entity.type} name={entity.name} transparent={true} ref={iconRef} />
+            <Icon type={entity.type} name={entity.name} ref={iconRef} />
             <span className="label">{entity.label}</span>
 
             {entity.pinnedPosition > 0 ? renderUnpinAction(entity) : renderPinAction(entity)}

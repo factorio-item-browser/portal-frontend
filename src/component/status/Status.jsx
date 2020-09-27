@@ -1,18 +1,14 @@
-import classNames from "classnames";
+// @flow
+
 import { faCheck, faExclamation, faInfo, faSpinner, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
-
-import { STATUS_ERROR, STATUS_INFO, STATUS_PENDING, STATUS_SUCCESS, STATUS_WARNING } from "../../helper/const";
+import { STATUS_ERROR, STATUS_INFO, STATUS_PENDING, STATUS_SUCCESS, STATUS_WARNING } from "../../const/status";
 
 import "./Status.scss";
 
-/**
- * The map of the status values to their icon.
- * @type {Object<string, ReactDOM>}
- */
 const ICON_MAP = {
     [STATUS_ERROR]: <FontAwesomeIcon icon={faTimes} />,
     [STATUS_INFO]: <FontAwesomeIcon icon={faInfo} />,
@@ -21,15 +17,17 @@ const ICON_MAP = {
     [STATUS_WARNING]: <FontAwesomeIcon icon={faExclamation} />,
 };
 
+type Props = {
+    status: string,
+    className?: string,
+    children: React$Node,
+};
+
 /**
  * The component representing a status box.
- * @param {string} status
- * @param {ReactDOM} children
- * @param {string} [className]
- * @return {ReactDOM}
  * @constructor
  */
-const Status = ({ status, children, className }) => {
+const Status = ({ status, children, className }: Props): React$Node => {
     const classes = classNames(className, {
         "status-box": true,
         [status]: true,
@@ -43,10 +41,4 @@ const Status = ({ status, children, className }) => {
     );
 };
 
-Status.propTypes = {
-    children: PropTypes.node.isRequired,
-    className: PropTypes.string,
-    status: PropTypes.string.isRequired,
-};
-
-export default observer(Status);
+export default (observer(Status): typeof Status);

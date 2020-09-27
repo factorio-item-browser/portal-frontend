@@ -1,70 +1,29 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
-import React, { createRef, useContext } from "react";
+import React, { createRef } from "react";
 import { useTranslation } from "react-i18next";
-
-import { formatCraftingSpeed, formatEnergyUsage } from "../../helper/format";
+import type { MachineData } from "../../type/transfer";
+import { formatCraftingSpeed, formatEnergyUsage, formatMachineSlots } from "../../util/format";
+import { useTooltip } from "../../util/hooks";
+import Icon from "../icon/Icon";
 import EntityLink from "../link/EntityLink";
-import Icon from "../common/Icon";
-
-import MachineDetail from "./MachineDetail";
 
 import "./MachineEntity.scss";
-import TooltipStore from "../../store/TooltipStore";
 
-/**
- * Formats the number.
- * @param {number} number
- * @param {TFunction} t
- * @return string
- */
-function formatNumber(number, t) {
-    if (number === 0) {
-        return t("recipe-details.machine.none");
-    }
-    if (number === 255) {
-        return t("recipe-details.machine.unlimited");
-    }
-    return `${number}`;
-}
+type Props = {
+    machine: MachineData,
+};
 
 /**
  * The component rendering a machine as an entity box.
- * @param {MachineData} machine
- * @returns {ReactDOM}
  * @constructor
  */
-const MachineEntity = ({ machine }) => {
+const MachineEntity = ({ machine }: Props): React$Node => {
     const { t } = useTranslation();
-    const tooltipStore = useContext(TooltipStore);
-
     const iconRef = createRef();
 
-    if (machine.name === "character") {
-        return (
-            <div className="entity machine-entity">
-                <div className="entity-head">
-                    <Icon type="machine" name={machine.name} transparent={true} ref={iconRef} />
-                    <h3>{machine.label}</h3>
-                </div>
-                <div className="machine-details">
-                    <MachineDetail
-                        label={t("recipe-details.machine.crafting-speed")}
-                        value={formatCraftingSpeed(machine.craftingSpeed)}
-                    />
-                    <MachineDetail
-                        label={t("recipe-details.machine.items")}
-                        value={formatNumber(machine.numberOfItems, t)}
-                    />
-                    <MachineDetail
-                        label={t("recipe-details.machine.fluids")}
-                        value={formatNumber(machine.numberOfFluids, t)}
-                    />
-                </div>
-                <div className="machine-details character-notice">{t("recipe-details.machine.character-notice")}</div>
-            </div>
-        );
-    }
+    const { showTooltip, hideTooltip } = useTooltip("item", machine.name, iconRef);
 
     return (
         <div className="entity machine-entity">
@@ -72,44 +31,37 @@ const MachineEntity = ({ machine }) => {
                 type="item"
                 name={machine.name}
                 className="entity-head"
-                onMouseEnter={async () => {
-                    await tooltipStore.showTooltip(iconRef, "item", machine.name);
-                }}
-                onMouseLeave={() => {
-                    tooltipStore.hideTooltip();
-                }}
+                onMouseEnter={showTooltip}
+                onMouseLeave={hideTooltip}
             >
-                <Icon type="machine" name={machine.name} transparent={true} ref={iconRef} />
+                <Icon type="machine" name={machine.name} ref={iconRef} />
                 <h3>{machine.label}</h3>
             </EntityLink>
+
             <div className="machine-details">
-                <MachineDetail
-                    label={t("recipe-details.machine.crafting-speed")}
-                    value={formatCraftingSpeed(machine.craftingSpeed)}
-                />
-                <MachineDetail
-                    label={t("recipe-details.machine.items")}
-                    value={formatNumber(machine.numberOfItems, t)}
-                />
-                <MachineDetail
-                    label={t("recipe-details.machine.fluids")}
-                    value={formatNumber(machine.numberOfFluids, t)}
-                />
-                <MachineDetail
-                    label={t("recipe-details.machine.modules")}
-                    value={formatNumber(machine.numberOfModules, t)}
-                />
-                <MachineDetail
-                    label={t("recipe-details.machine.energy-usage")}
-                    value={formatEnergyUsage(machine.energyUsage, machine.energyUsageUnit)}
-                />
+                <div className="machine-detail">
+                    <span className="label">{t("recipe-details.machine.crafting-speed")}</span>
+                    <span className="value">{formatCraftingSpeed(machine.craftingSpeed)}</span>
+                </div>
+                <div className="machine-detail">
+                    <span className="label">{t("recipe-details.machine.items")}</span>
+                    <span className="value">{formatMachineSlots(machine.numberOfItems)}</span>
+                </div>
+                <div className="machine-detail">
+                    <span className="label">{t("recipe-details.machine.fluids")}</span>
+                    <span className="value">{formatMachineSlots(machine.numberOfFluids)}</span>
+                </div>
+                <div className="machine-detail">
+                    <span className="label">{t("recipe-details.machine.modules")}</span>
+                    <span className="value">{formatMachineSlots(machine.numberOfModules)}</span>
+                </div>
+                <div className="machine-detail">
+                    <span className="label">{t("recipe-details.machine.energy-usage")}</span>
+                    <span className="value">{formatEnergyUsage(machine.energyUsage, machine.energyUsageUnit)}</span>
+                </div>
             </div>
         </div>
     );
 };
 
-MachineEntity.propTypes = {
-    machine: PropTypes.object.isRequired,
-};
-
-export default observer(MachineEntity);
+export default (observer(MachineEntity): typeof MachineEntity);

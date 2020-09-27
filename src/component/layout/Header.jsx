@@ -1,27 +1,26 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { useMediaQuery } from "react-responsive";
-
-import { BREAKPOINT_LARGE } from "../../helper/const";
-import RouteStore from "../../store/RouteStore";
-import SearchStore from "../../store/SearchStore";
-
+import { BREAKPOINT_LARGE } from "../../const/breakpoint";
+import { routeStoreContext } from "../../store/RouteStore";
+import { searchStoreContext } from "../../store/SearchStore";
 import HeaderLogo from "./header/HeaderLogo";
 import HeaderSearch from "./header/HeaderSearch";
-import SidebarIcon from "./header/SidebarIcon";
 import SearchIcon from "./header/SearchIcon";
 import SettingsLink from "./header/SettingsLink";
+import SidebarIcon from "./header/SidebarIcon";
 
 import "./Header.scss";
 
 /**
  * The component representing the header of the page.
- * @returns {ReactNode}
  * @constructor
  */
-const Header = () => {
-    const routeStore = useContext(RouteStore);
-    const searchStore = useContext(SearchStore);
+const Header = (): React$Node => {
+    const routeStore = useContext(routeStoreContext);
+    const searchStore = useContext(searchStoreContext);
     const isLarge = useMediaQuery({ minWidth: BREAKPOINT_LARGE });
 
     // Index page with big logo and search box.
@@ -64,4 +63,4 @@ const Header = () => {
     );
 };
 
-export default observer(Header);
+export default (observer(Header): typeof Header);

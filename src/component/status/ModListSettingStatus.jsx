@@ -1,27 +1,24 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-
-import {
-    SETTING_STATUS_ERRORED,
-    SETTING_STATUS_PENDING,
-    SETTING_STATUS_UNKNOWN,
-    STATUS_ERROR,
-    STATUS_WARNING,
-} from "../../helper/const";
-
+import { SETTING_STATUS_ERRORED, SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN } from "../../const/settingStatus";
+import { STATUS_ERROR, STATUS_WARNING } from "../../const/status";
+import type { SettingDetailsData } from "../../type/transfer";
 import Status from "./Status";
 
 import "./ModListSettingStatus.scss";
 
+type Props = {
+    setting: SettingDetailsData,
+};
+
 /**
  * The component representing the setting status within the mod list of said setting.
- * @param {SettingMetaData} setting
- * @return {ReactDOM|null}
  * @constructor
  */
-const ModListSettingStatus = ({ setting }) => {
+const ModListSettingStatus = ({ setting }: Props): React$Node => {
     const { t } = useTranslation();
 
     if (setting.status === SETTING_STATUS_PENDING || setting.status === SETTING_STATUS_UNKNOWN) {
@@ -45,8 +42,4 @@ const ModListSettingStatus = ({ setting }) => {
     return null;
 };
 
-ModListSettingStatus.propTypes = {
-    setting: PropTypes.object.isRequired,
-};
-
-export default observer(ModListSettingStatus);
+export default (observer(ModListSettingStatus): typeof ModListSettingStatus);

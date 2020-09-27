@@ -1,15 +1,18 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
+
+type Props = {
+    children: React$Node,
+    hidden?: boolean,
+};
 
 /**
  * The component representing an additional detail of a details head.
- * @param {ReactDOM} children
- * @param {boolean} hidden
- * @returns {ReactDOM|null}
  * @constructor
  */
-const Detail = ({ children, hidden }) => {
+const Detail = ({ children, hidden }: Props): React$Node => {
     if (hidden) {
         return null;
     }
@@ -17,9 +20,4 @@ const Detail = ({ children, hidden }) => {
     return <div className="detail">{children}</div>;
 };
 
-Detail.propTypes = {
-    children: PropTypes.node,
-    hidden: PropTypes.bool,
-};
-
-export default observer(Detail);
+export default (observer(Detail): typeof Detail);

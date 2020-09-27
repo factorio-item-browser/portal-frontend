@@ -1,0 +1,45 @@
+@import "../../style/import";
+
+.button {
+    @include transition-default(background-color);
+
+    background: color($color-button-default, $lightness-box-background, $alpha-box-content);
+    box-shadow: $shadow-box;
+    color: color($color-button-default, $lightness-button-text);
+    cursor: pointer;
+    display: block;
+    font-size: $text-size-button;
+    font-weight: bold;
+    padding: $spacing-default;
+    text-align: center;
+
+    &:hover {
+        background: color($color-button-default, $lightness-button-background-hover);
+    }
+
+    svg {
+        margin: 0 $spacing-default;
+    }
+
+    &.spacing {
+        @include dynamic-spacing(margin, default large);
+    }
+
+    &.primary {
+        background: color($color-button-primary, $lightness-button-primary-background);
+        color: color($color-button-primary, $lightness-button-text);
+
+        &:hover {
+            background: color($color-button-primary, $lightness-button-primary-background-hover);
+        }
+    }
+
+    &.secondary {
+        background: color($color-button-secondary, $lightness-button-secondary-background);
+        color: color($color-button-secondary, $lightness-button-text);
+
+        &:hover {
+            background: color($color-button-secondary, $lightness-button-secondary-background-hover);
+        }
+    }
+}

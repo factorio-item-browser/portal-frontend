@@ -4,8 +4,10 @@ node_js:
 
 install:
   - npm install
+  - flow-typed install jest classnames
 
 script:
+  - flow
   - jest
   - eslint src --ext js,jsx
   - webpack --mode production

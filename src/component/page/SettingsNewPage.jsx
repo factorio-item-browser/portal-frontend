@@ -1,33 +1,56 @@
-import { faSave, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// @flow
+
+import { faArrowRight, faSave, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { Fragment, useCallback, useContext, useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
-
-import SettingsNewStore from "../../store/SettingsNewStore";
-import { ROUTE_SETTINGS } from "../../helper/const";
-
-import ButtonLink from "../link/ButtonLink";
-import ButtonList from "./setting/ButtonList";
-import TextBox from "../common/TextBox";
-import ActionButton from "../common/ActionButton";
-import SaveGameStep from "./settingNew/step/SaveGameStep";
-import DataAvailabilityStep from "./settingNew/step/DataAvailabilityStep";
-import AdditionalOptionsStep from "./settingNew/step/AdditionalOptionsStep";
+import { ROUTE_SETTINGS } from "../../const/route";
+import { settingsNewStoreContext } from "../../store/SettingsNewStore";
+import { settingsStoreContext } from "../../store/SettingsStore";
+import { useDocumentTitle } from "../../util/hooks";
+import ActionButton from "../button/ActionButton";
+import ButtonGroup from "../button/ButtonGroup";
+import LinkedButton from "../button/LinkedButton";
 import Section from "../common/Section";
+import TextBox from "../common/TextBox";
+import AdditionalOptionsStep from "./settingNew/step/AdditionalOptionsStep";
+import DataAvailabilityStep from "./settingNew/step/DataAvailabilityStep";
+import SaveGameStep from "./settingNew/step/SaveGameStep";
 
 /**
  * The component representing the page for creating a new setting.
- * @return {ReactDOM}
  * @constructor
  */
-const SettingsNewPage = () => {
+const SettingsNewPage = (): React$Node => {
     const { t } = useTranslation();
-    const settingsNewStore = useContext(SettingsNewStore);
+    const settingsNewStore = useContext(settingsNewStoreContext);
+    const settingsStore = useContext(settingsStoreContext);
 
-    useEffect(() => {
-        document.title = t("settings-new.title");
+    useDocumentTitle("settings-new.title");
+    useEffect((): void => {
+        settingsNewStore.changeOptions({
+            locale: settingsStore.selectedOptions.locale,
+            recipeMode: settingsStore.selectedOptions.recipeMode,
+        });
     }, []);
+    const handleSaveClick = useCallback(async (): Promise<void> => {
+        if (settingsNewStore.hasExistingSetting) {
+            await settingsNewStore.changeToSetting();
+        } else {
+            await settingsNewStore.saveNewSetting();
+        }
+    }, []);
+
+    let label;
+    let loadingLabel;
+    if (settingsNewStore.hasExistingSetting) {
+        const settingName = settingsNewStore.settingStatus?.existingSetting?.name;
+        label = t("settings-new.change-to-setting", { name: settingName });
+        loadingLabel = t("settings-new.changing-to-setting", { name: settingName });
+    } else {
+        label = t("settings-new.save-new-setting");
+        loadingLabel = t("settings-new.saving-new-setting");
+    }
 
     return (
         <Fragment>
@@ -61,27 +84,18 @@ const SettingsNewPage = () => {
             {settingsNewStore.showDataAvailabilityStep ? <DataAvailabilityStep /> : null}
             {settingsNewStore.showAdditionalOptionsStep ? <AdditionalOptionsStep /> : null}
 
-            <ButtonList>
-                <ButtonLink
-                    route={ROUTE_SETTINGS}
-                    className={!settingsNewStore.showAdditionalOptionsStep ? "spacing-fix" : null}
-                >
-                    <FontAwesomeIcon icon={faTimes} />
-                    {t("settings-new.cancel")}
-                </ButtonLink>
-
+            <ButtonGroup spacing>
+                <LinkedButton label={t("settings-new.cancel")} icon={faTimes} route={ROUTE_SETTINGS} />
                 <ActionButton
                     primary
-                    label={t("settings-new.save-new-setting")}
-                    loadingLabel={t("settings-new.saving-new-setting")}
-                    icon={faSave}
+                    label={label}
+                    loadingLabel={loadingLabel}
+                    icon={settingsNewStore.hasExistingSetting ? faArrowRight : faSave}
                     isVisible={settingsNewStore.showSaveButton}
                     isLoading={settingsNewStore.isSavingNewSetting}
-                    onClick={async () => {
-                        await settingsNewStore.saveNewSetting();
-                    }}
+                    onClick={handleSaveClick}
                 />
-            </ButtonList>
+            </ButtonGroup>
         </Fragment>
     );
 };

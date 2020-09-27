@@ -1,0 +1,43 @@
+@import "../../style/import";
+
+.compact-recipe-icon {
+    @include dynamic-spacing(margin, default);
+
+    background-color: color($color-box-default, $lightness-icon-background);
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: px-to-rem(1) solid color($color-box-default, $lightness-box-border);
+    box-shadow: $shadow-box;
+    box-sizing: content-box;
+    display: block;
+    height: $icon-size-default;
+    position: relative;
+    text-decoration: none;
+    width: $icon-size-default;
+    z-index: $zIndex-icon;
+
+    .amount {
+        color: color($color-box-default, $lightness-shadowed-label-text);
+        font-size: $text-size-label;
+        font-weight: bolder;
+        left: px-to-rem(-6);
+        pointer-events: none;
+        position: absolute;
+        text-shadow: $shadow-label;
+        top: px-to-rem(-5);
+
+        @include breakpoint(large) {
+            left: px-to-rem(-12);
+            top: px-to-rem(-10);
+        }
+    }
+
+    &.highlighted {
+        border: px-to-rem(1) solid color($color-highlight, $lightness-box-border);
+        background-color: color($color-highlight, $lightness-icon-background);
+
+        .amount {
+            color: color($color-highlight, $lightness-shadowed-label-text);
+        }
+    }
+}

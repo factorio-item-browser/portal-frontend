@@ -1,21 +1,20 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
 
 import "./EntityList.scss";
 
+type Props = {
+    children: React$Node,
+};
+
 /**
  * The component representing a list of entity boxes.
- * @param {EntityData[]} entities
- * @returns {ReactDOM}
  * @constructor
  */
-const EntityList = ({ children }) => {
+const EntityList = ({ children }: Props): React$Node => {
     return <div className="entity-list">{children}</div>;
 };
 
-EntityList.propTypes = {
-    children: PropTypes.node,
-};
-
-export default observer(EntityList);
+export default (observer(EntityList): typeof EntityList);

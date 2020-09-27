@@ -1,48 +1,45 @@
-import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
-import React, { createRef, useContext } from "react";
+// @flow
 
-import RouteStore from "../../store/RouteStore";
+import { observer } from "mobx-react-lite";
+import React, { createRef, useCallback, useContext } from "react";
+import { routeStoreContext } from "../../store/RouteStore";
+import type { ElementRef } from "../../type/common";
+
+type Props = {
+    route: string,
+    params?: { [string]: any },
+    children: React$Node,
+    ...
+};
 
 /**
  * The component creating a link to another route.
- * @param {string} route
- * @param {Object} params
- * @param {ReactDOM} children
- * @param {any} props
- * @param {React.RefObject<HTMLElement>} ref
- * @returns {ReactDOM}
  * @constructor
  */
-const Link = ({ route, params, children, ...props }, ref) => {
-    const routeStore = useContext(RouteStore);
-    const path = routeStore.buildPath(route, params);
+const Link = ({ route, params, children, ...props }: Props, ref: ?ElementRef): React$Node => {
+    const routeStore = useContext(routeStoreContext);
+    const path = routeStore.router.buildPath(route, params);
 
     ref = ref || createRef();
 
-    return (
-        <a
-            ref={ref}
-            href={path}
-            {...props}
-            onClick={(event) => {
+    const handleClick = useCallback(
+        (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            if (!routeStore.router.isActive(route, params)) {
                 routeStore.showLoadingCircle(ref);
+                routeStore.router.navigateTo(route, params);
+            }
+            return false;
+        },
+        [route, params, ref]
+    );
 
-                event.preventDefault();
-                event.stopPropagation();
-                routeStore.navigateTo(route, params);
-                return false;
-            }}
-        >
+    return (
+        <a {...props} ref={ref} href={path} onClick={handleClick}>
             {children}
         </a>
     );
 };
 
-Link.propTypes = {
-    route: PropTypes.string.isRequired,
-    params: PropTypes.object,
-    children: PropTypes.node.isRequired,
-};
-
-export default observer(Link, { forwardRef: true });
+export default (observer(Link, { forwardRef: true }): typeof Link);

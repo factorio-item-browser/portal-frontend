@@ -1,20 +1,21 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import Section from "../../../common/Section";
-import { useTranslation } from "react-i18next";
 import React, { useContext } from "react";
-import SettingsNewStore from "../../../../store/SettingsNewStore";
-import SaveGameFileInput from "../SaveGameFileInput";
-import { STATUS_ERROR, STATUS_INFO, STATUS_PENDING, STATUS_SUCCESS } from "../../../../helper/const";
+import { useTranslation } from "react-i18next";
+import { STATUS_ERROR, STATUS_INFO, STATUS_PENDING, STATUS_SUCCESS } from "../../../../const/status";
+import { settingsNewStoreContext } from "../../../../store/SettingsNewStore";
+import Section from "../../../common/Section";
 import Status from "../../../status/Status";
+import SaveGameFileInput from "../SaveGameFileInput";
 
 /**
- * The step for selecting the save game to read the mod lsit from.
- * @return {ReactDOM}
+ * The step for selecting the save game to read the mod list from.
  * @constructor
  */
-const SaveGameStep = () => {
+const SaveGameStep = (): React$Node => {
     const { t } = useTranslation();
-    const settingsNewStore = useContext(SettingsNewStore);
+    const settingsNewStore = useContext(settingsNewStoreContext);
 
     const error = settingsNewStore.saveGameError;
     const isProcessing = settingsNewStore.isSaveGameProcessing;
@@ -58,4 +59,4 @@ const SaveGameStep = () => {
     );
 };
 
-export default observer(SaveGameStep);
+export default (observer(SaveGameStep): typeof SaveGameStep);

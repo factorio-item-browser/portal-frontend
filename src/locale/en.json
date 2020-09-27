@@ -110,7 +110,14 @@
         },
         "title": "Search: {{query}} - Factorio Item Browser"
     },
+    "setting-name": {
+        "temporary": "Temporary"
+    },
     "settings": {
+        "add-temporary": "Add temporary setting",
+        "adding-temporary": "Adding temporary setting...",
+        "change-to-setting": "Change to \"{{name}}\"",
+        "changing-to-setting": "Changing to \"{{name}}\"...",
         "current-setting": {
             "add-new-setting": "Add new setting",
             "delete-setting": "Delete setting \"{{name}}\"",
@@ -118,10 +125,13 @@
             "label": "Current setting:"
         },
         "headline": {
-            "settings": "Settings",
-            "options": "Options",
-            "mod-list": "Uses {{count}} mod",
-            "mod-list_plural": "Uses {{count}} mods"
+            "mod-list": "\"{{name}}\" uses {{count}} mod",
+            "mod-list_plural": "\"{{name}}\" uses {{count}} mods",
+            "mod-list-temporary": "Temporary setting uses {{count}} mod",
+            "mod-list-temporary_plural": "Temporary setting uses {{count}} mods",
+            "options": "Options for \"{{name}}\"",
+            "options-temporary": "Options for temporary setting",
+            "settings": "Settings"
         },
         "locale": {
             "label": "Language:",
@@ -133,7 +143,8 @@
             "version": "Version:"
         },
         "name": {
-            "label": "Setting name:"
+            "label": "Name:",
+            "placeholder": "Please enter a name for the setting."
         },
         "recipe-mode": {
             "label": "Recipe mode:",
@@ -144,13 +155,21 @@
                 "expensive": "Expensive mode"
             }
         },
-        "save-changes": "Save changes",
-        "saving-changes": "Saving changes...",
+        "save-and-change": "Save options and change to \"{{name}}\"",
+        "save-options": "Save options",
+        "saving-options": "Saving options...",
+        "saving-and-changing": "Saving options and changing to \"{{name}}\"...",
         "title": "Settings - Factorio Item Browser"
     },
     "settings-new": {
         "add-new-setting": "Add new setting",
         "cancel": "Cancel",
+        "change-to-setting": "Change to \"{{name}}\"",
+        "changing-to-setting": "Changing to \"{{name}}\"...",
+        "existing-setting": {
+            "headline": "You already have a setting using these mods.",
+            "description": "It is not possible to create another setting using the same mods. Please use the existing one instead."
+        },
         "explanation": {
             "description-1": "To add a new setting, you have to specify your savegame file. This file contains a list of mods you are currently using. If the data to these mods is not yet available, the Factorio Item Browser will automatically export the data from the game, and add it to the website. This process will take about 15 minutes on average, but may take longer depending on the server load.",
             "description-2": "For a default installation you find your savegames at the following location:",
@@ -217,5 +236,12 @@
         "headline-last-viewed": "Last viewed",
         "headline-pinned": "Pinned",
         "setting": "Setting: {{name}}"
+    },
+    "temporary-setting": {
+        "headline": "You are viewing a temporary setting.",
+        "description-1": "The current combination of mods hat not yet been saved to your profile. Add the setting to your profile if you want to keep it.",
+        "description-2": "Temporary settings will get cleaned after a short amount of time.",
+        "button-undo": "Change back to \"{{name}}\"",
+        "button-add": "Add temporary setting"
     }
 }

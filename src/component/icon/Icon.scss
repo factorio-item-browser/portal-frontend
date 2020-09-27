@@ -1,0 +1,14 @@
+@import "../../style/import";
+
+.icon {
+    background-size: cover;
+    background-repeat: no-repeat;
+    box-sizing: content-box;
+    display: block;
+    height: $icon-size-default;
+    text-decoration: none;
+    width: $icon-size-default;
+    z-index: $zIndex-icon;
+}
+
+

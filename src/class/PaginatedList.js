@@ -1,82 +1,53 @@
+// @flow
+
 import { action, computed, observable, runInAction } from "mobx";
+import type { ResultsData } from "../type/transfer";
+import { PortalApiError } from "./PortalApi";
+
+type DataFetcher<T> = (number) => Promise<T>;
+type ErrorHandler<T> = (PortalApiError) => T;
 
 /**
  * The class representing a paginated list of results.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- *
- * @template TData
- * @template TEntity
  */
-class PaginatedList {
-    /**
-     * The results of the list.
-     * @type {TEntity[]}
-     */
+class PaginatedList<TEntity, TData: { ...ResultsData<TEntity>, ... }> {
     @observable
-    results = [];
+    results: TEntity[] = [];
+
+    @observable
+    numberOfResults: number = 0;
+
+    @observable
+    currentPage: number = 0;
+
+    @observable
+    isLoading: boolean = false;
 
     /**
-     * The total number of results in the list.
-     * @type {number}
-     */
-    @observable
-    numberOfResults = 0;
-
-    /**
-     * The currently loaded page.
-     * @type {number}
-     */
-    @observable
-    currentPage = 0;
-
-    /**
-     * Whether we are currently loading new results.
-     * @type {boolean}
-     */
-    @observable
-    isLoading = false;
-
-    /**
-     * The callback to request the data of a page.
-     * @type {function (number): *}
      * @private
      */
-    _dataFetcher;
+    _dataFetcher: DataFetcher<TData>;
 
     /**
-     * The callback for handling an error.
-     * @type {function (PortalApiError): void}
      * @private
      */
-    _errorHandler;
+    _errorHandler: ErrorHandler<TData>;
 
-    /**
-     * Initializes the paginated list.
-     * @param {function (number): *} dataFetcher
-     * @param {function (PortalApiError): void} errorHandler
-     */
-    constructor(dataFetcher, errorHandler) {
+    constructor(dataFetcher: DataFetcher<TData>, errorHandler: ErrorHandler<TData>) {
         this._dataFetcher = dataFetcher;
         this._errorHandler = errorHandler;
     }
 
-    /**
-     * Returns whether another page is available to be requested.
-     * @returns {boolean}
-     */
     @computed
-    get hasNextPage() {
+    get hasNextPage(): boolean {
         return this.results.length < this.numberOfResults;
     }
 
-    /**
-     * Requests the next page of data.
-     * @returns {Promise<TData>}
-     */
     @action
-    async requestNextPage() {
+    async requestNextPage(): Promise<TData> {
         this.isLoading = true;
 
         try {
@@ -91,7 +62,7 @@ class PaginatedList {
                 return data;
             });
         } catch (e) {
-            this._errorHandler(e);
+            return this._errorHandler(e);
         }
     }
 }

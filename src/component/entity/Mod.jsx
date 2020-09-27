@@ -1,20 +1,21 @@
+// @flow
+
+import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-
-import Icon from "../common/Icon";
+import type { ModData } from "../../type/transfer";
+import Icon from "../icon/Icon";
+import ExternalLink from "../link/ExternalLink";
 
 import "./Mod.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 
-/**
- * Builds the external link to the mod.
- * @param {ModData} mod
- * @return {string}
- */
-function buildExternalModLink(mod) {
+type Props = {
+    mod: ModData,
+};
+
+function buildExternalModLink(mod: ModData): string {
     if (mod.name === "base") {
         return "https://www.factorio.com/";
     }
@@ -23,22 +24,15 @@ function buildExternalModLink(mod) {
 
 /**
  * The component representing a mod pn the settings page.
- * @param {ModData} mod
- * @return {ReactDOM}
  * @constructor
  */
-const Mod = ({ mod }) => {
+const Mod = ({ mod }: Props): React$Node => {
     const { t } = useTranslation();
 
     return (
-        <a
-            className="entity mod-entity"
-            href={buildExternalModLink(mod)}
-            target="_blank"
-            rel="noopener noreferrer nofollow"
-        >
+        <ExternalLink className="entity mod-entity" url={buildExternalModLink(mod)}>
             <div className="mod-icon">
-                <Icon type="mod" name={mod.name} transparent={true} />
+                <Icon type="mod" name={mod.name} />
             </div>
 
             <div className="mod-content">
@@ -60,12 +54,8 @@ const Mod = ({ mod }) => {
             </div>
 
             <FontAwesomeIcon className="external-link-icon" icon={faExternalLinkAlt} />
-        </a>
+        </ExternalLink>
     );
 };
 
-Mod.propTypes = {
-    mod: PropTypes.object.isRequired,
-};
-
-export default observer(Mod);
+export default (observer(Mod): typeof Mod);

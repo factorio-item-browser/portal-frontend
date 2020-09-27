@@ -1,19 +1,20 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { Trans } from "react-i18next";
-
+import ExternalLink from "../link/ExternalLink";
 import ExternalLinkIcons from "./footer/ExternalLinkIcons";
 
 import "./Footer.scss";
 
+const year = new Date().getFullYear();
+
 /**
  * The component representing the footer of the page.
- * @returns {ReactNode}
  * @constructor
  */
-const Footer = () => {
-    const year = new Date().getFullYear();
-
+const Footer = (): React$Node => {
     return (
         <footer>
             <div className="copyright">
@@ -21,13 +22,9 @@ const Footer = () => {
                 <br />
                 <Trans i18nKey="footer.copyright-disclaimer">
                     All content and images are owned by
-                    <a href="https://www.factorio.com/" target="_blank" rel="noopener noreferrer nofollow">
-                        Wube Software
-                    </a>
+                    <ExternalLink url="https://www.factorio.com/">Wube Software</ExternalLink>
                     and the
-                    <a href="https://mods.factorio.com/" target="_blank" rel="noopener noreferrer nofollow">
-                        mod authors
-                    </a>
+                    <ExternalLink url="https://mods.factorio.com/">mod authors</ExternalLink>
                     respectively.
                 </Trans>
             </div>
@@ -37,4 +34,4 @@ const Footer = () => {
     );
 };
 
-export default observer(Footer);
+export default (observer(Footer): typeof Footer);

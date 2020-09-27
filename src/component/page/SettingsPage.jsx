@@ -1,53 +1,71 @@
-import { faMinus, faPlus, faSave } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// @flow
+
+import { faArrowRight, faMinus, faPlus, faSave } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { useCallback, useContext } from "react";
 import { useTranslation } from "react-i18next";
-
-import SettingsStore from "../../store/SettingsStore";
-import { ROUTE_SETTINGS_NEW } from "../../helper/const";
-
-import ButtonLink from "../link/ButtonLink";
-import ButtonList from "./setting/ButtonList";
+import { ROUTE_SETTINGS_NEW } from "../../const/route";
+import { settingsStoreContext } from "../../store/SettingsStore";
+import { useDocumentTitle } from "../../util/hooks";
+import ActionButton from "../button/ActionButton";
+import ButtonGroup from "../button/ButtonGroup";
+import LinkedButton from "../button/LinkedButton";
+import Section from "../common/Section";
 import EntityList from "../entity/EntityList";
 import Mod from "../entity/Mod";
+import ModListSettingStatus from "../status/ModListSettingStatus";
 import OptionLocale from "./setting/option/OptionLocale";
 import OptionRecipeMode from "./setting/option/OptionRecipeMode";
-import OptionSettingId from "./setting/option/SettingOptionId";
+import OptionSettingId from "./setting/option/OptionSettingId";
 import OptionSettingName from "./setting/option/OptionSettingName";
 import OptionsList from "./setting/option/OptionsList";
-import Section from "../common/Section";
-import ModListSettingStatus from "../status/ModListSettingStatus";
-import ActionButton from "../common/ActionButton";
 
 /**
  * The component representing the settings page.
- * @return {ReactDOM}
  * @constructor
  */
-const SettingsPage = () => {
-    const settingsStore = useContext(SettingsStore);
+const SettingsPage = (): React$Node => {
+    const settingsStore = useContext(settingsStoreContext);
     const { t } = useTranslation();
-
     const selectedSettingDetails = settingsStore.selectedSettingDetails;
+    const isTemporary = selectedSettingDetails.isTemporary;
+    const areOptionsChanged = settingsStore.isChangeButtonVisible;
 
-    useEffect(() => {
-        document.title = t("settings.title");
+    useDocumentTitle("settings.title");
+
+    const handleChangeToSettingClick = useCallback((): void => {
+        settingsStore.changeToSelectedSetting();
+    }, []);
+    const handleDeleteClick = useCallback(async (): Promise<void> => {
+        await settingsStore.deleteSelectedSetting();
+    }, []);
+    const handleSaveClick = useCallback(async (): Promise<void> => {
+        await settingsStore.saveOptions();
     }, []);
 
     return (
-        <Fragment>
+        <>
             <Section headline={t("settings.headline.settings")}>
                 <OptionsList>
                     <OptionSettingId
                         settings={settingsStore.availableSettings}
                         value={settingsStore.selectedSettingId}
                         onChange={(settingId) => settingsStore.changeSettingId(settingId)}
-                        isLoading={settingsStore.isLoadingSettingDetails}
+                        loading={settingsStore.isLoadingSettingDetails}
                     />
                 </OptionsList>
 
-                <ButtonList right>
+                <ActionButton
+                    primary
+                    spacing
+                    label={t("settings.change-to-setting", { name: selectedSettingDetails.name })}
+                    loadingLabel={t("settings.changing-to-setting", { name: selectedSettingDetails.name })}
+                    icon={faArrowRight}
+                    isVisible={settingsStore.isChangeButtonVisible}
+                    isLoading={settingsStore.isChangingToSetting}
+                    onClick={handleChangeToSettingClick}
+                />
+                <ButtonGroup right spacing>
                     <ActionButton
                         label={t("settings.current-setting.delete-setting", { name: selectedSettingDetails.name })}
                         loadingLabel={t("settings.current-setting.deleting-setting", {
@@ -56,18 +74,22 @@ const SettingsPage = () => {
                         icon={faMinus}
                         isVisible={settingsStore.isDeleteButtonVisible}
                         isLoading={settingsStore.isDeletingSetting}
-                        onClick={async () => {
-                            await settingsStore.deleteSelectedSetting();
-                        }}
+                        onClick={handleDeleteClick}
                     />
-                    <ButtonLink primary route={ROUTE_SETTINGS_NEW}>
-                        <FontAwesomeIcon icon={faPlus} />
-                        {t("settings.current-setting.add-new-setting")}
-                    </ButtonLink>
-                </ButtonList>
+
+                    <LinkedButton
+                        label={t("settings.current-setting.add-new-setting")}
+                        icon={faPlus}
+                        route={ROUTE_SETTINGS_NEW}
+                    />
+                </ButtonGroup>
             </Section>
 
-            <Section headline={t("settings.headline.options")}>
+            <Section
+                headline={t(isTemporary ? "settings.headline.options-temporary" : "settings.headline.options", {
+                    name: selectedSettingDetails.name,
+                })}
+            >
                 <OptionsList>
                     <OptionSettingName
                         value={settingsStore.selectedOptions.name}
@@ -84,9 +106,45 @@ const SettingsPage = () => {
                         onChange={(locale) => settingsStore.changeSelectedOptions({ locale })}
                     />
                 </OptionsList>
+
+                {isTemporary ? (
+                    <ActionButton
+                        primary
+                        spacing
+                        label={t("settings.add-temporary")}
+                        loadingLabel={t("settings.adding-temporary")}
+                        icon={faPlus}
+                        isVisible={settingsStore.isSaveButtonVisible}
+                        isLoading={settingsStore.isSavingChanges}
+                        onClick={handleSaveClick}
+                    />
+                ) : (
+                    <ActionButton
+                        primary
+                        spacing
+                        label={t(areOptionsChanged ? "settings.save-and-change" : "settings.save-options", {
+                            name: selectedSettingDetails.name,
+                        })}
+                        loadingLabel={t(
+                            areOptionsChanged ? "settings.saving-and-changing" : "settings.saving-options",
+                            {
+                                name: selectedSettingDetails.name,
+                            }
+                        )}
+                        icon={faSave}
+                        isVisible={settingsStore.isSaveButtonVisible}
+                        isLoading={settingsStore.isSavingChanges}
+                        onClick={handleSaveClick}
+                    />
+                )}
             </Section>
 
-            <Section headline={t("settings.headline.mod-list", { count: selectedSettingDetails.mods.length })}>
+            <Section
+                headline={t(isTemporary ? "settings.headline.mod-list-temporary" : "settings.headline.mod-list", {
+                    count: selectedSettingDetails.mods.length,
+                    name: selectedSettingDetails.name,
+                })}
+            >
                 <ModListSettingStatus setting={selectedSettingDetails} />
                 <EntityList>
                     {selectedSettingDetails.mods.map((mod) => {
@@ -94,22 +152,8 @@ const SettingsPage = () => {
                     })}
                 </EntityList>
             </Section>
-
-            <ActionButton
-                primary
-                spacing
-                sticky
-                label={t("settings.save-changes")}
-                loadingLabel={t("settings.saving-changes")}
-                icon={faSave}
-                isVisible={settingsStore.isSaveButtonVisible}
-                isLoading={settingsStore.isSavingChanges}
-                onClick={async () => {
-                    await settingsStore.saveOptions();
-                }}
-            />
-        </Fragment>
+        </>
     );
 };
 
-export default observer(SettingsPage);
+export default (observer(SettingsPage): typeof SettingsPage);

@@ -1,13 +1,12 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faSpinner, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
-
-import { BREAKPOINT_LARGE } from "../../../helper/const";
-import RouteStore from "../../../store/RouteStore";
-import SearchStore from "../../../store/SearchStore";
+import { BREAKPOINT_LARGE } from "../../../const/breakpoint";
+import { routeStoreContext } from "../../../store/RouteStore";
+import { searchStoreContext } from "../../../store/SearchStore";
 
 import "./HeaderSearch.scss";
 
@@ -17,8 +16,8 @@ import "./HeaderSearch.scss";
  * @constructor
  */
 const HeaderSearch = () => {
-    const routeStore = useContext(RouteStore);
-    const searchStore = useContext(SearchStore);
+    const routeStore = useContext(routeStoreContext);
+    const searchStore = useContext(searchStoreContext);
 
     const isLarge = useMediaQuery({ minWidth: BREAKPOINT_LARGE });
     const { t } = useTranslation();

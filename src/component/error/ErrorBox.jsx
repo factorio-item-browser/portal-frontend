@@ -1,21 +1,20 @@
+// @flow
+
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-
 import {
     ERROR_CLIENT_FAILURE,
     ERROR_PAGE_NOT_FOUND,
     ERROR_SERVER_FAILURE,
     ERROR_SERVICE_NOT_AVAILABLE,
-} from "../../helper/const";
+} from "../../const/error";
 
 import "./ErrorBox.scss";
 
 /**
  * The classes of the icons to use for the different error types.
- * @type {Object<string, string>}
  */
 const ICON_CLASSES = {
     [ERROR_CLIENT_FAILURE]: "fatal",
@@ -24,13 +23,15 @@ const ICON_CLASSES = {
     [ERROR_SERVICE_NOT_AVAILABLE]: "danger",
 };
 
+type Props = {
+    type: string,
+};
+
 /**
  * The component representing an error as box.
- * @param {string} type
- * @return {ReactDOM}
  * @constructor
  */
-const ErrorBox = ({ type }) => {
+const ErrorBox = ({ type }: Props): React$Node => {
     const { t } = useTranslation();
 
     const iconClasses = classNames({
@@ -49,8 +50,4 @@ const ErrorBox = ({ type }) => {
     );
 };
 
-ErrorBox.propTypes = {
-    type: PropTypes.string.isRequired,
-};
-
-export default observer(ErrorBox);
+export default (observer(ErrorBox): typeof ErrorBox);

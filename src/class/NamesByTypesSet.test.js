@@ -1,7 +1,9 @@
+// @flow
+
 import NamesByTypesSet from "./NamesByTypesSet";
 
 describe("NamesByTypesSet", () => {
-    test("add", () => {
+    test("add", (): void => {
         const set = new NamesByTypesSet();
 
         expect(set.getData()).toEqual({});
@@ -17,7 +19,7 @@ describe("NamesByTypesSet", () => {
         });
     });
 
-    test("has", () => {
+    test("has", (): void => {
         const set = new NamesByTypesSet();
         set.add("abc", "def");
         set.add("abc", "ghi");
@@ -32,7 +34,7 @@ describe("NamesByTypesSet", () => {
         expect(set.has("foo", "bar")).toStrictEqual(false);
     });
 
-    test("remove", () => {
+    test("remove", (): void => {
         const set = new NamesByTypesSet();
 
         set.add("abc", "def");
@@ -61,7 +63,7 @@ describe("NamesByTypesSet", () => {
         });
     });
 
-    test("clear", () => {
+    test("clear", (): void => {
         const set = new NamesByTypesSet();
 
         set.add("abc", "def");
@@ -77,7 +79,7 @@ describe("NamesByTypesSet", () => {
         expect(set.getData()).toEqual({});
     });
 
-    test("merge", () => {
+    test("merge", (): void => {
         const set = new NamesByTypesSet();
         set.add("abc", "def");
         set.add("ghi", "jkl");
@@ -101,7 +103,7 @@ describe("NamesByTypesSet", () => {
         });
     });
 
-    test("diff", () => {
+    test("diff", (): void => {
         const set = new NamesByTypesSet();
         set.add("abc", "def");
         set.add("abc", "mno");
@@ -127,7 +129,7 @@ describe("NamesByTypesSet", () => {
         });
     });
 
-    test("size", () => {
+    test("size", (): void => {
         const set = new NamesByTypesSet();
 
         set.add("abc", "def");
@@ -135,24 +137,5 @@ describe("NamesByTypesSet", () => {
         set.add("abc", "mno");
 
         expect(set.size).toStrictEqual(3);
-    });
-
-    test("iterator", () => {
-        const set = new NamesByTypesSet();
-
-        set.add("abc", "def");
-        set.add("ghi", "jkl");
-        set.add("abc", "mno");
-
-        const expectedValues = [
-            ["abc", "def"],
-            ["abc", "mno"],
-            ["ghi", "jkl"],
-        ];
-
-        for (const value of set) {
-            expect(value).toEqual(expectedValues.shift());
-        }
-        expect(expectedValues).toHaveLength(0);
     });
 });

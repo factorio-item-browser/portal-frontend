@@ -1,29 +1,26 @@
+// @flow
+
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { createRef, useContext, useEffect, useLayoutEffect } from "react";
-
-import TooltipStore from "../../store/TooltipStore";
+import { useMediaQuery } from "react-responsive";
+import { BREAKPOINT_MEDIUM } from "../../const/breakpoint";
+import { tooltipStoreContext } from "../../store/TooltipStore";
 import Entity from "../entity/Entity";
 
 import "./Tooltip.scss";
-import { useMediaQuery } from "react-responsive";
-import { BREAKPOINT_MEDIUM } from "../../helper/const";
 
-/**
- * The margin used by the tooltip chevron.
- * @type {number}
- */
 const MARGIN_CHEVRON = 8;
 
-/**
- * Calculates the position of the tooltip.
- * @param {HTMLElement} target
- * @param {HTMLElement} content
- * @param {HTMLElement} chevron
- * @return {{top: number, left: number, isChevronRight: boolean, isChevronAbove: boolean}}
- */
-function calculatePosition({ target, content, chevron }) {
+type Position = {
+    top: number,
+    left: number,
+    isChevronAbove: boolean,
+    isChevronRight: boolean,
+};
+
+function calculatePosition(target: Element, content: Element, chevron: Element): Position {
     const contentRect = content.getBoundingClientRect();
     const chevronRect = chevron.getBoundingClientRect();
     const targetRect = target.getBoundingClientRect();
@@ -56,11 +53,10 @@ function calculatePosition({ target, content, chevron }) {
 
 /**
  * The component representing the tooltip.
- * @return {ReactDOM|null}
  * @constructor
  */
-const Tooltip = () => {
-    const tooltipStore = useContext(TooltipStore);
+const Tooltip = (): React$Node => {
+    const tooltipStore = useContext(tooltipStoreContext);
     const isMedium = useMediaQuery({ minWidth: BREAKPOINT_MEDIUM });
 
     const chevronRef = createRef();
@@ -73,25 +69,30 @@ const Tooltip = () => {
         tooltipStore.setDisableFlag("breakpoint", !isMedium);
     }, [isMedium]);
 
-    useLayoutEffect(() => {
-        if (!doRender) {
+    useLayoutEffect((): void => {
+        if (!doRender || !tooltipStore.fetchedTarget) {
             return;
         }
 
-        const { top, left, isChevronAbove, isChevronRight } = calculatePosition({
-            target: tooltipStore.fetchedTarget.current,
-            content: contentRef.current,
-            chevron: chevronRef.current,
-        });
+        const target = tooltipStore.fetchedTarget.current;
+        const tooltip = tooltipRef.current;
+        const content = contentRef.current;
+        const chevron = chevronRef.current;
 
-        tooltipRef.current.style.left = `${left}px`;
-        tooltipRef.current.style.top = `${top}px`;
+        if (!target || !tooltip || !content || !chevron) {
+            return;
+        }
 
-        chevronRef.current.classList.toggle("bottom", isChevronAbove);
-        chevronRef.current.classList.toggle("right", isChevronRight);
+        const { top, left, isChevronAbove, isChevronRight } = calculatePosition(target, content, chevron);
+
+        tooltip.style.left = `${left}px`;
+        tooltip.style.top = `${top}px`;
+
+        chevron.classList.toggle("bottom", isChevronAbove);
+        chevron.classList.toggle("right", isChevronRight);
     });
 
-    if (!doRender) {
+    if (!doRender || !tooltipStore.fetchedData) {
         return null;
     }
 
@@ -106,4 +107,4 @@ const Tooltip = () => {
     );
 };
 
-export default observer(Tooltip);
+export default (observer(Tooltip): typeof Tooltip);

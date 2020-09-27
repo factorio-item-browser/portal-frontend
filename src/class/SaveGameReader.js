@@ -1,6 +1,6 @@
 import ByteBuffer from "byte-buffer";
 import JSZip from "jszip";
-import { ERROR_SAVEGAME_INVALID_FILE, ERROR_SAVEGAME_UNSUPPORTED_VERSION } from "../helper/const";
+import { ERROR_SAVEGAME_INVALID_FILE, ERROR_SAVEGAME_UNSUPPORTED_VERSION } from "../const/error";
 
 /**
  * A helper class wrapping the actual ByteBuffer with additional features.

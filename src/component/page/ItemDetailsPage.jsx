@@ -1,33 +1,27 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { Fragment, useContext } from "react";
 import { useTranslation } from "react-i18next";
-
-import { ERROR_PAGE_NOT_FOUND } from "../../helper/const";
-import ItemStore from "../../store/ItemStore";
-
+import { ERROR_PAGE_NOT_FOUND } from "../../const/error";
+import { itemStoreContext } from "../../store/ItemStore";
+import { useDocumentTitle } from "../../util/hooks";
 import CopyTemplate from "../common/CopyTemplate";
 import Detail from "../common/Detail";
 import DetailsHead from "../common/DetailsHead";
-import ItemRecipesList from "./item/ItemRecipesList";
 import ErrorBox from "../error/ErrorBox";
+import ItemRecipesList from "./item/ItemRecipesList";
 
 /**
  * The component representing the item and fluid details page.
- * @returns {ReactDOM}
  * @constructor
  */
-const ItemDetailsPage = () => {
-    const itemStore = useContext(ItemStore);
+const ItemDetailsPage = (): React$Node => {
+    const itemStore = useContext(itemStoreContext);
     const { t } = useTranslation();
     const item = itemStore.currentItem;
 
-    useEffect(() => {
-        if (item.type) {
-            document.title = t(`item-details.title.${item.type}`, { label: item.label });
-        } else {
-            document.title = t(`index.title`);
-        }
-    }, [item.type, item.label]);
+    useDocumentTitle(item.label ? `item-details.title.${item.type}` : "", { label: item.label });
 
     if (itemStore.hasNotFoundError) {
         return <ErrorBox type={ERROR_PAGE_NOT_FOUND} />;
@@ -69,4 +63,4 @@ const ItemDetailsPage = () => {
     );
 };
 
-export default observer(ItemDetailsPage);
+export default (observer(ItemDetailsPage): typeof ItemDetailsPage);

@@ -1,19 +1,18 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import Section from "../../../common/Section";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import SettingsNewStore from "../../../../store/SettingsNewStore";
 import {
     SETTING_STATUS_AVAILABLE,
     SETTING_STATUS_ERRORED,
     SETTING_STATUS_LOADING,
     SETTING_STATUS_PENDING,
     SETTING_STATUS_UNKNOWN,
-    STATUS_ERROR,
-    STATUS_PENDING,
-    STATUS_SUCCESS,
-    STATUS_WARNING,
-} from "../../../../helper/const";
+} from "../../../../const/settingStatus";
+import { STATUS_ERROR, STATUS_PENDING, STATUS_SUCCESS, STATUS_WARNING } from "../../../../const/status";
+import { settingsNewStoreContext } from "../../../../store/SettingsNewStore";
+import Section from "../../../common/Section";
 import Status from "../../../status/Status";
 
 /**
@@ -30,12 +29,11 @@ const STATUS_MAP = {
 
 /**
  * The component representing the step for checking the data availability.
- * @return {ReactDOM|null}
  * @constructor
  */
-const DataAvailabilityStep = () => {
+const DataAvailabilityStep = (): React$Node => {
     const { t } = useTranslation();
-    const settingsNewStore = useContext(SettingsNewStore);
+    const settingsNewStore = useContext(settingsNewStoreContext);
 
     const status = settingsNewStore.settingStatus?.status;
     if (!status) {
@@ -52,4 +50,4 @@ const DataAvailabilityStep = () => {
     );
 };
 
-export default observer(DataAvailabilityStep);
+export default (observer(DataAvailabilityStep): typeof DataAvailabilityStep);

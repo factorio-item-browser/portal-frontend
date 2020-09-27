@@ -1,6 +1,6 @@
 import * as fs from "fs";
+import { ERROR_SAVEGAME_INVALID_FILE, ERROR_SAVEGAME_UNSUPPORTED_VERSION } from "../const/error";
 import SaveGameReader, { Version } from "./SaveGameReader";
-import { ERROR_SAVEGAME_INVALID_FILE, ERROR_SAVEGAME_UNSUPPORTED_VERSION } from "../helper/const";
 
 describe("SaveGameReader", () => {
     describe("valid savegames", () => {

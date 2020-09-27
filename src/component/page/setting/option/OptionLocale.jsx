@@ -1,43 +1,43 @@
+// @flow
+
 import { observer } from "mobx-react-lite";
-import * as PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { LOCALES } from "../../../../const/locale";
+import type { Item } from "./SelectOption";
+import SelectOption from "./SelectOption";
 
-import { LOCALES } from "../../../../helper/const";
+function createSortedLocaleItems(locales: { [string]: string }): Item[] {
+    const items = Object.keys(locales).map((locale: string): Item => ({
+        value: locale,
+        label: locales[locale],
+    }));
+    items.sort((left: Item, right: Item): number => left.label.localeCompare(right.label));
+    return items;
+}
+const localeItems = createSortedLocaleItems(LOCALES);
 
-import Option from "./Option";
+type Props = {
+    value: string,
+    onChange: (string) => void,
+};
 
 /**
  * The component representing the locale as option.
- * @param {string} value
- * @param {function (string): void} onChange
- * @return {ReactDOM}
  * @constructor
  */
-const OptionLocale = ({ value, onChange }) => {
+const OptionLocale = ({ value, onChange }: Props): React$Node => {
     const { t } = useTranslation();
 
-    const locales = Object.entries(LOCALES);
-    locales.sort(([, leftLabel], [, rightLabel]) => leftLabel.localeCompare(rightLabel));
-
     return (
-        <Option label={t("settings.locale.label")} description={t("settings.locale.description")} withChevron={true}>
-            <select value={value} onChange={(event) => onChange(event.currentTarget.value)}>
-                {locales.map(([locale, label]) => {
-                    return (
-                        <option key={locale} value={locale}>
-                            {label}
-                        </option>
-                    );
-                })}
-            </select>
-        </Option>
+        <SelectOption
+            label={t("settings.locale.label")}
+            description={t("settings.locale.description")}
+            items={localeItems}
+            value={value}
+            onChange={onChange}
+        />
     );
 };
 
-OptionLocale.propTypes = {
-    onChange: PropTypes.func.isRequired,
-    value: PropTypes.string.isRequired,
-};
-
-export default observer(OptionLocale);
+export default (observer(OptionLocale): typeof OptionLocale);
