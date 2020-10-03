@@ -30,6 +30,15 @@ export type InitData = {
     scriptVersion: string,
 };
 
+export type ItemMetaData = {
+    type: string,
+    name: string,
+};
+
+export type ItemListData = {
+    ...ResultsData<ItemMetaData>,
+};
+
 export type ItemRecipesData = {
     ...ResultsData<EntityData>,
     type: ItemType,

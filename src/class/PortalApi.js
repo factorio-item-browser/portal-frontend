@@ -2,6 +2,7 @@
 
 import {
     NUMBER_OF_ITEM_RECIPES_PER_PAGE,
+    NUMBER_OF_ITEMS_PER_PAGE,
     NUMBER_OF_MACHINES_PER_PAGE,
     NUMBER_OF_RANDOM_ITEMS,
     NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
@@ -11,6 +12,7 @@ import type {
     EntityData,
     IconsStyleData,
     InitData,
+    ItemListData,
     ItemRecipesData,
     ItemType,
     NamesByTypes,
@@ -102,6 +104,17 @@ export class PortalApi {
                 numberOfResults: NUMBER_OF_ITEM_RECIPES_PER_PAGE,
             }
         );
+    }
+
+    /**
+     * Fetches the list of all items.
+     * @throws {PortalApiError}
+     */
+    async getItemList(page: number): Promise<ItemListData> {
+        return await this._executeRequest("GET", "/items", {
+            indexOfFirstResult: (page - 1) * NUMBER_OF_ITEMS_PER_PAGE,
+            numberOfResults: NUMBER_OF_ITEMS_PER_PAGE,
+        });
     }
 
     /**

@@ -1,13 +1,13 @@
 // @flow
 
-import { faCogs } from "@fortawesome/free-solid-svg-icons";
+import { faCogs, faTh } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 import { BREAKPOINT_LARGE } from "../../const/breakpoint";
-import { ROUTE_SETTINGS } from "../../const/route";
+import { ROUTE_ITEM_LIST, ROUTE_SETTINGS } from "../../const/route";
 import { routeStoreContext } from "../../store/RouteStore";
 import { sidebarStoreContext } from "../../store/SidebarStore";
 import { getTranslatedSettingName } from "../../util/setting";
@@ -48,6 +48,12 @@ const Sidebar = (): React$Node => {
                     route={ROUTE_SETTINGS}
                     icon={faCogs}
                     label={t("sidebar.setting", { name: getTranslatedSettingName(routeStore.setting) })}
+                />
+                <SidebarButton
+                    route={ROUTE_ITEM_LIST}
+                    icon={faTh}
+                    label={t("sidebar.all-items")}
+                    highlighted={routeStore.currentRoute === ROUTE_ITEM_LIST}
                 />
 
                 <PinnedEntityList />

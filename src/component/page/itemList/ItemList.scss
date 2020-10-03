@@ -1,0 +1,12 @@
+@import "../../../style/import";
+
+.item-list {
+    @include dynamic-spacing(margin, large);
+    @include dynamic-spacing(padding grid-gap, default);
+
+    background: rgba($color-box-default, $alpha-box-content);
+    box-shadow: $shadow-box;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, $icon-size-large);
+    justify-content: space-between;
+}

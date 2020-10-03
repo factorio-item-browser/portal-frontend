@@ -78,6 +78,10 @@
             "fluid": "Fluid: {{label}} - Factorio Item Browser"
         }
     },
+    "item-list": {
+        "headline": "All {{count}} items and fluids",
+        "title": "All items - Factorio Item Browser"
+    },
     "recipe-details": {
         "headline": "Recipe: {{label}}",
         "ingredients": "Ingredients",
@@ -233,6 +237,7 @@
     "sidebar": {
         "action-pin": "Pin element to the top",
         "action-unpin": "Unpin element from the top",
+        "all-items": "All items",
         "headline-last-viewed": "Last viewed",
         "headline-pinned": "Pinned",
         "setting": "Setting: {{name}}"

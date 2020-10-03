@@ -2,9 +2,9 @@
 
 import { faDiscord, IconDefinition } from "@fortawesome/free-brands-svg-icons";
 
-export const COMBINATION_ID_VANILLA = "2f4a45fa-a509-a9d1-aae6-ffcf984a7a76";
 export const CRAFTING_TIME_INFINITE = 100000;
 export const NUMBER_OF_ICONS_PER_REQUEST = 128;
+export const NUMBER_OF_ITEMS_PER_PAGE = 128;
 export const NUMBER_OF_ITEM_RECIPES_PER_PAGE = 12;
 export const NUMBER_OF_MACHINES_PER_PAGE = 12;
 export const NUMBER_OF_RANDOM_ITEMS = 12;

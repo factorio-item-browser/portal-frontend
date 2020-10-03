@@ -133,6 +133,25 @@ describe("PortalApi", (): void => {
             expect(result).toEqual(responseData);
         });
 
+        test("getItemList", async (): Promise<void> => {
+            const page = 4;
+
+            const portalApi = new PortalApi(storageManager);
+            const result = await portalApi.getItemList(page);
+
+            expect(window.fetch).toHaveBeenCalledWith(
+                "portal-api-server/items?indexOfFirstResult=384&numberOfResults=128",
+                {
+                    method: "GET",
+                    credentials: "include",
+                    headers: {
+                        "Combination-Id": combinationId,
+                    },
+                }
+            );
+            expect(result).toEqual(responseData);
+        });
+
         test("getRandom", async (): Promise<void> => {
             const portalApi = new PortalApi(storageManager);
             const result = await portalApi.getRandom();

@@ -30,4 +30,9 @@
         flex-grow: 1;
         font-weight: bold;
     }
+
+    &.highlighted {
+        background: color($color-highlight, $lightness-box-background, $alpha-box-content);
+        color: color($color-highlight, $lightness-text-primary);
+    }
 }
