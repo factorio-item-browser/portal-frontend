@@ -26,7 +26,7 @@ const ItemListPage = (): React$Node => {
 
     return (
         <Section headline={t("item-list.headline", { count: itemList.numberOfResults })}>
-            <ItemList items={itemList.results} />
+            <ItemList items={itemList.results} loading={itemList.hasNextPage} />
         </Section>
     );
 };

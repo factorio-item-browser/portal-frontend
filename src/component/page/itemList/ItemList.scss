@@ -9,4 +9,11 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, $icon-size-large);
     justify-content: space-between;
+
+    .loading {
+        align-items: center;
+        display: flex;
+        font-size: $icon-size-default;
+        justify-content: center;
+    }
 }
