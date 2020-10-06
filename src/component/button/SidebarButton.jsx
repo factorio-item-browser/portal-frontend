@@ -16,18 +16,20 @@ type Props = {
     icon: IconDefinition,
     primary?: boolean,
     secondary?: boolean,
+    highlighted?: boolean,
 };
 
 /**
  * A button placed in the sidebar, adopting the spacing and sizes of the other sidebar elements.
  * @constructor
  */
-const SidebarButton = ({ label, route, params, icon, primary, secondary }: Props): React$Node => {
+const SidebarButton = ({ label, route, params, icon, primary, secondary, highlighted }: Props): React$Node => {
     const classes = classNames({
         button: true,
         ["sidebar-button"]: true,
         primary: primary,
         secondary: secondary,
+        highlighted: highlighted,
     });
 
     return (

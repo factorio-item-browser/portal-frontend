@@ -9,6 +9,11 @@
     text-decoration: none;
     width: $icon-size-default;
     z-index: $zIndex-icon;
+
+    &.large {
+        width: $icon-size-large;
+        height: $icon-size-large;
+    }
 }
 
 

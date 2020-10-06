@@ -9,6 +9,7 @@ import {
     ROUTE_RECIPE_DETAILS,
     ROUTE_SEARCH,
     ROUTE_SETTINGS,
+    ROUTE_ITEM_LIST,
 } from "../const/route";
 import { RouteStore, routeStoreContext } from "../store/RouteStore";
 import LoadingCircle from "./common/LoadingCircle";
@@ -21,6 +22,7 @@ import Header from "./layout/Header";
 import Sidebar from "./layout/Sidebar";
 import IndexPage from "./page/IndexPage";
 import ItemDetailsPage from "./page/ItemDetailsPage";
+import ItemListPage from "./page/ItemListPage";
 import NotFoundPage from "./page/NotFoundPage";
 import RecipeDetailsPage from "./page/RecipeDetailsPage";
 import SearchResultsPage from "./page/SearchResultsPage";
@@ -34,6 +36,7 @@ import "./App.scss";
 const PAGE_BY_ROUTES = {
     [ROUTE_INDEX]: <IndexPage />,
     [ROUTE_ITEM_DETAILS]: <ItemDetailsPage />,
+    [ROUTE_ITEM_LIST]: <ItemListPage />,
     [ROUTE_RECIPE_DETAILS]: <RecipeDetailsPage />,
     [ROUTE_SEARCH]: <SearchResultsPage />,
     [ROUTE_SETTINGS]: <SettingsPage />,

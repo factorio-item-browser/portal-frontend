@@ -9,7 +9,7 @@ import Link from "./Link";
 type Props = {
     type: string,
     name: string,
-    children: React$Node,
+    children?: React$Node,
     ...
 };
 

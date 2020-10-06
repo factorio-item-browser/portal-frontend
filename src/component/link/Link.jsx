@@ -8,7 +8,7 @@ import type { ElementRef } from "../../type/common";
 type Props = {
     route: string,
     params?: { [string]: any },
-    children: React$Node,
+    children?: React$Node,
     ...
 };
 

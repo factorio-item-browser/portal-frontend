@@ -78,6 +78,10 @@
             "fluid": "Flüssigkeit: {{label}} - Factorio Item Browser"
         }
     },
+    "item-list": {
+        "headline": "Alle {{count}} Items and Flüssigkeiten",
+        "title": "Alle Items - Factorio Item Browser"
+    },
     "recipe-details": {
         "headline": "Rezept: {{label}}",
         "ingredients": "Zutaten",
@@ -232,6 +236,7 @@
     "sidebar": {
         "action-pin": "Element oben anheften",
         "action-unpin": "Element von oben lösen",
+        "all-items": "Alle Items",
         "headline-last-viewed": "Zuletzt angesehen",
         "headline-pinned": "Angeheftet",
         "setting": "Einstellung: {{name}}"
