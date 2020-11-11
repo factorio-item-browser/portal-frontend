@@ -7,8 +7,34 @@ on:
 
 jobs:
 
-#  tests:
-#
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock-json') }}
+          restore-keys: ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run jest
+        uses: mattallty/jest-github-action@v1
+        with:
+          test-command: npm run test-jest
+          coverage-comment: false
+
 #  coding-guidelines:
 
   type-checker:
