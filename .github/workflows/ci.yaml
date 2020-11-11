@@ -34,5 +34,5 @@ jobs:
         run: npm ci
 
       - name: Run flow
-        run: npm run flow
+        run: npm run test-flow
 
