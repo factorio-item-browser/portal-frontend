@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.1 - 2021-02-01
+
+### Fixed
+
+- Failing to process savegames from Factorio 1.1.14 and newer due to a new optimized savegame structure. 
+
 ## 1.3.0 - 2020-10-06
 
 ### Added
