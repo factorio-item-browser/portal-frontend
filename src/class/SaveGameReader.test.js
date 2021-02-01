@@ -1,30 +1,41 @@
 import * as fs from "fs";
 import { ERROR_SAVEGAME_INVALID_FILE, ERROR_SAVEGAME_UNSUPPORTED_VERSION } from "../const/error";
-import SaveGameReader, { Version } from "./SaveGameReader";
+import SaveGameReader from "./SaveGameReader";
 
 describe("SaveGameReader", () => {
     describe("valid savegames", () => {
         test.each([
             [
-                "vanilla",
+                "vanilla (0.18.30)",
                 "test/asset/savegame/valid/vanilla.zip",
-                "0.18.30",
                 {
                     base: "0.18.30",
                 },
             ],
             [
-                "scenario tight-spot", // uses an additional string which must be skipped
+                "vanilla (1.1.19)",
+                "test/asset/savegame/valid/vanilla_1.1.19.zip",
+                {
+                    base: "1.1.19",
+                },
+            ],
+            [
+                "scenario tight-spot (0.18.30)", // uses an additional string which must be skipped
                 "test/asset/savegame/valid/tight-spot.zip",
-                "0.18.30",
                 {
                     base: "0.18.30",
+                },
+            ],
+            [
+                "scenario tight-spot (1.1.19)", // uses an additional string which must be skipped
+                "test/asset/savegame/valid/tight-spot_1.1.19.zip",
+                {
+                    base: "1.1.19",
                 },
             ],
             [
                 "2 mods foo and bar",
                 "test/asset/savegame/valid/2-mods.zip",
-                "0.18.30",
                 {
                     base: "0.18.30",
                     foo: "1.0.0",
@@ -34,7 +45,6 @@ describe("SaveGameReader", () => {
             [
                 "mod with uncompressed version",
                 "test/asset/savegame/valid/uncompressed-version.zip",
-                "0.18.30",
                 {
                     base: "0.18.30",
                     foo: "1.0.0",
@@ -44,7 +54,6 @@ describe("SaveGameReader", () => {
             [
                 "mods with unicode characters",
                 "test/asset/savegame/valid/unicode.zip",
-                "0.18.30",
                 {
                     "base": "0.18.30",
                     "foo": "1.0.0",
@@ -55,7 +64,6 @@ describe("SaveGameReader", () => {
             [
                 "300 mods", // Uses uncompressed 32bit number for mod count
                 "test/asset/savegame/valid/300-mods.zip",
-                "0.18.30",
                 {
                     base: "0.18.30",
                     ...(() => {
@@ -67,14 +75,11 @@ describe("SaveGameReader", () => {
                     })(),
                 },
             ],
-        ])("%s", async (name, file, expectedVersion, expectedMods) => {
+        ])("%s", async (name, file, expectedMods) => {
             const savegame = fs.readFileSync(file);
             const reader = new SaveGameReader();
 
             const mods = await reader.read(savegame);
-
-            expect(reader.version).toBeInstanceOf(Version);
-            expect(reader.version.toString()).toEqual(expectedVersion);
 
             for (const mod of mods) {
                 const expectedVersion = expectedMods[mod.name];
