@@ -1,9 +1,9 @@
 // @flow
 
-import { ERROR_SAVEGAME_INVALID_FILE, ERROR_SAVEGAME_UNSUPPORTED_VERSION } from "../const/error";
-import { SmartBuffer } from "smart-buffer";
 import { loadAsync } from "jszip";
 import { inflate } from "pako";
+import { SmartBuffer } from "smart-buffer";
+import { ERROR_SAVEGAME_INVALID_FILE, ERROR_SAVEGAME_UNSUPPORTED_VERSION } from "../const/error";
 import type { SaveGameMod } from "../type/savegame";
 
 class SaveGameBuffer {
@@ -31,11 +31,7 @@ class SaveGameBuffer {
     }
 
     readVersion(compressed: boolean = true): Version {
-        return new Version(
-            this.readShort(compressed),
-            this.readShort(compressed),
-            this.readShort(compressed),
-        );
+        return new Version(this.readShort(compressed), this.readShort(compressed), this.readShort(compressed));
     }
 
     readString(): string {

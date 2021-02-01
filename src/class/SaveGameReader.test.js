@@ -1,22 +1,36 @@
 import * as fs from "fs";
 import { ERROR_SAVEGAME_INVALID_FILE, ERROR_SAVEGAME_UNSUPPORTED_VERSION } from "../const/error";
-import SaveGameReader  from "./SaveGameReader";
+import SaveGameReader from "./SaveGameReader";
 
 describe("SaveGameReader", () => {
     describe("valid savegames", () => {
         test.each([
             [
-                "vanilla",
+                "vanilla (0.18.30)",
                 "test/asset/savegame/valid/vanilla.zip",
                 {
                     base: "0.18.30",
                 },
             ],
             [
-                "scenario tight-spot", // uses an additional string which must be skipped
+                "vanilla (1.1.19)",
+                "test/asset/savegame/valid/vanilla_1.1.19.zip",
+                {
+                    base: "1.1.19",
+                },
+            ],
+            [
+                "scenario tight-spot (0.18.30)", // uses an additional string which must be skipped
                 "test/asset/savegame/valid/tight-spot.zip",
                 {
                     base: "0.18.30",
+                },
+            ],
+            [
+                "scenario tight-spot (1.1.19)", // uses an additional string which must be skipped
+                "test/asset/savegame/valid/tight-spot_1.1.19.zip",
+                {
+                    base: "1.1.19",
                 },
             ],
             [
