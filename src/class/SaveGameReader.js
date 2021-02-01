@@ -1,163 +1,74 @@
-import ByteBuffer from "byte-buffer";
-import JSZip from "jszip";
+// @flow
+
 import { ERROR_SAVEGAME_INVALID_FILE, ERROR_SAVEGAME_UNSUPPORTED_VERSION } from "../const/error";
+import { SmartBuffer } from "smart-buffer";
+import { loadAsync } from "jszip";
+import { inflate } from "pako";
+import type { SaveGameMod } from "../type/savegame";
 
-/**
- * A helper class wrapping the actual ByteBuffer with additional features.
- */
-class Buffer {
-    /**
-     * The underlying byte buffer used for reading values.
-     * @var {ByteBuffer}
-     */
-    buffer;
+class SaveGameBuffer {
+    /** @private */
+    _buffer: SmartBuffer;
 
-    /**
-     * Initializes the buffer.
-     * @param {*} data
-     */
-    constructor(data) {
-        this.buffer = new ByteBuffer(data, ByteBuffer.LITTLE_ENDIAN);
+    constructor(buffer: Buffer) {
+        this._buffer = SmartBuffer.fromBuffer(buffer);
     }
 
-    /**
-     * Reads a version from the buffer.
-     * @return {Version}
-     */
-    readVersion() {
-        return new Version(this.readShort(), this.readShort(), this.readShort());
-    }
-
-    /**
-     * Reads an optimized version from the buffer.
-     * @return {Version}
-     */
-    readOptimizedVersion() {
-        return new Version(this.readOptimizedShort(), this.readOptimizedShort(), this.readOptimizedShort());
-    }
-
-    /**
-     * Reads a short value from the buffer.
-     * @return {number}
-     */
-    readShort() {
-        return this.buffer.readUnsignedShort();
-    }
-
-    /**
-     * Reads an optimized short value from the buffer.
-     * @return {number}
-     */
-    readOptimizedShort() {
-        const byte = this.buffer.readUnsignedByte();
-        if (byte !== 255) {
-            return byte;
+    readShort(compressed: boolean = true): number {
+        if (compressed) {
+            const byte = this._buffer.readUInt8();
+            return byte !== 255 ? byte : this._buffer.readUInt16LE();
         }
-
-        return this.buffer.readUnsignedShort();
+        return this._buffer.readUInt16LE();
     }
 
-    /**
-     * Reads an integer value from the buffer.
-     * @return {number}
-     */
-    readInt() {
-        return this.buffer.readUnsignedInt();
-    }
-
-    /**
-     * Reads an optimized integer value from the buffer.
-     * @return {number}
-     */
-    readOptimizedInt() {
-        const byte = this.buffer.readUnsignedByte();
-        if (byte !== 255) {
-            return byte;
+    readInteger(compressed: boolean = true): number {
+        if (compressed) {
+            const byte = this._buffer.readUInt8();
+            return byte !== 255 ? byte : this._buffer.readUInt32LE();
         }
-
-        return this.buffer.readUnsignedInt();
+        return this._buffer.readUInt32LE();
     }
 
-    /**
-     * Reads a string from the buffer.
-     * @return {string}
-     */
-    readString() {
-        const length = this.readOptimizedInt();
-        if (length === 0) {
-            return "";
-        }
-
-        return this.buffer.readString(length);
+    readVersion(compressed: boolean = true): Version {
+        return new Version(
+            this.readShort(compressed),
+            this.readShort(compressed),
+            this.readShort(compressed),
+        );
     }
 
-    /**
-     * Seeks some bytes forward in the buffer.
-     * @param {number} bytes
-     */
-    seek(bytes) {
-        this.buffer.seek(bytes);
+    readString(): string {
+        const length = this.readInteger();
+        return length === 0 ? "" : this._buffer.readString(length);
     }
 
-    /**
-     * Seeks a string forward in the buffer.
-     */
-    seekString() {
-        const length = this.readOptimizedInt();
-        if (length > 0) {
-            this.buffer.seek(length);
-        }
+    seek(offset: number): void {
+        this._buffer.readOffset += offset;
+    }
+
+    seekString(): void {
+        const length = this.readInteger();
+        this.seek(length);
     }
 }
 
-/**
- * Small helper class for the version of the game and of the mods.
- */
 export class Version {
-    /**
-     * The major component of the version.
-     * @var {number}
-     */
-    major;
+    major: number;
+    minor: number;
+    patch: number;
 
-    /**
-     * The minor component of the version.
-     * @var {number}
-     */
-    minor;
-
-    /**
-     * The patch component of the version.
-     * @var {number}
-     */
-    patch;
-
-    /**
-     * Initializes the version instance.
-     * @param {number} major
-     * @param {number} minor
-     * @param {number} patch
-     */
-    constructor(major, minor, patch) {
+    constructor(major: number, minor: number, patch: number) {
         this.major = major;
         this.minor = minor;
         this.patch = patch;
     }
 
-    /**
-     * Transforms the version into the typical string.
-     * @return {string}
-     */
-    toString() {
+    toString(): string {
         return `${this.major}.${this.minor}.${this.patch}`;
     }
 
-    /**
-     * Compares the given version to the current one.
-     * @param {Version} version
-     * @return {number}
-     */
-    compareTo(version) {
+    compareTo(version: Version): number {
         const v1 = this.major * 1000000 + this.minor * 1000 + this.patch;
         const v2 = version.major * 1000000 + version.minor * 1000 + version.patch;
 
@@ -167,21 +78,14 @@ export class Version {
 
 class SaveGameReader {
     /**
-     * The version of the save game.
-     * @var {Version}
-     */
-    version;
-
-    /**
      * Processes the specified save game file.
      * @param {File} file
      * @return {Promise<SaveGameMod[]>}
      */
-    async read(file) {
+    async read(file: File): Promise<SaveGameMod[]> {
         const buffer = await this._extractLevelDatFile(file);
-
-        this.version = buffer.readVersion();
-        if (this.version.compareTo(new Version(0, 18, 0)) < 0) {
+        const version = buffer.readVersion(false);
+        if (version.compareTo(new Version(0, 18, 0)) < 0) {
             throw ERROR_SAVEGAME_UNSUPPORTED_VERSION;
         }
 
@@ -192,21 +96,30 @@ class SaveGameReader {
     /**
      * Extracts the level.dat file from the save game and returns a buffer of it.
      * @param {File} file
-     * @return {Promise<Buffer>}
+     * @return {Promise<SaveGameBuffer>}
      * @private
      */
-    async _extractLevelDatFile(file) {
+    async _extractLevelDatFile(file: File): Promise<SaveGameBuffer> {
         let zip;
         try {
-            zip = await JSZip.loadAsync(file);
+            zip = await loadAsync(file);
         } catch (e) {
             throw ERROR_SAVEGAME_INVALID_FILE;
         }
 
-        for (const file of Object.values(zip.files)) {
-            if (file.name.endsWith("/level.dat")) {
+        for (const fileName of Object.keys(zip.files)) {
+            if (fileName.endsWith("/level.dat0")) {
                 try {
-                    return new Buffer(await file.async("uint8array"));
+                    const rawData = inflate(await zip.files[fileName].async("uint8array"));
+                    return new SaveGameBuffer(Buffer.from(rawData));
+                } catch (e) {
+                    throw ERROR_SAVEGAME_INVALID_FILE;
+                }
+            }
+
+            if (fileName.endsWith("/level.dat")) {
+                try {
+                    return new SaveGameBuffer(Buffer.from(await zip.files[fileName].async("uint8array")));
                 } catch (e) {
                     throw ERROR_SAVEGAME_INVALID_FILE;
                 }
@@ -218,10 +131,10 @@ class SaveGameReader {
 
     /**
      * Seeks the correct position to start reading the mod list. Requires the initial version to be already read.
-     * @param {Buffer} buffer
+     * @param {SaveGameBuffer} buffer
      * @private
      */
-    _seekPosition(buffer) {
+    _seekPosition(buffer: SaveGameBuffer): void {
         buffer.seek(3); // build number, always 0 flag
         buffer.seekString(); // campaign
         buffer.seekString(); // level
@@ -229,24 +142,24 @@ class SaveGameReader {
         buffer.seek(3); // difficulty, player has finished, player has won
         buffer.seekString(); // next level
         buffer.seek(4); // can continue, has continued, replay, debug options
-        buffer.readOptimizedVersion(); // game version
+        buffer.readVersion(); // game version
         buffer.seek(3); // build number, allowed commands
     }
 
     /**
      * Reads the mods from the buffer. Current position is the number of mods.
-     * @param {Buffer} buffer
+     * @param {SaveGameBuffer} buffer
      * @return {SaveGameMod[]}
      * @private
      */
-    _readMods(buffer) {
+    _readMods(buffer: SaveGameBuffer): SaveGameMod[] {
         const mods = [];
-        const count = buffer.readOptimizedInt();
+        const count = buffer.readInteger();
         for (let i = 0; i < count; ++i) {
             mods.push({
                 name: buffer.readString(),
-                version: buffer.readOptimizedVersion(),
-                checksum: buffer.readInt(),
+                version: buffer.readVersion(),
+                checksum: buffer.readInteger(false),
             });
         }
         return mods;

@@ -24,13 +24,13 @@
     "@fortawesome/free-solid-svg-icons": "^5.14.0",
     "@fortawesome/react-fontawesome": "^0.1.11",
     "base-x": "^3.0.8",
-    "byte-buffer": "^2.0.0",
     "classnames": "^2.2.6",
     "i18next": "^19.7.0",
     "jszip": "^3.5.0",
     "mobx": "^5.15.7",
     "mobx-react-lite": "^2.2.2",
     "normalize-scss": "^7.0.1",
+    "pako": "^2.0.3",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -39,6 +39,7 @@
     "react-sortablejs": "2.0.11",
     "router5": "^8.0.1",
     "router5-plugin-browser": "^8.0.1",
+    "smart-buffer": "^4.1.0",
     "throttle-debounce": "^2.3.0"
   },
   "devDependencies": {
