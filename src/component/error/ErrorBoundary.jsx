@@ -17,7 +17,7 @@ type State = {
  * box.
  */
 class ErrorBoundary extends Component<Props, State> {
-    state = {
+    state: State = {
         error: null,
     };
 

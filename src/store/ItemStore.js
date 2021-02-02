@@ -143,5 +143,5 @@ export class ItemStore {
     }
 }
 
-export const itemStore = new ItemStore(portalApi, router, routeStore, sidebarStore);
-export const itemStoreContext = createContext<ItemStore>(itemStore);
+export const itemStore: ItemStore = new ItemStore(portalApi, router, routeStore, sidebarStore);
+export const itemStoreContext: React$Context<ItemStore> = createContext<ItemStore>(itemStore);

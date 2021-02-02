@@ -253,5 +253,11 @@ export class SettingsStore {
     }
 }
 
-export const settingsStore = new SettingsStore(iconManager, portalApi, router, routeStore, storageManager);
-export const settingsStoreContext = createContext<SettingsStore>(settingsStore);
+export const settingsStore: SettingsStore = new SettingsStore(
+    iconManager,
+    portalApi,
+    router,
+    routeStore,
+    storageManager
+);
+export const settingsStoreContext: React$Context<SettingsStore> = createContext<SettingsStore>(settingsStore);

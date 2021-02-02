@@ -135,7 +135,7 @@ export class RouteStore {
      * Whether we are still initially loading all the things.
      * @return {boolean}
      */
-    get isInitiallyLoading() {
+    get isInitiallyLoading(): boolean {
         return this.currentRoute === "";
     }
 
@@ -143,7 +143,7 @@ export class RouteStore {
      * Whether we are currently viewing an unknown route.
      * @return {boolean}
      */
-    get hasUnknownRoute() {
+    get hasUnknownRoute(): boolean {
         return this.currentRoute === constants.UNKNOWN_ROUTE;
     }
 
@@ -235,7 +235,7 @@ export class RouteStore {
      * Whether to use the big version of the header.
      * @returns {boolean}
      */
-    get useBigHeader() {
+    get useBigHeader(): boolean {
         return this.currentRoute === ROUTE_INDEX;
     }
 
@@ -274,5 +274,5 @@ export class RouteStore {
     }
 }
 
-export const routeStore = new RouteStore(portalApi, router, storageManager);
-export const routeStoreContext = new createContext<RouteStore>(routeStore);
+export const routeStore: RouteStore = new RouteStore(portalApi, router, storageManager);
+export const routeStoreContext: React$Context<RouteStore> = new createContext<RouteStore>(routeStore);

@@ -48,4 +48,4 @@ const GlobalSettingStatus = (): React$Node => {
     return null;
 };
 
-export default observer(GlobalSettingStatus);
+export default (observer(GlobalSettingStatus): typeof GlobalSettingStatus);

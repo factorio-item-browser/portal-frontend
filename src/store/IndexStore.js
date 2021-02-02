@@ -60,5 +60,5 @@ export class IndexStore {
     }
 }
 
-export const indexStore = new IndexStore(portalApi, router, routeStore);
-export const indexStoreContext = createContext<IndexStore>(indexStore);
+export const indexStore: IndexStore = new IndexStore(portalApi, router, routeStore);
+export const indexStoreContext: React$Context<IndexStore> = createContext<IndexStore>(indexStore);

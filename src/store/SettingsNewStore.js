@@ -190,5 +190,7 @@ class SettingsNewStore {
     }
 }
 
-export const settingsNewStore = new SettingsNewStore(portalApi, router, routeStore);
-export const settingsNewStoreContext = createContext<SettingsNewStore>(settingsNewStore);
+export const settingsNewStore: SettingsNewStore = new SettingsNewStore(portalApi, router, routeStore);
+export const settingsNewStoreContext: React$Context<SettingsNewStore> = createContext<SettingsNewStore>(
+    settingsNewStore
+);

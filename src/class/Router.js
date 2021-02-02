@@ -1,48 +1,34 @@
 // @flow
 
-import { createRouter, Middleware, Params, Router as Router5, State, SubscribeState } from "router5";
+import { createRouter, Router as Router5, State, SubscribeState } from "router5";
+import type { Middleware } from "router5";
 import browserPluginFactory from "router5-plugin-browser";
 import { ROUTE_INDEX } from "../const/route";
 import CombinationId from "./CombinationId";
 
 type ChangeHandler = (State) => boolean | Promise<any>;
+type Params = { [string]: string };
 
 const PARAM_COMBINATION_ID = "combinationId";
 const SHORT_ROUTE_SUFFIX = "_short";
 
 export class Router {
-    /**
-     * @private
-     */
+    /** @private */
     _router: Router5;
-
-    /**
-     * @private
-     */
+    /** @private */
     _changeHandlers: Map<string, ChangeHandler> = new Map();
-
-    /**
-     * @private
-     */
+    /** @private */
     _globalChangeHandlers: Set<ChangeHandler> = new Set();
-
-    /**
-     * @private
-     */
+    /** @private */
     _combinationId: CombinationId;
-
-    /**
-     * @private
-     */
-    _currentRoute = "";
+    /** @private */
+    _currentRoute: string = "";
 
     constructor() {
         this._router = this._createRouter();
     }
 
-    /**
-     * @private
-     */
+    /** @private */
     _createRouter(): Router5 {
         const router = createRouter();
         router.setOption("allowNotFound", true);
@@ -52,9 +38,7 @@ export class Router {
         return router;
     }
 
-    /**
-     * @private
-     */
+    /** @private */
     _getDataFetcherMiddleware(): Middleware {
         return (toState: State) => {
             const handler = this._changeHandlers.get(this._unifyRouteName(toState.name));
@@ -66,17 +50,13 @@ export class Router {
         };
     }
 
-    /**
-     * @private
-     */
+    /** @private */
     _handleChangeEvent(state: SubscribeState): void {
         this._currentRoute = this._unifyRouteName(state.route.name);
         this._executeGlobalChangeHandlers(state.route);
     }
 
-    /**
-     * @private
-     */
+    /** @private */
     _unifyRouteName(name: string): string {
         if (name.endsWith(SHORT_ROUTE_SUFFIX)) {
             return name.substr(0, name.length - SHORT_ROUTE_SUFFIX.length);
@@ -85,6 +65,7 @@ export class Router {
         return name;
     }
 
+    /** @private */
     _executeGlobalChangeHandlers(state: State): void {
         for (const handler of this._globalChangeHandlers) {
             handler(state);
@@ -151,18 +132,16 @@ export class Router {
         }
     }
 
-    /**
-     * @private
-     */
-    _prepareParams(params: Params): Params {
+    /** @private */
+    _prepareParams(params?: Params): Params {
         if (this._combinationId) {
             params = {
-                [PARAM_COMBINATION_ID]: this._combinationId.toShort(),
                 ...params,
+                [PARAM_COMBINATION_ID]: this._combinationId.toShort(),
             };
         }
-        return params;
+        return params || {};
     }
 }
 
-export const router = new Router();
+export const router: Router = new Router();

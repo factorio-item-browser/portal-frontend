@@ -1,7 +1,8 @@
 // @flow
 
+import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon, IconDefinition } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React from "react";
@@ -11,7 +12,7 @@ import "./Button.scss";
 
 type Props = {
     label: string,
-    icon?: IconDefinition,
+    icon?: IconProp,
     primary?: boolean,
     secondary?: boolean,
     spacing?: boolean,

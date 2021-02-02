@@ -199,4 +199,4 @@ export class StorageManager {
     }
 }
 
-export const storageManager = new StorageManager(window.localStorage);
+export const storageManager: StorageManager = new StorageManager(window.localStorage);

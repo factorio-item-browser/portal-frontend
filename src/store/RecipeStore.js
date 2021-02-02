@@ -101,5 +101,5 @@ export class RecipeStore {
     }
 }
 
-export const recipeStore = new RecipeStore(portalApi, router, routeStore, sidebarStore);
-export const recipeStoreContext = createContext<RecipeStore>(recipeStore);
+export const recipeStore: RecipeStore = new RecipeStore(portalApi, router, routeStore, sidebarStore);
+export const recipeStoreContext: React$Context<RecipeStore> = createContext<RecipeStore>(recipeStore);

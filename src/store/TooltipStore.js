@@ -124,5 +124,5 @@ export class TooltipStore {
     }
 }
 
-export const tooltipStore = new TooltipStore(portalApi, router);
-export const tooltipStoreContext = createContext<TooltipStore>(tooltipStore);
+export const tooltipStore: TooltipStore = new TooltipStore(portalApi, router);
+export const tooltipStoreContext: React$Context<TooltipStore> = createContext<TooltipStore>(tooltipStore);

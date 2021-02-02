@@ -254,5 +254,5 @@ export class SidebarStore {
     }
 }
 
-export const sidebarStore = new SidebarStore(portalApi, router, routeStore, storageManager, tooltipStore);
-export const sidebarStoreContext = createContext<SidebarStore>(sidebarStore);
+export const sidebarStore: SidebarStore = new SidebarStore(portalApi, router, routeStore, storageManager, tooltipStore);
+export const sidebarStoreContext: React$Context<SidebarStore> = createContext<SidebarStore>(sidebarStore);

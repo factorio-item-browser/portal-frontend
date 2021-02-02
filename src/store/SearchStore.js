@@ -162,5 +162,5 @@ export class SearchStore {
     }
 }
 
-export const searchStore = new SearchStore(portalApi, router, routeStore);
-export const searchStoreContext = createContext<SearchStore>(searchStore);
+export const searchStore: SearchStore = new SearchStore(portalApi, router, routeStore);
+export const searchStoreContext: React$Context<SearchStore> = createContext<SearchStore>(searchStore);

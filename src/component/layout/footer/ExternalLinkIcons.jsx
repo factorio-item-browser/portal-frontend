@@ -13,7 +13,7 @@ import "./ExternalLinkIcons.scss";
  * The component representing the icons to external pages in the footer.
  * @constructor
  */
-const ExternalLinkIcons = () => {
+const ExternalLinkIcons = (): React$Node => {
     const { t } = useTranslation();
     const [currentLabel, setCurrentLabel] = useState(null);
 
@@ -42,4 +42,4 @@ const ExternalLinkIcons = () => {
     );
 };
 
-export default observer(ExternalLinkIcons);
+export default (observer(ExternalLinkIcons): typeof ExternalLinkIcons);

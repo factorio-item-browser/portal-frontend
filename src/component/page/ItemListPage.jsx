@@ -20,7 +20,9 @@ const ItemListPage = (): React$Node => {
     const itemList = itemListStore.paginatedItemList;
     useEffect((): void => {
         if (!itemList.isLoading && itemList.hasNextPage) {
-            (async (): Promise<void> => await itemList.requestNextPage())();
+            (async (): Promise<void> => {
+                await itemList.requestNextPage();
+            })();
         }
     }, [itemList.isLoading, itemList.hasNextPage]);
 
