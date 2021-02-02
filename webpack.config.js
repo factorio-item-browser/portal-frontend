@@ -7,7 +7,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackSkipAssetsPlugin = require('html-webpack-skip-assets-plugin').HtmlWebpackSkipAssetsPlugin;
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
-const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const TerserPlugin = require('terser-webpack-plugin');
 const { DefinePlugin, HotModuleReplacementPlugin } = require("webpack");
 
@@ -62,9 +61,6 @@ module.exports = (env, argv) => {
                     use: [
                         {
                             loader: MiniCssExtractPlugin.loader,
-                            options: {
-                                hmr: !isProduction,
-                            },
                         },
                         "css-loader",
                         "postcss-loader",
@@ -121,6 +117,8 @@ module.exports = (env, argv) => {
             }),
             new HtmlWebpackPlugin({
                 template: `${currentPath}/src/index.ejs`,
+                inject: "body",
+                scriptLoading: "defer",
             }),
             new HtmlWebpackSkipAssetsPlugin({
                 skipAssets: [
@@ -131,9 +129,6 @@ module.exports = (env, argv) => {
                 filter(fileName) {
                     return isProduction && (fileName === "index.html" || fileName.includes("main"));
                 }
-            }),
-            new ScriptExtHtmlWebpackPlugin({
-                defaultAttribute: "defer",
             }),
             new AsyncCssPlugin(),
         ],
