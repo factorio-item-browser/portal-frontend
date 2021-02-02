@@ -1,6 +1,6 @@
 // @flow
 
-import { action, computed, observable, runInAction } from "mobx";
+import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import { createContext } from "react";
 import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
@@ -11,43 +11,44 @@ import type { EntityData } from "../type/transfer";
  * The store managing the tooltips.
  */
 export class TooltipStore {
-    /**
-     * @private
-     */
+    /** @private */
     _portalApi: PortalApi;
-
-    /**
-     * @private
-     */
+    /** @private */
     _disableFlags: Map<string, boolean> = new Map();
 
     /**
      * The target for which a tooltip was requested. This target may still be waiting for its data.
      */
-    @observable
     requestedTarget: ?ElementRef = null;
 
     /**
      * The target for which the data has been fetched. This target has its data available.
      */
-    @observable
     fetchedTarget: ?ElementRef = null;
 
     /**
      * The fetched data for the tooltip.
      */
-    @observable
     fetchedData: ?EntityData = null;
 
     constructor(portalApi: PortalApi, router: Router) {
         this._portalApi = portalApi;
 
+        makeObservable(this, {
+            isEnabled: computed,
+            fetchedData: observable,
+            fetchedTarget: observable,
+            hideTooltip: action,
+            isTooltipAvailable: computed,
+            requestedTarget: observable,
+            setDisableFlag: action,
+            showTooltip: action,
+        });
+
         router.addGlobalChangeHandler(this._handleGlobalRouteChange.bind(this));
     }
 
-    /**
-     * @private
-     */
+    /** @private */
     _handleGlobalRouteChange(): void {
         this.hideTooltip();
     }
@@ -55,7 +56,6 @@ export class TooltipStore {
     /**
      * Returns whether tooltips are currently enabled.
      */
-    @computed
     get isEnabled(): boolean {
         for (const flag of this._disableFlags.values()) {
             if (flag) {
@@ -69,7 +69,6 @@ export class TooltipStore {
     /**
      * Sets a flag to disable or re-enable the tooltips.
      */
-    @action
     setDisableFlag(name: string, isDisabled: boolean): void {
         this._disableFlags.set(name, isDisabled);
         if (isDisabled) {
@@ -80,7 +79,6 @@ export class TooltipStore {
     /**
      * Shows the tooltip on the target with the type and name.
      */
-    @action
     async showTooltip(target: ElementRef, type: string, name: string): Promise<void> {
         if (!this.isEnabled) {
             return;
@@ -110,7 +108,6 @@ export class TooltipStore {
     /**
      * Hides the tooltip of the specified target-
      */
-    @action
     hideTooltip(): void {
         this.requestedTarget = null;
     }
@@ -118,7 +115,6 @@ export class TooltipStore {
     /**
      * Returns whether a tooltip with its data is actually available.
      */
-    @computed
     get isTooltipAvailable(): boolean {
         return (
             !!this.requestedTarget &&

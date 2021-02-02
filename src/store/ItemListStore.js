@@ -1,6 +1,6 @@
 // @flow
 
-import { observable } from "mobx";
+import { makeObservable, observable } from "mobx";
 import { createContext } from "react";
 import PaginatedList from "../class/PaginatedList";
 import { portalApi, PortalApi, PortalApiError } from "../class/PortalApi";
@@ -13,22 +13,20 @@ import { routeStore, RouteStore } from "./RouteStore";
  * The store of the item list page.
  */
 export class ItemListStore {
-    /**
-     * @private
-     */
+    /** @private */
     _portalApi: PortalApi;
-
-    /**
-     * @private
-     */
+    /** @private */
     _routeStore: RouteStore;
 
-    @observable
     paginatedItemList: PaginatedList<ItemMetaData, ItemListData>;
 
     constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore) {
         this._portalApi = portalApi;
         this._routeStore = routeStore;
+
+        makeObservable(this, {
+            paginatedItemList: observable,
+        });
 
         this.paginatedItemList = new PaginatedList(
             (page) => this._portalApi.getItemList(page),
@@ -38,18 +36,14 @@ export class ItemListStore {
         router.addRoute(ROUTE_ITEM_LIST, "/items", this._handleRouteChange.bind(this));
     }
 
-    /**
-     * @private
-     */
+    /** @private */
     async _handleRouteChange(): Promise<void> {
         if (this.paginatedItemList.currentPage === 0) {
             await this.paginatedItemList.requestNextPage();
         }
     }
 
-    /**
-     * @private
-     */
+    /** @private */
     _handlePortalApiError(error: PortalApiError): ItemListData {
         this._routeStore.handlePortalApiError(error);
         return {

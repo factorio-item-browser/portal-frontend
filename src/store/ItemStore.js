@@ -1,6 +1,6 @@
 // @flow
 
-import { action, computed, observable, runInAction } from "mobx";
+import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import { createContext } from "react";
 import { State } from "router5";
 import PaginatedList from "../class/PaginatedList";
@@ -37,37 +37,26 @@ const emptyItemRecipesData: ItemRecipesData = {
  * The store for the items. And fluids.
  */
 export class ItemStore {
-    /**
-     * @private
-     */
+    /** @private */
     _portalApi: PortalApi;
-
-    /**
-     * @private
-     */
+    /** @private */
     _routeStore: RouteStore;
-
-    /**
-     * @private
-     */
+    /** @private */
     _sidebarStore: SidebarStore;
 
     /**
      * The paginated list of product recipes.
      */
-    @observable
     paginatedProductRecipesList: PaginatedList<EntityData, ItemRecipesData>;
 
     /**
      * The paginated list of ingredient recipes.
      */
-    @observable
     paginatedIngredientRecipesList: PaginatedList<EntityData, ItemRecipesData>;
 
     /**
      * The current item details.
      */
-    @observable
     currentItem: Item = emptyItem;
 
     constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore, sidebarStore: SidebarStore) {
@@ -75,12 +64,19 @@ export class ItemStore {
         this._routeStore = routeStore;
         this._sidebarStore = sidebarStore;
 
+        makeObservable(this, {
+            _handlePortalApiError: action,
+            currentItem: observable,
+            hasNotFoundError: computed,
+            highlightedEntity: computed,
+            paginatedProductRecipesList: observable,
+            paginatedIngredientRecipesList: observable,
+        });
+
         router.addRoute(ROUTE_ITEM_DETAILS, "/:type<item|fluid>/:name", this._handleRouteChange.bind(this));
     }
 
-    /**
-     * @private
-     */
+    /** @private */
     async _handleRouteChange(state: State): Promise<void> {
         const { type, name } = state.params;
 
@@ -115,10 +111,7 @@ export class ItemStore {
         }
     }
 
-    /**
-     * @private
-     */
-    @action
+    /** @private */
     _handlePortalApiError(error: PortalApiError): ItemRecipesData {
         if (error.code === 404) {
             this.currentItem = emptyItem;
@@ -128,7 +121,6 @@ export class ItemStore {
         return emptyItemRecipesData;
     }
 
-    @computed
     get hasNotFoundError(): boolean {
         return this.currentItem.name === "";
     }
@@ -136,7 +128,6 @@ export class ItemStore {
     /**
      * Returns the entity to highlight.
      */
-    @computed
     get highlightedEntity(): { type: string, name: string } {
         if (this._routeStore.currentRoute !== ROUTE_ITEM_DETAILS) {
             return {

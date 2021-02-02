@@ -1,6 +1,6 @@
 // @flow
 
-import { action, computed, observable, runInAction } from "mobx";
+import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import { createContext } from "react";
 import CombinationId from "../class/CombinationId";
 import { PortalApi, portalApi } from "../class/PortalApi";
@@ -27,41 +27,22 @@ const VALID_SETTING_STATUS = [SETTING_STATUS_AVAILABLE, SETTING_STATUS_PENDING, 
  * The store managing the creation of new settings for the users.
  */
 class SettingsNewStore {
-    /**
-     * @private
-     */
+    /** @private */
     _portalApi: PortalApi;
-
-    /**
-     * @private
-     */
+    /** @private */
     _router: Router;
-
-    /**
-     * @private
-     */
+    /** @private */
     _routeStore: RouteStore;
 
-    @observable
     isSaveGameProcessing: boolean = false;
-
-    @observable
     saveGameModNames: string[] = [];
-
-    @observable
     saveGameError: string = "";
-
-    @observable
     settingStatus: ?SettingStatusData = null;
-
-    @observable
     newOptions: SettingOptionsData = {
         name: "",
         recipeMode: RECIPE_MODE_HYBRID,
         locale: "en",
     };
-
-    @observable
     isSavingNewSetting: boolean = false;
 
     constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore) {
@@ -69,42 +50,56 @@ class SettingsNewStore {
         this._router = router;
         this._routeStore = routeStore;
 
+        makeObservable(this, {
+            _handleRouteChange: action,
+            _requestSettingStatus: action,
+            changeOptions: action,
+            changeToSetting: action,
+            hasExistingSetting: computed,
+            isSaveGameProcessing: observable,
+            isSavingNewSetting: observable,
+            newOptions: observable,
+            processSaveGame: action,
+            saveGameModNames: observable,
+            saveGameError: observable,
+            saveNewSetting: action,
+            settingStatus: observable,
+            showAdditionalOptionsStep: computed,
+            showDataAvailabilityStep: computed,
+            showSaveButton: computed,
+            showSaveGameStep: computed,
+        });
+
         router.addRoute(ROUTE_SETTINGS_NEW, "/settings/new", this._handleRouteChange.bind(this));
     }
 
-    @action
+    /** @private */
     async _handleRouteChange(): Promise<void> {
         this.saveGameModNames = [];
         this.saveGameError = "";
         this.settingStatus = null;
     }
 
-    @computed
     get showSaveGameStep(): boolean {
         return true;
     }
 
-    @computed
     get showDataAvailabilityStep(): boolean {
         return this.saveGameModNames.length > 0 && this.settingStatus !== null;
     }
 
-    @computed
     get showAdditionalOptionsStep(): boolean {
         return this.showDataAvailabilityStep && VALID_SETTING_STATUS.indexOf(this.settingStatus?.status) !== -1;
     }
 
-    @computed
     get showSaveButton(): boolean {
         return !!this.showAdditionalOptionsStep && this.newOptions.name !== "";
     }
 
-    @computed
     get hasExistingSetting(): boolean {
         return !!this.settingStatus?.existingSetting;
     }
 
-    @action
     async processSaveGame(file: File): Promise<void> {
         this.isSaveGameProcessing = true;
         this.saveGameModNames = [];
@@ -130,10 +125,7 @@ class SettingsNewStore {
         }
     }
 
-    /**
-     * @private
-     */
-    @action
+    /** @private */
     async _requestSettingStatus(modNames: string[]): Promise<void> {
         this.settingStatus = {
             status: SETTING_STATUS_LOADING,
@@ -155,7 +147,6 @@ class SettingsNewStore {
         }
     }
 
-    @action
     changeOptions(options: $Shape<SettingOptionsData>): void {
         this.newOptions = {
             ...this.newOptions,
@@ -166,7 +157,6 @@ class SettingsNewStore {
     /**
      * Saves the new settings, pushing them to the server and redirecting afterwards.
      */
-    @action
     async saveNewSetting(): Promise<void> {
         this.isSavingNewSetting = true;
         try {
@@ -184,7 +174,6 @@ class SettingsNewStore {
     /**
      * Saves the options and changes to the already existing setting.
      */
-    @action
     async changeToSetting(): Promise<void> {
         const setting = this.settingStatus?.existingSetting;
         if (!setting) {

@@ -1,6 +1,6 @@
 // @flow
 
-import { action, computed, observable, runInAction } from "mobx";
+import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import { createContext } from "react";
 import CombinationId from "../class/CombinationId";
 import { IconManager, iconManager } from "../class/IconManager";
@@ -30,29 +30,15 @@ const emptySettingDetails: SettingDetailsData = {
  * The store managing the settings and the settings page.
  */
 export class SettingsStore {
-    /**
-     * @private
-     */
+    /** @private */
     _iconManager: IconManager;
-
-    /**
-     * @private
-     */
+    /** @private */
     _portalApi: PortalApi;
-
-    /**
-     * @private
-     */
+    /** @private */
     _router: Router;
-
-    /**
-     * @private
-     */
+    /** @private */
     _routeStore: RouteStore;
-
-    /**
-     * @private
-     */
+    /** @private */
     _storageManager: StorageManager;
 
     /**
@@ -70,32 +56,21 @@ export class SettingsStore {
     /**
      * The list of available settings.
      */
-    @observable
     availableSettings: SettingMetaData[] = [];
 
     /**
      * The currently selected setting id.
      */
-    @observable
     selectedSettingId: string = "";
 
-    @observable
     selectedOptions: SettingOptionsData = {
         name: "",
         locale: "en",
         recipeMode: RECIPE_MODE_HYBRID,
     };
-
-    @observable
     isLoadingSettingDetails: boolean = false;
-
-    @observable
     isChangingToSetting: boolean = false;
-
-    @observable
     isSavingChanges: boolean = false;
-
-    @observable
     isDeletingSetting: boolean = false;
 
     constructor(
@@ -111,13 +86,30 @@ export class SettingsStore {
         this._routeStore = routeStore;
         this._storageManager = storageManager;
 
+        makeObservable(this, {
+            _applySelectedSetting: action,
+            _handleRouteChange: action,
+            availableSettings: observable,
+            changeSelectedOptions: action,
+            changeSettingId: action,
+            changeToSelectedSetting: action,
+            isChangeButtonVisible: computed,
+            isChangingToSetting: observable,
+            isDeleteButtonVisible: computed,
+            isDeletingSetting: observable,
+            isLoadingSettingDetails: observable,
+            isSaveButtonVisible: computed,
+            isSavingChanges: observable,
+            saveOptions: action,
+            selectedOptions: observable,
+            selectedSettingDetails: computed,
+            selectedSettingId: observable,
+        });
+
         router.addRoute(ROUTE_SETTINGS, "/settings", this._handleRouteChange.bind(this));
     }
 
-    /**
-     * @private
-     */
-    @action
+    /** @private */
     async _handleRouteChange(): Promise<void> {
         if (!this._currentSettingId) {
             try {
@@ -140,17 +132,12 @@ export class SettingsStore {
         });
     }
 
-    /**
-     * @private
-     */
+    /** @private */
     _addSettingDetails(settingDetails: SettingDetailsData): void {
         this._allSettingDetails.set(settingDetails.combinationId, settingDetails);
     }
 
-    /**
-     * @private
-     */
-    @action
+    /** @private */
     _applySelectedSetting() {
         const selectedSetting = this.selectedSettingDetails;
 
@@ -164,7 +151,6 @@ export class SettingsStore {
     /**
      * Returns the details of the currently selected setting.
      */
-    @computed
     get selectedSettingDetails(): SettingDetailsData {
         const details = this._allSettingDetails.get(this.selectedSettingId);
         if (details) {
@@ -174,17 +160,14 @@ export class SettingsStore {
         return emptySettingDetails;
     }
 
-    @computed
     get isChangeButtonVisible(): boolean {
         return this.selectedSettingDetails.combinationId !== this._currentSettingId;
     }
 
-    @computed
     get isDeleteButtonVisible(): boolean {
         return this._currentSettingId !== this.selectedSettingDetails.combinationId;
     }
 
-    @computed
     get isSaveButtonVisible(): boolean {
         const setting = this.selectedSettingDetails;
 
@@ -203,7 +186,6 @@ export class SettingsStore {
     /**
      * Changes the id of the currently selected setting.
      */
-    @action
     async changeSettingId(combinationId: string): Promise<void> {
         if (!this._allSettingDetails.has(combinationId)) {
             this.isLoadingSettingDetails = true;
@@ -222,7 +204,6 @@ export class SettingsStore {
         });
     }
 
-    @action
     changeSelectedOptions(options: $Shape<SettingOptionsData>) {
         this.selectedOptions = {
             ...this.selectedOptions,
@@ -230,7 +211,6 @@ export class SettingsStore {
         };
     }
 
-    @action
     changeToSelectedSetting(): void {
         this.isChangingToSetting = true;
 
@@ -238,7 +218,6 @@ export class SettingsStore {
         this._router.redirectToIndex(CombinationId.fromFull(this.selectedSettingId));
     }
 
-    @action
     async saveOptions(): Promise<void> {
         this.isSavingChanges = true;
         try {

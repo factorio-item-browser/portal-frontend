@@ -1,6 +1,6 @@
 // @flow
 
-import { action, observable, runInAction } from "mobx";
+import { action, makeObservable, observable, runInAction } from "mobx";
 import { createContext } from "react";
 import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
@@ -12,25 +12,23 @@ import { RouteStore, routeStore } from "./RouteStore";
  * The store of the index page.
  */
 export class IndexStore {
-    /**
-     * @private
-     */
+    /** @private */
     _portalApi: PortalApi;
-
-    /**
-     * @private
-     */
+    /** @private */
     _routeStore: RouteStore;
 
-    @observable
     randomItems: EntityData[] = [];
-
-    @observable
     isRandomizing: boolean = false;
 
     constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore) {
         this._portalApi = portalApi;
         this._routeStore = routeStore;
+
+        makeObservable(this, {
+            isRandomizing: observable,
+            randomItems: observable,
+            randomizeItems: action,
+        });
 
         router.addRoute(ROUTE_INDEX, "/", this._handleRouteChange.bind(this));
     }
@@ -44,7 +42,6 @@ export class IndexStore {
         }
     }
 
-    @action
     async randomizeItems(): Promise<void> {
         if (this.isRandomizing) {
             return;
