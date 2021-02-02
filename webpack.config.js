@@ -42,7 +42,7 @@ module.exports = (env, argv) => {
         output: {
             path: `${currentPath}/build`,
             publicPath: "/",
-            filename: isProduction ? "asset/js/[name].[hash].js" : "asset/js/[name].js",
+            filename: isProduction ? "asset/js/[name].[contenthash].js" : "asset/js/[name].js",
         },
         resolve: {
             extensions: [".jpg", ".js", ".json", ".jsx", ".png", ".scss"]
@@ -113,7 +113,7 @@ module.exports = (env, argv) => {
             }),
             new DefinePlugin(envVars),
             new MiniCssExtractPlugin({
-                filename: isProduction ? "asset/css/[name].[hash].css" : "asset/css/[name].css",
+                filename: isProduction ? "asset/css/[name].[contenthash].css" : "asset/css/[name].css",
             }),
             new HtmlWebpackPlugin({
                 template: `${currentPath}/src/index.ejs`,

@@ -91,7 +91,7 @@
     "terser-webpack-plugin": "^4.2.3",
     "url-loader": "^4.1.1",
     "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.12",
+    "webpack-cli": "^4.5.0",
     "webpack-dev-server": "^3.11.2"
   },
   "main": "src/index.jsx",
@@ -99,7 +99,7 @@
     "analyze": "source-map-explorer build/asset/js/main.*",
     "build": "webpack --mode production",
     "fix": "eslint src --ext js,jsx --fix",
-    "start": "webpack-dev-server --mode development",
+    "start": "webpack serve --mode development",
     "test": "npm run test-flow && npm run test-jest && npm run test-eslint",
     "test-flow": "flow",
     "test-eslint": "eslint src --ext js,jsx",

@@ -107,7 +107,7 @@ class SaveGameReader {
             if (fileName.endsWith("/level.dat0")) {
                 try {
                     const rawData = inflate(await zip.files[fileName].async("uint8array"));
-                    return new SaveGameBuffer(Buffer.from(rawData));
+                    return new SaveGameBuffer(rawData);
                 } catch (e) {
                     throw ERROR_SAVEGAME_INVALID_FILE;
                 }
@@ -115,7 +115,7 @@ class SaveGameReader {
 
             if (fileName.endsWith("/level.dat")) {
                 try {
-                    return new SaveGameBuffer(Buffer.from(await zip.files[fileName].async("uint8array")));
+                    return new SaveGameBuffer(await zip.files[fileName].async("uint8array"));
                 } catch (e) {
                     throw ERROR_SAVEGAME_INVALID_FILE;
                 }
