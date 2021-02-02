@@ -1,33 +1,33 @@
 // @flow
 
+import ByteBuffer from "byte-buffer";
 import { loadAsync } from "jszip";
 import { inflate } from "pako";
-import { SmartBuffer } from "smart-buffer";
 import { ERROR_SAVEGAME_INVALID_FILE, ERROR_SAVEGAME_UNSUPPORTED_VERSION } from "../const/error";
 import type { SaveGameMod } from "../type/savegame";
 
 class SaveGameBuffer {
     /** @private */
-    _buffer: SmartBuffer;
+    _buffer: ByteBuffer;
 
-    constructor(buffer: Buffer) {
-        this._buffer = SmartBuffer.fromBuffer(buffer);
+    constructor(data: Uint8Array) {
+        this._buffer = new ByteBuffer(data, ByteBuffer.LITTLE_ENDIAN);
     }
 
     readShort(compressed: boolean = true): number {
         if (compressed) {
-            const byte = this._buffer.readUInt8();
-            return byte !== 255 ? byte : this._buffer.readUInt16LE();
+            const byte = this._buffer.readUnsignedByte();
+            return byte !== 255 ? byte : this._buffer.readUnsignedShort();
         }
-        return this._buffer.readUInt16LE();
+        return this._buffer.readUnsignedShort();
     }
 
     readInteger(compressed: boolean = true): number {
         if (compressed) {
-            const byte = this._buffer.readUInt8();
-            return byte !== 255 ? byte : this._buffer.readUInt32LE();
+            const byte = this._buffer.readUnsignedByte();
+            return byte !== 255 ? byte : this._buffer.readUnsignedInt();
         }
-        return this._buffer.readUInt32LE();
+        return this._buffer.readUnsignedInt();
     }
 
     readVersion(compressed: boolean = true): Version {
@@ -40,7 +40,7 @@ class SaveGameBuffer {
     }
 
     seek(offset: number): void {
-        this._buffer.readOffset += offset;
+        this._buffer.seek(offset);
     }
 
     seekString(): void {

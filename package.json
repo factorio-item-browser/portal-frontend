@@ -24,6 +24,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.2",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "base-x": "^3.0.8",
+    "byte-buffer": "^2.0.0",
     "classnames": "^2.2.6",
     "i18next": "^19.8.7",
     "jszip": "^3.5.0",
@@ -39,7 +40,6 @@
     "react-sortablejs": "^6.0.0",
     "router5": "^8.0.1",
     "router5-plugin-browser": "^8.0.1",
-    "smart-buffer": "^4.1.0",
     "sortablejs": "^1.13.0",
     "throttle-debounce": "^3.0.1"
   },
