@@ -73,7 +73,7 @@
     "flow-bin": "^0.143.1",
     "flow-typed": "^3.2.1",
     "html-inline-css-webpack-plugin": "^1.10.0",
-    "html-webpack-plugin": "^4.5.1",
+    "html-webpack-plugin": "^5.0.0",
     "html-webpack-skip-assets-plugin": "0.0.2",
     "image-webpack-loader": "^7.0.1",
     "isomorphic-fetch": "^3.0.0",
