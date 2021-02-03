@@ -69,8 +69,8 @@ module.exports = (env, argv) => {
                 },
                 {
                     test: /inline\/.*\.(png|svg|jpg|gif)$/,
+                    type: "asset/inline",
                     use: [
-                        "url-loader",
                         {
                             loader: "image-webpack-loader",
                             options: {
@@ -82,14 +82,11 @@ module.exports = (env, argv) => {
                 {
                     test: /\.(png|svg|jpg|gif)$/,
                     exclude: /inline/,
+                    type: "asset/resource",
+                    generator: {
+                        filename: "asset/image/[name].[ext]",
+                    },
                     use: [
-                        {
-                            loader: "file-loader",
-                            options: {
-                                name: "asset/image/[name].[ext]",
-                                esModule: false,
-                            },
-                        },
                         {
                             loader: "image-webpack-loader",
                             options: {
