@@ -45,7 +45,7 @@ module.exports = (env, argv) => {
             filename: isProduction ? "asset/js/[name].[contenthash].js" : "asset/js/[name].js",
         },
         resolve: {
-            extensions: [".jpg", ".js", ".json", ".jsx", ".png", ".scss"]
+            extensions: [".jpg", ".js", ".json", ".jsx", ".png", ".scss"],
         },
         module: {
             rules: [

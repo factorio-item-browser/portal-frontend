@@ -78,6 +78,7 @@ describe("SaveGameReader", () => {
         ])("%s", async (name, file, expectedMods) => {
             const savegame = fs.readFileSync(file);
             const reader = new SaveGameReader();
+            jest.spyOn(reader, "_readUploadedFile").mockImplementation(() => savegame);
 
             const mods = await reader.read(savegame);
 
@@ -111,6 +112,7 @@ describe("SaveGameReader", () => {
         ])("%s", async (name, file, expectedError) => {
             const savegame = fs.readFileSync(file);
             const reader = new SaveGameReader();
+            jest.spyOn(reader, "_readUploadedFile").mockImplementation(() => savegame);
 
             await expect(reader.read(savegame)).rejects.toEqual(expectedError);
         });

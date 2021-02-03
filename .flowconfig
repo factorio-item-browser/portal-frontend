@@ -10,6 +10,7 @@ flow-typed
 [options]
 esproposal.optional_chaining=enable
 exact_by_default=true
+module.file_ext=.cjs
 module.file_ext=.js
 module.file_ext=.json
 module.file_ext=.jsx
