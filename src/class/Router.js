@@ -134,13 +134,11 @@ export class Router {
 
     /** @private */
     _prepareParams(params?: Params): Params {
-        if (this._combinationId) {
-            params = {
-                ...params,
-                [PARAM_COMBINATION_ID]: this._combinationId.toShort(),
-            };
+        params = params || {};
+        if (this._combinationId && !params[PARAM_COMBINATION_ID]) {
+            params[PARAM_COMBINATION_ID] = this._combinationId.toShort();
         }
-        return params || {};
+        return params;
     }
 }
 
