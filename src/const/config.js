@@ -5,7 +5,7 @@ import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 
 export const CRAFTING_TIME_INFINITE = 100000;
 export const NUMBER_OF_ICONS_PER_REQUEST = 128;
-export const NUMBER_OF_ITEMS_PER_PAGE = 128;
+export const NUMBER_OF_ITEMS_PER_PAGE = 1024;
 export const NUMBER_OF_ITEM_RECIPES_PER_PAGE = 12;
 export const NUMBER_OF_MACHINES_PER_PAGE = 12;
 export const NUMBER_OF_RANDOM_ITEMS = 12;
