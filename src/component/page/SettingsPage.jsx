@@ -14,6 +14,7 @@ import Section from "../common/Section";
 import EntityList from "../entity/EntityList";
 import Mod from "../entity/Mod";
 import ModListSettingStatus from "../status/ModListSettingStatus";
+import OptionCombinationId from "./setting/option/OptionCombinationId";
 import OptionLocale from "./setting/option/OptionLocale";
 import OptionRecipeMode from "./setting/option/OptionRecipeMode";
 import OptionSettingId from "./setting/option/OptionSettingId";
@@ -91,6 +92,8 @@ const SettingsPage = (): React$Node => {
                 })}
             >
                 <OptionsList>
+                    <OptionCombinationId value={settingsStore.selectedSettingId} />
+
                     <OptionSettingName
                         value={settingsStore.selectedOptions.name}
                         onChange={(name) => settingsStore.changeSelectedOptions({ name })}

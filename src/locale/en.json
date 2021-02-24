@@ -122,6 +122,9 @@
         "adding-temporary": "Adding temporary setting...",
         "change-to-setting": "Change to \"{{name}}\"",
         "changing-to-setting": "Changing to \"{{name}}\"...",
+        "combination-id": {
+            "label": "Combination Id:"
+        },
         "current-setting": {
             "add-new-setting": "Add new setting",
             "delete-setting": "Delete setting \"{{name}}\"",

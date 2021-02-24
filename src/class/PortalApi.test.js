@@ -140,7 +140,7 @@ describe("PortalApi", (): void => {
             const result = await portalApi.getItemList(page);
 
             expect(window.fetch).toHaveBeenCalledWith(
-                "portal-api-server/items?indexOfFirstResult=384&numberOfResults=128",
+                "portal-api-server/items?indexOfFirstResult=3072&numberOfResults=1024",
                 {
                     method: "GET",
                     credentials: "include",
