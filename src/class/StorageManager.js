@@ -2,7 +2,7 @@
 
 import { CACHE_LIFETIME } from "../const/config";
 import type { SidebarEntityData } from "../type/transfer";
-import CombinationId from "./CombinationId";
+import { CombinationId } from "./CombinationId";
 
 const KEY_SCRIPT_VERSION = "script-version";
 const KEY_SIDEBAR_ENTITIES = "sidebar-entities";

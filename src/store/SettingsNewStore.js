@@ -2,7 +2,7 @@
 
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import { createContext } from "react";
-import CombinationId from "../class/CombinationId";
+import { CombinationId } from "../class/CombinationId";
 import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import SaveGameReader from "../class/SaveGameReader";

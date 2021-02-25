@@ -2,7 +2,7 @@
 
 import "isomorphic-fetch";
 import type { SettingCreateData, SettingOptionsData, SidebarEntityData } from "../type/transfer";
-import CombinationId from "./CombinationId";
+import { CombinationId } from "./CombinationId";
 import { PortalApi } from "./PortalApi";
 import { storageManager } from "./StorageManager";
 

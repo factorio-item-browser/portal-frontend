@@ -2,7 +2,7 @@
 
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import { createContext } from "react";
-import CombinationId from "../class/CombinationId";
+import { CombinationId } from "../class/CombinationId";
 import { IconManager, iconManager } from "../class/IconManager";
 import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";

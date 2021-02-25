@@ -4,7 +4,7 @@ import { faPlus, faUndo } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import CombinationId from "../../class/CombinationId";
+import { CombinationId } from "../../class/CombinationId";
 import { ROUTE_SETTINGS } from "../../const/route";
 import { STATUS_WARNING } from "../../const/status";
 import { routeStoreContext } from "../../store/RouteStore";

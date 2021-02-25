@@ -4,7 +4,7 @@ import { action, computed, makeObservable, observable, runInAction } from "mobx"
 import { createContext } from "react";
 import { getI18n } from "react-i18next";
 import { constants } from "router5";
-import CombinationId from "../class/CombinationId";
+import { CombinationId } from "../class/CombinationId";
 import { PortalApi, portalApi, PortalApiError } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import { StorageManager, storageManager } from "../class/StorageManager";

@@ -4,7 +4,7 @@ import { createRouter, Router as Router5, State, SubscribeState } from "router5"
 import type { Middleware } from "router5";
 import browserPluginFactory from "router5-plugin-browser";
 import { ROUTE_INDEX } from "../const/route";
-import CombinationId from "./CombinationId";
+import { CombinationId } from "./CombinationId";
 
 type ChangeHandler = (State) => boolean | Promise<any>;
 type Params = { [string]: string };
