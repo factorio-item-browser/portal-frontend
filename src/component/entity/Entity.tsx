@@ -1,5 +1,3 @@
-// @flow
-
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";

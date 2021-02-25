@@ -1,5 +1,3 @@
-// @flow
-
 import {
     NUMBER_OF_ITEM_RECIPES_PER_PAGE,
     NUMBER_OF_ITEMS_PER_PAGE,

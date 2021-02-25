@@ -131,7 +131,7 @@ class SettingsNewStore {
         }
     }
 
-    public changeOptions(options: SettingOptionsData): void {
+    public changeOptions(options: Partial<SettingOptionsData>): void {
         this.newOptions = {
             ...this.newOptions,
             ...options,

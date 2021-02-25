@@ -1,5 +1,3 @@
-// @flow
-
 import { NamesByTypesSet } from "./NamesByTypesSet";
 
 describe("NamesByTypesSet", () => {

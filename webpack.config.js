@@ -14,7 +14,7 @@ module.exports = (env, argv) => {
     const currentPath = path.join(__dirname);
     const isProduction = argv.mode === "production";
     const entryPoints = {
-        main: `${currentPath}/src/index.jsx`,
+        main: `${currentPath}/src/index.tsx`,
         images: `${currentPath}/src/style/partial/images.scss`,
     };
 

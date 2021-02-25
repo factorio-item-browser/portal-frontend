@@ -162,7 +162,7 @@ export class SettingsStore {
         });
     }
 
-    public changeSelectedOptions(options: SettingOptionsData) {
+    public changeSelectedOptions(options: Partial<SettingOptionsData>) {
         this.selectedOptions = {
             ...this.selectedOptions,
             ...options,

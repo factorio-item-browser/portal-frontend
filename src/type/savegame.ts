@@ -1,5 +1,3 @@
-// @flow
-
 import type { Version } from "../class/SaveGameReader";
 
 export type SaveGameMod = {
