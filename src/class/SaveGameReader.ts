@@ -46,17 +46,25 @@ class SaveGameBuffer {
 }
 
 export class Version {
-    constructor(
-        public major: number,
-        public minor: number,
-        public patch: number,
-    ) {}
+    public major: number;
+    public minor: number;
+    public patch: number;
 
-    toString(): string {
+    public constructor(
+        major: number,
+        minor: number,
+        patch: number,
+    ) {
+        this.major = major;
+        this.minor = minor;
+        this.patch = patch;
+    }
+
+    public toString(): string {
         return `${this.major}.${this.minor}.${this.patch}`;
     }
 
-    compareTo(version: Version): number {
+    public compareTo(version: Version): number {
         const v1 = this.major * 1000000 + this.minor * 1000 + this.patch;
         const v2 = version.major * 1000000 + version.minor * 1000 + version.patch;
 
