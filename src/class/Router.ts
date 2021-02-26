@@ -4,7 +4,7 @@ import { ROUTE_INDEX } from "../const/route";
 import { CombinationId } from "./CombinationId";
 
 type ChangeHandler = (state: State) => void | Promise<void>;
-type Params = { [key: string]: string };
+export type RouteParams = { [key: string]: string };
 
 const PARAM_COMBINATION_ID = "combinationId";
 const SHORT_ROUTE_SUFFIX = "_short";
@@ -93,18 +93,18 @@ export class Router {
         }
     }
 
-    public isActive(route: string, params?: Params): boolean {
+    public isActive(route: string, params?: RouteParams): boolean {
         return (
             this.router.isActive(route, this.prepareParams(params)) ||
             this.router.isActive(route + SHORT_ROUTE_SUFFIX, params)
         );
     }
 
-    public navigateTo(route: string, params?: Params): void {
+    public navigateTo(route: string, params?: RouteParams): void {
         this.router.navigate(route, this.prepareParams(params));
     }
 
-    public buildPath(route: string, params?: Params): string {
+    public buildPath(route: string, params?: RouteParams): string {
         return this.router.buildPath(route, this.prepareParams(params));
     }
 
@@ -116,7 +116,7 @@ export class Router {
         }
     }
 
-    private prepareParams(params?: Params): Params {
+    private prepareParams(params?: RouteParams): RouteParams {
         params = params || {};
         if (this.combinationId && !params[PARAM_COMBINATION_ID]) {
             params[PARAM_COMBINATION_ID] = this.combinationId.toShort();

@@ -1,10 +1,11 @@
 import { observer } from "mobx-react-lite";
 import React, { ForwardRefRenderFunction, ReactNode, useCallback, useContext, useRef } from "react";
+import { RouteParams } from "../../class/Router";
 import { routeStoreContext } from "../../store/RouteStore";
 
 type Props = {
     route: string;
-    params?: { [key: string]: any };
+    params?: RouteParams;
     children?: ReactNode;
     [key: string]: unknown;
 };

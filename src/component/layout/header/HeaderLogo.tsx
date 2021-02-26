@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
-// @ts-ignore
 import logo from "../../../image/logo.png";
 import IndexLink from "../../link/IndexLink";
 

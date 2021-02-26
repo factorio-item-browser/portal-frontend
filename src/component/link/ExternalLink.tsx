@@ -4,7 +4,7 @@ import React, { FC, ReactNode } from "react";
 type Props = {
     url: string;
     children: ReactNode;
-    [key: string]: any;
+    [key: string]: unknown;
 };
 
 /**

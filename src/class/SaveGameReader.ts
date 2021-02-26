@@ -111,7 +111,7 @@ export class SaveGameReader {
         });
     }
 
-    private async readUploadedFile(file: Blob): Promise<Uint8Array> {
+    public async readUploadedFile(file: Blob): Promise<Uint8Array> {
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
             fileReader.onload = (): void => {

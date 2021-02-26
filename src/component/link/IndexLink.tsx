@@ -5,7 +5,7 @@ import Link from "./Link";
 
 type Props = {
     children: ReactNode;
-    [key: string]: any;
+    [key: string]: unknown;
 };
 
 /**

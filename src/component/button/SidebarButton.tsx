@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
+import { RouteParams } from "../../class/Router";
 import Link from "../link/Link";
 
 import "./Button.scss";
@@ -11,7 +12,7 @@ import "./SidebarButton.scss";
 type Props = {
     label: string;
     route: string;
-    params?: { [key: string]: any };
+    params?: RouteParams;
     icon: IconProp;
     primary?: boolean;
     secondary?: boolean;
