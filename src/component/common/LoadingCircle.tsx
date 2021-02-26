@@ -6,7 +6,7 @@ import React, { FC, RefObject } from "react";
 import "./LoadingCircle.scss";
 
 type Props = {
-    target: RefObject<Element> | null,
+    target: RefObject<Element> | null;
 };
 
 /**

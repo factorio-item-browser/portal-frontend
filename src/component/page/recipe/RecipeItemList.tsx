@@ -1,15 +1,15 @@
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
+import { RecipeItemData } from "../../../type/transfer";
 import RecipeItem from "./RecipeItem";
 import RecipeItemTime from "./RecipeItemTime";
-import { RecipeItemData } from "../../../type/transfer";
 
 import "./RecipeItemList.scss";
 
 type Props = {
-    headline: string,
-    items: RecipeItemData[],
-    craftingTime?: number,
+    headline: string;
+    items: RecipeItemData[];
+    craftingTime?: number;
 };
 
 /**

@@ -9,8 +9,8 @@ import Entity from "../../entity/Entity";
 import EntityList from "../../entity/EntityList";
 
 type Props = {
-    paginatedList: PaginatedList<EntityData, ItemRecipesData> | null,
-    headlineLocaleKey: string,
+    paginatedList: PaginatedList<EntityData, ItemRecipesData> | null;
+    headlineLocaleKey: string;
 };
 
 /**

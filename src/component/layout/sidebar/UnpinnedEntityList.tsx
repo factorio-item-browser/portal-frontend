@@ -8,13 +8,10 @@ import SidebarEntity from "./SidebarEntity";
 
 import "./SidebarList.scss";
 
-type Props = {
-}
-
 /**
  * The component representing the list of unpinned entities in the sidebar, i.e. the last viewed entities.
  */
-const UnpinnedEntityList: FC<Props> = () => {
+const UnpinnedEntityList: FC = () => {
     const { t } = useTranslation();
     const sidebarStore = useContext(sidebarStoreContext);
     const tooltipStore = useContext(tooltipStoreContext);
@@ -35,7 +32,9 @@ const UnpinnedEntityList: FC<Props> = () => {
             <h3>{t("sidebar.headline-last-viewed")}</h3>
             <ReactSortable
                 list={items}
-                setList={() => {}}
+                setList={() => {
+                    // Nothing to do.
+                }}
                 group={{ name: "sidebar-entities", pull: true, put: false }}
                 sort={false}
                 draggable=".sidebar-entity"

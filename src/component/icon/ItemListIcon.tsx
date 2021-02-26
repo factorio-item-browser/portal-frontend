@@ -7,8 +7,8 @@ import EntityLink from "../link/EntityLink";
 import "./Icon.scss";
 
 type Props = {
-    type: string,
-    name: string,
+    type: string;
+    name: string;
 };
 
 /**

@@ -5,7 +5,7 @@ import { useSelectClick } from "../../../../util/hooks";
 import Option from "./Option";
 
 type Props = {
-    value: string,
+    value: string;
 };
 
 /**

@@ -24,43 +24,39 @@ export class SearchStore {
     /**
      * Whether the input field is currently focused.
      */
-    public isInputFocused: boolean = false;
+    public isInputFocused = false;
 
     /**
      * The current search query entered into the search field.
      */
-    public searchQuery: string = "";
+    public searchQuery = "";
 
     /**
      * The search query which has currently been requested.
      */
-    public requestedSearchQuery: string = "";
+    public requestedSearchQuery = "";
 
     /**
      * Whether the search bar has been opened on mobile.
      */
-    public isSearchOpened: boolean = false;
+    public isSearchOpened = false;
 
     /**
      * Whether the search is currently loading results.
      */
-    public isLoading: boolean = false;
+    public isLoading = false;
 
     /**
      * The currently executed search query.
      */
-    public currentlyExecutedQuery: string = "";
+    public currentlyExecutedQuery = "";
 
     /**
      * The paginated search results.
      */
     public paginatedSearchResults: PaginatedList<EntityData, SearchResultsData> | null = null;
 
-    public constructor(
-        portalApi: PortalApi,
-        router: Router,
-        routeStore: RouteStore,
-    ) {
+    public constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore) {
         this.portalApi = portalApi;
         this.router = router;
         this.routeStore = routeStore;
@@ -88,7 +84,7 @@ export class SearchStore {
         const { query } = state.params;
         const newPaginatedList = new PaginatedList<EntityData, SearchResultsData>(
             (page) => this.portalApi.search(query, page),
-            (error) => this.handlePortalApiError(error)
+            (error) => this.handlePortalApiError(error),
         );
 
         const searchResultsData = await newPaginatedList.requestNextPage();

@@ -16,9 +16,9 @@ const ICON_MAP: { [key: string]: ReactNode } = {
 };
 
 type Props = {
-    status: string,
-    className?: string,
-    children: ReactNode,
+    status: string;
+    className?: string;
+    children: ReactNode;
 };
 
 /**

@@ -4,19 +4,19 @@ import React, { ChangeEvent, FC, useCallback } from "react";
 import Option from "./Option";
 
 export type Item = {
-    value: string,
-    label: string,
+    value: string;
+    label: string;
 };
 
 type Props = {
-    label: string,
-    description?: string,
-    items: Item[],
-    value: string,
-    onChange: (value: string) => void | Promise<void>,
-    fullWidth?: boolean,
-    error?: boolean,
-    loading?: boolean,
+    label: string;
+    description?: string;
+    items: Item[];
+    value: string;
+    onChange: (value: string) => void | Promise<void>;
+    fullWidth?: boolean;
+    error?: boolean;
+    loading?: boolean;
 };
 
 /**
@@ -27,7 +27,7 @@ const SelectOption: FC<Props> = (props) => {
         (event: ChangeEvent<HTMLSelectElement>): void => {
             props.onChange(event.target.value);
         },
-        [props.onChange]
+        [props.onChange],
     );
 
     return (

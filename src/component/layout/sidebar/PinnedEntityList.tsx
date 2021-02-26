@@ -8,13 +8,10 @@ import SidebarEntity from "./SidebarEntity";
 
 import "./SidebarList.scss";
 
-type Props = {
-}
-
 /**
  * The component representing the list of pinned entities in the sidebar.
  */
-const PinnedEntityList: FC<Props> = () => {
+const PinnedEntityList: FC = () => {
     const { t } = useTranslation();
     const sidebarStore = useContext(sidebarStoreContext);
     const tooltipStore = useContext(tooltipStoreContext);

@@ -9,13 +9,13 @@ import Link from "../link/Link";
 import "./Button.scss";
 
 type Props = {
-    label: string,
-    route: string,
-    params?: { [key: string]: any },
-    icon?: IconProp,
-    primary?: boolean,
-    secondary?: boolean,
-    spacing?: boolean,
+    label: string;
+    route: string;
+    params?: { [key: string]: any };
+    icon?: IconProp;
+    primary?: boolean;
+    secondary?: boolean;
+    spacing?: boolean;
 };
 
 const LinkedButton: FC<Props> = ({ label, route, params, icon, primary, secondary, spacing }) => {

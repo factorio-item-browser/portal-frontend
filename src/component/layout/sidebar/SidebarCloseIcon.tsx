@@ -6,13 +6,10 @@ import { sidebarStoreContext } from "../../../store/SidebarStore";
 
 import "./SidebarCloseIcon.scss";
 
-type Props = {
-}
-
 /**
  * The component representing the close icon of the sidebar for mobile users.
  */
-const SidebarCloseIcon: FC<Props> = () => {
+const SidebarCloseIcon: FC = () => {
     const sidebarStore = useContext(sidebarStoreContext);
     const handleClick = useCallback((): void => {
         sidebarStore.closeSidebar();

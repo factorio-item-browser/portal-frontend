@@ -2,8 +2,8 @@ import { observer } from "mobx-react-lite";
 import React, { FC, ReactNode } from "react";
 
 type Props = {
-    children: ReactNode,
-    hidden?: boolean,
+    children: ReactNode;
+    hidden?: boolean;
 };
 
 /**

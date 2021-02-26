@@ -2,9 +2,9 @@ import { observer } from "mobx-react-lite";
 import React, { FC, ReactNode } from "react";
 
 type Props = {
-    url: string,
-    children: ReactNode,
-    [key: string]: any,
+    url: string;
+    children: ReactNode;
+    [key: string]: any;
 };
 
 /**

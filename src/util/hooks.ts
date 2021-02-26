@@ -8,7 +8,7 @@ import { formatIconClass } from "./format";
 /**
  * Uses the specified title as the document title. If no title is specified, then the default title will be used.
  */
-export function useDocumentTitle(title?: string, options?: { [key: string]: any }): void {
+export function useDocumentTitle(title?: string, options?: { [key: string]: unknown }): void {
     const { t } = useTranslation();
     useEffect(() => {
         document.title = title ? t(title, options) : t("index.title");
@@ -50,8 +50,8 @@ export function useScrollEffect(callback: () => void | Promise<void>): void {
 }
 
 type UseTooltipResult = {
-    showTooltip: () => Promise<void>,
-    hideTooltip: () => void,
+    showTooltip: () => Promise<void>;
+    hideTooltip: () => void;
 };
 
 /**

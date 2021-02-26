@@ -11,13 +11,10 @@ import ErrorBox from "../error/ErrorBox";
 import RecipeDetails from "./recipe/RecipeDetails";
 import RecipeMachinesList from "./recipe/RecipeMachinesList";
 
-type Props = {
-}
-
 /**
  * The component representing the details page of a recipe.
  */
-const RecipeDetailsPage: FC<Props> = () => {
+const RecipeDetailsPage: FC = () => {
     const recipeStore = useContext(recipeStoreContext);
     const { t } = useTranslation();
     const details = recipeStore.currentRecipeDetails;

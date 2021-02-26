@@ -84,7 +84,7 @@ describe("format", (): void => {
             [255, "unlimited"],
         ])("%d", (slots: number, expectedResult: string): void => {
             const mockedFunction: TFunction = (key: string): string => {
-                const values: {[key: string]: string} = {
+                const values: { [key: string]: string } = {
                     "recipe-details.machine.none": "none",
                     "recipe-details.machine.unlimited": "unlimited",
                 };

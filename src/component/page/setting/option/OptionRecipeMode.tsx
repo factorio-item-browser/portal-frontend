@@ -2,12 +2,11 @@ import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { RECIPE_MODES } from "../../../../const/recipeMode";
-import SelectOption from "./SelectOption";
-import { Item } from "./SelectOption";
+import SelectOption, { Item } from "./SelectOption";
 
 type Props = {
-    value: string,
-    onChange: (value: string) => void,
+    value: string;
+    onChange: (value: string) => void;
 };
 
 /**
@@ -20,10 +19,12 @@ const OptionRecipeMode: FC<Props> = ({ value, onChange }) => {
         <SelectOption
             label={t("settings.recipe-mode.label")}
             description={t("settings.recipe-mode.description")}
-            items={RECIPE_MODES.map((recipeMode: string): Item => ({
-                value: recipeMode,
-                label: t(`settings.recipe-mode.option.${recipeMode}`),
-            }))}
+            items={RECIPE_MODES.map(
+                (recipeMode: string): Item => ({
+                    value: recipeMode,
+                    label: t(`settings.recipe-mode.option.${recipeMode}`),
+                }),
+            )}
             value={value}
             onChange={onChange}
         />

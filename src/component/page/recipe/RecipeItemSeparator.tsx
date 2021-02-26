@@ -5,13 +5,10 @@ import React, { FC } from "react";
 
 import "./RecipeItemSeparator.scss";
 
-type Props = {
-};
-
 /**
  * The component representing the item separator in the recipe details.
  */
-const RecipeItemSeparator: FC<Props> = () => {
+const RecipeItemSeparator: FC = () => {
     return (
         <div className="recipe-item-separator">
             <FontAwesomeIcon icon={faChevronRight} />

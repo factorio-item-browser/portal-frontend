@@ -31,7 +31,6 @@ const emptyItemRecipesData: ItemRecipesData = {
     numberOfResults: 0,
 };
 
-
 export class ItemStore {
     private readonly portalApi: PortalApi;
     private readonly routeStore: RouteStore;
@@ -41,12 +40,7 @@ export class ItemStore {
     public paginatedIngredientRecipesList: PaginatedList<EntityData, ItemRecipesData> | null = null;
     public currentItem: Item = emptyItem;
 
-    public constructor(
-        portalApi: PortalApi,
-        router: Router,
-        routeStore: RouteStore,
-        sidebarStore: SidebarStore,
-    ) {
+    public constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore, sidebarStore: SidebarStore) {
         this.portalApi = portalApi;
         this.routeStore = routeStore;
         this.sidebarStore = sidebarStore;
@@ -68,11 +62,11 @@ export class ItemStore {
 
         const newProductsList = new PaginatedList<EntityData, ItemRecipesData>(
             (page) => this.portalApi.getItemProductRecipes(type, name, page),
-            (error) => this.handlePortalApiError(error)
+            (error) => this.handlePortalApiError(error),
         );
         const newIngredientsList = new PaginatedList<EntityData, ItemRecipesData>(
             (page) => this.portalApi.getItemIngredientRecipes(type, name, page),
-            (error) => this.handlePortalApiError(error)
+            (error) => this.handlePortalApiError(error),
         );
 
         const [productsData] = await Promise.all([
@@ -110,7 +104,7 @@ export class ItemStore {
         return this.currentItem.name === "";
     }
 
-    public get highlightedEntity(): { type: string, name: string } {
+    public get highlightedEntity(): { type: string; name: string } {
         if (this.routeStore.currentRoute !== ROUTE_ITEM_DETAILS) {
             return {
                 type: "",

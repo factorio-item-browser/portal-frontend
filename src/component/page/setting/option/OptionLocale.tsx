@@ -5,18 +5,20 @@ import { LOCALES } from "../../../../const/locale";
 import SelectOption, { Item } from "./SelectOption";
 
 function createSortedLocaleItems(locales: { [key: string]: string }): Item[] {
-    const items = Object.keys(locales).map((locale: string): Item => ({
-        value: locale,
-        label: locales[locale],
-    }));
+    const items = Object.keys(locales).map(
+        (locale: string): Item => ({
+            value: locale,
+            label: locales[locale],
+        }),
+    );
     items.sort((left: Item, right: Item): number => left.label.localeCompare(right.label));
     return items;
 }
 const localeItems = createSortedLocaleItems(LOCALES);
 
 type Props = {
-    value: string,
-    onChange: (value: string) => void,
+    value: string;
+    onChange: (value: string) => void;
 };
 
 /**

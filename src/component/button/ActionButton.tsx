@@ -5,15 +5,15 @@ import React, { FC } from "react";
 import Button from "./Button";
 
 type Props = {
-    label: string,
-    loadingLabel: string,
-    icon?: IconProp,
-    primary?: boolean,
-    secondary?: boolean,
-    spacing?: boolean,
-    onClick: () => void | Promise<void>,
-    isLoading: boolean,
-    isVisible: boolean,
+    label: string;
+    loadingLabel: string;
+    icon?: IconProp;
+    primary?: boolean;
+    secondary?: boolean;
+    spacing?: boolean;
+    onClick: () => void | Promise<void>;
+    isLoading: boolean;
+    isVisible: boolean;
 };
 
 /**

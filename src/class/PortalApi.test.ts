@@ -54,7 +54,7 @@ describe("PortalApi", (): void => {
                     headers: {
                         "Combination-Id": combinationId,
                     },
-                }
+                },
             );
             expect(result).toEqual(responseData);
         });
@@ -100,7 +100,7 @@ describe("PortalApi", (): void => {
                     headers: {
                         "Combination-Id": combinationId,
                     },
-                }
+                },
             );
             expect(result).toEqual(responseData);
         });
@@ -126,7 +126,7 @@ describe("PortalApi", (): void => {
                     headers: {
                         "Combination-Id": combinationId,
                     },
-                }
+                },
             );
             expect(result).toEqual(responseData);
         });
@@ -145,7 +145,7 @@ describe("PortalApi", (): void => {
                     headers: {
                         "Combination-Id": combinationId,
                     },
-                }
+                },
             );
             expect(result).toEqual(responseData);
         });
@@ -205,7 +205,7 @@ describe("PortalApi", (): void => {
                     headers: {
                         "Combination-Id": combinationId,
                     },
-                }
+                },
             );
             expect(result).toEqual(responseData);
         });
@@ -238,7 +238,7 @@ describe("PortalApi", (): void => {
                     headers: {
                         "Combination-Id": combinationId,
                     },
-                }
+                },
             );
             expect(result).toEqual(responseData);
         });

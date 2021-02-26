@@ -11,13 +11,9 @@ export class IndexStore {
     private readonly routeStore: RouteStore;
 
     public randomItems: EntityData[] = [];
-    public isRandomizing: boolean = false;
+    public isRandomizing = false;
 
-    public constructor(
-        portalApi: PortalApi,
-        router: Router,
-        routeStore: RouteStore,
-    ) {
+    public constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore) {
         this.portalApi = portalApi;
         this.routeStore = routeStore;
 

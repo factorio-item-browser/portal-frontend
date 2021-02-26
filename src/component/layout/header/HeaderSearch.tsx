@@ -10,13 +10,10 @@ import { searchStoreContext } from "../../../store/SearchStore";
 
 import "./HeaderSearch.scss";
 
-type Props = {
-}
-
 /**
  * The component representing the header search element.
  */
-const HeaderSearch: FC<Props> = () => {
+const HeaderSearch: FC = () => {
     const routeStore = useContext(routeStoreContext);
     const searchStore = useContext(searchStoreContext);
 

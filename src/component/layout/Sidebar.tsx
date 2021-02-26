@@ -17,13 +17,10 @@ import UnpinnedEntityList from "./sidebar/UnpinnedEntityList";
 
 import "./Sidebar.scss";
 
-type Props = {
-}
-
 /**
  * The component representing the sidebar of the page.
  */
-const Sidebar: FC<Props> = () => {
+const Sidebar: FC = () => {
     const { t } = useTranslation();
     const routeStore = useContext(routeStoreContext);
     const sidebarStore = useContext(sidebarStoreContext);

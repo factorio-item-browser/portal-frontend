@@ -8,8 +8,8 @@ import ItemListIcon from "../../icon/ItemListIcon";
 import "./ItemList.scss";
 
 type Props = {
-    items: ItemMetaData[],
-    loading?: boolean,
+    items: ItemMetaData[];
+    loading?: boolean;
 };
 
 /**

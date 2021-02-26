@@ -4,8 +4,8 @@ import { ROUTE_INDEX } from "../../const/route";
 import Link from "./Link";
 
 type Props = {
-    children: ReactNode,
-    [key: string]: any,
+    children: ReactNode;
+    [key: string]: any;
 };
 
 /**

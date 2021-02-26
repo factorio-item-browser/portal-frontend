@@ -22,22 +22,18 @@ class SettingsNewStore {
     private readonly router: Router;
     private readonly routeStore: RouteStore;
 
-    public isSaveGameProcessing: boolean = false;
+    public isSaveGameProcessing = false;
     public saveGameModNames: string[] = [];
-    public saveGameError: string = "";
+    public saveGameError = "";
     public settingStatus: SettingStatusData | null = null;
     public newOptions: SettingOptionsData = {
         name: "",
         recipeMode: RECIPE_MODE_HYBRID,
         locale: "en",
     };
-    public isSavingNewSetting: boolean = false;
+    public isSavingNewSetting = false;
 
-    constructor(
-        portalApi: PortalApi,
-        router: Router,
-        routeStore: RouteStore,
-    ) {
+    constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore) {
         this.portalApi = portalApi;
         this.router = router;
         this.routeStore = routeStore;
@@ -80,9 +76,11 @@ class SettingsNewStore {
     }
 
     public get showAdditionalOptionsStep(): boolean {
-        return this.showDataAvailabilityStep
-            && this.settingStatus !== null
-            && VALID_SETTING_STATUS.indexOf(this.settingStatus.status) !== -1;
+        return (
+            this.showDataAvailabilityStep &&
+            this.settingStatus !== null &&
+            VALID_SETTING_STATUS.indexOf(this.settingStatus.status) !== -1
+        );
     }
 
     public get showSaveButton(): boolean {

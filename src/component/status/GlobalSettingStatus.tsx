@@ -8,20 +8,20 @@ import { routeStoreContext } from "../../store/RouteStore";
 import { useInterval } from "../../util/hooks";
 import Status from "./Status";
 
-type Props = {
-}
-
 /**
  * The component globally displaying the setting status.
  */
-const GlobalSettingStatus: FC<Props> = () => {
+const GlobalSettingStatus: FC = () => {
     const { t } = useTranslation();
     const routeStore = useContext(routeStoreContext);
     const setting = routeStore.setting;
 
-    useInterval(INTERVAL_CHECK_SETTING_STATUS * 1000, async (): Promise<void> => {
-        await routeStore.checkSettingStatus();
-    });
+    useInterval(
+        INTERVAL_CHECK_SETTING_STATUS * 1000,
+        async (): Promise<void> => {
+            await routeStore.checkSettingStatus();
+        },
+    );
 
     if (!setting) {
         return null;

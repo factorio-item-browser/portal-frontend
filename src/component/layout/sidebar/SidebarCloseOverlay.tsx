@@ -4,13 +4,10 @@ import { sidebarStoreContext } from "../../../store/SidebarStore";
 
 import "./SidebarCloseOverlay.scss";
 
-type Props = {
-}
-
 /**
  * The components representing the overlay to easily close the sidebar.
  */
-const SidebarCloseOverlay: FC<Props> = () => {
+const SidebarCloseOverlay: FC = () => {
     const sidebarStore = useContext(sidebarStoreContext);
     const handleClick = useCallback((): void => {
         sidebarStore.closeSidebar();

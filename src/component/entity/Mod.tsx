@@ -10,7 +10,7 @@ import ExternalLink from "../link/ExternalLink";
 import "./Mod.scss";
 
 type Props = {
-    mod: ModData,
+    mod: ModData;
 };
 
 function buildExternalModLink(mod: ModData): string {

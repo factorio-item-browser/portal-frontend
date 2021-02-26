@@ -5,10 +5,10 @@ import Icon from "../icon/Icon";
 import "./DetailsHead.scss";
 
 type Props = {
-    type: string,
-    name: string,
-    title: string,
-    children?: ReactNode,
+    type: string;
+    name: string;
+    title: string;
+    children?: ReactNode;
 };
 
 /**

@@ -6,7 +6,7 @@ import { formatCraftingSpeed, formatMachineSlots } from "../../util/format";
 import Icon from "../icon/Icon";
 
 type Props = {
-    machine: MachineData,
+    machine: MachineData;
 };
 
 /**

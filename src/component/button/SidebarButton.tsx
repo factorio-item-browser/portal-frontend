@@ -9,13 +9,13 @@ import "./Button.scss";
 import "./SidebarButton.scss";
 
 type Props = {
-    label: string,
-    route: string,
-    params?: { [key: string]: any },
-    icon: IconProp,
-    primary?: boolean,
-    secondary?: boolean,
-    highlighted?: boolean,
+    label: string;
+    route: string;
+    params?: { [key: string]: any };
+    icon: IconProp;
+    primary?: boolean;
+    secondary?: boolean;
+    highlighted?: boolean;
 };
 
 /**

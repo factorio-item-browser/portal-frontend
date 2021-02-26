@@ -10,13 +10,10 @@ import Link from "../../link/Link";
 
 import "./SettingsLink.scss";
 
-type Props = {
-}
-
 /**
  * The component representing the link to the settings in the big header.
  */
-const SettingsLink: FC<Props> = () => {
+const SettingsLink: FC = () => {
     const routeStore = useContext(routeStoreContext);
     const { t } = useTranslation();
 

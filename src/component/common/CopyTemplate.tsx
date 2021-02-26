@@ -5,9 +5,9 @@ import { useSelectClick } from "../../util/hooks";
 import "./CopyTemplate.scss";
 
 type Props = {
-    label: string,
-    template: string,
-    description: string,
+    label: string;
+    template: string;
+    description: string;
 };
 
 /**

@@ -10,7 +10,7 @@ import EntityList from "../../entity/EntityList";
 import MachineEntity from "../../entity/MachineEntity";
 
 type Props = {
-    paginatedList: PaginatedList<MachineData, RecipeMachinesData> | null,
+    paginatedList: PaginatedList<MachineData, RecipeMachinesData> | null;
 };
 
 /**

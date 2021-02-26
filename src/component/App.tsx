@@ -41,13 +41,10 @@ const PAGE_BY_ROUTES: { [key: string]: ReactNode } = {
     [ROUTE_SETTINGS_NEW]: <SettingsNewPage />,
 };
 
-type Props = {
-}
-
 /**
  * The component representing the whole application.
  */
-const App: FC<Props> = () => {
+const App: FC = () => {
     const routeStore = useContext<RouteStore>(routeStoreContext);
 
     useEffect(() => {

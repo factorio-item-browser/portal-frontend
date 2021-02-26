@@ -4,15 +4,15 @@ import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 import { BREAKPOINT_MEDIUM } from "../../../const/breakpoint";
+import { RecipeData } from "../../../type/transfer";
 import RecipeItemList from "./RecipeItemList";
 import RecipeItemSeparator from "./RecipeItemSeparator";
-import { RecipeData } from "../../../type/transfer";
 
 import "./RecipeDetails.scss";
 
 type Props = {
-    recipe?: RecipeData,
-}
+    recipe?: RecipeData;
+};
 
 /**
  * The component representing the recipe details.

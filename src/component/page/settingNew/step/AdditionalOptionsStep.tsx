@@ -10,13 +10,10 @@ import OptionRecipeMode from "../../setting/option/OptionRecipeMode";
 import OptionSettingName from "../../setting/option/OptionSettingName";
 import OptionsList from "../../setting/option/OptionsList";
 
-type Props = {
-}
-
 /**
  * The component representing the step for setting additional options.
  */
-const AdditionalOptionsStep: FC<Props> = () => {
+const AdditionalOptionsStep: FC = () => {
     const { t } = useTranslation();
     const settingsNewStore = useContext(settingsNewStoreContext);
 

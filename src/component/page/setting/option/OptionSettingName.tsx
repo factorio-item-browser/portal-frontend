@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 import InputOption from "./InputOption";
 
 type Props = {
-    value: string,
-    onChange: (value: string) => void,
+    value: string;
+    onChange: (value: string) => void;
 };
 
 /**

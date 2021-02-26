@@ -9,9 +9,9 @@ import EntityLink from "../link/EntityLink";
 import "./CompactRecipeIcon.scss";
 
 type Props = {
-    type: string,
-    name: string,
-    amount: number,
+    type: string;
+    name: string;
+    amount: number;
 };
 
 /**

@@ -15,8 +15,8 @@ export class SidebarStore {
     private readonly tooltipStore: TooltipStore;
 
     public entities = new Map<string, SidebarEntityData>();
-    public highlightedEntityId: string = "";
-    public isSidebarOpened: boolean = false;
+    public highlightedEntityId = "";
+    public isSidebarOpened = false;
 
     constructor(
         portalApi: PortalApi,
@@ -135,7 +135,7 @@ export class SidebarStore {
         this.sendEntities();
     }
 
-    public addViewedEntity(type: SidebarEntityType, name: string, label: string) {
+    public addViewedEntity(type: SidebarEntityType, name: string, label: string): void {
         const id = `${type}-${name}`;
         const entity = this.entities.get(id);
         if (entity) {

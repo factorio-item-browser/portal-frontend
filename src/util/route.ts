@@ -7,8 +7,8 @@ const MAP_ENTITY_TYPE_TO_ROUTE: { [key: string]: string } = {
 };
 
 type RouteAndParams = {
-    route: string,
-    params: { [key: string]: any },
+    route: string;
+    params: { [key: string]: unknown };
 };
 
 /**

@@ -13,8 +13,8 @@ import LinkedButton from "../button/LinkedButton";
 import Status from "./Status";
 
 type Props = {
-    setting: SettingMetaData,
-    lastUsedSetting: SettingMetaData,
+    setting: SettingMetaData;
+    lastUsedSetting: SettingMetaData;
 };
 
 const TemporarySettingStatus: FC<Props> = ({ setting, lastUsedSetting }) => {
@@ -42,12 +42,7 @@ const TemporarySettingStatus: FC<Props> = ({ setting, lastUsedSetting }) => {
                     onClick={handleRevertClick}
                     secondary
                 />
-                <LinkedButton
-                    route={ROUTE_SETTINGS}
-                    label={t("temporary-setting.button-add")}
-                    icon={faPlus}
-                    primary
-                />
+                <LinkedButton route={ROUTE_SETTINGS} label={t("temporary-setting.button-add")} icon={faPlus} primary />
             </ButtonGroup>
         </Status>
     );

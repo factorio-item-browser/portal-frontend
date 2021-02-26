@@ -10,7 +10,7 @@ class SaveGameBuffer {
         this.buffer = new ByteBuffer(data, ByteBuffer.LITTLE_ENDIAN);
     }
 
-    public readShort(compressed: boolean = true): number {
+    public readShort(compressed = true): number {
         if (compressed) {
             const byte = this.buffer.readUnsignedByte();
             return byte !== 255 ? byte : this.buffer.readUnsignedShort();
@@ -18,7 +18,7 @@ class SaveGameBuffer {
         return this.buffer.readUnsignedShort();
     }
 
-    public readInteger(compressed: boolean = true): number {
+    public readInteger(compressed = true): number {
         if (compressed) {
             const byte = this.buffer.readUnsignedByte();
             return byte !== 255 ? byte : this.buffer.readUnsignedInt();
@@ -26,7 +26,7 @@ class SaveGameBuffer {
         return this.buffer.readUnsignedInt();
     }
 
-    public readVersion(compressed: boolean = true): Version {
+    public readVersion(compressed = true): Version {
         return new Version(this.readShort(compressed), this.readShort(compressed), this.readShort(compressed));
     }
 
@@ -50,11 +50,7 @@ export class Version {
     public minor: number;
     public patch: number;
 
-    public constructor(
-        major: number,
-        minor: number,
-        patch: number,
-    ) {
+    public constructor(major: number, minor: number, patch: number) {
         this.major = major;
         this.minor = minor;
         this.patch = patch;

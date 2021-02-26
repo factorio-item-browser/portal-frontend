@@ -6,13 +6,10 @@ import { useDocumentTitle } from "../../util/hooks";
 import Section from "../common/Section";
 import ItemList from "./itemList/ItemList";
 
-type Props = {
-}
-
 /**
  * The component representing the page with the full item list.
  */
-const ItemListPage: FC<Props> = () => {
+const ItemListPage: FC = () => {
     const itemListStore = useContext(itemListStoreContext);
     const { t } = useTranslation();
     useDocumentTitle(t("item-list.title"));

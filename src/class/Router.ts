@@ -57,7 +57,7 @@ export class Router {
 
     public start(combinationId: CombinationId): void {
         this.combinationId = combinationId;
-        this.router.start((err?: any, state?: State): void => {
+        this.router.start((err?: unknown, state?: State): void => {
             if (state && state.name.endsWith(SHORT_ROUTE_SUFFIX)) {
                 this.navigateTo(this.unifyRouteName(state.name), state.params);
             }

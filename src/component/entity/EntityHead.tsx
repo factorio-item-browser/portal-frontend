@@ -6,9 +6,9 @@ import EntityLink from "../link/EntityLink";
 import "./EntityHead.scss";
 
 type Props = {
-    type: string,
-    name: string,
-    label: string,
+    type: string;
+    name: string;
+    label: string;
 };
 
 /**

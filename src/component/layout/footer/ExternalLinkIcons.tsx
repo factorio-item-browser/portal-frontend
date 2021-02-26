@@ -7,13 +7,10 @@ import ExternalLink from "../../link/ExternalLink";
 
 import "./ExternalLinkIcons.scss";
 
-type Props = {
-}
-
 /**
  * The component representing the icons to external pages in the footer.
  */
-const ExternalLinkIcons: FC<Props> = () => {
+const ExternalLinkIcons: FC = () => {
     const { t } = useTranslation();
     const [currentLabel, setCurrentLabel] = useState<string>("");
 
@@ -30,7 +27,7 @@ const ExternalLinkIcons: FC<Props> = () => {
         links.push(
             <ExternalLink key={name} url={url} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <FontAwesomeIcon icon={icon} />
-            </ExternalLink>
+            </ExternalLink>,
         );
     }
 

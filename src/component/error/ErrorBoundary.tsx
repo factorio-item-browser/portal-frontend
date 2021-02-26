@@ -3,11 +3,11 @@ import { ERROR_CLIENT_FAILURE } from "../../const/error";
 import FatalError from "./FatalError";
 
 type Props = {
-    children: ReactNode,
+    children: ReactNode;
 };
 
 type State = {
-    error: Error | null,
+    error: Error | null;
 };
 
 /**

@@ -9,7 +9,7 @@ import EntityLink from "../../link/EntityLink";
 import "./RecipeItem.scss";
 
 type Props = {
-    item: RecipeItemData,
+    item: RecipeItemData;
 };
 
 /**

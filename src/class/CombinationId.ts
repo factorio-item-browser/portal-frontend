@@ -17,7 +17,7 @@ export class CombinationId {
      */
     public static fromFull(full: string): CombinationId {
         const binary = CombinationId.base16.decode(full.replace(/-/g, "").replace(/^0+/, "").substr(-32));
-        const short = CombinationId.base62.encode(binary)
+        const short = CombinationId.base62.encode(binary);
 
         return new CombinationId(full, short);
     }

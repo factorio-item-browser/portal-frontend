@@ -6,9 +6,9 @@ import React, { createRef, FC, ReactNode, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { sidebarStoreContext } from "../../../store/SidebarStore";
 import { tooltipStoreContext } from "../../../store/TooltipStore";
+import { SidebarEntityData } from "../../../type/transfer";
 import Icon from "../../icon/Icon";
 import EntityLink from "../../link/EntityLink";
-import { SidebarEntityData } from "../../../type/transfer";
 
 import "./SidebarEntity.scss";
 
@@ -53,7 +53,7 @@ function renderUnpinAction(entity: SidebarEntityData): ReactNode {
 }
 
 type Props = {
-    entity: SidebarEntityData,
+    entity: SidebarEntityData;
 };
 
 /**

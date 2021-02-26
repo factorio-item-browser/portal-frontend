@@ -10,13 +10,10 @@ import DetailsHead from "../common/DetailsHead";
 import ErrorBox from "../error/ErrorBox";
 import ItemRecipesList from "./item/ItemRecipesList";
 
-type Props = {
-}
-
 /**
  * The component representing the item and fluid details page.
  */
-const ItemDetailsPage: FC<Props> = () => {
+const ItemDetailsPage: FC = () => {
     const itemStore = useContext(itemStoreContext);
     const { t } = useTranslation();
     const item = itemStore.currentItem;

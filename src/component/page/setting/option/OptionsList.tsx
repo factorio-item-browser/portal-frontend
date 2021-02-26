@@ -4,7 +4,7 @@ import React, { FC, ReactNode } from "react";
 import "./OptionsList.scss";
 
 type Props = {
-    children: ReactNode,
+    children: ReactNode;
 };
 
 /**

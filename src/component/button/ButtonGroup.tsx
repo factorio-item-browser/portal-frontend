@@ -5,9 +5,9 @@ import React, { FC, ReactNode } from "react";
 import "./ButtonGroup.scss";
 
 type Props = {
-    children: ReactNode,
-    right?: boolean,
-    spacing?: boolean,
+    children: ReactNode;
+    right?: boolean;
+    spacing?: boolean;
 };
 
 /**

@@ -4,10 +4,10 @@ import { getRouteAndParamsForEntity } from "../../util/route";
 import Link from "./Link";
 
 type Props = {
-    type: string,
-    name: string,
-    children?: ReactNode,
-    [key: string]: any,
+    type: string;
+    name: string;
+    children?: ReactNode;
+    [key: string]: any;
 };
 
 /**

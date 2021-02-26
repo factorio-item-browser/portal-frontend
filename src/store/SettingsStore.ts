@@ -31,27 +31,27 @@ export class SettingsStore {
     private readonly routeStore: RouteStore;
     private readonly storageManager: StorageManager;
 
-    private currentSettingId: string = "";
+    private currentSettingId = "";
     private allSettingDetails = new Map<string, SettingDetailsData>();
 
     public availableSettings: SettingMetaData[] = [];
-    public selectedSettingId: string = "";
+    public selectedSettingId = "";
     public selectedOptions: SettingOptionsData = {
         name: "",
         locale: "en",
         recipeMode: RECIPE_MODE_HYBRID,
     };
-    public isLoadingSettingDetails: boolean = false;
-    public isChangingToSetting: boolean = false;
-    public isSavingChanges: boolean = false;
-    public isDeletingSetting: boolean = false;
+    public isLoadingSettingDetails = false;
+    public isChangingToSetting = false;
+    public isSavingChanges = false;
+    public isDeletingSetting = false;
 
     constructor(
         iconManager: IconManager,
         portalApi: PortalApi,
         router: Router,
         routeStore: RouteStore,
-        storageManager: StorageManager
+        storageManager: StorageManager,
     ) {
         this.iconManager = iconManager;
         this.portalApi = portalApi;
@@ -174,7 +174,7 @@ export class SettingsStore {
         });
     }
 
-    public changeSelectedOptions(options: Partial<SettingOptionsData>) {
+    public changeSelectedOptions(options: Partial<SettingOptionsData>): void {
         this.selectedOptions = {
             ...this.selectedOptions,
             ...options,
@@ -210,7 +210,7 @@ export class SettingsStore {
             runInAction(() => {
                 this.isDeletingSetting = false;
                 this.availableSettings = this.availableSettings.filter(
-                    (setting) => setting.combinationId !== this.selectedSettingId
+                    (setting) => setting.combinationId !== this.selectedSettingId,
                 );
                 this.allSettingDetails.delete(this.selectedSettingId);
 

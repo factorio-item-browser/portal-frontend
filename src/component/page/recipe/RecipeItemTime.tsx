@@ -7,8 +7,8 @@ import { formatCraftingTime } from "../../../util/format";
 import "./RecipeItem.scss";
 
 type Props = {
-    craftingTime: number,
-}
+    craftingTime: number;
+};
 
 /**
  * The component representing the crafting time as a recipe item.

@@ -33,12 +33,12 @@ export class RouteStore {
     /**
      * The current route which is displayed.
      */
-    public currentRoute: string = "";
+    public currentRoute = "";
 
     /**
      * The fatal error which occurred.
      */
-    public fatalError: string = "";
+    public fatalError = "";
 
     /**
      * The target which currently have the loading circle.
@@ -68,13 +68,9 @@ export class RouteStore {
     /**
      * The locale to use for the page.
      */
-    public locale: string = "en";
+    public locale = "en";
 
-    public constructor(
-        portalApi: PortalApi,
-        router: Router,
-        storageManager: StorageManager,
-    ) {
+    public constructor(portalApi: PortalApi, router: Router, storageManager: StorageManager) {
         this.portalApi = portalApi;
         this.router = router;
         this.storageManager = storageManager;

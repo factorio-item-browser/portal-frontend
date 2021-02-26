@@ -3,13 +3,13 @@ import React, { ChangeEvent, FC, useCallback } from "react";
 import Option from "./Option";
 
 type Props = {
-    label: string,
-    description?: string,
-    placeholder?: string,
-    value: string,
-    fullWidth?: boolean,
-    error?: boolean,
-    onChange: (value: string) => void,
+    label: string;
+    description?: string;
+    placeholder?: string;
+    value: string;
+    fullWidth?: boolean;
+    error?: boolean;
+    onChange: (value: string) => void;
 };
 
 /**
@@ -20,7 +20,7 @@ const InputOption: FC<Props> = ({ label, description, placeholder, value, fullWi
         (event: ChangeEvent<HTMLInputElement>) => {
             onChange(event.target.value);
         },
-        [onChange]
+        [onChange],
     );
 
     return (

@@ -21,7 +21,7 @@ const STATUS_MAP: { [key: string]: string } = {
 };
 
 type Props = {
-    settingStatus?: SettingStatusData,
+    settingStatus?: SettingStatusData;
 };
 
 /**

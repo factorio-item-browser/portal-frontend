@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import ErrorBox from "./ErrorBox";
 
 type Props = {
-    type: string,
+    type: string;
 };
 
 /**

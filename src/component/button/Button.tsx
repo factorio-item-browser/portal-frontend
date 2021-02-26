@@ -8,12 +8,12 @@ import React, { FC } from "react";
 import "./Button.scss";
 
 type Props = {
-    label: string,
-    icon?: IconProp,
-    primary?: boolean,
-    secondary?: boolean,
-    spacing?: boolean,
-    onClick?: () => void | Promise<void>,
+    label: string;
+    icon?: IconProp;
+    primary?: boolean;
+    secondary?: boolean;
+    spacing?: boolean;
+    onClick?: () => void | Promise<void>;
 };
 
 /**

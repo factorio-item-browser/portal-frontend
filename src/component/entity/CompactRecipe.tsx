@@ -22,7 +22,7 @@ function mapItem(item: RecipeItemData, index: number): ReactNode {
 }
 
 type Props = {
-    recipe: RecipeData,
+    recipe: RecipeData;
 };
 
 /**

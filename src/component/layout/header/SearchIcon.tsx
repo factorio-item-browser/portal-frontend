@@ -6,13 +6,10 @@ import { searchStoreContext } from "../../../store/SearchStore";
 
 import "./HeaderIcon.scss";
 
-type Props = {
-}
-
 /**
  * The component representing the icon for opening the search bar on mobile devices.
  */
-const SearchIcon: FC<Props> = () => {
+const SearchIcon: FC = () => {
     const searchStore = useContext(searchStoreContext);
     const handleClick = useCallback((): void => {
         searchStore.openSearch();

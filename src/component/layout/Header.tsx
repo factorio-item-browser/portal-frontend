@@ -12,13 +12,10 @@ import SidebarIcon from "./header/SidebarIcon";
 
 import "./Header.scss";
 
-type Props = {
-}
-
 /**
  * The component representing the header of the page.
  */
-const Header: FC<Props> = () => {
+const Header: FC = () => {
     const routeStore = useContext(routeStoreContext);
     const searchStore = useContext(searchStoreContext);
     const isLarge = useMediaQuery({ minWidth: BREAKPOINT_LARGE });

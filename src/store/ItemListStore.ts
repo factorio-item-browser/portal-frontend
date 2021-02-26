@@ -13,11 +13,7 @@ export class ItemListStore {
 
     public paginatedItemList: PaginatedList<ItemMetaData, ItemListData>;
 
-    public constructor(
-        portalApi: PortalApi,
-        router: Router,
-        routeStore: RouteStore,
-    ) {
+    public constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore) {
         this.portalApi = portalApi;
         this.routeStore = routeStore;
 
@@ -27,7 +23,7 @@ export class ItemListStore {
 
         this.paginatedItemList = new PaginatedList(
             (page) => this.portalApi.getItemList(page),
-            this.handlePortalApiError.bind(this)
+            this.handlePortalApiError.bind(this),
         );
 
         router.addRoute(ROUTE_ITEM_LIST, "/items", this.handleRouteChange.bind(this));

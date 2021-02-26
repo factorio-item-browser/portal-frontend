@@ -10,13 +10,10 @@ import EntityList from "../entity/EntityList";
 
 import "./IndexPage.scss";
 
-type Props = {
-}
-
 /**
  * The component representing the index page.
  */
-const IndexPage: FC<Props> = () => {
+const IndexPage: FC = () => {
     const indexStore = useContext(indexStoreContext);
     const { t } = useTranslation();
 

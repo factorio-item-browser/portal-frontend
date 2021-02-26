@@ -8,13 +8,10 @@ import Section from "../common/Section";
 import Entity from "../entity/Entity";
 import EntityList from "../entity/EntityList";
 
-type Props = {
-}
-
 /**
  * The component representing the page listing search results.
  */
-const SearchResultsPage: FC<Props> = () => {
+const SearchResultsPage: FC = () => {
     const { t } = useTranslation();
     const searchStore = useContext(searchStoreContext);
 

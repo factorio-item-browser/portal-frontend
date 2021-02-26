@@ -22,7 +22,7 @@ const ICON_CLASSES: { [key: string]: string } = {
 };
 
 type Props = {
-    type: string,
+    type: string;
 };
 
 /**

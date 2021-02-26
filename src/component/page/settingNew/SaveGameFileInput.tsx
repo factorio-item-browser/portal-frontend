@@ -7,13 +7,10 @@ import { settingsNewStoreContext } from "../../../store/SettingsNewStore";
 
 import "./SaveGameFileInput.scss";
 
-type Props = {
-}
-
 /**
  * The component representing the big fat button to select a savegame file..
  */
-const SaveGameFileInput: FC<Props> = () => {
+const SaveGameFileInput: FC = () => {
     const { t } = useTranslation();
     const settingsNewStore = useContext(settingsNewStoreContext);
     const inputId = "savegame-file-input";

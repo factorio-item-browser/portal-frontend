@@ -8,13 +8,10 @@ import "./Footer.scss";
 
 const year = new Date().getFullYear();
 
-type Props = {
-}
-
 /**
  * The component representing the footer of the page.
  */
-const Footer: FC<Props> = () => {
+const Footer: FC = () => {
     return (
         <footer>
             <div className="copyright">

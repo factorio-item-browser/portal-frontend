@@ -3,10 +3,10 @@ import React, { createRef, FC, ReactNode, useCallback, useContext } from "react"
 import { routeStoreContext } from "../../store/RouteStore";
 
 type Props = {
-    route: string,
-    params?: { [key: string]: any },
-    children?: ReactNode,
-    [key: string]: any,
+    route: string;
+    params?: { [key: string]: any };
+    children?: ReactNode;
+    [key: string]: any;
 };
 
 /**
@@ -28,7 +28,7 @@ const Link: FC<Props> = ({ route, params, children, ...props }, ref) => {
             }
             return false;
         },
-        [route, params, ref]
+        [route, params, ref],
     );
 
     return (

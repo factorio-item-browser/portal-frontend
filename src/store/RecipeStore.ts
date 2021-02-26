@@ -27,12 +27,7 @@ export class RecipeStore {
     public currentRecipeDetails: RecipeDetailsData = emptyRecipeDetails;
     public paginatedMachinesList: PaginatedList<MachineData, RecipeMachinesData> | null = null;
 
-    public constructor(
-        portalApi: PortalApi,
-        router: Router,
-        routeStore: RouteStore,
-        sidebarStore: SidebarStore,
-    ) {
+    public constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore, sidebarStore: SidebarStore) {
         this.portalApi = portalApi;
         this.routeStore = routeStore;
         this.sidebarStore = sidebarStore;
@@ -52,7 +47,7 @@ export class RecipeStore {
 
         const newMachinesList = new PaginatedList<MachineData, RecipeMachinesData>(
             (page) => this.portalApi.getRecipeMachines(name, page),
-            (error) => this.handlePortalApiError(error)
+            (error) => this.handlePortalApiError(error),
         );
 
         try {

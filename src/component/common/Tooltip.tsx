@@ -12,10 +12,10 @@ import "./Tooltip.scss";
 const MARGIN_CHEVRON = 8;
 
 type Position = {
-    top: number,
-    left: number,
-    isChevronAbove: boolean,
-    isChevronRight: boolean,
+    top: number;
+    left: number;
+    isChevronAbove: boolean;
+    isChevronRight: boolean;
 };
 
 function calculatePosition(target: Element, content: Element, chevron: Element): Position {

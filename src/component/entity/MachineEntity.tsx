@@ -10,7 +10,7 @@ import EntityLink from "../link/EntityLink";
 import "./MachineEntity.scss";
 
 type Props = {
-    machine: MachineData,
+    machine: MachineData;
 };
 
 /**

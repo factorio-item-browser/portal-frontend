@@ -7,13 +7,10 @@ import Section from "../../../common/Section";
 import Status from "../../../status/Status";
 import SaveGameFileInput from "../SaveGameFileInput";
 
-type Props = {
-}
-
 /**
  * The step for selecting the save game to read the mod list from.
  */
-const SaveGameStep: FC<Props> = () => {
+const SaveGameStep: FC = () => {
     const { t } = useTranslation();
     const settingsNewStore = useContext(settingsNewStoreContext);
 

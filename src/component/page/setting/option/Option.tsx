@@ -8,12 +8,12 @@ import React, { FC, ReactNode } from "react";
 import "./Option.scss";
 
 type Props = {
-    label: string,
-    description?: string,
-    children: ReactNode,
-    fullWidth?: boolean,
-    error?: boolean,
-    icon?: IconProp,
+    label: string;
+    description?: string;
+    children: ReactNode;
+    fullWidth?: boolean;
+    error?: boolean;
+    icon?: IconProp;
 };
 
 /**

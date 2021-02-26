@@ -9,7 +9,7 @@ import Status from "./Status";
 import "./ModListSettingStatus.scss";
 
 type Props = {
-    setting: SettingDetailsData,
+    setting: SettingDetailsData;
 };
 
 /**

@@ -81,7 +81,7 @@ export class StorageManager {
     private readonly storage: Storage;
 
     public combinationId: CombinationId | null = null;
-    public sidebarEntitiesChangeHandler: SidebarEntitiesChangeHandler = () => {};
+    public sidebarEntitiesChangeHandler: SidebarEntitiesChangeHandler | null = null;
 
     private cleanups: (() => void)[] = [
         (): void => CacheUtils.clean(this.storage),
@@ -105,7 +105,7 @@ export class StorageManager {
 
     private handleStorageEvent(event: StorageEvent): void {
         const sidebarKey = this.buildStorageKey(KEY_SIDEBAR_ENTITIES);
-        if (sidebarKey && event.key === sidebarKey) {
+        if (sidebarKey && event.key === sidebarKey && this.sidebarEntitiesChangeHandler) {
             this.sidebarEntitiesChangeHandler(SidebarEntitiesUtils.deserialize(event.newValue || ""));
         }
     }

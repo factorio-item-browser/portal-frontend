@@ -19,13 +19,10 @@ import OptionSettingId from "./setting/option/OptionSettingId";
 import OptionSettingName from "./setting/option/OptionSettingName";
 import OptionsList from "./setting/option/OptionsList";
 
-type Props = {
-}
-
 /**
  * The component representing the settings page.
  */
-const SettingsPage: FC<Props> = () => {
+const SettingsPage: FC = () => {
     const settingsStore = useContext(settingsStoreContext);
     const { t } = useTranslation();
     const selectedSettingDetails = settingsStore.selectedSettingDetails;
@@ -132,7 +129,7 @@ const SettingsPage: FC<Props> = () => {
                             areOptionsChanged ? "settings.saving-and-changing" : "settings.saving-options",
                             {
                                 name: selectedSettingDetails.name,
-                            }
+                            },
                         )}
                         icon={faSave}
                         isVisible={settingsStore.isSaveButtonVisible}

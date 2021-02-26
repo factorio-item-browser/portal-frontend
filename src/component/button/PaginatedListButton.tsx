@@ -7,31 +7,35 @@ import { useScrollEffect } from "../../util/hooks";
 import ActionButton from "./ActionButton";
 
 type Props<TEntity, TData extends ResultsData<TEntity>> = {
-    paginatedList: PaginatedList<TEntity, TData>,
-    localePrefix: string,
-    loadOnScroll?: boolean,
+    paginatedList: PaginatedList<TEntity, TData>;
+    localePrefix: string;
+    loadOnScroll?: boolean;
 };
 
 /**
  * The button loading more pages for a paginated list.
  */
-const PaginatedListButton = <TEntity, TData extends ResultsData<TEntity>>(
-    { paginatedList, localePrefix, loadOnScroll }: Props<TEntity, TData>,
-) => {
+const PaginatedListButton = <TEntity, TData extends ResultsData<TEntity>>({
+    paginatedList,
+    localePrefix,
+    loadOnScroll,
+}: Props<TEntity, TData>) => {
     const { t } = useTranslation();
     const ref = createRef<HTMLElement>();
 
     if (loadOnScroll) {
-        useScrollEffect(async (): Promise<void> => {
-            if (
-                ref.current &&
-                paginatedList.hasNextPage &&
-                !paginatedList.isLoading &&
-                window.scrollY + window.innerHeight > ref.current.offsetTop - window.innerHeight * 0.1
-            ) {
-                await paginatedList.requestNextPage();
-            }
-        });
+        useScrollEffect(
+            async (): Promise<void> => {
+                if (
+                    ref.current &&
+                    paginatedList.hasNextPage &&
+                    !paginatedList.isLoading &&
+                    window.scrollY + window.innerHeight > ref.current.offsetTop - window.innerHeight * 0.1
+                ) {
+                    await paginatedList.requestNextPage();
+                }
+            },
+        );
     }
 
     const handleClick = useCallback(async (): Promise<void> => {

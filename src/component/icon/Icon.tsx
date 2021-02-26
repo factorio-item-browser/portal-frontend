@@ -6,8 +6,8 @@ import { useIcon } from "../../util/hooks";
 import "./Icon.scss";
 
 type Props = {
-    type: string,
-    name: string,
+    type: string;
+    name: string;
 };
 
 /**

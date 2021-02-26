@@ -24,13 +24,10 @@ const STATUS_MAP: { [key: string]: string } = {
     [SETTING_STATUS_UNKNOWN]: STATUS_WARNING,
 };
 
-type Props = {
-};
-
 /**
  * The component representing the step for checking the data availability.
  */
-const DataAvailabilityStep: FC<Props> = () => {
+const DataAvailabilityStep: FC = () => {
     const { t } = useTranslation();
     const settingsNewStore = useContext(settingsNewStoreContext);
 

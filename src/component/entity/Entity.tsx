@@ -10,7 +10,7 @@ import EntityHead from "./EntityHead";
 import "./Entity.scss";
 
 type Props = {
-    entity: EntityData,
+    entity: EntityData;
 };
 
 /**

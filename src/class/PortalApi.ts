@@ -34,7 +34,7 @@ type Parameters = { [key: string]: any } | [];
 export class PortalApi {
     private readonly storageManager: StorageManager;
 
-    constructor(storageManager: StorageManager) {
+    public constructor(storageManager: StorageManager) {
         this.storageManager = storageManager;
     }
 
@@ -79,7 +79,7 @@ export class PortalApi {
             {
                 indexOfFirstResult: (page - 1) * NUMBER_OF_ITEM_RECIPES_PER_PAGE,
                 numberOfResults: NUMBER_OF_ITEM_RECIPES_PER_PAGE,
-            }
+            },
         );
     }
 
@@ -96,7 +96,7 @@ export class PortalApi {
             {
                 indexOfFirstResult: (page - 1) * NUMBER_OF_ITEM_RECIPES_PER_PAGE,
                 numberOfResults: NUMBER_OF_ITEM_RECIPES_PER_PAGE,
-            }
+            },
         );
     }
 
@@ -140,7 +140,7 @@ export class PortalApi {
             {
                 indexOfFirstResult: (page - 1) * NUMBER_OF_MACHINES_PER_PAGE,
                 numberOfResults: NUMBER_OF_MACHINES_PER_PAGE,
-            }
+            },
         );
     }
 
@@ -204,7 +204,7 @@ export class PortalApi {
             "tooltip",
             `${type}-${name}`,
             "GET",
-            `/tooltip/${encodeURI(type)}/${encodeURI(name)}`
+            `/tooltip/${encodeURI(type)}/${encodeURI(name)}`,
         );
     }
 
@@ -221,7 +221,7 @@ export class PortalApi {
         cacheKey: string,
         method: string,
         route: string,
-        parameters?: Parameters
+        parameters?: Parameters,
     ): Promise<T> {
         const cachedData = this.storageManager.readFromCache<T>(namespace, cacheKey);
         if (cachedData) {

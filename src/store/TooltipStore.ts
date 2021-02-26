@@ -23,10 +23,7 @@ export class TooltipStore {
      */
     public fetchedData: EntityData | null = null;
 
-    constructor(
-        portalApi: PortalApi,
-        router: Router,
-    ) {
+    constructor(portalApi: PortalApi, router: Router) {
         this.portalApi = portalApi;
 
         makeObservable(this, {

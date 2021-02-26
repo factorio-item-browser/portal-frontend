@@ -15,13 +15,10 @@ import AdditionalOptionsStep from "./settingNew/step/AdditionalOptionsStep";
 import DataAvailabilityStep from "./settingNew/step/DataAvailabilityStep";
 import SaveGameStep from "./settingNew/step/SaveGameStep";
 
-type Props = {
-}
-
 /**
  * The component representing the page for creating a new setting.
  */
-const SettingsNewPage: FC<Props> = () => {
+const SettingsNewPage: FC = () => {
     const { t } = useTranslation();
     const settingsNewStore = useContext(settingsNewStoreContext);
     const settingsStore = useContext(settingsStoreContext);

@@ -16,9 +16,9 @@ export const INTERVAL_CHECK_SETTING_STATUS: number = parseInt(process.env.INTERV
 export const PORTAL_API_URL: string = process.env.PORTAL_API_URI || "";
 
 export const FOOTER_ICONS: {
-    name: string,
-    url: string,
-    icon: IconProp,
+    name: string;
+    url: string;
+    icon: IconProp;
 }[] = [
     {
         name: "discord",

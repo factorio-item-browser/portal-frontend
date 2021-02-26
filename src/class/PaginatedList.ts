@@ -1,5 +1,5 @@
-import { ResultsData } from "../type/transfer";
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
+import { ResultsData } from "../type/transfer";
 import { PortalApiError } from "./PortalApi";
 
 type DataFetcher<T> = (page: number) => Promise<T>;
@@ -14,10 +14,7 @@ export class PaginatedList<TEntity, TData extends ResultsData<TEntity>> {
     public currentPage = 0;
     public isLoading = false;
 
-    public constructor(
-        dataFetcher: DataFetcher<TData>,
-        errorHandler: ErrorHandler<TData>,
-    ) {
+    public constructor(dataFetcher: DataFetcher<TData>, errorHandler: ErrorHandler<TData>) {
         this.dataFetcher = dataFetcher;
         this.errorHandler = errorHandler;
 
@@ -40,13 +37,15 @@ export class PaginatedList<TEntity, TData extends ResultsData<TEntity>> {
         try {
             const newPage = this.currentPage + 1;
             const data = await this.dataFetcher(newPage);
-            return runInAction((): TData => {
-                this.isLoading = false;
-                this.currentPage = newPage;
-                this.results.push(...data.results);
-                this.numberOfResults = data.numberOfResults;
-                return data;
-            });
+            return runInAction(
+                (): TData => {
+                    this.isLoading = false;
+                    this.currentPage = newPage;
+                    this.results.push(...data.results);
+                    this.numberOfResults = data.numberOfResults;
+                    return data;
+                },
+            );
         } catch (e) {
             return this.errorHandler(e);
         }

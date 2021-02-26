@@ -1,11 +1,11 @@
-import React, { FC, ReactNode } from "react";
 import { observer } from "mobx-react-lite";
+import React, { FC, ReactNode } from "react";
 
 import "./Section.scss";
 
 type Props = {
-    headline: string,
-    children: ReactNode,
+    headline: string;
+    children: ReactNode;
 };
 
 /**
