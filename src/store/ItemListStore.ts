@@ -4,17 +4,23 @@ import { PaginatedList } from "../class/PaginatedList";
 import { portalApi, PortalApi, PortalApiError } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import { ROUTE_ITEM_LIST } from "../const/route";
-import type { ItemListData, ItemMetaData } from "../type/transfer";
+import { ItemListData, ItemMetaData } from "../type/transfer";
 import { routeStore, RouteStore } from "./RouteStore";
 
 export class ItemListStore {
+    private readonly portalApi: PortalApi;
+    private readonly routeStore: RouteStore;
+
     public paginatedItemList: PaginatedList<ItemMetaData, ItemListData>;
 
     public constructor(
-        private readonly portalApi: PortalApi,
-        private readonly routeStore: RouteStore,
+        portalApi: PortalApi,
         router: Router,
+        routeStore: RouteStore,
     ) {
+        this.portalApi = portalApi;
+        this.routeStore = routeStore;
+
         makeObservable(this, {
             paginatedItemList: observable,
         });
@@ -42,5 +48,5 @@ export class ItemListStore {
     }
 }
 
-export const itemListStore = new ItemListStore(portalApi, routeStore, router);
+export const itemListStore = new ItemListStore(portalApi, router, routeStore);
 export const itemListStoreContext = createContext<ItemListStore>(itemListStore);

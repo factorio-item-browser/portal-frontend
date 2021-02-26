@@ -2,7 +2,7 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
-import type { ItemMetaData } from "../../../type/transfer";
+import { ItemMetaData } from "../../../type/transfer";
 import ItemListIcon from "../../icon/ItemListIcon";
 
 import "./ItemList.scss";

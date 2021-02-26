@@ -6,9 +6,3 @@ import App from "./component/App";
 
 window.onerror = null;
 ReactDOM.render(<App />, document.getElementById("app"));
-
-/* eslint-disable no-undef */
-if (module.hot) {
-    module.hot.accept();
-}
-/* eslint-enable no-undef */

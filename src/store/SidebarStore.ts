@@ -5,22 +5,30 @@ import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import { StorageManager, storageManager } from "../class/StorageManager";
 import { ROUTE_ITEM_DETAILS, ROUTE_RECIPE_DETAILS } from "../const/route";
-import type { InitData, SidebarEntityData, SidebarEntityType } from "../type/transfer";
+import { InitData, SidebarEntityData, SidebarEntityType } from "../type/transfer";
 import { RouteStore, routeStore } from "./RouteStore";
 import { TooltipStore, tooltipStore } from "./TooltipStore";
 
 export class SidebarStore {
+    private readonly portalApi: PortalApi;
+    private readonly storageManager: StorageManager;
+    private readonly tooltipStore: TooltipStore;
+
     public entities = new Map<string, SidebarEntityData>();
     public highlightedEntityId: string = "";
     public isSidebarOpened: boolean = false;
 
     constructor(
-        private readonly portalApi: PortalApi,
-        private readonly storageManager: StorageManager,
-        private readonly tooltipStore: TooltipStore,
+        portalApi: PortalApi,
         router: Router,
         routeStore: RouteStore,
+        storageManager: StorageManager,
+        tooltipStore: TooltipStore,
     ) {
+        this.portalApi = portalApi;
+        this.storageManager = storageManager;
+        this.tooltipStore = tooltipStore;
+
         makeObservable<this, "assignEntities" | "handleGlobalRouteChange" | "validateEntities">(this, {
             addViewedEntity: action,
             assignEntities: action,
@@ -188,5 +196,5 @@ export class SidebarStore {
     }
 }
 
-export const sidebarStore = new SidebarStore(portalApi, storageManager, tooltipStore, router, routeStore);
+export const sidebarStore = new SidebarStore(portalApi, router, routeStore, storageManager, tooltipStore);
 export const sidebarStoreContext = createContext<SidebarStore>(sidebarStore);

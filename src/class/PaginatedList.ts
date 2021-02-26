@@ -6,15 +6,21 @@ type DataFetcher<T> = (page: number) => Promise<T>;
 type ErrorHandler<T> = (error: PortalApiError) => T;
 
 export class PaginatedList<TEntity, TData extends ResultsData<TEntity>> {
+    private readonly dataFetcher: DataFetcher<TData>;
+    private readonly errorHandler: ErrorHandler<TData>;
+
     public results: TEntity[] = [];
     public numberOfResults = 0;
     public currentPage = 0;
     public isLoading = false;
 
     public constructor(
-        private readonly dataFetcher: DataFetcher<TData>,
-        private readonly errorHandler: ErrorHandler<TData>,
+        dataFetcher: DataFetcher<TData>,
+        errorHandler: ErrorHandler<TData>,
     ) {
+        this.dataFetcher = dataFetcher;
+        this.errorHandler = errorHandler;
+
         makeObservable(this, {
             results: observable,
             numberOfResults: observable,

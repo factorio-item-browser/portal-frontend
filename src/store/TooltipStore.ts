@@ -2,9 +2,10 @@ import { action, computed, makeObservable, observable, runInAction } from "mobx"
 import { createContext, RefObject } from "react";
 import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
-import type { EntityData } from "../type/transfer";
+import { EntityData } from "../type/transfer";
 
 export class TooltipStore {
+    private readonly portalApi: PortalApi;
     private disableFlags: Map<string, boolean> = new Map();
 
     /**
@@ -23,9 +24,11 @@ export class TooltipStore {
     public fetchedData: EntityData | null = null;
 
     constructor(
-        private readonly portalApi: PortalApi,
+        portalApi: PortalApi,
         router: Router,
     ) {
+        this.portalApi = portalApi;
+
         makeObservable(this, {
             isEnabled: computed,
             fetchedData: observable,

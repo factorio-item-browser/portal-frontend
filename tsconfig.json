@@ -1,16 +1,22 @@
 {
   "compilerOptions": {
     "target": "esnext",
+    "module": "es6",
     "jsx": "react",
-    "moduleResolution": "node",
+
     "noEmit": true,
+    "sourceMap": true,
+
     "strict": true,
-    "isolatedModules": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "skipLibCheck": true,
+
+    "moduleResolution": "node",
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+
+    "typeRoots": ["node_modules/@types", "type"]
   },
-  "include": [
-    "src",
-    "type"
-  ]
+  "include": ["src"]
 }

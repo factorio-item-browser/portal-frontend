@@ -7,7 +7,7 @@ import { router, Router } from "../class/Router";
 import { storageManager, StorageManager } from "../class/StorageManager";
 import { RECIPE_MODE_HYBRID } from "../const/recipeMode";
 import { ROUTE_SETTINGS } from "../const/route";
-import type { SettingDetailsData, SettingMetaData, SettingOptionsData } from "../type/transfer";
+import { SettingDetailsData, SettingMetaData, SettingOptionsData } from "../type/transfer";
 import { RouteStore, routeStore } from "./RouteStore";
 
 const emptySettingDetails: SettingDetailsData = {
@@ -25,6 +25,12 @@ const emptySettingDetails: SettingDetailsData = {
 };
 
 export class SettingsStore {
+    private readonly iconManager: IconManager;
+    private readonly portalApi: PortalApi;
+    private readonly router: Router;
+    private readonly routeStore: RouteStore;
+    private readonly storageManager: StorageManager;
+
     private currentSettingId: string = "";
     private allSettingDetails = new Map<string, SettingDetailsData>();
 
@@ -41,12 +47,18 @@ export class SettingsStore {
     public isDeletingSetting: boolean = false;
 
     constructor(
-        private readonly iconManager: IconManager,
-        private readonly portalApi: PortalApi,
-        private readonly router: Router,
-        private readonly routeStore: RouteStore,
-        private readonly storageManager: StorageManager
+        iconManager: IconManager,
+        portalApi: PortalApi,
+        router: Router,
+        routeStore: RouteStore,
+        storageManager: StorageManager
     ) {
+        this.iconManager = iconManager;
+        this.portalApi = portalApi;
+        this.router = router;
+        this.routeStore = routeStore;
+        this.storageManager = storageManager;
+
         makeObservable<this, "applySelectedSetting" | "handleRouteChange">(this, {
             applySelectedSetting: action,
             availableSettings: observable,

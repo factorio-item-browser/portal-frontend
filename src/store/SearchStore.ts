@@ -6,7 +6,7 @@ import { PaginatedList } from "../class/PaginatedList";
 import { PortalApi, portalApi, PortalApiError } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import { ROUTE_SEARCH } from "../const/route";
-import type { EntityData, SearchResultsData } from "../type/transfer";
+import { EntityData, SearchResultsData } from "../type/transfer";
 import { RouteStore, routeStore } from "./RouteStore";
 
 const emptySearchResultsData: SearchResultsData = {
@@ -16,6 +16,9 @@ const emptySearchResultsData: SearchResultsData = {
 };
 
 export class SearchStore {
+    private readonly portalApi: PortalApi;
+    private readonly router: Router;
+    private readonly routeStore: RouteStore;
     private readonly debouncedHandleQueryChange: (query: string) => Promise<void>;
 
     /**
@@ -54,10 +57,13 @@ export class SearchStore {
     public paginatedSearchResults: PaginatedList<EntityData, SearchResultsData> | null = null;
 
     public constructor(
-        private readonly portalApi: PortalApi,
-        private readonly router: Router,
-        private readonly routeStore: RouteStore,
+        portalApi: PortalApi,
+        router: Router,
+        routeStore: RouteStore,
     ) {
+        this.portalApi = portalApi;
+        this.router = router;
+        this.routeStore = routeStore;
         this.debouncedHandleQueryChange = debounce(500, this.handleQueryChange.bind(this));
 
         makeObservable<this, "handleGlobalRouteChange" | "handleQueryChange">(this, {

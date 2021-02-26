@@ -5,7 +5,7 @@ import { PaginatedList } from "../class/PaginatedList";
 import { PortalApi, portalApi, PortalApiError } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import { ROUTE_RECIPE_DETAILS } from "../const/route";
-import type { MachineData, RecipeDetailsData, RecipeMachinesData } from "../type/transfer";
+import { MachineData, RecipeDetailsData, RecipeMachinesData } from "../type/transfer";
 import { RouteStore, routeStore } from "./RouteStore";
 import { SidebarStore, sidebarStore } from "./SidebarStore";
 
@@ -20,15 +20,23 @@ const emptyRecipeMachinesData: RecipeMachinesData = {
 };
 
 export class RecipeStore {
+    private readonly portalApi: PortalApi;
+    private readonly routeStore: RouteStore;
+    private readonly sidebarStore: SidebarStore;
+
     public currentRecipeDetails: RecipeDetailsData = emptyRecipeDetails;
     public paginatedMachinesList: PaginatedList<MachineData, RecipeMachinesData> | null = null;
 
     public constructor(
-        private readonly portalApi: PortalApi,
-        private readonly routeStore: RouteStore,
-        private readonly sidebarStore: SidebarStore,
+        portalApi: PortalApi,
         router: Router,
+        routeStore: RouteStore,
+        sidebarStore: SidebarStore,
     ) {
+        this.portalApi = portalApi;
+        this.routeStore = routeStore;
+        this.sidebarStore = sidebarStore;
+
         makeObservable<this, "handlePortalApiError">(this, {
             handlePortalApiError: action,
             currentRecipeDetails: observable,
@@ -78,5 +86,5 @@ export class RecipeStore {
     }
 }
 
-export const recipeStore = new RecipeStore(portalApi, routeStore, sidebarStore, router);
+export const recipeStore = new RecipeStore(portalApi, router, routeStore, sidebarStore);
 export const recipeStoreContext = createContext<RecipeStore>(recipeStore);

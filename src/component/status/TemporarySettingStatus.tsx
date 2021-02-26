@@ -6,7 +6,7 @@ import { CombinationId } from "../../class/CombinationId";
 import { ROUTE_SETTINGS } from "../../const/route";
 import { STATUS_WARNING } from "../../const/status";
 import { routeStoreContext } from "../../store/RouteStore";
-import type { SettingMetaData } from "../../type/transfer";
+import { SettingMetaData } from "../../type/transfer";
 import Button from "../button/Button";
 import ButtonGroup from "../button/ButtonGroup";
 import LinkedButton from "../button/LinkedButton";

@@ -6,7 +6,7 @@ import {
     NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
     PORTAL_API_URL,
 } from "../const/config";
-import type {
+import {
     EntityData,
     IconsStyleData,
     InitData,
@@ -32,9 +32,11 @@ type Parameters = { [key: string]: any } | [];
  * The class functioning as interface to the Portal API server.
  */
 export class PortalApi {
-    constructor(
-        private readonly storageManager: StorageManager,
-    ) {}
+    private readonly storageManager: StorageManager;
+
+    constructor(storageManager: StorageManager) {
+        this.storageManager = storageManager;
+    }
 
     /**
      * Initializes the current session.

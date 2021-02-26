@@ -3,18 +3,24 @@ import { createContext } from "react";
 import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import { ROUTE_INDEX } from "../const/route";
-import type { EntityData } from "../type/transfer";
+import { EntityData } from "../type/transfer";
 import { RouteStore, routeStore } from "./RouteStore";
 
 export class IndexStore {
+    private readonly portalApi: PortalApi;
+    private readonly routeStore: RouteStore;
+
     public randomItems: EntityData[] = [];
     public isRandomizing: boolean = false;
 
     public constructor(
-        private readonly portalApi: PortalApi,
-        private readonly routeStore: RouteStore,
+        portalApi: PortalApi,
         router: Router,
+        routeStore: RouteStore,
     ) {
+        this.portalApi = portalApi;
+        this.routeStore = routeStore;
+
         makeObservable(this, {
             isRandomizing: observable,
             randomItems: observable,
@@ -48,5 +54,5 @@ export class IndexStore {
     }
 }
 
-export const indexStore = new IndexStore(portalApi, routeStore, router);
+export const indexStore = new IndexStore(portalApi, router, routeStore);
 export const indexStoreContext = createContext<IndexStore>(indexStore);

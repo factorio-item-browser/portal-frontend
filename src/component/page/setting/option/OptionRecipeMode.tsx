@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { RECIPE_MODES } from "../../../../const/recipeMode";
 import SelectOption from "./SelectOption";
-import type { Item } from "./SelectOption";
+import { Item } from "./SelectOption";
 
 type Props = {
     value: string,

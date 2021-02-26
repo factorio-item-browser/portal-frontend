@@ -1,5 +1,5 @@
 import { CACHE_LIFETIME } from "../const/config";
-import type { SidebarEntityData } from "../type/transfer";
+import { SidebarEntityData } from "../type/transfer";
 import { CombinationId } from "./CombinationId";
 
 const KEY_SCRIPT_VERSION = "script-version";
@@ -78,6 +78,8 @@ class SidebarEntitiesUtils {
 type SidebarEntitiesChangeHandler = (sidebarEntities: SidebarEntityData[]) => void;
 
 export class StorageManager {
+    private readonly storage: Storage;
+
     public combinationId: CombinationId | null = null;
     public sidebarEntitiesChangeHandler: SidebarEntitiesChangeHandler = () => {};
 
@@ -86,9 +88,9 @@ export class StorageManager {
         (): void => CacheUtils.clear(this.storage, (): boolean => true),
     ];
 
-    public constructor(
-        private readonly storage: Storage,
-    ) {
+    public constructor(storage: Storage) {
+        this.storage = storage;
+
         window.addEventListener("storage", this.handleStorageEvent.bind(this));
         CacheUtils.clean(storage);
     }

@@ -5,7 +5,7 @@ import { PaginatedList } from "../class/PaginatedList";
 import { PortalApi, portalApi, PortalApiError } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import { ROUTE_ITEM_DETAILS } from "../const/route";
-import type { EntityData, ItemRecipesData, ItemType } from "../type/transfer";
+import { EntityData, ItemRecipesData, ItemType } from "../type/transfer";
 import { RouteStore, routeStore } from "./RouteStore";
 import { SidebarStore, sidebarStore } from "./SidebarStore";
 
@@ -33,16 +33,24 @@ const emptyItemRecipesData: ItemRecipesData = {
 
 
 export class ItemStore {
+    private readonly portalApi: PortalApi;
+    private readonly routeStore: RouteStore;
+    private readonly sidebarStore: SidebarStore;
+
     public paginatedProductRecipesList: PaginatedList<EntityData, ItemRecipesData> | null = null;
     public paginatedIngredientRecipesList: PaginatedList<EntityData, ItemRecipesData> | null = null;
     public currentItem: Item = emptyItem;
 
     public constructor(
-        private readonly portalApi: PortalApi,
-        private readonly routeStore: RouteStore,
-        private readonly sidebarStore: SidebarStore,
+        portalApi: PortalApi,
         router: Router,
+        routeStore: RouteStore,
+        sidebarStore: SidebarStore,
     ) {
+        this.portalApi = portalApi;
+        this.routeStore = routeStore;
+        this.sidebarStore = sidebarStore;
+
         makeObservable<this, "handlePortalApiError">(this, {
             handlePortalApiError: action,
             currentItem: observable,
@@ -117,5 +125,5 @@ export class ItemStore {
     }
 }
 
-export const itemStore = new ItemStore(portalApi, routeStore, sidebarStore, router);
+export const itemStore = new ItemStore(portalApi, router, routeStore, sidebarStore);
 export const itemStoreContext = createContext<ItemStore>(itemStore);

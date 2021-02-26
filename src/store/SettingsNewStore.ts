@@ -12,12 +12,16 @@ import {
     SETTING_STATUS_PENDING,
     SETTING_STATUS_UNKNOWN,
 } from "../const/settingStatus";
-import type { SettingOptionsData, SettingStatusData } from "../type/transfer";
+import { SettingOptionsData, SettingStatusData } from "../type/transfer";
 import { RouteStore, routeStore } from "./RouteStore";
 
 const VALID_SETTING_STATUS = [SETTING_STATUS_AVAILABLE, SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN];
 
 class SettingsNewStore {
+    private readonly portalApi: PortalApi;
+    private readonly router: Router;
+    private readonly routeStore: RouteStore;
+
     public isSaveGameProcessing: boolean = false;
     public saveGameModNames: string[] = [];
     public saveGameError: string = "";
@@ -30,10 +34,14 @@ class SettingsNewStore {
     public isSavingNewSetting: boolean = false;
 
     constructor(
-        private readonly portalApi: PortalApi,
-        private readonly router: Router,
-        private readonly routeStore: RouteStore,
+        portalApi: PortalApi,
+        router: Router,
+        routeStore: RouteStore,
     ) {
+        this.portalApi = portalApi;
+        this.router = router;
+        this.routeStore = routeStore;
+
         makeObservable<this, "handleRouteChange" | "requestSettingStatus">(this, {
             changeOptions: action,
             changeToSetting: action,

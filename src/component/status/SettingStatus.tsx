@@ -9,7 +9,7 @@ import {
     SETTING_STATUS_UNKNOWN,
 } from "../../const/settingStatus";
 import { STATUS_ERROR, STATUS_PENDING, STATUS_SUCCESS, STATUS_WARNING } from "../../const/status";
-import type { SettingStatusData } from "../../type/transfer";
+import { SettingStatusData } from "../../type/transfer";
 import Status from "./Status";
 
 const STATUS_MAP: { [key: string]: string } = {

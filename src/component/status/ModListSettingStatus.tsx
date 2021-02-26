@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { SETTING_STATUS_ERRORED, SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN } from "../../const/settingStatus";
 import { STATUS_ERROR, STATUS_WARNING } from "../../const/status";
-import type { SettingDetailsData } from "../../type/transfer";
+import { SettingDetailsData } from "../../type/transfer";
 import Status from "./Status";
 
 import "./ModListSettingStatus.scss";

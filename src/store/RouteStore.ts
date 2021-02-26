@@ -14,7 +14,7 @@ import {
 } from "../const/error";
 import { ROUTE_INDEX, ROUTE_SETTINGS, ROUTE_SETTINGS_NEW } from "../const/route";
 import { SETTING_STATUS_AVAILABLE, SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN } from "../const/settingStatus";
-import type { InitData, SettingMetaData } from "../type/transfer";
+import { InitData, SettingMetaData } from "../type/transfer";
 
 type InitHandler = (data: InitData) => void;
 
@@ -24,7 +24,11 @@ const REGEX_PATH_COMBINATION_ID = /^\/([0-9a-zA-Z]{22})(\/|$)/;
  * The store handling the pages, including routing between them.
  */
 export class RouteStore {
-    private initHandlers = new Set<InitHandler>();
+    private readonly portalApi: PortalApi;
+    private readonly storageManager: StorageManager;
+    private readonly initHandlers = new Set<InitHandler>();
+
+    public readonly router: Router;
 
     /**
      * The current route which is displayed.
@@ -67,10 +71,14 @@ export class RouteStore {
     public locale: string = "en";
 
     public constructor(
-        private readonly portalApi: PortalApi,
-        public readonly router: Router,
-        private readonly storageManager: StorageManager,
+        portalApi: PortalApi,
+        router: Router,
+        storageManager: StorageManager,
     ) {
+        this.portalApi = portalApi;
+        this.router = router;
+        this.storageManager = storageManager;
+
         makeObservable<this, "handleGlobalRouteChange" | "handleInit">(this, {
             currentRoute: observable,
             fatalError: observable,

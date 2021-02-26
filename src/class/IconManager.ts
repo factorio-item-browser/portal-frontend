@@ -6,6 +6,8 @@ import { NUMBER_OF_ICONS_PER_REQUEST } from "../const/config";
 import { portalApi, PortalApi } from "./PortalApi";
 
 export class IconManager {
+    private readonly portalApi: PortalApi;
+
     private readonly styleElement: HTMLElement;
     private readonly debounceRequestStyle: () => void;
     private readonly additionalStyleElements = new Map<string, Text>();
@@ -13,9 +15,9 @@ export class IconManager {
     private readonly pendingEntities = new NamesByTypesSet();
     private readonly processedEntities = new NamesByTypesSet();
 
-    public constructor(
-        private readonly portalApi: PortalApi
-    ) {
+    public constructor(portalApi: PortalApi) {
+        this.portalApi = portalApi;
+
         this.styleElement = document.createElement("style");
         document.head.appendChild(this.styleElement);
 

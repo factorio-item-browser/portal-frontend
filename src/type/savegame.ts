@@ -1,4 +1,4 @@
-import type { Version } from "../class/SaveGameReader";
+import { Version } from "../class/SaveGameReader";
 
 export type SaveGameMod = {
     name: string,
