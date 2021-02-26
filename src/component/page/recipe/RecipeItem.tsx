@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { createRef, FC } from "react";
+import React, { FC, useRef } from "react";
 import { RecipeItemData } from "../../../type/transfer";
 import { formatAmount } from "../../../util/format";
 import { useTooltip } from "../../../util/hooks";
@@ -16,7 +16,7 @@ type Props = {
  * The component representing exactly one item of the recipe details.
  */
 const RecipeItem: FC<Props> = ({ item }) => {
-    const iconRef = createRef<HTMLElement>();
+    const iconRef = useRef<HTMLDivElement>(null);
     const { showTooltip, hideTooltip } = useTooltip(item.type, item.name, iconRef);
 
     return (

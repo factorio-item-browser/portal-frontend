@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { createRef, FC } from "react";
+import React, { FC, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { MachineData } from "../../type/transfer";
 import { formatCraftingSpeed, formatEnergyUsage, formatMachineSlots } from "../../util/format";
@@ -18,7 +18,7 @@ type Props = {
  */
 const MachineEntity: FC<Props> = ({ machine }) => {
     const { t } = useTranslation();
-    const iconRef = createRef<HTMLElement>();
+    const iconRef = useRef<HTMLDivElement>(null);
 
     const { showTooltip, hideTooltip } = useTooltip("item", machine.name, iconRef);
 

@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import React, { FC } from "react";
+import React, { ForwardRefRenderFunction } from "react";
 import { useIcon } from "../../util/hooks";
 
 import "./Icon.scss";
@@ -13,7 +13,7 @@ type Props = {
 /**
  * The component representing an icon without any additional features.
  */
-const Icon: FC<Props> = ({ type, name }, ref) => {
+const Icon: ForwardRefRenderFunction<HTMLDivElement, Props> = ({ type, name }, ref) => {
     const iconClass = useIcon(type, name);
 
     const classes = classNames({

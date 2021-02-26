@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { createRef, useCallback } from "react";
+import React, { useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { PaginatedList } from "../../class/PaginatedList";
 import { ResultsData } from "../../type/transfer";
@@ -21,7 +21,7 @@ const PaginatedListButton = <TEntity, TData extends ResultsData<TEntity>>({
     loadOnScroll,
 }: Props<TEntity, TData>) => {
     const { t } = useTranslation();
-    const ref = createRef<HTMLElement>();
+    const ref = useRef<HTMLDivElement>(null);
 
     if (loadOnScroll) {
         useScrollEffect(

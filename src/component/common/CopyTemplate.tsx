@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { createRef, FC } from "react";
+import React, { FC, useRef } from "react";
 import { useSelectClick } from "../../util/hooks";
 
 import "./CopyTemplate.scss";
@@ -14,7 +14,7 @@ type Props = {
  * The component representing a template of some text for easy copying.
  */
 const CopyTemplate: FC<Props> = ({ label, template, description }) => {
-    const templateRef = createRef<HTMLSpanElement>();
+    const templateRef = useRef<HTMLSpanElement>(null);
     const handleClick = useSelectClick(templateRef);
 
     return (

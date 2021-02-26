@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { FC } from "react";
+import React, { ForwardRefRenderFunction } from "react";
 import { useTranslation } from "react-i18next";
 import { NUMBER_OF_RECIPES_PER_ENTITY } from "../../const/config";
 import { EntityData, RecipeData } from "../../type/transfer";
@@ -16,7 +16,7 @@ type Props = {
 /**
  * The component representing an entity as full box.
  */
-const Entity: FC<Props> = ({ entity }, ref) => {
+const Entity: ForwardRefRenderFunction<HTMLDivElement, Props> = ({ entity }, ref) => {
     const { t } = useTranslation();
 
     let moreRecipes = null;

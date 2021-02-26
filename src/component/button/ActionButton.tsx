@@ -1,7 +1,7 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
-import React, { FC } from "react";
+import React, { ForwardRefRenderFunction } from "react";
 import Button from "./Button";
 
 type Props = {
@@ -19,7 +19,7 @@ type Props = {
 /**
  * The component representing a button with an action, which also have a loading animation.
  */
-const ActionButton: FC<Props> = (props, ref) => {
+const ActionButton: ForwardRefRenderFunction<HTMLDivElement, Props> = (props, ref) => {
     if (!props.isVisible) {
         return null;
     }

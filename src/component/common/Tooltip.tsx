@@ -1,7 +1,7 @@
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
-import React, { createRef, FC, useContext, useEffect, useLayoutEffect } from "react";
+import React, { FC, useContext, useEffect, useLayoutEffect, useRef } from "react";
 import { useMediaQuery } from "react-responsive";
 import { BREAKPOINT_MEDIUM } from "../../const/breakpoint";
 import { tooltipStoreContext } from "../../store/TooltipStore";
@@ -56,9 +56,9 @@ const Tooltip: FC = () => {
     const tooltipStore = useContext(tooltipStoreContext);
     const isMedium = useMediaQuery({ minWidth: BREAKPOINT_MEDIUM });
 
-    const chevronRef = createRef<HTMLDivElement>();
-    const contentRef = createRef<HTMLDivElement>();
-    const tooltipRef = createRef<HTMLDivElement>();
+    const chevronRef = useRef<HTMLDivElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
+    const tooltipRef = useRef<HTMLDivElement>(null);
 
     const doRender = tooltipStore.isTooltipAvailable;
 

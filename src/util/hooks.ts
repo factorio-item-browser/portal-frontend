@@ -58,7 +58,7 @@ type UseTooltipResult = {
  * Uses a tooltip displaying information of the specified type and name on the referenced element.
  * The result are the callbacks to actually open and close the tooltip.
  */
-export function useTooltip(type: string, name: string, ref: RefObject<HTMLElement>): UseTooltipResult {
+export function useTooltip(type: string, name: string, ref: RefObject<Element>): UseTooltipResult {
     const tooltipStore = useContext(tooltipStoreContext);
 
     return {

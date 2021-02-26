@@ -2,7 +2,7 @@ import { faThumbtack, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import React, { createRef, FC, ReactNode, useContext } from "react";
+import React, { FC, ReactNode, useContext, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { sidebarStoreContext } from "../../../store/SidebarStore";
 import { tooltipStoreContext } from "../../../store/TooltipStore";
@@ -64,7 +64,7 @@ const SidebarEntity: FC<Props> = ({ entity }) => {
     const sidebarStore = useContext(sidebarStoreContext);
     const tooltipStore = useContext(tooltipStoreContext);
 
-    const iconRef = createRef<HTMLElement>();
+    const iconRef = useRef<HTMLDivElement>(null);
     const entityId = sidebarStore.getIdForEntity(entity);
     const classes = classNames({
         "sidebar-entity": true,

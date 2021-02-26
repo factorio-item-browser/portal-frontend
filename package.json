@@ -101,7 +101,7 @@
     "build": "webpack --mode production",
     "fix": "eslint src --ext ts,tsx --fix",
     "start": "webpack serve --mode development",
-    "test": "npm run test-flow && npm run test-jest && npm run test-eslint",
+    "test": "npm run test-tsc && npm run test-jest && npm run test-eslint",
     "test-eslint": "eslint src --ext ts,tsx",
     "test-jest": "jest",
     "test-tsc": "tsc"

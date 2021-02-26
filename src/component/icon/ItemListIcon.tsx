@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import React, { createRef, FC } from "react";
+import React, { FC, useRef } from "react";
 import { useIcon, useTooltip } from "../../util/hooks";
 import EntityLink from "../link/EntityLink";
 
@@ -15,7 +15,7 @@ type Props = {
  * The component representing an item as icon in the list.
  */
 const ItemListIcon: FC<Props> = ({ type, name }) => {
-    const iconRef = createRef<HTMLElement>();
+    const iconRef = useRef<HTMLAnchorElement>(null);
     const { showTooltip, hideTooltip } = useTooltip(type, name, iconRef);
     const iconClass = useIcon(type, name);
 

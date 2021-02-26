@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { createRef, FC } from "react";
+import React, { FC, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelectClick } from "../../../../util/hooks";
 import Option from "./Option";
@@ -12,7 +12,7 @@ type Props = {
  * The component representing the (readonly) combination id.
  */
 const OptionCombinationId: FC<Props> = ({ value }) => {
-    const ref = createRef<HTMLDivElement>();
+    const ref = useRef<HTMLDivElement>(null);
     const handleClick = useSelectClick(ref);
     const { t } = useTranslation();
 

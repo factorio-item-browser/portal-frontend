@@ -3,7 +3,7 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import React, { FC } from "react";
+import React, { ForwardRefRenderFunction } from "react";
 
 import "./Button.scss";
 
@@ -19,7 +19,10 @@ type Props = {
 /**
  * The component representing a simple button to click on like there is no tomorrow.
  */
-const Button: FC<Props> = ({ label, icon, primary, secondary, spacing, onClick }, ref) => {
+const Button: ForwardRefRenderFunction<HTMLDivElement, Props> = (
+    { label, icon, primary, secondary, spacing, onClick },
+    ref,
+) => {
     const classes = classNames({
         button: true,
         primary: primary,

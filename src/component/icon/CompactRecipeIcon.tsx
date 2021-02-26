@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import React, { createRef, FC, useContext } from "react";
+import React, { ForwardRefRenderFunction, RefObject, useContext, useRef } from "react";
 import { itemStoreContext } from "../../store/ItemStore";
 import { formatAmount } from "../../util/format";
 import { useIcon, useTooltip } from "../../util/hooks";
@@ -17,9 +17,16 @@ type Props = {
 /**
  * The component representing an icon in a compact recipe, including an amount and a background.
  */
-const CompactRecipeIcon: FC<Props> = ({ type, name, amount }, ref) => {
+const CompactRecipeIcon: ForwardRefRenderFunction<HTMLAnchorElement, Props> = ({ type, name, amount }, ref) => {
     const itemStore = useContext(itemStoreContext);
-    const iconRef = ref || createRef<HTMLElement>();
+
+    let iconRef: RefObject<HTMLAnchorElement>;
+    if (ref && "current" in ref) {
+        iconRef = ref;
+    } else {
+        iconRef = useRef<HTMLAnchorElement>(null);
+    }
+
     const { showTooltip, hideTooltip } = useTooltip(type, name, iconRef);
     const iconClass = useIcon(type, name);
 
