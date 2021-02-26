@@ -15,15 +15,15 @@ type State = {
  * box.
  */
 class ErrorBoundary extends Component<Props, State> {
-    state: State = {
+    public state: State = {
         error: null,
     };
 
-    componentDidCatch(error: Error): void {
+    public componentDidCatch(error: Error): void {
         this.setState({ error });
     }
 
-    render(): ReactNode {
+    public render(): ReactNode {
         if (this.state.error) {
             return <FatalError type={ERROR_CLIENT_FAILURE} />;
         }

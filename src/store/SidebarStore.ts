@@ -18,7 +18,7 @@ export class SidebarStore {
     public highlightedEntityId = "";
     public isSidebarOpened = false;
 
-    constructor(
+    public constructor(
         portalApi: PortalApi,
         router: Router,
         routeStore: RouteStore,

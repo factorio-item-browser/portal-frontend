@@ -46,7 +46,7 @@ export class SettingsStore {
     public isSavingChanges = false;
     public isDeletingSetting = false;
 
-    constructor(
+    public constructor(
         iconManager: IconManager,
         portalApi: PortalApi,
         router: Router,

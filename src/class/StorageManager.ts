@@ -12,7 +12,7 @@ interface CacheItem<T> {
 }
 
 class CacheUtils {
-    static serialize<T>(data: T): string {
+    public static serialize<T>(data: T): string {
         const item: CacheItem<T> = {
             data,
             time: Date.now() + CACHE_LIFETIME * 1000,
@@ -21,7 +21,7 @@ class CacheUtils {
         return JSON.stringify(item);
     }
 
-    static deserialize<T>(serializedData: string): T | null {
+    public static deserialize<T>(serializedData: string): T | null {
         let item: CacheItem<T>;
         try {
             item = JSON.parse(serializedData);
@@ -35,7 +35,7 @@ class CacheUtils {
         return item.data;
     }
 
-    static clean(storage: Storage): void {
+    public static clean(storage: Storage): void {
         for (const key of Object.keys(storage)) {
             if (key.startsWith(KEY_CACHE)) {
                 const item = CacheUtils.deserialize(storage.getItem(key) || "");
@@ -47,7 +47,7 @@ class CacheUtils {
         }
     }
 
-    static clear(storage: Storage, predicate: (key: string) => boolean): void {
+    public static clear(storage: Storage, predicate: (key: string) => boolean): void {
         for (const key of Object.keys(storage)) {
             if (key.startsWith(KEY_CACHE) && predicate(key)) {
                 storage.removeItem(key);
@@ -57,7 +57,7 @@ class CacheUtils {
 }
 
 class SidebarEntitiesUtils {
-    static deserialize(data: string): SidebarEntityData[] {
+    public static deserialize(data: string): SidebarEntityData[] {
         try {
             const sidebarEntities = JSON.parse(data);
             if (Array.isArray(sidebarEntities)) {
@@ -70,7 +70,7 @@ class SidebarEntitiesUtils {
         return [];
     }
 
-    static serialize(sidebarEntities: SidebarEntityData[]): string {
+    public static serialize(sidebarEntities: SidebarEntityData[]): string {
         return JSON.stringify(sidebarEntities);
     }
 }

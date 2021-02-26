@@ -33,7 +33,7 @@ class SettingsNewStore {
     };
     public isSavingNewSetting = false;
 
-    constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore) {
+    public constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore) {
         this.portalApi = portalApi;
         this.router = router;
         this.routeStore = routeStore;

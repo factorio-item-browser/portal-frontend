@@ -105,5 +105,6 @@
     "test-eslint": "eslint src --ext ts,tsx",
     "test-jest": "jest",
     "test-tsc": "tsc"
-  }
+  },
+  "browserslist": [">1%"]
 }

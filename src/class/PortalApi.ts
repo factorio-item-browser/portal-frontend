@@ -302,13 +302,15 @@ export class PortalApi {
     }
 
     private handleFailedResponse(statusCode: number, content: any): never {
-        let message = content;
+        let message;
         if (typeof content === "object") {
             if (content.error && content.error.message) {
                 message = content.error.message;
             } else {
                 message = "Unknown error";
             }
+        } else {
+            message = content;
         }
 
         throw new PortalApiError(statusCode, message);
@@ -316,7 +318,7 @@ export class PortalApi {
 }
 
 export class PortalApiError extends Error {
-    code: number;
+    public code: number;
 
     public constructor(statusCode: number, message: string) {
         super(message);
