@@ -153,8 +153,8 @@ export class StorageManager {
         return SidebarEntitiesUtils.deserialize(this.storage.getItem(key) || "");
     }
 
-    public writeToCache<T>(namespace: string, cacheKey: string, data: T): void {
-        const storageKey = this.buildStorageKey(KEY_CACHE, namespace, cacheKey);
+    public writeToCache<T>(cacheKey: string, data: T): void {
+        const storageKey = this.buildStorageKey(KEY_CACHE, cacheKey);
         if (!storageKey) {
             return;
         }
@@ -162,8 +162,8 @@ export class StorageManager {
         this.storeItem(storageKey, CacheUtils.serialize<T>(data));
     }
 
-    public readFromCache<T>(namespace: string, cacheKey: string): T | null {
-        const storageKey = this.buildStorageKey(KEY_CACHE, namespace, cacheKey);
+    public readFromCache<T>(cacheKey: string): T | null {
+        const storageKey = this.buildStorageKey(KEY_CACHE, cacheKey);
         if (!storageKey) {
             return null;
         }

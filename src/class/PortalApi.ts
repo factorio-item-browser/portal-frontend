@@ -1,3 +1,4 @@
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import {
     NUMBER_OF_ITEM_RECIPES_PER_PAGE,
     NUMBER_OF_ITEMS_PER_PAGE,
@@ -26,16 +27,55 @@ import {
 } from "../type/transfer";
 import { storageManager, StorageManager } from "./StorageManager";
 
-type Parameters = { [key: string]: any } | [];
+type ServerError = {
+    error: {
+        message: string;
+    };
+};
+
+export class PortalApiError extends Error {
+    public readonly code: number;
+
+    public constructor(statusCode: number, message: string) {
+        super(message);
+        this.code = statusCode;
+    }
+}
 
 /**
  * The class functioning as interface to the Portal API server.
  */
 export class PortalApi {
+    private readonly client: AxiosInstance;
     private readonly storageManager: StorageManager;
 
     public constructor(storageManager: StorageManager) {
         this.storageManager = storageManager;
+
+        this.client = axios.create({
+            baseURL: PORTAL_API_URL,
+            withCredentials: true,
+        });
+        this.client.interceptors.request.use(this.prepareRequest.bind(this));
+        this.client.interceptors.response.use(undefined, this.prepareResponseError.bind(this));
+    }
+
+    private prepareRequest(request: AxiosRequestConfig): AxiosRequestConfig {
+        if (this.storageManager.combinationId !== null) {
+            request.headers["Combination-Id"] = this.storageManager.combinationId.toFull();
+        }
+        if (request.data) {
+            request.headers["Content-Type"] = "application/json";
+        }
+        return request;
+    }
+
+    private prepareResponseError(error: AxiosError<ServerError | null>): Promise<never> {
+        let message = error.response?.data?.error?.message;
+        if (typeof message !== "string") {
+            message = "Unknown error";
+        }
+        return Promise.reject(new PortalApiError(error.response?.status ?? 500, message));
     }
 
     /**
@@ -43,7 +83,8 @@ export class PortalApi {
      * @throws {PortalApiError}
      */
     public async initializeSession(): Promise<InitData> {
-        return await this.executeRequest("POST", "/init");
+        const response = await this.client.post<InitData>("/init");
+        return response.data;
     }
 
     /**
@@ -51,10 +92,14 @@ export class PortalApi {
      * @throws {PortalApiError}
      */
     public async search(query: string, page: number): Promise<SearchResultsData> {
-        return await this.executeRequestWithCache("search", `${query}-${page}`, "GET", "/search", {
-            query: query,
-            indexOfFirstResult: (page - 1) * NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
-            numberOfResults: NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
+        return this.withCache(`search-${query}-${page}`, () => {
+            return this.client.get<SearchResultsData>("/search", {
+                params: {
+                    query: query,
+                    indexOfFirstResult: (page - 1) * NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
+                    numberOfResults: NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
+                },
+            });
         });
     }
 
@@ -63,7 +108,8 @@ export class PortalApi {
      * @throws {PortalApiError}
      */
     public async getIconsStyle(namesByTypes: NamesByTypes): Promise<IconsStyleData> {
-        return await this.executeRequest("POST", "/style/icons", namesByTypes);
+        const response = await this.client.post<IconsStyleData>("/style/icons", namesByTypes);
+        return response.data;
     }
 
     /**
@@ -71,16 +117,14 @@ export class PortalApi {
      * @throws {PortalApiError}
      */
     public async getItemIngredientRecipes(type: ItemType, name: string, page: number): Promise<ItemRecipesData> {
-        return await this.executeRequestWithCache(
-            "ingredient",
-            `${type}-${name}-${page}`,
-            "GET",
-            `/${encodeURI(type)}/${encodeURI(name)}/ingredients`,
-            {
-                indexOfFirstResult: (page - 1) * NUMBER_OF_ITEM_RECIPES_PER_PAGE,
-                numberOfResults: NUMBER_OF_ITEM_RECIPES_PER_PAGE,
-            },
-        );
+        return this.withCache(`ingredient-${type}-${name}-${page}`, () => {
+            return this.client.get<ItemRecipesData>(`/${encodeURI(type)}/${encodeURI(name)}/ingredients`, {
+                params: {
+                    indexOfFirstResult: (page - 1) * NUMBER_OF_ITEM_RECIPES_PER_PAGE,
+                    numberOfResults: NUMBER_OF_ITEM_RECIPES_PER_PAGE,
+                },
+            });
+        });
     }
 
     /**
@@ -88,16 +132,14 @@ export class PortalApi {
      * @throws {PortalApiError}
      */
     public async getItemProductRecipes(type: ItemType, name: string, page: number): Promise<ItemRecipesData> {
-        return await this.executeRequestWithCache(
-            "product",
-            `${type}-${name}-${page}`,
-            "GET",
-            `/${encodeURI(type)}/${encodeURI(name)}/products`,
-            {
-                indexOfFirstResult: (page - 1) * NUMBER_OF_ITEM_RECIPES_PER_PAGE,
-                numberOfResults: NUMBER_OF_ITEM_RECIPES_PER_PAGE,
-            },
-        );
+        return this.withCache(`product-${type}-${name}-${page}`, () => {
+            return this.client.get<ItemRecipesData>(`/${encodeURI(type)}/${encodeURI(name)}/products`, {
+                params: {
+                    indexOfFirstResult: (page - 1) * NUMBER_OF_ITEM_RECIPES_PER_PAGE,
+                    numberOfResults: NUMBER_OF_ITEM_RECIPES_PER_PAGE,
+                },
+            });
+        });
     }
 
     /**
@@ -105,10 +147,13 @@ export class PortalApi {
      * @throws {PortalApiError}
      */
     public async getItemList(page: number): Promise<ItemListData> {
-        return await this.executeRequest("GET", "/items", {
-            indexOfFirstResult: (page - 1) * NUMBER_OF_ITEMS_PER_PAGE,
-            numberOfResults: NUMBER_OF_ITEMS_PER_PAGE,
+        const response = await this.client.get<ItemListData>("/items", {
+            params: {
+                indexOfFirstResult: (page - 1) * NUMBER_OF_ITEMS_PER_PAGE,
+                numberOfResults: NUMBER_OF_ITEMS_PER_PAGE,
+            },
         });
+        return response.data;
     }
 
     /**
@@ -116,7 +161,12 @@ export class PortalApi {
      * @throws {PortalApiError}
      */
     public async getRandom(): Promise<EntityData[]> {
-        return await this.executeRequest("GET", "/random", { numberOfResults: NUMBER_OF_RANDOM_ITEMS });
+        const response = await this.client.get<EntityData[]>("/random", {
+            params: {
+                numberOfResults: NUMBER_OF_RANDOM_ITEMS,
+            },
+        });
+        return response.data;
     }
 
     /**
@@ -124,7 +174,9 @@ export class PortalApi {
      * @throws {PortalApiError}
      */
     public async getRecipeDetails(name: string): Promise<RecipeDetailsData> {
-        return await this.executeRequestWithCache("recipe", name, "GET", `/recipe/${encodeURI(name)}`);
+        return this.withCache(`recipe-${name}`, () => {
+            return this.client.get<RecipeDetailsData>(`/recipe/${encodeURI(name)}`);
+        });
     }
 
     /**
@@ -132,16 +184,14 @@ export class PortalApi {
      * @throws {PortalApiError}
      */
     public async getRecipeMachines(name: string, page: number): Promise<RecipeMachinesData> {
-        return await this.executeRequestWithCache(
-            "machine",
-            `${name}-${page}`,
-            "GET",
-            `/recipe/${encodeURI(name)}/machines`,
-            {
-                indexOfFirstResult: (page - 1) * NUMBER_OF_MACHINES_PER_PAGE,
-                numberOfResults: NUMBER_OF_MACHINES_PER_PAGE,
-            },
-        );
+        return this.withCache(`machine-${name}-${page}`, () => {
+            return this.client.get<RecipeMachinesData>(`/recipe/${encodeURI(name)}/machines`, {
+                params: {
+                    indexOfFirstResult: (page - 1) * NUMBER_OF_MACHINES_PER_PAGE,
+                    numberOfResults: NUMBER_OF_MACHINES_PER_PAGE,
+                },
+            });
+        });
     }
 
     /**
@@ -149,7 +199,8 @@ export class PortalApi {
      * @throws {PortalApiError}
      */
     public async getSettings(): Promise<SettingsListData> {
-        return await this.executeRequest("GET", "/settings");
+        const response = await this.client.get<SettingsListData>("/settings");
+        return response.data;
     }
 
     /**
@@ -157,7 +208,8 @@ export class PortalApi {
      * @throws {PortalApiError}
      */
     public async getSetting(combinationId: string): Promise<SettingDetailsData> {
-        return await this.executeRequest("GET", `/settings/${encodeURI(combinationId)}`);
+        const response = await this.client.get<SettingDetailsData>(`/settings/${encodeURI(combinationId)}`);
+        return response.data;
     }
 
     /**
@@ -166,9 +218,12 @@ export class PortalApi {
      */
     public async getSettingStatus(modNames?: string[]): Promise<SettingStatusData> {
         if (Array.isArray(modNames)) {
-            return await this.executeRequest("POST", "/settings/status", modNames);
+            const response = await this.client.post<SettingStatusData>("/settings/status", modNames);
+            return response.data;
         }
-        return await this.executeRequest("GET", "/settings/status");
+
+        const response = await this.client.get<SettingStatusData>("/settings/status");
+        return response.data;
     }
 
     /**
@@ -176,7 +231,7 @@ export class PortalApi {
      * @throws {PortalApiError}
      */
     public async saveSetting(combinationId: string, options: SettingOptionsData): Promise<void> {
-        await this.executeRequest("PUT", `/settings/${encodeURI(combinationId)}`, options);
+        await this.client.put<void>(`/settings/${encodeURI(combinationId)}`, options);
     }
 
     /**
@@ -184,7 +239,7 @@ export class PortalApi {
      * @throws {PortalApiError}
      */
     public async createSetting(settingData: SettingCreateData): Promise<void> {
-        await this.executeRequest("PUT", "/settings", settingData);
+        await this.client.put<void>("/settings", settingData);
     }
 
     /**
@@ -192,7 +247,7 @@ export class PortalApi {
      * @throws {PortalApiError}
      */
     public async deleteSetting(combinationId: string): Promise<void> {
-        await this.executeRequest("DELETE", `/settings/${encodeURI(combinationId)}`);
+        await this.client.delete<void>(`/settings/${encodeURI(combinationId)}`);
     }
 
     /**
@@ -200,12 +255,9 @@ export class PortalApi {
      * @throws {PortalApiError}
      */
     public async getTooltip(type: string, name: string): Promise<EntityData> {
-        return await this.executeRequestWithCache(
-            "tooltip",
-            `${type}-${name}`,
-            "GET",
-            `/tooltip/${encodeURI(type)}/${encodeURI(name)}`,
-        );
+        return this.withCache(`tooltip-${type}-${name}`, () => {
+            return this.client.get<EntityData>(`/tooltip/${encodeURI(type)}/${encodeURI(name)}`);
+        });
     }
 
     /**
@@ -213,116 +265,18 @@ export class PortalApi {
      * @throws {PortalApiError}
      */
     public async sendSidebarEntities(sidebarEntities: SidebarEntityData[]): Promise<void> {
-        await this.executeRequest("PUT", "/sidebar/entities", sidebarEntities);
+        await this.client.put<void>("/sidebar/entities", sidebarEntities);
     }
 
-    private async executeRequestWithCache<T>(
-        namespace: string,
-        cacheKey: string,
-        method: string,
-        route: string,
-        parameters?: Parameters,
-    ): Promise<T> {
-        const cachedData = this.storageManager.readFromCache<T>(namespace, cacheKey);
-        if (cachedData) {
-            return cachedData;
+    private async withCache<T>(cacheKey: string, handler: () => Promise<AxiosResponse<T>>): Promise<T> {
+        const data = this.storageManager.readFromCache<T>(cacheKey);
+        if (data !== null) {
+            return data;
         }
 
-        const requestedData = await this.executeRequest<T>(method, route, parameters);
-        this.storageManager.writeToCache<T>(namespace, cacheKey, requestedData);
-        return requestedData;
-    }
-
-    private async executeRequest<T>(method: string, route: string, parameters?: Parameters): Promise<T> {
-        const requestUrl = this.buildRequestUrl(route, method === "GET" ? parameters : undefined);
-        const requestOptions = this.buildRequestOptions(method, method !== "GET" ? parameters : undefined);
-
-        let response;
-        try {
-            response = await fetch(requestUrl, requestOptions);
-        } catch (e) {
-            throw new PortalApiError(503, `Connection to server failed: ${e}`);
-        }
-
-        return this.handleResponse(response);
-    }
-
-    private buildRequestUrl(route: string, queryParams?: Parameters): string {
-        let requestUrl = PORTAL_API_URL + route;
-
-        const encodedParams: string[] = [];
-        if (queryParams && !(queryParams instanceof Array)) {
-            for (const name of Object.keys(queryParams)) {
-                encodedParams.push(`${encodeURIComponent(name)}=${encodeURIComponent(queryParams[name])}`);
-            }
-        }
-
-        if (encodedParams.length > 0) {
-            requestUrl += "?" + encodedParams.join("&");
-        }
-
-        return requestUrl;
-    }
-
-    private buildRequestOptions(method: string, requestData?: Parameters): RequestInit {
-        const headers: { [key: string]: string } = {};
-        const options: RequestInit = {
-            method,
-            credentials: "include",
-            headers,
-        };
-
-        if (typeof requestData === "object") {
-            options.body = JSON.stringify(requestData);
-            headers["Content-Type"] = "application/json";
-        }
-
-        if (this.storageManager.combinationId) {
-            headers["Combination-Id"] = this.storageManager.combinationId.toFull();
-        }
-
-        return options;
-    }
-
-    private async handleResponse<T>(response: Response): Promise<T> {
-        let content: any = null;
-        try {
-            if (response.headers.get("Content-Type") === "application/json") {
-                content = await response.json();
-            }
-        } catch (e) {
-            throw new PortalApiError(500, `Failed to parse response: ${e}`);
-        }
-
-        if (!response.ok) {
-            this.handleFailedResponse(response.status, content);
-        }
-
-        return content;
-    }
-
-    private handleFailedResponse(statusCode: number, content: any): never {
-        let message;
-        if (typeof content === "object") {
-            if (content.error && content.error.message) {
-                message = content.error.message;
-            } else {
-                message = "Unknown error";
-            }
-        } else {
-            message = content;
-        }
-
-        throw new PortalApiError(statusCode, message);
-    }
-}
-
-export class PortalApiError extends Error {
-    public code: number;
-
-    public constructor(statusCode: number, message: string) {
-        super(message);
-        this.code = statusCode;
+        const response = await handler();
+        this.storageManager.writeToCache(cacheKey, response.data);
+        return response.data;
     }
 }
 

@@ -1,8 +1,24 @@
 import "isomorphic-fetch";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { SettingCreateData, SettingOptionsData, SidebarEntityData } from "../type/transfer";
 import { CombinationId } from "./CombinationId";
 import { PortalApi } from "./PortalApi";
 import { storageManager } from "./StorageManager";
+
+async function catchRequest<T>(responseData: T): Promise<AxiosRequestConfig> {
+    return new Promise((resolve) => {
+        axios.defaults.adapter = async (request: AxiosRequestConfig): Promise<AxiosResponse> => {
+            resolve(request);
+            return Promise.resolve({
+                data: responseData,
+                status: 200,
+                statusText: "OK",
+                headers: [],
+                config: request,
+            });
+        };
+    });
+}
 
 describe("PortalApi", (): void => {
     describe("endpoints", (): void => {
@@ -10,53 +26,58 @@ describe("PortalApi", (): void => {
         const combinationId = "5e782820-364f-4f63-b227-ffcb3ce1d6fc";
 
         beforeEach((): void => {
-            const mockedResponse = new Response(JSON.stringify(responseData), {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-
-            jest.spyOn(window, "fetch").mockReturnValue(Promise.resolve(mockedResponse.clone()));
             storageManager.combinationId = CombinationId.fromFull(combinationId);
         });
 
         test("initialize", async (): Promise<void> => {
-            const portalApi = new PortalApi(storageManager);
-            const result = await portalApi.initializeSession();
-
-            expect(window.fetch).toHaveBeenCalledWith("portal-api-server/init", {
-                method: "POST",
-                credentials: "include",
+            const expectedRequest: AxiosRequestConfig = {
+                baseURL: "portal-api-server",
+                url: "/init",
+                method: "post",
                 headers: {
                     "Combination-Id": combinationId,
                 },
-            });
+                withCredentials: true,
+            };
+
+            const requestPromise = catchRequest(responseData);
+            const portalApi = new PortalApi(storageManager);
+            const result = await portalApi.initializeSession();
+
             expect(result).toEqual(responseData);
+            return expect(requestPromise).resolves.toMatchObject(expectedRequest);
         });
 
         test("search", async (): Promise<void> => {
             const query = "abc";
             const page = 4;
 
+            const expectedRequest: AxiosRequestConfig = {
+                baseURL: "portal-api-server",
+                url: "/search",
+                params: {
+                    query: "abc",
+                    indexOfFirstResult: 72,
+                    numberOfResults: 24,
+                },
+                method: "get",
+                headers: {
+                    "Combination-Id": combinationId,
+                },
+                withCredentials: true,
+            };
+
             jest.spyOn(storageManager, "readFromCache").mockReturnValue(null);
             jest.spyOn(storageManager, "writeToCache");
 
+            const requestPromise = catchRequest(responseData);
             const portalApi = new PortalApi(storageManager);
             const result = await portalApi.search(query, page);
 
-            expect(storageManager.readFromCache).toHaveBeenCalledWith("search", "abc-4");
-            expect(storageManager.writeToCache).toHaveBeenCalledWith("search", "abc-4", responseData);
-            expect(window.fetch).toHaveBeenCalledWith(
-                "portal-api-server/search?query=abc&indexOfFirstResult=72&numberOfResults=24",
-                {
-                    method: "GET",
-                    credentials: "include",
-                    headers: {
-                        "Combination-Id": combinationId,
-                    },
-                },
-            );
+            expect(storageManager.readFromCache).toHaveBeenCalledWith("search-abc-4");
+            expect(storageManager.writeToCache).toHaveBeenCalledWith("search-abc-4", responseData);
             expect(result).toEqual(responseData);
+            return expect(requestPromise).resolves.toMatchObject(expectedRequest);
         });
 
         test("getIconsStyle", async (): Promise<void> => {
@@ -64,19 +85,24 @@ describe("PortalApi", (): void => {
                 abc: ["def", "ghi"],
             };
 
+            const expectedRequest: AxiosRequestConfig = {
+                baseURL: "portal-api-server",
+                url: "/style/icons",
+                data: JSON.stringify(namesByTypes),
+                method: "post",
+                headers: {
+                    "Combination-Id": combinationId,
+                    "Content-Type": "application/json",
+                },
+                withCredentials: true,
+            };
+
+            const requestPromise = catchRequest(responseData);
             const portalApi = new PortalApi(storageManager);
             const result = await portalApi.getIconsStyle(namesByTypes);
 
-            expect(window.fetch).toHaveBeenCalledWith("portal-api-server/style/icons", {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Combination-Id": combinationId,
-                },
-                body: JSON.stringify(namesByTypes),
-            });
             expect(result).toEqual(responseData);
+            return expect(requestPromise).resolves.toMatchObject(expectedRequest);
         });
 
         test("getItemIngredientRecipes", async (): Promise<void> => {
@@ -84,25 +110,31 @@ describe("PortalApi", (): void => {
             const name = "abc";
             const page = 4;
 
+            const expectedRequest: AxiosRequestConfig = {
+                baseURL: "portal-api-server",
+                url: "/item/abc/ingredients",
+                params: {
+                    indexOfFirstResult: 36,
+                    numberOfResults: 12,
+                },
+                method: "get",
+                headers: {
+                    "Combination-Id": combinationId,
+                },
+                withCredentials: true,
+            };
+
             jest.spyOn(storageManager, "readFromCache").mockReturnValue(null);
             jest.spyOn(storageManager, "writeToCache");
 
+            const requestPromise = catchRequest(responseData);
             const portalApi = new PortalApi(storageManager);
             const result = await portalApi.getItemIngredientRecipes(type, name, page);
 
-            expect(storageManager.readFromCache).toHaveBeenCalledWith("ingredient", "item-abc-4");
-            expect(storageManager.writeToCache).toHaveBeenCalledWith("ingredient", "item-abc-4", responseData);
-            expect(window.fetch).toHaveBeenCalledWith(
-                "portal-api-server/item/abc/ingredients?indexOfFirstResult=36&numberOfResults=12",
-                {
-                    method: "GET",
-                    credentials: "include",
-                    headers: {
-                        "Combination-Id": combinationId,
-                    },
-                },
-            );
+            expect(storageManager.readFromCache).toHaveBeenCalledWith("ingredient-item-abc-4");
+            expect(storageManager.writeToCache).toHaveBeenCalledWith("ingredient-item-abc-4", responseData);
             expect(result).toEqual(responseData);
+            return expect(requestPromise).resolves.toMatchObject(expectedRequest);
         });
 
         test("getItemProductRecipes", async (): Promise<void> => {
@@ -110,169 +142,217 @@ describe("PortalApi", (): void => {
             const name = "abc";
             const page = 4;
 
+            const expectedRequest: AxiosRequestConfig = {
+                baseURL: "portal-api-server",
+                url: "/item/abc/products",
+                params: {
+                    indexOfFirstResult: 36,
+                    numberOfResults: 12,
+                },
+                method: "get",
+                headers: {
+                    "Combination-Id": combinationId,
+                },
+                withCredentials: true,
+            };
+
             jest.spyOn(storageManager, "readFromCache").mockReturnValue(null);
             jest.spyOn(storageManager, "writeToCache");
 
+            const requestPromise = catchRequest(responseData);
             const portalApi = new PortalApi(storageManager);
             const result = await portalApi.getItemProductRecipes(type, name, page);
 
-            expect(storageManager.readFromCache).toHaveBeenCalledWith("product", "item-abc-4");
-            expect(storageManager.writeToCache).toHaveBeenCalledWith("product", "item-abc-4", responseData);
-            expect(window.fetch).toHaveBeenCalledWith(
-                "portal-api-server/item/abc/products?indexOfFirstResult=36&numberOfResults=12",
-                {
-                    method: "GET",
-                    credentials: "include",
-                    headers: {
-                        "Combination-Id": combinationId,
-                    },
-                },
-            );
+            expect(storageManager.readFromCache).toHaveBeenCalledWith("product-item-abc-4");
+            expect(storageManager.writeToCache).toHaveBeenCalledWith("product-item-abc-4", responseData);
             expect(result).toEqual(responseData);
+            return expect(requestPromise).resolves.toMatchObject(expectedRequest);
         });
 
         test("getItemList", async (): Promise<void> => {
             const page = 4;
 
-            const portalApi = new PortalApi(storageManager);
-            const result = await portalApi.getItemList(page);
-
-            expect(window.fetch).toHaveBeenCalledWith(
-                "portal-api-server/items?indexOfFirstResult=3072&numberOfResults=1024",
-                {
-                    method: "GET",
-                    credentials: "include",
-                    headers: {
-                        "Combination-Id": combinationId,
-                    },
+            const expectedRequest: AxiosRequestConfig = {
+                baseURL: "portal-api-server",
+                url: "/items",
+                params: {
+                    indexOfFirstResult: 3072,
+                    numberOfResults: 1024,
                 },
-            );
-            expect(result).toEqual(responseData);
-        });
-
-        test("getRandom", async (): Promise<void> => {
-            const portalApi = new PortalApi(storageManager);
-            const result = await portalApi.getRandom();
-
-            expect(window.fetch).toHaveBeenCalledWith("portal-api-server/random?numberOfResults=12", {
-                method: "GET",
-                credentials: "include",
+                method: "get",
                 headers: {
                     "Combination-Id": combinationId,
                 },
-            });
+                withCredentials: true,
+            };
+
+            const requestPromise = catchRequest(responseData);
+            const portalApi = new PortalApi(storageManager);
+            const result = await portalApi.getItemList(page);
+
             expect(result).toEqual(responseData);
+            return expect(requestPromise).resolves.toMatchObject(expectedRequest);
+        });
+
+        test("getRandom", async (): Promise<void> => {
+            const expectedRequest: AxiosRequestConfig = {
+                baseURL: "portal-api-server",
+                url: "/random",
+                params: {
+                    numberOfResults: 12,
+                },
+                method: "get",
+                headers: {
+                    "Combination-Id": combinationId,
+                },
+                withCredentials: true,
+            };
+
+            const requestPromise = catchRequest(responseData);
+            const portalApi = new PortalApi(storageManager);
+            const result = await portalApi.getRandom();
+
+            expect(result).toEqual(responseData);
+            return expect(requestPromise).resolves.toMatchObject(expectedRequest);
         });
 
         test("getRecipeDetails", async (): Promise<void> => {
             const name = "abc";
 
-            jest.spyOn(storageManager, "readFromCache").mockReturnValue(null);
-            jest.spyOn(storageManager, "writeToCache");
-
-            const portalApi = new PortalApi(storageManager);
-            const result = await portalApi.getRecipeDetails(name);
-
-            expect(storageManager.readFromCache).toHaveBeenCalledWith("recipe", "abc");
-            expect(storageManager.writeToCache).toHaveBeenCalledWith("recipe", "abc", responseData);
-            expect(window.fetch).toHaveBeenCalledWith("portal-api-server/recipe/abc", {
-                method: "GET",
-                credentials: "include",
+            const expectedRequest: AxiosRequestConfig = {
+                baseURL: "portal-api-server",
+                url: "/recipe/abc",
+                method: "get",
                 headers: {
                     "Combination-Id": combinationId,
                 },
-            });
+                withCredentials: true,
+            };
+
+            jest.spyOn(storageManager, "readFromCache").mockReturnValue(null);
+            jest.spyOn(storageManager, "writeToCache");
+
+            const requestPromise = catchRequest(responseData);
+            const portalApi = new PortalApi(storageManager);
+            const result = await portalApi.getRecipeDetails(name);
+
+            expect(storageManager.readFromCache).toHaveBeenCalledWith("recipe-abc");
+            expect(storageManager.writeToCache).toHaveBeenCalledWith("recipe-abc", responseData);
             expect(result).toEqual(responseData);
+            return expect(requestPromise).resolves.toMatchObject(expectedRequest);
         });
 
         test("getRecipeMachines", async (): Promise<void> => {
             const name = "abc";
             const page = 4;
 
-            jest.spyOn(storageManager, "readFromCache").mockReturnValue(null);
-            jest.spyOn(storageManager, "writeToCache");
-
-            const portalApi = new PortalApi(storageManager);
-            const result = await portalApi.getRecipeMachines(name, page);
-
-            expect(storageManager.readFromCache).toHaveBeenCalledWith("machine", "abc-4");
-            expect(storageManager.writeToCache).toHaveBeenCalledWith("machine", "abc-4", responseData);
-            expect(window.fetch).toHaveBeenCalledWith(
-                "portal-api-server/recipe/abc/machines?indexOfFirstResult=36&numberOfResults=12",
-                {
-                    method: "GET",
-                    credentials: "include",
-                    headers: {
-                        "Combination-Id": combinationId,
-                    },
+            const expectedRequest: AxiosRequestConfig = {
+                baseURL: "portal-api-server",
+                url: "/recipe/abc/machines",
+                params: {
+                    indexOfFirstResult: 36,
+                    numberOfResults: 12,
                 },
-            );
-            expect(result).toEqual(responseData);
-        });
-
-        test("getSettings", async (): Promise<void> => {
-            const portalApi = new PortalApi(storageManager);
-            const result = await portalApi.getSettings();
-
-            expect(window.fetch).toHaveBeenCalledWith("portal-api-server/settings", {
-                method: "GET",
-                credentials: "include",
+                method: "get",
                 headers: {
                     "Combination-Id": combinationId,
                 },
-            });
+                withCredentials: true,
+            };
+
+            jest.spyOn(storageManager, "readFromCache").mockReturnValue(null);
+            jest.spyOn(storageManager, "writeToCache");
+
+            const requestPromise = catchRequest(responseData);
+            const portalApi = new PortalApi(storageManager);
+            const result = await portalApi.getRecipeMachines(name, page);
+
+            expect(storageManager.readFromCache).toHaveBeenCalledWith("machine-abc-4");
+            expect(storageManager.writeToCache).toHaveBeenCalledWith("machine-abc-4", responseData);
             expect(result).toEqual(responseData);
+            return expect(requestPromise).resolves.toMatchObject(expectedRequest);
+        });
+
+        test("getSettings", async (): Promise<void> => {
+            const expectedRequest: AxiosRequestConfig = {
+                baseURL: "portal-api-server",
+                url: "/settings",
+                method: "get",
+                headers: {
+                    "Combination-Id": combinationId,
+                },
+                withCredentials: true,
+            };
+
+            const requestPromise = catchRequest(responseData);
+            const portalApi = new PortalApi(storageManager);
+            const result = await portalApi.getSettings();
+
+            expect(result).toEqual(responseData);
+            return expect(requestPromise).resolves.toMatchObject(expectedRequest);
         });
 
         test("getSetting", async (): Promise<void> => {
             const settingCombinationId = "281d1fce-dd74-41c6-8dca-3717629e869a";
 
-            const portalApi = new PortalApi(storageManager);
-            const result = await portalApi.getSetting(settingCombinationId);
-
-            expect(window.fetch).toHaveBeenCalledWith(
-                "portal-api-server/settings/281d1fce-dd74-41c6-8dca-3717629e869a",
-                {
-                    method: "GET",
-                    credentials: "include",
-                    headers: {
-                        "Combination-Id": combinationId,
-                    },
-                },
-            );
-            expect(result).toEqual(responseData);
-        });
-
-        test("getSettingStatus", async (): Promise<void> => {
-            const portalApi = new PortalApi(storageManager);
-            const result = await portalApi.getSettingStatus();
-
-            expect(window.fetch).toHaveBeenCalledWith("portal-api-server/settings/status", {
-                method: "GET",
-                credentials: "include",
+            const expectedRequest: AxiosRequestConfig = {
+                baseURL: "portal-api-server",
+                url: "/settings/281d1fce-dd74-41c6-8dca-3717629e869a",
+                method: "get",
                 headers: {
                     "Combination-Id": combinationId,
                 },
-            });
+                withCredentials: true,
+            };
+
+            const requestPromise = catchRequest(responseData);
+            const portalApi = new PortalApi(storageManager);
+            const result = await portalApi.getSetting(settingCombinationId);
+
             expect(result).toEqual(responseData);
+            return expect(requestPromise).resolves.toMatchObject(expectedRequest);
+        });
+
+        test("getSettingStatus", async (): Promise<void> => {
+            const expectedRequest: AxiosRequestConfig = {
+                baseURL: "portal-api-server",
+                url: "/settings/status",
+                method: "get",
+                headers: {
+                    "Combination-Id": combinationId,
+                },
+                withCredentials: true,
+            };
+
+            const requestPromise = catchRequest(responseData);
+            const portalApi = new PortalApi(storageManager);
+            const result = await portalApi.getSettingStatus();
+
+            expect(result).toEqual(responseData);
+            return expect(requestPromise).resolves.toMatchObject(expectedRequest);
         });
 
         test("getSettingStatus with modNames", async (): Promise<void> => {
             const modNames = ["abc", "def"];
 
-            const portalApi = new PortalApi(storageManager);
-            const result = await portalApi.getSettingStatus(modNames);
-
-            expect(window.fetch).toHaveBeenCalledWith("portal-api-server/settings/status", {
-                method: "POST",
-                credentials: "include",
+            const expectedRequest: AxiosRequestConfig = {
+                baseURL: "portal-api-server",
+                url: "/settings/status",
+                data: JSON.stringify(modNames),
+                method: "post",
                 headers: {
                     "Combination-Id": combinationId,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(modNames),
-            });
+                withCredentials: true,
+            };
+
+            const requestPromise = catchRequest(responseData);
+            const portalApi = new PortalApi(storageManager);
+            const result = await portalApi.getSettingStatus(modNames);
+
             expect(result).toEqual(responseData);
+            return expect(requestPromise).resolves.toMatchObject(expectedRequest);
         });
 
         test("saveSetting", async (): Promise<void> => {
@@ -283,18 +363,23 @@ describe("PortalApi", (): void => {
                 recipeMode: "ghi",
             };
 
-            const portalApi = new PortalApi(storageManager);
-            await portalApi.saveSetting(settingCombinationId, options);
-
-            expect(window.fetch).toHaveBeenCalledWith(`portal-api-server/settings/${settingCombinationId}`, {
-                method: "PUT",
-                credentials: "include",
+            const expectedRequest: AxiosRequestConfig = {
+                baseURL: "portal-api-server",
+                url: "/settings/281d1fce-dd74-41c6-8dca-3717629e869a",
+                data: JSON.stringify(options),
+                method: "put",
                 headers: {
                     "Combination-Id": combinationId,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(options),
-            });
+                withCredentials: true,
+            };
+
+            const requestPromise = catchRequest(responseData);
+            const portalApi = new PortalApi(storageManager);
+            await portalApi.saveSetting(settingCombinationId, options);
+
+            return expect(requestPromise).resolves.toMatchObject(expectedRequest);
         });
 
         test("createSetting", async (): Promise<void> => {
@@ -305,33 +390,43 @@ describe("PortalApi", (): void => {
                 modNames: ["jkl", "mno"],
             };
 
-            const portalApi = new PortalApi(storageManager);
-            await portalApi.createSetting(settingData);
-
-            expect(window.fetch).toHaveBeenCalledWith("portal-api-server/settings", {
-                method: "PUT",
-                credentials: "include",
+            const expectedRequest: AxiosRequestConfig = {
+                baseURL: "portal-api-server",
+                url: "/settings",
+                data: JSON.stringify(settingData),
+                method: "put",
                 headers: {
                     "Combination-Id": combinationId,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(settingData),
-            });
+                withCredentials: true,
+            };
+
+            const requestPromise = catchRequest(responseData);
+            const portalApi = new PortalApi(storageManager);
+            await portalApi.createSetting(settingData);
+
+            return expect(requestPromise).resolves.toMatchObject(expectedRequest);
         });
 
         test("deleteSetting", async (): Promise<void> => {
             const settingCombinationId = "281d1fce-dd74-41c6-8dca-3717629e869a";
 
-            const portalApi = new PortalApi(storageManager);
-            await portalApi.deleteSetting(settingCombinationId);
-
-            expect(window.fetch).toHaveBeenCalledWith(`portal-api-server/settings/${settingCombinationId}`, {
-                method: "DELETE",
-                credentials: "include",
+            const expectedRequest: AxiosRequestConfig = {
+                baseURL: "portal-api-server",
+                url: "/settings/281d1fce-dd74-41c6-8dca-3717629e869a",
+                method: "delete",
                 headers: {
                     "Combination-Id": combinationId,
                 },
-            });
+                withCredentials: true,
+            };
+
+            const requestPromise = catchRequest(responseData);
+            const portalApi = new PortalApi(storageManager);
+            await portalApi.deleteSetting(settingCombinationId);
+
+            return expect(requestPromise).resolves.toMatchObject(expectedRequest);
         });
 
         test("sendSidebarEntities", async (): Promise<void> => {
@@ -352,18 +447,23 @@ describe("PortalApi", (): void => {
                 },
             ];
 
-            const portalApi = new PortalApi(storageManager);
-            await portalApi.sendSidebarEntities(sidebarEntities);
-
-            expect(window.fetch).toHaveBeenCalledWith("portal-api-server/sidebar/entities", {
-                method: "PUT",
-                credentials: "include",
+            const expectedRequest: AxiosRequestConfig = {
+                baseURL: "portal-api-server",
+                url: "/sidebar/entities",
+                data: JSON.stringify(sidebarEntities),
+                method: "put",
                 headers: {
                     "Combination-Id": combinationId,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(sidebarEntities),
-            });
+                withCredentials: true,
+            };
+
+            const requestPromise = catchRequest(responseData);
+            const portalApi = new PortalApi(storageManager);
+            await portalApi.sendSidebarEntities(sidebarEntities);
+
+            return expect(requestPromise).resolves.toMatchObject(expectedRequest);
         });
     });
 });
