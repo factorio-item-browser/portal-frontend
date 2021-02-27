@@ -1,4 +1,3 @@
-import "isomorphic-fetch";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { SettingCreateData, SettingOptionsData, SidebarEntityData } from "../type/transfer";
 import { CombinationId } from "./CombinationId";
