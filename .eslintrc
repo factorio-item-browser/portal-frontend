@@ -1,18 +1,18 @@
 {
-    "parser": "babel-eslint",
+    "parser": "@typescript-eslint/parser",
     "extends": [
         "eslint:recommended",
-        "plugin:flowtype/recommended",
         "plugin:react/recommended",
         "plugin:jest/recommended",
+        "plugin:@typescript-eslint/recommended",
         "plugin:import/warnings"
     ],
     "plugins": [
         "react",
         "prettier",
         "jest",
-        "import",
-        "flowtype"
+        "@typescript-eslint",
+        "import"
     ],
     "env": {
         "browser": true,
@@ -23,16 +23,18 @@
         "process": true
     },
     "rules": {
-        "no-constant-condition": ["error", {
-            "checkLoops": false
-        }],
+        "@typescript-eslint/explicit-member-accessibility":  "error",
         "import/order": ["error", {
             "newlines-between": "never",
             "alphabetize": {
                 "order": "asc"
             }
         }],
-        "prettier/prettier": "error"
+        "no-constant-condition": ["error", {
+            "checkLoops": false
+        }],
+        "prettier/prettier": "error",
+        "react/prop-types": 0
     },
     "settings": {
         "import/resolver": "webpack",

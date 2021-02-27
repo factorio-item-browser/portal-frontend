@@ -4,19 +4,15 @@ const CopyPlugin = require("copy-webpack-plugin");
 const dotenv = require("dotenv");
 const HtmlInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin").default;
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const HtmlWebpackSkipAssetsPlugin = require('html-webpack-skip-assets-plugin').HtmlWebpackSkipAssetsPlugin;
+const HtmlWebpackSkipAssetsPlugin = require("html-webpack-skip-assets-plugin").HtmlWebpackSkipAssetsPlugin;
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
-const TerserPlugin = require('terser-webpack-plugin');
-const { DefinePlugin, HotModuleReplacementPlugin } = require("webpack");
+const TerserPlugin = require("terser-webpack-plugin");
+const { DefinePlugin } = require("webpack");
 
 module.exports = (env, argv) => {
     const currentPath = path.join(__dirname);
     const isProduction = argv.mode === "production";
-    const entryPoints = {
-        main: `${currentPath}/src/index.jsx`,
-        images: `${currentPath}/src/style/partial/images.scss`,
-    };
 
     const envFilePath = isProduction ? `${currentPath}/.env` : `${currentPath}/.env.development`;
     const envFile = dotenv.config({ path: envFilePath }).parsed || {};
@@ -26,7 +22,10 @@ module.exports = (env, argv) => {
     }
 
     return {
-        entry: isProduction ? entryPoints : [entryPoints.main, entryPoints.images],
+        entry: {
+            main: `${currentPath}/src/index.tsx`,
+            images: `${currentPath}/src/style/partial/images.scss`,
+        },
         optimization: {
             minimizer: [
                 new TerserPlugin({
@@ -45,12 +44,12 @@ module.exports = (env, argv) => {
             filename: isProduction ? "asset/js/[name].[contenthash].js" : "asset/js/[name].js",
         },
         resolve: {
-            extensions: [".jpg", ".js", ".json", ".jsx", ".png", ".scss"],
+            extensions: [".jpg", ".js", ".json", ".jsx", ".png", ".svg", ".ts", ".tsx"],
         },
         module: {
             rules: [
                 {
-                    test: /\.jsx?$/,
+                    test: /\.tsx?$/,
                     exclude: /node_modules/,
                     use: [
                         "babel-loader",
@@ -98,7 +97,6 @@ module.exports = (env, argv) => {
             ],
         },
         plugins: [
-            ...(isProduction ? [] : [new HotModuleReplacementPlugin()]),
             new CleanWebpackPlugin(),
             new CopyPlugin({
                 patterns: [
@@ -136,5 +134,5 @@ module.exports = (env, argv) => {
             historyApiFallback: true
         },
         devtool: isProduction ? false : "source-map",
-    }
+    };
 };
