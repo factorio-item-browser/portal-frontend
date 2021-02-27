@@ -100,4 +100,4 @@ const SettingsNewPage = (): React$Node => {
     );
 };
 
-export default observer(SettingsNewPage);
+export default (observer(SettingsNewPage): typeof SettingsNewPage);

@@ -17,7 +17,7 @@ type Props = {
  * The component representing a link to an entity.
  * @constructor
  */
-const EntityLink = ({ type, name, children, ...props }: Props, ref: ElementRef) => {
+const EntityLink = ({ type, name, children, ...props }: Props, ref: ElementRef): React$Node => {
     const { route, params } = getRouteAndParamsForEntity(type, name);
 
     return (

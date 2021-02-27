@@ -1,7 +1,8 @@
 // @flow
 
+import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon, IconDefinition } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React from "react";
@@ -14,7 +15,7 @@ type Props = {
     children: React$Node,
     fullWidth?: boolean,
     error?: boolean,
-    icon?: IconDefinition,
+    icon?: IconProp,
 };
 
 /**

@@ -7,7 +7,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackSkipAssetsPlugin = require('html-webpack-skip-assets-plugin').HtmlWebpackSkipAssetsPlugin;
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
-const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const TerserPlugin = require('terser-webpack-plugin');
 const { DefinePlugin, HotModuleReplacementPlugin } = require("webpack");
 
@@ -43,10 +42,10 @@ module.exports = (env, argv) => {
         output: {
             path: `${currentPath}/build`,
             publicPath: "/",
-            filename: isProduction ? "asset/js/[name].[hash].js" : "asset/js/[name].js",
+            filename: isProduction ? "asset/js/[name].[contenthash].js" : "asset/js/[name].js",
         },
         resolve: {
-            extensions: [".jpg", ".js", ".json", ".jsx", ".png", ".scss"]
+            extensions: [".jpg", ".js", ".json", ".jsx", ".png", ".scss"],
         },
         module: {
             rules: [
@@ -62,9 +61,6 @@ module.exports = (env, argv) => {
                     use: [
                         {
                             loader: MiniCssExtractPlugin.loader,
-                            options: {
-                                hmr: !isProduction,
-                            },
                         },
                         "css-loader",
                         "postcss-loader",
@@ -73,8 +69,8 @@ module.exports = (env, argv) => {
                 },
                 {
                     test: /inline\/.*\.(png|svg|jpg|gif)$/,
+                    type: "asset/inline",
                     use: [
-                        "url-loader",
                         {
                             loader: "image-webpack-loader",
                             options: {
@@ -86,14 +82,11 @@ module.exports = (env, argv) => {
                 {
                     test: /\.(png|svg|jpg|gif)$/,
                     exclude: /inline/,
+                    type: "asset/resource",
+                    generator: {
+                        filename: "asset/image/[name].[ext]",
+                    },
                     use: [
-                        {
-                            loader: "file-loader",
-                            options: {
-                                name: "asset/image/[name].[ext]",
-                                esModule: false,
-                            },
-                        },
                         {
                             loader: "image-webpack-loader",
                             options: {
@@ -117,10 +110,12 @@ module.exports = (env, argv) => {
             }),
             new DefinePlugin(envVars),
             new MiniCssExtractPlugin({
-                filename: isProduction ? "asset/css/[name].[hash].css" : "asset/css/[name].css",
+                filename: isProduction ? "asset/css/[name].[contenthash].css" : "asset/css/[name].css",
             }),
             new HtmlWebpackPlugin({
                 template: `${currentPath}/src/index.ejs`,
+                inject: "body",
+                scriptLoading: "defer",
             }),
             new HtmlWebpackSkipAssetsPlugin({
                 skipAssets: [
@@ -131,9 +126,6 @@ module.exports = (env, argv) => {
                 filter(fileName) {
                     return isProduction && (fileName === "index.html" || fileName.includes("main"));
                 }
-            }),
-            new ScriptExtHtmlWebpackPlugin({
-                defaultAttribute: "defer",
             }),
             new AsyncCssPlugin(),
         ],

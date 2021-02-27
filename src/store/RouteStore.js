@@ -1,6 +1,6 @@
 // @flow
 
-import { action, computed, observable, runInAction } from "mobx";
+import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import { createContext } from "react";
 import { getI18n } from "react-i18next";
 import { constants } from "router5";
@@ -27,48 +27,33 @@ const REGEX_PATH_COMBINATION_ID = /^\/([0-9a-zA-Z]{22})(\/|$)/;
  * The store handling the pages, including routing between them.
  */
 export class RouteStore {
-    /**
-     * @private
-     */
+    /** @private */
     _portalApi: PortalApi;
-
-    /**
-     * @private
-     */
+    /** @private */
     _router: Router;
-
-    /**
-     * @private
-     */
+    /** @private */
     _storageManager: StorageManager;
-
-    /**
-     * @private
-     */
+    /** @private */
     _initHandlers: Set<InitHandler> = new Set();
 
     /**
      * The current route which is displayed.
      */
-    @observable
     currentRoute: string = "";
 
     /**
      * The fatal error which occurred.
      */
-    @observable
     fatalError: string = "";
 
     /**
      * The target which currently have the loading circle.
      */
-    @observable
     loadingCircleTarget: ?ElementRef = null;
 
     /**
      * The currently loaded setting.
      */
-    @observable
     setting: SettingMetaData = {
         combinationId: "",
         name: "Vanilla",
@@ -79,7 +64,6 @@ export class RouteStore {
     /**
      * The last used setting in case the current one is temporary.
      */
-    @observable
     lastUsedSetting: SettingMetaData = {
         combinationId: "",
         name: "Vanilla",
@@ -91,7 +75,6 @@ export class RouteStore {
      * The locale to use for the page.
      * @type {string}
      */
-    @observable
     locale: string = "en";
 
     constructor(portalApi: PortalApi, router: Router, storageManager: StorageManager) {
@@ -99,26 +82,35 @@ export class RouteStore {
         this._router = router;
         this._storageManager = storageManager;
 
+        makeObservable(this, {
+            _handleGlobalRouteChange: action,
+            _initializeSession: action,
+            currentRoute: observable,
+            fatalError: observable,
+            handlePortalApiError: action,
+            hasUnknownRoute: computed,
+            isInitiallyLoading: computed,
+            lastUsedSetting: observable,
+            loadingCircleTarget: observable,
+            locale: observable,
+            setting: observable,
+            showGlobalSettingStatus: computed,
+            showLoadingCircle: action,
+            useBigHeader: computed,
+        });
+
         this._router.addGlobalChangeHandler(this._handleGlobalRouteChange.bind(this));
         this.addInitHandler(this._initializeSession.bind(this));
     }
 
-    /**
-     * @private
-     */
-    @action
+    /** @private */
     _handleGlobalRouteChange() {
         this.currentRoute = this._router.currentRoute;
         this.loadingCircleTarget = null;
         window.scrollTo(0, 0);
     }
 
-    /**
-     * Initializes the session
-     * @param {InitData} session
-     * @private
-     */
-    @action
+    /** @private */
     async _initializeSession(session: InitData) {
         this.setting = session.setting;
         this.lastUsedSetting = session.lastUsedSetting || session.setting;
@@ -143,8 +135,7 @@ export class RouteStore {
      * Whether we are still initially loading all the things.
      * @return {boolean}
      */
-    @computed
-    get isInitiallyLoading() {
+    get isInitiallyLoading(): boolean {
         return this.currentRoute === "";
     }
 
@@ -152,8 +143,7 @@ export class RouteStore {
      * Whether we are currently viewing an unknown route.
      * @return {boolean}
      */
-    @computed
-    get hasUnknownRoute() {
+    get hasUnknownRoute(): boolean {
         return this.currentRoute === constants.UNKNOWN_ROUTE;
     }
 
@@ -184,9 +174,7 @@ export class RouteStore {
         }
     }
 
-    /**
-     * @private
-     */
+    /** @private */
     _detectInitialCombinationId(): void {
         const match = window.location.pathname.match(REGEX_PATH_COMBINATION_ID);
         if (match && match[1]) {
@@ -247,15 +235,13 @@ export class RouteStore {
      * Whether to use the big version of the header.
      * @returns {boolean}
      */
-    @computed
-    get useBigHeader() {
+    get useBigHeader(): boolean {
         return this.currentRoute === ROUTE_INDEX;
     }
 
     /**
      * Shows the loading circle overlaying the passed reference object.
      */
-    @action
     showLoadingCircle(ref: ?ElementRef): void {
         this.loadingCircleTarget = ref;
     }
@@ -263,7 +249,6 @@ export class RouteStore {
     /**
      * Returns whether the global setting status should be shown.
      */
-    @computed
     get showGlobalSettingStatus(): boolean {
         return ![ROUTE_SETTINGS, ROUTE_SETTINGS_NEW].includes(this.currentRoute);
     }
@@ -289,5 +274,5 @@ export class RouteStore {
     }
 }
 
-export const routeStore = new RouteStore(portalApi, router, storageManager);
-export const routeStoreContext = new createContext<RouteStore>(routeStore);
+export const routeStore: RouteStore = new RouteStore(portalApi, router, storageManager);
+export const routeStoreContext: React$Context<RouteStore> = new createContext<RouteStore>(routeStore);

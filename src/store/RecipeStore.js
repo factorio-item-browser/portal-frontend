@@ -1,6 +1,6 @@
 // @flow
 
-import { action, computed, observable, runInAction } from "mobx";
+import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import { createContext } from "react";
 import { State } from "router5";
 import PaginatedList from "../class/PaginatedList";
@@ -25,31 +25,21 @@ const emptyRecipeMachinesData: RecipeMachinesData = {
  * The store managing the recipes.
  */
 export class RecipeStore {
-    /**
-     * @private
-     */
+    /** @private */
     _portalApi: PortalApi;
-
-    /**
-     * @private
-     */
+    /** @private */
     _routeStore: RouteStore;
-
-    /**
-     * @private
-     */
+    /** @private */
     _sidebarStore: SidebarStore;
 
     /**
      * The current recipe details to be displayed.
      */
-    @observable
     currentRecipeDetails: RecipeDetailsData = emptyRecipeDetails;
 
     /**
      * The paginated list of machines able to craft the current recipe.
      */
-    @observable
     paginatedMachinesList: PaginatedList<MachineData, RecipeMachinesData>;
 
     constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore, sidebarStore: SidebarStore) {
@@ -57,12 +47,17 @@ export class RecipeStore {
         this._routeStore = routeStore;
         this._sidebarStore = sidebarStore;
 
+        makeObservable(this, {
+            _handlePortalApiError: action,
+            currentRecipeDetails: observable,
+            hasNotFoundError: computed,
+            paginatedMachinesList: observable,
+        });
+
         router.addRoute(ROUTE_RECIPE_DETAILS, "/recipe/:name", this._handleRouteChange.bind(this));
     }
 
-    /**
-     * @private
-     */
+    /** @private */
     async _handleRouteChange(state: State): Promise<void> {
         const { name } = state.params;
 
@@ -88,10 +83,7 @@ export class RecipeStore {
         }
     }
 
-    /**
-     * @private
-     */
-    @action
+    /** @private */
     _handlePortalApiError(error: PortalApiError): RecipeMachinesData {
         if (error.code === 404) {
             this.currentRecipeDetails = emptyRecipeDetails;
@@ -104,11 +96,10 @@ export class RecipeStore {
     /**
      * Returns whether a not found error is present.
      */
-    @computed
     get hasNotFoundError(): boolean {
         return this.currentRecipeDetails.name === "";
     }
 }
 
-export const recipeStore = new RecipeStore(portalApi, router, routeStore, sidebarStore);
-export const recipeStoreContext = createContext<RecipeStore>(recipeStore);
+export const recipeStore: RecipeStore = new RecipeStore(portalApi, router, routeStore, sidebarStore);
+export const recipeStoreContext: React$Context<RecipeStore> = createContext<RecipeStore>(recipeStore);

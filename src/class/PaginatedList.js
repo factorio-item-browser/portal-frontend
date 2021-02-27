@@ -1,6 +1,6 @@
 // @flow
 
-import { action, computed, observable, runInAction } from "mobx";
+import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import type { ResultsData } from "../type/transfer";
 import { PortalApiError } from "./PortalApi";
 
@@ -14,39 +14,34 @@ type ErrorHandler<T> = (PortalApiError) => T;
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
 class PaginatedList<TEntity, TData: { ...ResultsData<TEntity>, ... }> {
-    @observable
     results: TEntity[] = [];
-
-    @observable
     numberOfResults: number = 0;
-
-    @observable
     currentPage: number = 0;
-
-    @observable
     isLoading: boolean = false;
 
-    /**
-     * @private
-     */
+    /** @private */
     _dataFetcher: DataFetcher<TData>;
-
-    /**
-     * @private
-     */
+    /** @private */
     _errorHandler: ErrorHandler<TData>;
 
     constructor(dataFetcher: DataFetcher<TData>, errorHandler: ErrorHandler<TData>) {
         this._dataFetcher = dataFetcher;
         this._errorHandler = errorHandler;
+
+        makeObservable(this, {
+            currentPage: observable,
+            hasNextPage: computed,
+            isLoading: observable,
+            numberOfResults: observable,
+            requestNextPage: action,
+            results: observable,
+        });
     }
 
-    @computed
     get hasNextPage(): boolean {
         return this.results.length < this.numberOfResults;
     }
 
-    @action
     async requestNextPage(): Promise<TData> {
         this.isLoading = true;
 

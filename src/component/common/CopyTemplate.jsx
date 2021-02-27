@@ -1,17 +1,10 @@
 // @flow
 
 import { observer } from "mobx-react-lite";
-import React, { createRef, useCallback } from "react";
+import React, { createRef } from "react";
+import { useSelectClick } from "../../util/hooks";
 
 import "./CopyTemplate.scss";
-
-function selectText(element: Element): void {
-    const selection = window.getSelection();
-    const range = document.createRange();
-    range.selectNodeContents(element);
-    selection.removeAllRanges();
-    selection.addRange(range);
-}
 
 type Props = {
     label: string,
@@ -25,12 +18,7 @@ type Props = {
  */
 const CopyTemplate = ({ label, template, description }: Props): React$Node => {
     const templateRef = createRef();
-
-    const handleClick = useCallback(() => {
-        if (templateRef.current) {
-            selectText(templateRef.current);
-        }
-    }, [templateRef]);
+    const handleClick = useSelectClick(templateRef);
 
     return (
         <div className="copy-template" onClick={handleClick}>

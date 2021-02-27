@@ -1,8 +1,8 @@
 // @flow
 
-export type ItemType = "item" | "fluid";
+export type ItemType = "item" | "fluid" | string;
 export type NamesByTypes = { [string]: string[] };
-export type SidebarEntityType = "item" | "fluid" | "recipe";
+export type SidebarEntityType = "item" | "fluid" | "recipe" | string;
 
 export type ResultsData<T> = {
     results: T[],

@@ -1,33 +1,31 @@
 // @flow
 
-import { loadAsync } from "jszip";
-import { inflate } from "pako";
-import { SmartBuffer } from "smart-buffer";
+import ByteBuffer from "byte-buffer";
+import { Unzip, UnzipInflate, decompressSync } from "fflate";
 import { ERROR_SAVEGAME_INVALID_FILE, ERROR_SAVEGAME_UNSUPPORTED_VERSION } from "../const/error";
 import type { SaveGameMod } from "../type/savegame";
-
 class SaveGameBuffer {
     /** @private */
-    _buffer: SmartBuffer;
+    _buffer: ByteBuffer;
 
-    constructor(buffer: Buffer) {
-        this._buffer = SmartBuffer.fromBuffer(buffer);
+    constructor(data: Uint8Array) {
+        this._buffer = new ByteBuffer(data, ByteBuffer.LITTLE_ENDIAN);
     }
 
     readShort(compressed: boolean = true): number {
         if (compressed) {
-            const byte = this._buffer.readUInt8();
-            return byte !== 255 ? byte : this._buffer.readUInt16LE();
+            const byte = this._buffer.readUnsignedByte();
+            return byte !== 255 ? byte : this._buffer.readUnsignedShort();
         }
-        return this._buffer.readUInt16LE();
+        return this._buffer.readUnsignedShort();
     }
 
     readInteger(compressed: boolean = true): number {
         if (compressed) {
-            const byte = this._buffer.readUInt8();
-            return byte !== 255 ? byte : this._buffer.readUInt32LE();
+            const byte = this._buffer.readUnsignedByte();
+            return byte !== 255 ? byte : this._buffer.readUnsignedInt();
         }
-        return this._buffer.readUInt32LE();
+        return this._buffer.readUnsignedInt();
     }
 
     readVersion(compressed: boolean = true): Version {
@@ -40,7 +38,7 @@ class SaveGameBuffer {
     }
 
     seek(offset: number): void {
-        this._buffer.readOffset += offset;
+        this._buffer.seek(offset);
     }
 
     seekString(): void {
@@ -96,33 +94,42 @@ class SaveGameReader {
      * @private
      */
     async _extractLevelDatFile(file: File): Promise<SaveGameBuffer> {
-        let zip;
-        try {
-            zip = await loadAsync(file);
-        } catch (e) {
-            throw ERROR_SAVEGAME_INVALID_FILE;
-        }
+        const fileContent = await this._readUploadedFile(file);
 
-        for (const fileName of Object.keys(zip.files)) {
-            if (fileName.endsWith("/level.dat0")) {
-                try {
-                    const rawData = inflate(await zip.files[fileName].async("uint8array"));
-                    return new SaveGameBuffer(Buffer.from(rawData));
-                } catch (e) {
-                    throw ERROR_SAVEGAME_INVALID_FILE;
+        return new Promise((resolve, reject): void => {
+            const unzipper = new Unzip();
+            unzipper.register(UnzipInflate);
+            unzipper.onfile = (file) => {
+                if (file.name.endsWith("/level.dat0") || file.name.endsWith("/level.dat")) {
+                    file.ondata = (error: Error, data: Uint8Array): void => {
+                        if (error) {
+                            return reject(ERROR_SAVEGAME_INVALID_FILE);
+                        }
+                        if (file.name.endsWith("/level.dat0")) {
+                            data = decompressSync(data);
+                        }
+                        resolve(new SaveGameBuffer(data));
+                    };
+                    file.start();
                 }
-            }
+            };
+            unzipper.push(fileContent, true);
+            reject(ERROR_SAVEGAME_INVALID_FILE);
+        });
+    }
 
-            if (fileName.endsWith("/level.dat")) {
-                try {
-                    return new SaveGameBuffer(Buffer.from(await zip.files[fileName].async("uint8array")));
-                } catch (e) {
-                    throw ERROR_SAVEGAME_INVALID_FILE;
-                }
-            }
-        }
-
-        throw ERROR_SAVEGAME_INVALID_FILE;
+    /** @private */
+    async _readUploadedFile(file: File): Promise<Uint8Array> {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.onload = (): void => {
+                resolve(new Uint8Array((fileReader.result: any)));
+            };
+            fileReader.onerror = (): void => {
+                reject(ERROR_SAVEGAME_INVALID_FILE);
+            };
+            fileReader.readAsArrayBuffer(file);
+        });
     }
 
     /**

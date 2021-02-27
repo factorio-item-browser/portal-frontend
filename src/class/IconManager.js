@@ -126,4 +126,4 @@ export class IconManager {
     }
 }
 
-export const iconManager = new IconManager(portalApi);
+export const iconManager: IconManager = new IconManager(portalApi);

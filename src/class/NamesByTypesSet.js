@@ -3,14 +3,10 @@
 import type { NamesByTypes } from "../type/transfer";
 
 class NamesByTypesSet {
-    /**
-     * @private
-     */
-    _values = new Map<string, Set<string>>();
+    /** @private */
+    _values: Map<string, Set<string>> = new Map<string, Set<string>>();
 
-    /**
-     * @private
-     */
+    /** @private */
     _getValuesOfType(type: string): Set<string> {
         let values = this._values.get(type);
         if (!values) {

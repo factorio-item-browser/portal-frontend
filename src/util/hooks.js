@@ -73,3 +73,19 @@ export function useTooltip(type: string, name: string, ref: ElementRef): UseTool
         }),
     };
 }
+
+/**
+ * Uses a callback to select the text of the specified element.
+ */
+export function useSelectClick(ref: ElementRef): () => void {
+    return useCallback(() => {
+        const element = ref.current;
+        if (element) {
+            const selection = window.getSelection();
+            const range = document.createRange();
+            range.selectNodeContents(element);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+    }, [ref]);
+}

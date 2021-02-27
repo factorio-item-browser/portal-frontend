@@ -1,6 +1,7 @@
 // @flow
 
-import { FontAwesomeIcon, IconDefinition } from "@fortawesome/react-fontawesome";
+import type { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React from "react";
@@ -13,7 +14,7 @@ type Props = {
     label: string,
     route: string,
     params?: { [string]: any },
-    icon: IconDefinition,
+    icon: IconProp,
     primary?: boolean,
     secondary?: boolean,
     highlighted?: boolean,

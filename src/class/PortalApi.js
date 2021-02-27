@@ -352,4 +352,4 @@ export class PortalApiError extends Error {
     }
 }
 
-export const portalApi = new PortalApi(storageManager);
+export const portalApi: PortalApi = new PortalApi(storageManager);

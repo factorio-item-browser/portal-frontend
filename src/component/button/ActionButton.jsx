@@ -1,7 +1,7 @@
 // @flow
 
+import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-import { IconDefinition } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import type { ElementRef } from "../../type/common";
@@ -10,7 +10,7 @@ import Button from "./Button";
 type Props = {
     label: string,
     loadingLabel: string,
-    icon?: IconDefinition,
+    icon?: IconProp,
     primary?: boolean,
     secondary?: boolean,
     spacing?: boolean,
