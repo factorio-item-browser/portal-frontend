@@ -2,20 +2,24 @@ import { action, makeObservable, observable, runInAction } from "mobx";
 import { createContext } from "react";
 import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
-import { ROUTE_INDEX } from "../const/route";
+import { Route } from "../const/route";
 import { EntityData } from "../type/transfer";
-import { RouteStore, routeStore } from "./RouteStore";
+import { errorStore, ErrorStore } from "./ErrorStore";
 
 export class IndexStore {
+    private readonly errorStore: ErrorStore;
     private readonly portalApi: PortalApi;
-    private readonly routeStore: RouteStore;
+    private readonly router: Router;
 
+    /** The random items to display on the index page. */
     public randomItems: EntityData[] = [];
+    /** Whether we are currently loading new random items. */
     public isRandomizing = false;
 
-    public constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore) {
+    public constructor(errorStore: ErrorStore, portalApi: PortalApi, router: Router) {
+        this.errorStore = errorStore;
         this.portalApi = portalApi;
-        this.routeStore = routeStore;
+        this.router = router;
 
         makeObservable(this, {
             isRandomizing: observable,
@@ -23,7 +27,7 @@ export class IndexStore {
             randomizeItems: action,
         });
 
-        router.addRoute(ROUTE_INDEX, "/", this.handleRouteChange.bind(this));
+        router.addRoute(Route.Index, "/", this.handleRouteChange.bind(this));
     }
 
     private async handleRouteChange(): Promise<void> {
@@ -32,6 +36,9 @@ export class IndexStore {
         }
     }
 
+    /**
+     * Randomizes the items displayed on the index page.
+     */
     public async randomizeItems(): Promise<void> {
         if (this.isRandomizing) {
             return;
@@ -45,10 +52,10 @@ export class IndexStore {
                 this.randomItems = randomItems;
             });
         } catch (e) {
-            this.routeStore.handlePortalApiError(e);
+            this.errorStore.handleError(e);
         }
     }
 }
 
-export const indexStore = new IndexStore(portalApi, router, routeStore);
-export const indexStoreContext = createContext<IndexStore>(indexStore);
+export const indexStore = new IndexStore(errorStore, portalApi, router);
+export const indexStoreContext = createContext(indexStore);

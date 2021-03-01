@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React, { FC, ReactNode, useContext, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { iconStoreContext } from "../../../store/IconStore";
 import { sidebarStoreContext } from "../../../store/SidebarStore";
 import { tooltipStoreContext } from "../../../store/TooltipStore";
 import { SidebarEntityData } from "../../../type/transfer";
@@ -61,14 +62,16 @@ type Props = {
  */
 const SidebarEntity: FC<Props> = ({ entity }) => {
     const { t } = useTranslation();
+    const iconStore = useContext(iconStoreContext);
     const sidebarStore = useContext(sidebarStoreContext);
     const tooltipStore = useContext(tooltipStoreContext);
 
     const iconRef = useRef<HTMLDivElement>(null);
-    const entityId = sidebarStore.getIdForEntity(entity);
+    const entityId = sidebarStore.buildIdForEntity(entity);
+    const highlightedEntity = iconStore.highlightedEntity;
     const classes = classNames({
         "sidebar-entity": true,
-        "highlighted": entityId === sidebarStore.highlightedEntityId,
+        "highlighted": entity.type === highlightedEntity.type && entity.name === highlightedEntity.name,
     });
 
     return (

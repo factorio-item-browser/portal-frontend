@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import React, { FC, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { ROUTE_SETTINGS } from "../../../const/route";
-import { routeStoreContext } from "../../../store/RouteStore";
+import { globalStoreContext } from "../../../store/GlobalStore";
 import { getTranslatedSettingName } from "../../../util/setting";
 import Link from "../../link/Link";
 
@@ -14,7 +14,7 @@ import "./SettingsLink.scss";
  * The component representing the link to the settings in the big header.
  */
 const SettingsLink: FC = () => {
-    const routeStore = useContext(routeStoreContext);
+    const globalStore = useContext(globalStoreContext);
     const { t } = useTranslation();
 
     return (
@@ -22,7 +22,7 @@ const SettingsLink: FC = () => {
             <div className="link-icon">
                 <FontAwesomeIcon icon={faCogs} />
             </div>
-            <div className="label">{t("sidebar.setting", { name: getTranslatedSettingName(routeStore.setting) })}</div>
+            <div className="label">{t("sidebar.setting", { name: getTranslatedSettingName(globalStore.setting) })}</div>
         </Link>
     );
 };

@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React, { ForwardRefRenderFunction, RefObject, useContext, useRef } from "react";
-import { itemStoreContext } from "../../store/ItemStore";
+import { iconStoreContext } from "../../store/IconStore";
 import { formatAmount } from "../../util/format";
 import { useIcon, useTooltip } from "../../util/hooks";
 import EntityLink from "../link/EntityLink";
@@ -18,7 +18,7 @@ type Props = {
  * The component representing an icon in a compact recipe, including an amount and a background.
  */
 const CompactRecipeIcon: ForwardRefRenderFunction<HTMLAnchorElement, Props> = ({ type, name, amount }, ref) => {
-    const itemStore = useContext(itemStoreContext);
+    const iconStore = useContext(iconStoreContext);
 
     let iconRef: RefObject<HTMLAnchorElement>;
     if (ref && "current" in ref) {
@@ -33,7 +33,7 @@ const CompactRecipeIcon: ForwardRefRenderFunction<HTMLAnchorElement, Props> = ({
     const classes = classNames({
         "compact-recipe-icon": true,
         [iconClass]: true,
-        "highlighted": itemStore.highlightedEntity.type === type && itemStore.highlightedEntity.name === name,
+        "highlighted": iconStore.highlightedEntity.type === type && iconStore.highlightedEntity.name === name,
     });
 
     return (

@@ -8,19 +8,11 @@ export class TooltipStore {
     private readonly portalApi: PortalApi;
     private disableFlags: Map<string, boolean> = new Map();
 
-    /**
-     * The target for which a tooltip was requested. This target may still be waiting for its data.
-     */
+    /** The target for which a tooltip was requested. This target may still be waiting for its data. */
     public requestedTarget: RefObject<Element> | null = null;
-
-    /**
-     * The target for which the data has been fetched. This target has its data available.
-     */
+    /** The target for which the data has been fetched. This target has its data available. */
     public fetchedTarget: RefObject<Element> | null = null;
-
-    /**
-     * The fetched data for the tooltip.
-     */
+    /** The fetched data for the tooltip. */
     public fetchedData: EntityData | null = null;
 
     public constructor(portalApi: PortalApi, router: Router) {
@@ -44,6 +36,9 @@ export class TooltipStore {
         this.hideTooltip();
     }
 
+    /**
+     * Whether showing a tooltip is currently enabled.
+     */
     public get isEnabled(): boolean {
         for (const flag of this.disableFlags.values()) {
             if (flag) {
@@ -54,6 +49,20 @@ export class TooltipStore {
         return true;
     }
 
+    /**
+     * Whether a tooltip is currently available to be shown.
+     */
+    public get isTooltipAvailable(): boolean {
+        return (
+            !!this.requestedTarget &&
+            !!this.fetchedTarget &&
+            this.requestedTarget.current === this.fetchedTarget.current
+        );
+    }
+
+    /**
+     * Sets a named flag to disable or re-enable the tooltips.
+     */
     public setDisableFlag(name: string, isDisabled: boolean): void {
         this.disableFlags.set(name, isDisabled);
         if (isDisabled) {
@@ -61,6 +70,9 @@ export class TooltipStore {
         }
     }
 
+    /**
+     * Shows a tooltip on the target.
+     */
     public async showTooltip(target: RefObject<Element>, type: string, name: string): Promise<void> {
         if (!this.isEnabled) {
             return;
@@ -87,16 +99,11 @@ export class TooltipStore {
         }
     }
 
+    /**
+     * Hides the tooltip, if it is currently shown.
+     */
     public hideTooltip(): void {
         this.requestedTarget = null;
-    }
-
-    public get isTooltipAvailable(): boolean {
-        return (
-            !!this.requestedTarget &&
-            !!this.fetchedTarget &&
-            this.requestedTarget.current === this.fetchedTarget.current
-        );
     }
 }
 

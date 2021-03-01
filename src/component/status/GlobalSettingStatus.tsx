@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { INTERVAL_CHECK_SETTING_STATUS } from "../../const/config";
 import { SETTING_STATUS_ERRORED, SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN } from "../../const/settingStatus";
 import { STATUS_ERROR, STATUS_WARNING } from "../../const/status";
-import { routeStoreContext } from "../../store/RouteStore";
+import { globalStoreContext } from "../../store/GlobalStore";
 import { useInterval } from "../../util/hooks";
 import Status from "./Status";
 
@@ -13,13 +13,13 @@ import Status from "./Status";
  */
 const GlobalSettingStatus: FC = () => {
     const { t } = useTranslation();
-    const routeStore = useContext(routeStoreContext);
-    const setting = routeStore.setting;
+    const globalStore = useContext(globalStoreContext);
+    const setting = globalStore.setting;
 
     useInterval(
         INTERVAL_CHECK_SETTING_STATUS * 1000,
         async (): Promise<void> => {
-            await routeStore.checkSettingStatus();
+            await globalStore.checkSettingStatus();
         },
     );
 

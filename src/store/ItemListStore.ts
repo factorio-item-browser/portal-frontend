@@ -1,21 +1,27 @@
 import { makeObservable, observable } from "mobx";
 import { createContext } from "react";
 import { PaginatedList } from "../class/PaginatedList";
-import { portalApi, PortalApi, PortalApiError } from "../class/PortalApi";
+import { portalApi, PortalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
-import { ROUTE_ITEM_LIST } from "../const/route";
+import { Route } from "../const/route";
 import { ItemListData, ItemMetaData } from "../type/transfer";
-import { routeStore, RouteStore } from "./RouteStore";
+import { errorStore, ErrorStore } from "./ErrorStore";
+
+const emptyItemList: ItemListData = {
+    results: [],
+    numberOfResults: 0,
+};
 
 export class ItemListStore {
+    private readonly errorStore: ErrorStore;
     private readonly portalApi: PortalApi;
-    private readonly routeStore: RouteStore;
 
+    /** The paginated list of all items. */
     public paginatedItemList: PaginatedList<ItemMetaData, ItemListData>;
 
-    public constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore) {
+    public constructor(errorStore: ErrorStore, portalApi: PortalApi, router: Router) {
+        this.errorStore = errorStore;
         this.portalApi = portalApi;
-        this.routeStore = routeStore;
 
         makeObservable(this, {
             paginatedItemList: observable,
@@ -23,10 +29,10 @@ export class ItemListStore {
 
         this.paginatedItemList = new PaginatedList(
             (page) => this.portalApi.getItemList(page),
-            this.handlePortalApiError.bind(this),
+            this.errorStore.createPaginatesListErrorHandler(emptyItemList),
         );
 
-        router.addRoute(ROUTE_ITEM_LIST, "/items", this.handleRouteChange.bind(this));
+        router.addRoute(Route.ItemList, "/items", this.handleRouteChange.bind(this));
     }
 
     private async handleRouteChange(): Promise<void> {
@@ -34,15 +40,7 @@ export class ItemListStore {
             await this.paginatedItemList.requestNextPage();
         }
     }
-
-    private handlePortalApiError(error: PortalApiError): ItemListData {
-        this.routeStore.handlePortalApiError(error);
-        return {
-            results: [],
-            numberOfResults: 0,
-        };
-    }
 }
 
-export const itemListStore = new ItemListStore(portalApi, router, routeStore);
-export const itemListStoreContext = createContext<ItemListStore>(itemListStore);
+export const itemListStore = new ItemListStore(errorStore, portalApi, router);
+export const itemListStoreContext = createContext(itemListStore);

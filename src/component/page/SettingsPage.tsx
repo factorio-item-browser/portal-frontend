@@ -47,8 +47,8 @@ const SettingsPage: FC = () => {
                 <OptionsList>
                     <OptionSettingId
                         settings={settingsStore.availableSettings}
-                        value={settingsStore.selectedSettingId}
-                        onChange={(settingId) => settingsStore.changeSettingId(settingId)}
+                        value={settingsStore.selectedCombinationId}
+                        onChange={(settingId) => settingsStore.changeCombinationId(settingId)}
                         loading={settingsStore.isLoadingSettingDetails}
                     />
                 </OptionsList>
@@ -89,7 +89,7 @@ const SettingsPage: FC = () => {
                 })}
             >
                 <OptionsList>
-                    <OptionCombinationId value={settingsStore.selectedSettingId} />
+                    <OptionCombinationId value={settingsStore.selectedCombinationId} />
 
                     <OptionSettingName
                         value={settingsStore.selectedOptions.name}

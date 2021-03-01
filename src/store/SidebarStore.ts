@@ -1,12 +1,10 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import { createContext } from "react";
-import { State } from "router5";
 import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import { StorageManager, storageManager } from "../class/StorageManager";
-import { ROUTE_ITEM_DETAILS, ROUTE_RECIPE_DETAILS } from "../const/route";
 import { InitData, SidebarEntityData, SidebarEntityType } from "../type/transfer";
-import { RouteStore, routeStore } from "./RouteStore";
+import { globalStore, GlobalStore } from "./GlobalStore";
 import { TooltipStore, tooltipStore } from "./TooltipStore";
 
 export class SidebarStore {
@@ -14,14 +12,15 @@ export class SidebarStore {
     private readonly storageManager: StorageManager;
     private readonly tooltipStore: TooltipStore;
 
+    /** The entities of the sidebar. */
     public entities = new Map<string, SidebarEntityData>();
-    public highlightedEntityId = "";
+    /** Whether the sidebar is currently opened (mobile only) */
     public isSidebarOpened = false;
 
     public constructor(
+        globalStore: GlobalStore,
         portalApi: PortalApi,
         router: Router,
-        routeStore: RouteStore,
         storageManager: StorageManager,
         tooltipStore: TooltipStore,
     ) {
@@ -29,13 +28,11 @@ export class SidebarStore {
         this.storageManager = storageManager;
         this.tooltipStore = tooltipStore;
 
-        makeObservable<this, "assignEntities" | "handleGlobalRouteChange" | "validateEntities">(this, {
+        makeObservable<this, "assignEntities" | "validateEntities">(this, {
             addViewedEntity: action,
             assignEntities: action,
             closeSidebar: action,
             entities: observable,
-            handleGlobalRouteChange: action,
-            highlightedEntityId: observable,
             isSidebarOpened: observable,
             openSidebar: action,
             pinEntity: action,
@@ -46,8 +43,8 @@ export class SidebarStore {
             validateEntities: action,
         });
 
+        globalStore.addInitHandler(this.handleInit.bind(this));
         router.addGlobalChangeHandler(this.handleGlobalRouteChange.bind(this));
-        routeStore.addInitHandler(this.handleInit.bind(this));
         this.storageManager.sidebarEntitiesChangeHandler = this.handleSidebarEntitiesChange.bind(this);
     }
 
@@ -57,20 +54,8 @@ export class SidebarStore {
         this.storageManager.sidebarEntities = [...this.pinnedEntities, ...this.unpinnedEntities];
     }
 
-    private handleGlobalRouteChange(state: State) {
+    private handleGlobalRouteChange() {
         this.closeSidebar();
-        const { type, name } = state.params;
-
-        switch (state.name) {
-            case ROUTE_RECIPE_DETAILS:
-                this.highlightedEntityId = `recipe-${name}`;
-                break;
-            case ROUTE_ITEM_DETAILS:
-                this.highlightedEntityId = `${type}-${name}`;
-                break;
-            default:
-                this.highlightedEntityId = "";
-        }
     }
 
     private handleSidebarEntitiesChange(entities: SidebarEntityData[]): void {
@@ -81,44 +66,27 @@ export class SidebarStore {
         }
     }
 
-    public openSidebar(): void {
-        this.isSidebarOpened = true;
-    }
-
-    public closeSidebar(): void {
-        this.isSidebarOpened = false;
-    }
-
-    private assignEntities(entities: SidebarEntityData[]): void {
-        this.entities.clear();
-        for (const entity of entities) {
-            this.entities.set(this.getIdForEntity(entity), entity);
-        }
-        this.validateEntities();
-    }
-
+    /**
+     * The entities which are currently pinned to the sidebar.
+     */
     public get pinnedEntities(): SidebarEntityData[] {
         const entities = this.filterEntities((entity) => entity.pinnedPosition > 0);
         entities.sort((left, right) => left.pinnedPosition - right.pinnedPosition);
         return entities;
     }
 
+    /**
+     * The entities which are not pinned to the sidebar.
+     */
     public get unpinnedEntities(): SidebarEntityData[] {
         const entities = this.filterEntities((entity) => entity.pinnedPosition === 0);
         entities.sort((left, right) => right.lastViewTime.localeCompare(left.lastViewTime));
         return entities;
     }
 
-    private filterEntities(predicate: (sidebarEntities: SidebarEntityData) => boolean): SidebarEntityData[] {
-        const result = [];
-        for (const entity of this.entities.values()) {
-            if (predicate(entity)) {
-                result.push(entity);
-            }
-        }
-        return result;
-    }
-
+    /**
+     * Pins the entity to the bottom of the sidebar.
+     */
     public pinEntity(entity: SidebarEntityData): void {
         entity.pinnedPosition = this.pinnedEntities.length + 1;
 
@@ -127,6 +95,9 @@ export class SidebarStore {
         this.sendEntities();
     }
 
+    /**
+     * Unpins the entity from the sidebar.
+     */
     public unpinEntity(entity: SidebarEntityData): void {
         entity.pinnedPosition = 0;
 
@@ -135,6 +106,23 @@ export class SidebarStore {
         this.sendEntities();
     }
 
+    /**
+     * Opens the sidebar on mobile.
+     */
+    public openSidebar(): void {
+        this.isSidebarOpened = true;
+    }
+
+    /**
+     * Closes the sidebar on mobile.
+     */
+    public closeSidebar(): void {
+        this.isSidebarOpened = false;
+    }
+
+    /**
+     * Adds an entity, which have been viewed, to the sidebar.
+     */
     public addViewedEntity(type: SidebarEntityType, name: string, label: string): void {
         const id = `${type}-${name}`;
         const entity = this.entities.get(id);
@@ -155,6 +143,9 @@ export class SidebarStore {
         this.sendEntities();
     }
 
+    /**
+     * Updates the order of the entities pinned to the sidebar.
+     */
     public updatePinnedOrder(order: string[]): void {
         for (const [index, id] of order.entries()) {
             const entity = this.entities.get(id);
@@ -166,8 +157,22 @@ export class SidebarStore {
         this.sendEntities();
     }
 
-    public getIdForEntity(entity: SidebarEntityData): string {
-        return `${entity.type}-${entity.name}`;
+    private assignEntities(entities: SidebarEntityData[]): void {
+        this.entities.clear();
+        for (const entity of entities) {
+            this.entities.set(this.buildIdForEntity(entity), entity);
+        }
+        this.validateEntities();
+    }
+
+    private filterEntities(predicate: (sidebarEntities: SidebarEntityData) => boolean): SidebarEntityData[] {
+        const result = [];
+        for (const entity of this.entities.values()) {
+            if (predicate(entity)) {
+                result.push(entity);
+            }
+        }
+        return result;
     }
 
     private validateEntities(): void {
@@ -178,7 +183,7 @@ export class SidebarStore {
 
         // Cut off excessive unpinned entities.
         for (const entity of this.unpinnedEntities.slice(10)) {
-            this.entities.delete(this.getIdForEntity(entity));
+            this.entities.delete(this.buildIdForEntity(entity));
         }
     }
 
@@ -194,7 +199,14 @@ export class SidebarStore {
             }
         })();
     }
+
+    /**
+     * Returns the id to use for the sidebar entity.
+     */
+    public buildIdForEntity(entity: SidebarEntityData): string {
+        return `${entity.type}-${entity.name}`;
+    }
 }
 
-export const sidebarStore = new SidebarStore(portalApi, router, routeStore, storageManager, tooltipStore);
-export const sidebarStoreContext = createContext<SidebarStore>(sidebarStore);
+export const sidebarStore = new SidebarStore(globalStore, portalApi, router, storageManager, tooltipStore);
+export const sidebarStoreContext = createContext(sidebarStore);

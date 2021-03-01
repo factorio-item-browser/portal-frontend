@@ -7,6 +7,7 @@ import {
     NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
     PORTAL_API_URL,
 } from "../const/config";
+import { ClientFailureError, PageNotFoundError, ServerFailureError, ServiceNotAvailableError } from "../error/error";
 import {
     EntityData,
     IconsStyleData,
@@ -32,15 +33,6 @@ type ServerError = {
         message: string;
     };
 };
-
-export class PortalApiError extends Error {
-    public readonly code: number;
-
-    public constructor(statusCode: number, message: string) {
-        super(message);
-        this.code = statusCode;
-    }
-}
 
 /**
  * The class functioning as interface to the Portal API server.
@@ -75,12 +67,24 @@ export class PortalApi {
         if (typeof message !== "string") {
             message = "Unknown error";
         }
-        return Promise.reject(new PortalApiError(error.response?.status ?? 500, message));
+
+        switch (error.response?.status) {
+            case 400:
+            case 401:
+            case 409:
+                throw new ClientFailureError(message);
+            case 404:
+                throw new PageNotFoundError(message);
+            case 503:
+                throw new ServiceNotAvailableError(message);
+            case 500:
+            default:
+                throw new ServerFailureError(message);
+        }
     }
 
     /**
      * Initializes the current session.
-     * @throws {PortalApiError}
      */
     public async initializeSession(): Promise<InitData> {
         const response = await this.client.post<InitData>("/init");
@@ -89,7 +93,6 @@ export class PortalApi {
 
     /**
      * Executes a search with the specified query.
-     * @throws {PortalApiError}
      */
     public async search(query: string, page: number): Promise<SearchResultsData> {
         return this.withCache(`search-${query}-${page}`, () => {
@@ -105,7 +108,6 @@ export class PortalApi {
 
     /**
      * Fetches the style of the icons with the specified types and names.
-     * @throws {PortalApiError}
      */
     public async getIconsStyle(namesByTypes: NamesByTypes): Promise<IconsStyleData> {
         const response = await this.client.post<IconsStyleData>("/style/icons", namesByTypes);
@@ -114,7 +116,6 @@ export class PortalApi {
 
     /**
      * Fetches the recipes having the specified item as an ingredient.
-     * @throws {PortalApiError}
      */
     public async getItemIngredientRecipes(type: ItemType, name: string, page: number): Promise<ItemRecipesData> {
         return this.withCache(`ingredient-${type}-${name}-${page}`, () => {
@@ -129,7 +130,6 @@ export class PortalApi {
 
     /**
      * Fetches the recipes having the specified item as a product.
-     * @throws {PortalApiError}
      */
     public async getItemProductRecipes(type: ItemType, name: string, page: number): Promise<ItemRecipesData> {
         return this.withCache(`product-${type}-${name}-${page}`, () => {
@@ -144,7 +144,6 @@ export class PortalApi {
 
     /**
      * Fetches the list of all items.
-     * @throws {PortalApiError}
      */
     public async getItemList(page: number): Promise<ItemListData> {
         const response = await this.client.get<ItemListData>("/items", {
@@ -158,7 +157,6 @@ export class PortalApi {
 
     /**
      * Fetches random items from the server.
-     * @throws {PortalApiError}
      */
     public async getRandom(): Promise<EntityData[]> {
         const response = await this.client.get<EntityData[]>("/random", {
@@ -171,7 +169,6 @@ export class PortalApi {
 
     /**
      * Fetches the recipe details with the specified name.
-     * @throws {PortalApiError}
      */
     public async getRecipeDetails(name: string): Promise<RecipeDetailsData> {
         return this.withCache(`recipe-${name}`, () => {
@@ -181,7 +178,6 @@ export class PortalApi {
 
     /**
      * Fetches the machines able to craft the recipe.
-     * @throws {PortalApiError}
      */
     public async getRecipeMachines(name: string, page: number): Promise<RecipeMachinesData> {
         return this.withCache(`machine-${name}-${page}`, () => {
@@ -196,7 +192,6 @@ export class PortalApi {
 
     /**
      * Fetches the settings available for the current user.
-     * @throws {PortalApiError}
      */
     public async getSettings(): Promise<SettingsListData> {
         const response = await this.client.get<SettingsListData>("/settings");
@@ -205,7 +200,6 @@ export class PortalApi {
 
     /**
      * Fetches the details to a specific setting.
-     * @throws {PortalApiError}
      */
     public async getSetting(combinationId: string): Promise<SettingDetailsData> {
         const response = await this.client.get<SettingDetailsData>(`/settings/${encodeURI(combinationId)}`);
@@ -214,7 +208,6 @@ export class PortalApi {
 
     /**
      * Fetches the status of the specified combination of mods, or the current setting.
-     * @throws {PortalApiError}
      */
     public async getSettingStatus(modNames?: string[]): Promise<SettingStatusData> {
         if (Array.isArray(modNames)) {
@@ -228,7 +221,6 @@ export class PortalApi {
 
     /**
      * Save the setting with the options.
-     * @throws {PortalApiError}
      */
     public async saveSetting(combinationId: string, options: SettingOptionsData): Promise<void> {
         await this.client.put<void>(`/settings/${encodeURI(combinationId)}`, options);
@@ -236,7 +228,6 @@ export class PortalApi {
 
     /**
      * Creates a new setting with the specified data.
-     * @throws {PortalApiError}
      */
     public async createSetting(settingData: SettingCreateData): Promise<void> {
         await this.client.put<void>("/settings", settingData);
@@ -244,7 +235,6 @@ export class PortalApi {
 
     /**
      * Deletes the setting with the specified combination.
-     * @throws {PortalApiError}
      */
     public async deleteSetting(combinationId: string): Promise<void> {
         await this.client.delete<void>(`/settings/${encodeURI(combinationId)}`);
@@ -252,7 +242,6 @@ export class PortalApi {
 
     /**
      * Fetches the tooltip data for the specified type and name.
-     * @throws {PortalApiError}
      */
     public async getTooltip(type: string, name: string): Promise<EntityData> {
         return this.withCache(`tooltip-${type}-${name}`, () => {
@@ -262,7 +251,6 @@ export class PortalApi {
 
     /**
      * Sends the sidebar entities to the Portal API for persisting.
-     * @throws {PortalApiError}
      */
     public async sendSidebarEntities(sidebarEntities: SidebarEntityData[]): Promise<void> {
         await this.client.put<void>("/sidebar/entities", sidebarEntities);

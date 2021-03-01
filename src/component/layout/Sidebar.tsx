@@ -5,8 +5,8 @@ import React, { FC, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 import { BREAKPOINT_LARGE } from "../../const/breakpoint";
-import { ROUTE_ITEM_LIST, ROUTE_SETTINGS } from "../../const/route";
-import { routeStoreContext } from "../../store/RouteStore";
+import { Route, ROUTE_ITEM_LIST, ROUTE_SETTINGS } from "../../const/route";
+import { globalStoreContext } from "../../store/GlobalStore";
 import { sidebarStoreContext } from "../../store/SidebarStore";
 import { getTranslatedSettingName } from "../../util/setting";
 import SidebarButton from "../button/SidebarButton";
@@ -22,7 +22,7 @@ import "./Sidebar.scss";
  */
 const Sidebar: FC = () => {
     const { t } = useTranslation();
-    const routeStore = useContext(routeStoreContext);
+    const globalStore = useContext(globalStoreContext);
     const sidebarStore = useContext(sidebarStoreContext);
     const isLarge = useMediaQuery({ minWidth: BREAKPOINT_LARGE });
 
@@ -31,7 +31,7 @@ const Sidebar: FC = () => {
         "is-open": sidebarStore.isSidebarOpened,
     });
 
-    if (routeStore.useBigHeader) {
+    if (globalStore.useBigHeader) {
         return null;
     }
 
@@ -43,13 +43,13 @@ const Sidebar: FC = () => {
                     primary
                     route={ROUTE_SETTINGS}
                     icon={faCogs}
-                    label={t("sidebar.setting", { name: getTranslatedSettingName(routeStore.setting) })}
+                    label={t("sidebar.setting", { name: getTranslatedSettingName(globalStore.setting) })}
                 />
                 <SidebarButton
                     route={ROUTE_ITEM_LIST}
                     icon={faTh}
                     label={t("sidebar.all-items")}
-                    highlighted={routeStore.currentRoute === ROUTE_ITEM_LIST}
+                    highlighted={globalStore.currentRoute === Route.ItemList}
                 />
 
                 <PinnedEntityList />

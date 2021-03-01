@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { FC, useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import { BREAKPOINT_LARGE } from "../../const/breakpoint";
-import { routeStoreContext } from "../../store/RouteStore";
+import { globalStoreContext } from "../../store/GlobalStore";
 import { searchStoreContext } from "../../store/SearchStore";
 import HeaderLogo from "./header/HeaderLogo";
 import HeaderSearch from "./header/HeaderSearch";
@@ -16,12 +16,12 @@ import "./Header.scss";
  * The component representing the header of the page.
  */
 const Header: FC = () => {
-    const routeStore = useContext(routeStoreContext);
+    const globalStore = useContext(globalStoreContext);
     const searchStore = useContext(searchStoreContext);
     const isLarge = useMediaQuery({ minWidth: BREAKPOINT_LARGE });
 
     // Index page with big logo and search box.
-    if (routeStore.useBigHeader) {
+    if (globalStore.useBigHeader) {
         return (
             <header className="big">
                 <HeaderLogo />

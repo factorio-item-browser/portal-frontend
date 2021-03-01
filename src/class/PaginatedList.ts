@@ -1,9 +1,9 @@
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
+import { PageError } from "../error/error";
 import { ResultsData } from "../type/transfer";
-import { PortalApiError } from "./PortalApi";
 
 type DataFetcher<T> = (page: number) => Promise<T>;
-type ErrorHandler<T> = (error: PortalApiError) => T;
+type ErrorHandler<T> = (error: PageError) => T;
 
 export class PaginatedList<TEntity, TData extends ResultsData<TEntity>> {
     private readonly dataFetcher: DataFetcher<TData>;

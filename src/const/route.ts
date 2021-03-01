@@ -5,3 +5,14 @@ export const ROUTE_RECIPE_DETAILS = "recipeDetails";
 export const ROUTE_SEARCH = "search";
 export const ROUTE_SETTINGS = "settings";
 export const ROUTE_SETTINGS_NEW = "settingsNew";
+
+export enum Route {
+    Empty = "",
+    Index = "index",
+    ItemDetails = "itemDetails",
+    ItemList = "itemList",
+    RecipeDetails = "recipeDetails",
+    Search = "search",
+    Settings = "settings",
+    SettingsNew = "settingsNew",
+}

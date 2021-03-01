@@ -1,20 +1,27 @@
 import { createRouter, Middleware, Router as Router5, State, SubscribeState } from "router5";
 import browserPluginFactory from "router5-plugin-browser";
 import { ROUTE_INDEX } from "../const/route";
+import { PageError } from "../error/error";
 import { CombinationId } from "./CombinationId";
 
 type ChangeHandler = (state: State) => void | Promise<void>;
+type ErrorHandler = (error: PageError) => void;
 export type RouteParams = { [key: string]: string };
 
 const PARAM_COMBINATION_ID = "combinationId";
 const SHORT_ROUTE_SUFFIX = "_short";
 
 export class Router {
-    private readonly router = this.createRouter();
+    private readonly router: Router5;
     private readonly changeHandlers = new Map<string, ChangeHandler>();
     private readonly globalChangeHandlers = new Set<ChangeHandler>();
     private combinationId: CombinationId | null = null;
     private currentState: State | null = null;
+    private errorHandler: ErrorHandler | null = null;
+
+    public constructor() {
+        this.router = this.createRouter();
+    }
 
     private createRouter(): Router5 {
         const router = createRouter();
@@ -23,6 +30,13 @@ export class Router {
         router.useMiddleware(this.getDataFetcherMiddleware.bind(this));
         router.subscribe(this.handleChangeEvent.bind(this));
         return router;
+    }
+
+    /**
+     * Injects the callback to handle errors by forwarding it.
+     */
+    public injectErrorHandler(errorHandler: ErrorHandler): void {
+        this.errorHandler = errorHandler;
     }
 
     private getDataFetcherMiddleware(): Middleware {
@@ -122,6 +136,15 @@ export class Router {
             params[PARAM_COMBINATION_ID] = this.combinationId.toShort();
         }
         return params;
+    }
+
+    /**
+     * Handles the error, forwarding it to the error store to trigger an error page.
+     */
+    public handleError(error: PageError): void {
+        if (this.errorHandler) {
+            this.errorHandler(error);
+        }
     }
 }
 

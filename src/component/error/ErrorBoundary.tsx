@@ -1,33 +1,24 @@
-import React, { Component, ReactNode } from "react";
-import { ERROR_CLIENT_FAILURE } from "../../const/error";
-import FatalError from "./FatalError";
+import { Component, ContextType, ReactNode } from "react";
+import { RenderError } from "../../error/error";
+import { errorStoreContext } from "../../store/ErrorStore";
 
 type Props = {
     children: ReactNode;
-};
-
-type State = {
-    error: Error | null;
 };
 
 /**
  * The error boundary of everything. If any component fails, then the boundary will replace the page with a nice error
  * box.
  */
-class ErrorBoundary extends Component<Props, State> {
-    public state: State = {
-        error: null,
-    };
+class ErrorBoundary extends Component<Props> {
+    public static contextType = errorStoreContext;
+    public context!: ContextType<typeof errorStoreContext>;
 
     public componentDidCatch(error: Error): void {
-        this.setState({ error });
+        this.context.handleError(new RenderError(error.message));
     }
 
     public render(): ReactNode {
-        if (this.state.error) {
-            return <FatalError type={ERROR_CLIENT_FAILURE} />;
-        }
-
         return this.props.children;
     }
 }

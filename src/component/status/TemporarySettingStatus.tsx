@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { CombinationId } from "../../class/CombinationId";
 import { ROUTE_SETTINGS } from "../../const/route";
 import { STATUS_WARNING } from "../../const/status";
-import { routeStoreContext } from "../../store/RouteStore";
+import { globalStoreContext } from "../../store/GlobalStore";
 import { SettingMetaData } from "../../type/transfer";
 import Button from "../button/Button";
 import ButtonGroup from "../button/ButtonGroup";
@@ -19,7 +19,7 @@ type Props = {
 
 const TemporarySettingStatus: FC<Props> = ({ setting, lastUsedSetting }) => {
     const { t } = useTranslation();
-    const router = useContext(routeStoreContext).router;
+    const router = useContext(globalStoreContext).router;
     const handleRevertClick = useCallback((): void => {
         router.redirectToIndex(CombinationId.fromFull(lastUsedSetting.combinationId));
     }, [lastUsedSetting.combinationId]);

@@ -5,7 +5,7 @@ import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import { SaveGameReader } from "../class/SaveGameReader";
 import { RECIPE_MODE_HYBRID } from "../const/recipeMode";
-import { ROUTE_SETTINGS_NEW } from "../const/route";
+import { Route } from "../const/route";
 import {
     SETTING_STATUS_AVAILABLE,
     SETTING_STATUS_LOADING,
@@ -13,30 +13,36 @@ import {
     SETTING_STATUS_UNKNOWN,
 } from "../const/settingStatus";
 import { SettingOptionsData, SettingStatusData } from "../type/transfer";
-import { RouteStore, routeStore } from "./RouteStore";
+import { errorStore, ErrorStore } from "./ErrorStore";
 
 const VALID_SETTING_STATUS = [SETTING_STATUS_AVAILABLE, SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN];
 
 class SettingsNewStore {
+    private readonly errorStore: ErrorStore;
     private readonly portalApi: PortalApi;
     private readonly router: Router;
-    private readonly routeStore: RouteStore;
 
+    /** Whether we are processing a savegame file. */
     public isSaveGameProcessing = false;
+    /** The mods from the savegame. */
     public saveGameModNames: string[] = [];
+    /** The error of processing the savegame. */
     public saveGameError = "";
+    /** The status of the new setting. */
     public settingStatus: SettingStatusData | null = null;
+    /** The options for the new setting. */
     public newOptions: SettingOptionsData = {
         name: "",
         recipeMode: RECIPE_MODE_HYBRID,
         locale: "en",
     };
+    /** Whether we are currently saving the setting. */
     public isSavingNewSetting = false;
 
-    public constructor(portalApi: PortalApi, router: Router, routeStore: RouteStore) {
+    public constructor(errorStore: ErrorStore, portalApi: PortalApi, router: Router) {
+        this.errorStore = errorStore;
         this.portalApi = portalApi;
         this.router = router;
-        this.routeStore = routeStore;
 
         makeObservable<this, "handleRouteChange" | "requestSettingStatus">(this, {
             changeOptions: action,
@@ -58,7 +64,7 @@ class SettingsNewStore {
             showSaveGameStep: computed,
         });
 
-        this.router.addRoute(ROUTE_SETTINGS_NEW, "/settings/new", this.handleRouteChange.bind(this));
+        this.router.addRoute(Route.SettingsNew, "/settings/new", this.handleRouteChange.bind(this));
     }
 
     private async handleRouteChange(): Promise<void> {
@@ -67,14 +73,23 @@ class SettingsNewStore {
         this.settingStatus = null;
     }
 
+    /**
+     * Whether the savegame step must be shown.
+     */
     public get showSaveGameStep(): boolean {
         return true;
     }
 
+    /**
+     * Whether the availability step must be shown.
+     */
     public get showDataAvailabilityStep(): boolean {
         return this.saveGameModNames.length > 0 && this.settingStatus !== null;
     }
 
+    /**
+     * Whether the additional options step must be shown.
+     */
     public get showAdditionalOptionsStep(): boolean {
         return (
             this.showDataAvailabilityStep &&
@@ -83,14 +98,23 @@ class SettingsNewStore {
         );
     }
 
+    /**
+     * Whether the save button must be shown.
+     */
     public get showSaveButton(): boolean {
         return this.showAdditionalOptionsStep && this.newOptions.name !== "";
     }
 
+    /**
+     * Whether there is an already existing setting for the combination.
+     */
     public get hasExistingSetting(): boolean {
         return !!this.settingStatus?.existingSetting;
     }
 
+    /**
+     * Processes the savegame selected in the file input element.
+     */
     public async processSaveGame(file: File): Promise<void> {
         this.isSaveGameProcessing = true;
         this.saveGameModNames = [];
@@ -133,10 +157,13 @@ class SettingsNewStore {
                 }
             });
         } catch (e) {
-            this.routeStore.handlePortalApiError(e);
+            this.errorStore.handleError(e);
         }
     }
 
+    /**
+     * Changes the options for the new setting.
+     */
     public changeOptions(options: Partial<SettingOptionsData>): void {
         this.newOptions = {
             ...this.newOptions,
@@ -157,7 +184,7 @@ class SettingsNewStore {
             await this.portalApi.createSetting(settingData);
             this.router.redirectToIndex(/* @todo need combinationId */);
         } catch (e) {
-            this.routeStore.handlePortalApiError(e);
+            this.errorStore.handleError(e);
         }
     }
 
@@ -175,10 +202,10 @@ class SettingsNewStore {
             await this.portalApi.saveSetting(setting.combinationId, this.newOptions);
             this.router.redirectToIndex(CombinationId.fromFull(setting.combinationId));
         } catch (e) {
-            this.routeStore.handlePortalApiError(e);
+            this.errorStore.handleError(e);
         }
     }
 }
 
-export const settingsNewStore = new SettingsNewStore(portalApi, router, routeStore);
-export const settingsNewStoreContext = createContext<SettingsNewStore>(settingsNewStore);
+export const settingsNewStore = new SettingsNewStore(errorStore, portalApi, router);
+export const settingsNewStoreContext = createContext(settingsNewStore);

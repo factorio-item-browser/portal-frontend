@@ -6,9 +6,9 @@ import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import { storageManager, StorageManager } from "../class/StorageManager";
 import { RECIPE_MODE_HYBRID } from "../const/recipeMode";
-import { ROUTE_SETTINGS } from "../const/route";
+import { Route } from "../const/route";
 import { SettingDetailsData, SettingMetaData, SettingOptionsData } from "../type/transfer";
-import { RouteStore, routeStore } from "./RouteStore";
+import { errorStore, ErrorStore } from "./ErrorStore";
 
 const emptySettingDetails: SettingDetailsData = {
     combinationId: "",
@@ -25,45 +25,52 @@ const emptySettingDetails: SettingDetailsData = {
 };
 
 export class SettingsStore {
+    private readonly errorStore: ErrorStore;
     private readonly iconManager: IconManager;
     private readonly portalApi: PortalApi;
     private readonly router: Router;
-    private readonly routeStore: RouteStore;
     private readonly storageManager: StorageManager;
 
-    private currentSettingId = "";
+    private currentCombinationId = "";
     private allSettingDetails = new Map<string, SettingDetailsData>();
 
+    /** All the settings available for the current user. */
     public availableSettings: SettingMetaData[] = [];
-    public selectedSettingId = "";
+    /** The combination id of the currently selected setting. */
+    public selectedCombinationId = "";
+    /** The currently selected options. */
     public selectedOptions: SettingOptionsData = {
         name: "",
         locale: "en",
         recipeMode: RECIPE_MODE_HYBRID,
     };
+    /** Whether we are currently loading the setting details. */
     public isLoadingSettingDetails = false;
+    /** Whether we are currently changing to a new setting. */
     public isChangingToSetting = false;
+    /** Whether we are currently saving the changes. */
     public isSavingChanges = false;
+    /** Whether we are currently deleting a setting. */
     public isDeletingSetting = false;
 
     public constructor(
+        errorStore: ErrorStore,
         iconManager: IconManager,
         portalApi: PortalApi,
         router: Router,
-        routeStore: RouteStore,
         storageManager: StorageManager,
     ) {
+        this.errorStore = errorStore;
         this.iconManager = iconManager;
         this.portalApi = portalApi;
         this.router = router;
-        this.routeStore = routeStore;
         this.storageManager = storageManager;
 
         makeObservable<this, "applySelectedSetting" | "handleRouteChange">(this, {
             applySelectedSetting: action,
             availableSettings: observable,
             changeSelectedOptions: action,
-            changeSettingId: action,
+            changeCombinationId: action,
             changeToSelectedSetting: action,
             handleRouteChange: action,
             isChangeButtonVisible: computed,
@@ -76,53 +83,42 @@ export class SettingsStore {
             saveOptions: action,
             selectedOptions: observable,
             selectedSettingDetails: computed,
-            selectedSettingId: observable,
+            selectedCombinationId: observable,
         });
 
-        this.router.addRoute(ROUTE_SETTINGS, "/settings", this.handleRouteChange.bind(this));
+        this.router.addRoute(Route.Settings, "/settings", this.handleRouteChange.bind(this));
     }
 
     private async handleRouteChange(): Promise<void> {
-        if (!this.currentSettingId) {
+        if (!this.currentCombinationId) {
             try {
                 const settingsListData = await this.portalApi.getSettings();
                 runInAction((): void => {
                     this.availableSettings = settingsListData.settings.sort((left, right) => {
                         return left.name.localeCompare(right.name);
                     });
-                    this.currentSettingId = settingsListData.currentSetting.combinationId;
-                    this.addSettingDetails(settingsListData.currentSetting);
+                    this.currentCombinationId = settingsListData.currentSetting.combinationId;
+                    this.allSettingDetails.set(
+                        settingsListData.currentSetting.combinationId,
+                        settingsListData.currentSetting,
+                    );
                 });
             } catch (e) {
-                this.routeStore.handlePortalApiError(e);
+                this.errorStore.handleError(e);
             }
         }
 
         runInAction((): void => {
-            this.selectedSettingId = this.currentSettingId;
+            this.selectedCombinationId = this.currentCombinationId;
             this.applySelectedSetting();
         });
     }
 
-    private addSettingDetails(settingDetails: SettingDetailsData): void {
-        this.allSettingDetails.set(settingDetails.combinationId, settingDetails);
-    }
-
-    private applySelectedSetting() {
-        const selectedSetting = this.selectedSettingDetails;
-
-        this.selectedOptions.name = selectedSetting.isTemporary ? "" : selectedSetting.name;
-        this.selectedOptions.locale = selectedSetting.locale;
-        this.selectedOptions.recipeMode = selectedSetting.recipeMode;
-
-        this.iconManager.addAdditionalStyle("mod-icons", selectedSetting.modIconsStyle);
-    }
-
     /**
-     * Returns the details of the currently selected setting.
+     * The details of the currently selected setting.
      */
     public get selectedSettingDetails(): SettingDetailsData {
-        const details = this.allSettingDetails.get(this.selectedSettingId);
+        const details = this.allSettingDetails.get(this.selectedCombinationId);
         if (details) {
             return details;
         }
@@ -130,14 +126,23 @@ export class SettingsStore {
         return emptySettingDetails;
     }
 
+    /**
+     * Whether the change setting button must be visible.
+     */
     public get isChangeButtonVisible(): boolean {
-        return this.selectedSettingDetails.combinationId !== this.currentSettingId;
+        return this.selectedSettingDetails.combinationId !== this.currentCombinationId;
     }
 
+    /**
+     * Whether the delete button must be visible.
+     */
     public get isDeleteButtonVisible(): boolean {
-        return this.currentSettingId !== this.selectedSettingDetails.combinationId;
+        return this.currentCombinationId !== this.selectedSettingDetails.combinationId;
     }
 
+    /**
+     * Whether the save setting button must be visible.
+     */
     public get isSaveButtonVisible(): boolean {
         const setting = this.selectedSettingDetails;
 
@@ -156,24 +161,27 @@ export class SettingsStore {
     /**
      * Changes the id of the currently selected setting.
      */
-    public async changeSettingId(combinationId: string): Promise<void> {
+    public async changeCombinationId(combinationId: string): Promise<void> {
         if (!this.allSettingDetails.has(combinationId)) {
             this.isLoadingSettingDetails = true;
             try {
                 const settingDetails = await this.portalApi.getSetting(combinationId);
-                this.addSettingDetails(settingDetails);
+                this.allSettingDetails.set(settingDetails.combinationId, settingDetails);
             } catch (e) {
-                this.routeStore.handlePortalApiError(e);
+                this.errorStore.handleError(e);
             }
         }
 
         runInAction((): void => {
             this.isLoadingSettingDetails = false;
-            this.selectedSettingId = combinationId;
+            this.selectedCombinationId = combinationId;
             this.applySelectedSetting();
         });
     }
 
+    /**
+     * Changes the current selected options.
+     */
     public changeSelectedOptions(options: Partial<SettingOptionsData>): void {
         this.selectedOptions = {
             ...this.selectedOptions,
@@ -181,47 +189,66 @@ export class SettingsStore {
         };
     }
 
+    /**
+     * Changes to the currently selected setting.
+     */
     public changeToSelectedSetting(): void {
         this.isChangingToSetting = true;
 
-        this.storageManager.clearCombination(CombinationId.fromFull(this.selectedSettingId));
-        this.router.redirectToIndex(CombinationId.fromFull(this.selectedSettingId));
+        this.storageManager.clearCombination(CombinationId.fromFull(this.selectedCombinationId));
+        this.router.redirectToIndex(CombinationId.fromFull(this.selectedCombinationId));
     }
 
+    /**
+     * Saves the options to the currently selected setting.
+     */
     public async saveOptions(): Promise<void> {
         this.isSavingChanges = true;
         try {
-            const combinationId = CombinationId.fromFull(this.selectedSettingId);
+            const combinationId = CombinationId.fromFull(this.selectedCombinationId);
 
             this.storageManager.clearCombination(combinationId);
-            await this.portalApi.saveSetting(this.selectedSettingId, this.selectedOptions);
+            await this.portalApi.saveSetting(this.selectedCombinationId, this.selectedOptions);
             this.router.redirectToIndex(combinationId);
         } catch (e) {
-            this.routeStore.handlePortalApiError(e);
+            this.errorStore.handleError(e);
         }
     }
 
+    /**
+     * Deletes the currently selected setting.
+     */
     public async deleteSelectedSetting(): Promise<void> {
         this.isDeletingSetting = true;
         try {
-            this.storageManager.clearCombination(CombinationId.fromFull(this.selectedSettingId));
-            await this.portalApi.deleteSetting(this.selectedSettingId);
+            this.storageManager.clearCombination(CombinationId.fromFull(this.selectedCombinationId));
+            await this.portalApi.deleteSetting(this.selectedCombinationId);
 
             runInAction(() => {
                 this.isDeletingSetting = false;
                 this.availableSettings = this.availableSettings.filter(
-                    (setting) => setting.combinationId !== this.selectedSettingId,
+                    (setting) => setting.combinationId !== this.selectedCombinationId,
                 );
-                this.allSettingDetails.delete(this.selectedSettingId);
+                this.allSettingDetails.delete(this.selectedCombinationId);
 
-                this.selectedSettingId = this.currentSettingId;
+                this.selectedCombinationId = this.currentCombinationId;
                 this.applySelectedSetting();
             });
         } catch (e) {
-            this.routeStore.handlePortalApiError(e);
+            this.errorStore.handleError(e);
         }
+    }
+
+    private applySelectedSetting() {
+        const selectedSetting = this.selectedSettingDetails;
+
+        this.selectedOptions.name = selectedSetting.isTemporary ? "" : selectedSetting.name;
+        this.selectedOptions.locale = selectedSetting.locale;
+        this.selectedOptions.recipeMode = selectedSetting.recipeMode;
+
+        this.iconManager.addAdditionalStyle("mod-icons", selectedSetting.modIconsStyle);
     }
 }
 
-export const settingsStore = new SettingsStore(iconManager, portalApi, router, routeStore, storageManager);
-export const settingsStoreContext = createContext<SettingsStore>(settingsStore);
+export const settingsStore = new SettingsStore(errorStore, iconManager, portalApi, router, storageManager);
+export const settingsStoreContext = createContext(settingsStore);

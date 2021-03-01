@@ -1,13 +1,11 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, Fragment, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { ERROR_PAGE_NOT_FOUND } from "../../const/error";
 import { itemStoreContext } from "../../store/ItemStore";
 import { useDocumentTitle } from "../../util/hooks";
 import CopyTemplate from "../common/CopyTemplate";
 import Detail from "../common/Detail";
 import DetailsHead from "../common/DetailsHead";
-import ErrorBox from "../error/ErrorBox";
 import ItemRecipesList from "./item/ItemRecipesList";
 
 /**
@@ -16,20 +14,16 @@ import ItemRecipesList from "./item/ItemRecipesList";
 const ItemDetailsPage: FC = () => {
     const itemStore = useContext(itemStoreContext);
     const { t } = useTranslation();
-    const item = itemStore.currentItem;
+    const item = itemStore.item;
 
-    useDocumentTitle(item.label ? `item-details.title.${item.type}` : "", { label: item.label });
-
-    if (itemStore.hasNotFoundError) {
-        return <ErrorBox type={ERROR_PAGE_NOT_FOUND} />;
-    }
+    useDocumentTitle(item.label ? `item-details.title.${item.type}` : "", { label: item.label ?? item.name });
 
     return (
         <Fragment>
             <DetailsHead
                 type={item.type}
                 name={item.name}
-                title={t(`item-details.headline.${item.type}`, { label: item.label })}
+                title={t(`item-details.headline.${item.type}`, { label: item.label ?? item.name })}
             >
                 <Detail hidden={!item.description}>{item.description}</Detail>
                 <Detail>
