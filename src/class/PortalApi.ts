@@ -1,12 +1,4 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import {
-    NUMBER_OF_ITEM_RECIPES_PER_PAGE,
-    NUMBER_OF_ITEMS_PER_PAGE,
-    NUMBER_OF_MACHINES_PER_PAGE,
-    NUMBER_OF_RANDOM_ITEMS,
-    NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
-    PORTAL_API_URL,
-} from "../const/config";
 import { ClientFailureError, PageNotFoundError, ServerFailureError, ServiceNotAvailableError } from "../error/page";
 import {
     EntityData,
@@ -26,6 +18,7 @@ import {
     SettingStatusData,
     SidebarEntityData,
 } from "../type/transfer";
+import { Config } from "../util/config";
 import { storageManager, StorageManager } from "./StorageManager";
 
 type ServerError = {
@@ -45,7 +38,7 @@ export class PortalApi {
         this.storageManager = storageManager;
 
         this.client = axios.create({
-            baseURL: PORTAL_API_URL,
+            baseURL: Config.portalApiUrl,
             withCredentials: true,
         });
         this.client.interceptors.request.use(this.prepareRequest.bind(this));
@@ -99,8 +92,8 @@ export class PortalApi {
             return this.client.get<SearchResultsData>("/search", {
                 params: {
                     query: query,
-                    indexOfFirstResult: (page - 1) * NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
-                    numberOfResults: NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
+                    indexOfFirstResult: (page - 1) * Config.numberOfSearchResultsPerPage,
+                    numberOfResults: Config.numberOfSearchResultsPerPage,
                 },
             });
         });
@@ -121,8 +114,8 @@ export class PortalApi {
         return this.withCache(`ingredient-${type}-${name}-${page}`, () => {
             return this.client.get<ItemRecipesData>(`/${encodeURI(type)}/${encodeURI(name)}/ingredients`, {
                 params: {
-                    indexOfFirstResult: (page - 1) * NUMBER_OF_ITEM_RECIPES_PER_PAGE,
-                    numberOfResults: NUMBER_OF_ITEM_RECIPES_PER_PAGE,
+                    indexOfFirstResult: (page - 1) * Config.numberOfItemRecipesPerPage,
+                    numberOfResults: Config.numberOfItemRecipesPerPage,
                 },
             });
         });
@@ -135,8 +128,8 @@ export class PortalApi {
         return this.withCache(`product-${type}-${name}-${page}`, () => {
             return this.client.get<ItemRecipesData>(`/${encodeURI(type)}/${encodeURI(name)}/products`, {
                 params: {
-                    indexOfFirstResult: (page - 1) * NUMBER_OF_ITEM_RECIPES_PER_PAGE,
-                    numberOfResults: NUMBER_OF_ITEM_RECIPES_PER_PAGE,
+                    indexOfFirstResult: (page - 1) * Config.numberOfItemRecipesPerPage,
+                    numberOfResults: Config.numberOfItemRecipesPerPage,
                 },
             });
         });
@@ -148,8 +141,8 @@ export class PortalApi {
     public async getItemList(page: number): Promise<ItemListData> {
         const response = await this.client.get<ItemListData>("/items", {
             params: {
-                indexOfFirstResult: (page - 1) * NUMBER_OF_ITEMS_PER_PAGE,
-                numberOfResults: NUMBER_OF_ITEMS_PER_PAGE,
+                indexOfFirstResult: (page - 1) * Config.numberOfItemsPerPage,
+                numberOfResults: Config.numberOfItemsPerPage,
             },
         });
         return response.data;
@@ -161,7 +154,7 @@ export class PortalApi {
     public async getRandom(): Promise<EntityData[]> {
         const response = await this.client.get<EntityData[]>("/random", {
             params: {
-                numberOfResults: NUMBER_OF_RANDOM_ITEMS,
+                numberOfResults: Config.numberOfRandomItems,
             },
         });
         return response.data;
@@ -183,8 +176,8 @@ export class PortalApi {
         return this.withCache(`machine-${name}-${page}`, () => {
             return this.client.get<RecipeMachinesData>(`/recipe/${encodeURI(name)}/machines`, {
                 params: {
-                    indexOfFirstResult: (page - 1) * NUMBER_OF_MACHINES_PER_PAGE,
-                    numberOfResults: NUMBER_OF_MACHINES_PER_PAGE,
+                    indexOfFirstResult: (page - 1) * Config.numberOfMachinesPerPage,
+                    numberOfResults: Config.numberOfMachinesPerPage,
                 },
             });
         });

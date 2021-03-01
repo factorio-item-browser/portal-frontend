@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { INTERVAL_CHECK_SETTING_STATUS } from "../../const/config";
 import { globalStoreContext } from "../../store/GlobalStore";
+import { Config } from "../../util/config";
 import { BoxStatus, SettingStatus } from "../../util/const";
 import { useInterval } from "../../util/hooks";
 import Status from "./Status";
@@ -16,7 +16,7 @@ const GlobalSettingStatus: FC = () => {
     const setting = globalStore.setting;
 
     useInterval(
-        INTERVAL_CHECK_SETTING_STATUS * 1000,
+        Config.intervalCheckSettingStatus * 1000,
         async (): Promise<void> => {
             await globalStore.checkSettingStatus();
         },

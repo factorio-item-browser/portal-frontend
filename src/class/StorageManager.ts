@@ -1,5 +1,5 @@
-import { CACHE_LIFETIME } from "../const/config";
 import { SidebarEntityData } from "../type/transfer";
+import { Config } from "../util/config";
 import { CombinationId } from "./CombinationId";
 
 const KEY_SCRIPT_VERSION = "script-version";
@@ -15,7 +15,7 @@ class CacheUtils {
     public static serialize<T>(data: T): string {
         const item: CacheItem<T> = {
             data,
-            time: Date.now() + CACHE_LIFETIME * 1000,
+            time: Date.now() + Config.cacheLifetime * 1000,
         };
 
         return JSON.stringify(item);

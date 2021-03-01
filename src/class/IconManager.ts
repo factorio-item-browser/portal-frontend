@@ -1,6 +1,6 @@
 import { debounce } from "throttle-debounce";
-import { NUMBER_OF_ICONS_PER_REQUEST } from "../const/config";
 import { IconsStyleData } from "../type/transfer";
+import { Config } from "../util/config";
 import { NamesByTypesSet } from "./NamesByTypesSet";
 import { portalApi, PortalApi } from "./PortalApi";
 
@@ -33,7 +33,7 @@ export class IconManager {
         }
 
         this.requestedEntities.add(type, name);
-        if (this.requestedEntities.size > NUMBER_OF_ICONS_PER_REQUEST) {
+        if (this.requestedEntities.size > Config.numberOfIconsPerRequest) {
             this.requestStyle();
         }
         this.debounceRequestStyle();
