@@ -7,7 +7,7 @@ import {
     NUMBER_OF_SEARCH_RESULTS_PER_PAGE,
     PORTAL_API_URL,
 } from "../const/config";
-import { ClientFailureError, PageNotFoundError, ServerFailureError, ServiceNotAvailableError } from "../error/error";
+import { ClientFailureError, PageNotFoundError, ServerFailureError, ServiceNotAvailableError } from "../error/page";
 import {
     EntityData,
     IconsStyleData,

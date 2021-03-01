@@ -1,7 +1,7 @@
 import { createRouter, Middleware, Router as Router5, State, SubscribeState } from "router5";
 import browserPluginFactory from "router5-plugin-browser";
-import { ROUTE_INDEX } from "../const/route";
-import { PageError } from "../error/error";
+import { PageError } from "../error/page";
+import { RouteName } from "../util/const";
 import { CombinationId } from "./CombinationId";
 
 type ChangeHandler = (state: State) => void | Promise<void>;
@@ -80,7 +80,7 @@ export class Router {
 
     public get currentRoute(): string {
         if (!this.currentState) {
-            return ROUTE_INDEX;
+            return RouteName.Index;
         }
 
         return this.unifyRouteName(this.currentState.name);
@@ -124,9 +124,9 @@ export class Router {
 
     public redirectToIndex(combinationId?: CombinationId): void {
         if (combinationId) {
-            location.assign(this.buildPath(ROUTE_INDEX, { [PARAM_COMBINATION_ID]: combinationId.toShort() }));
+            location.assign(this.buildPath(RouteName.Index, { [PARAM_COMBINATION_ID]: combinationId.toShort() }));
         } else {
-            location.assign(this.buildPath(ROUTE_INDEX + SHORT_ROUTE_SUFFIX));
+            location.assign(this.buildPath(RouteName.Index + SHORT_ROUTE_SUFFIX));
         }
     }
 

@@ -1,5 +1,5 @@
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
-import { PageError } from "../error/error";
+import { PageError } from "../error/page";
 import { ResultsData } from "../type/transfer";
 
 type DataFetcher<T> = (page: number) => Promise<T>;

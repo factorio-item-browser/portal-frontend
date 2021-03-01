@@ -6,18 +6,17 @@ import { CombinationId } from "../class/CombinationId";
 import { portalApi, PortalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import { storageManager, StorageManager } from "../class/StorageManager";
-import { Route, ROUTE_SETTINGS, ROUTE_SETTINGS_NEW } from "../const/route";
-import { SETTING_STATUS_AVAILABLE, SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN } from "../const/settingStatus";
 import { InitData, SettingMetaData } from "../type/transfer";
+import { RouteName, SettingStatus } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
 
 type InitHandler = (initData: InitData) => void | Promise<void>;
 
-const REGEX_PATH_COMBINATION_ID = /^\/([0-9a-zA-Z]{22})(\/|$)/;
+const regexPathCombinationId = /^\/([0-9a-zA-Z]{22})(\/|$)/;
 const emptySetting: SettingMetaData = {
     combinationId: "",
     name: "Vanilla",
-    status: SETTING_STATUS_AVAILABLE,
+    status: SettingStatus.Available,
     isTemporary: false,
 };
 
@@ -30,7 +29,7 @@ export class GlobalStore {
     private initHandlers: InitHandler[] = [];
 
     /** The route which is currently active. */
-    public currentRoute: Route = Route.Empty;
+    public currentRoute: RouteName = RouteName.Empty;
     /** The target which currently have the loading circle. */
     public loadingCircleTarget: RefObject<Element> | null = null;
 
@@ -64,7 +63,7 @@ export class GlobalStore {
     }
 
     private handleGlobalRouteChange(state: State): void {
-        this.currentRoute = state.name as Route;
+        this.currentRoute = state.name as RouteName;
         this.loadingCircleTarget = null;
         window.scrollTo(0, 0);
     }
@@ -80,21 +79,21 @@ export class GlobalStore {
      * Whether we are still initially loading the page.
      */
     public get isInitiallyLoading(): boolean {
-        return this.currentRoute === Route.Empty;
+        return this.currentRoute === RouteName.Empty;
     }
 
     /**
      * Whether the big header should be used for displaying the current page.
      */
     public get useBigHeader(): boolean {
-        return this.currentRoute === Route.Index;
+        return this.currentRoute === RouteName.Index;
     }
 
     /**
      * Returns whether the global setting status should be shown.
      */
     public get isGlobalSettingStatusShown(): boolean {
-        return ![ROUTE_SETTINGS, ROUTE_SETTINGS_NEW].includes(this.currentRoute);
+        return ![RouteName.Settings, RouteName.SettingsNew].includes(this.currentRoute);
     }
 
     /**
@@ -141,10 +140,10 @@ export class GlobalStore {
      * Checks the current status of the setting, if its data is still not available.
      */
     public async checkSettingStatus(): Promise<void> {
-        if ([SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN].includes(this.setting.status)) {
+        if ([SettingStatus.Pending, SettingStatus.Unknown].includes(this.setting.status as SettingStatus)) {
             try {
                 const settingStatus = await this.portalApi.getSettingStatus();
-                if (settingStatus.status === SETTING_STATUS_AVAILABLE) {
+                if (settingStatus.status === SettingStatus.Available) {
                     window.location.reload();
                 } else {
                     runInAction(() => {
@@ -158,7 +157,7 @@ export class GlobalStore {
     }
 
     private detectInitialCombinationId(): void {
-        const match = window.location.pathname.match(REGEX_PATH_COMBINATION_ID);
+        const match = window.location.pathname.match(regexPathCombinationId);
         if (match && match[1]) {
             this.storageManager.combinationId = CombinationId.fromShort(match[1]);
         }

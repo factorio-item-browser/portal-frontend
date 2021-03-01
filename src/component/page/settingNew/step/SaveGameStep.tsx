@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { STATUS_ERROR, STATUS_INFO, STATUS_PENDING, STATUS_SUCCESS } from "../../../../const/status";
 import { settingsNewStoreContext } from "../../../../store/SettingsNewStore";
+import { BoxStatus } from "../../../../util/const";
 import Section from "../../../common/Section";
 import Status from "../../../status/Status";
 import SaveGameFileInput from "../SaveGameFileInput";
@@ -19,29 +19,29 @@ const SaveGameStep: FC = () => {
     const modNames = settingsNewStore.saveGameModNames;
 
     let status;
-    if (error !== "") {
+    if (error !== null) {
         status = (
-            <Status status={STATUS_ERROR}>
-                <h3>{t(`settings-new.savegame-error.${error}.headline`)}</h3>
-                {t(`settings-new.savegame-error.${error}.description`)}
+            <Status status={BoxStatus.Error}>
+                <h3>{t(`settings-new.savegame-error.${error.name}.headline`)}</h3>
+                {t(`settings-new.savegame-error.${error.name}.description`)}
             </Status>
         );
     } else if (isProcessing) {
         status = (
-            <Status status={STATUS_PENDING}>
+            <Status status={BoxStatus.Pending}>
                 <h3>{t(`settings-new.processing-savegame`)}</h3>
             </Status>
         );
     } else if (modNames.length > 0) {
         status = (
-            <Status status={STATUS_SUCCESS}>
+            <Status status={BoxStatus.Success}>
                 <h3>{t("settings-new.savegame-modlist.headline", { count: modNames.length })}</h3>
                 {modNames.join(", ")}
             </Status>
         );
     } else {
         status = (
-            <Status status={STATUS_INFO}>
+            <Status status={BoxStatus.Info}>
                 <h3>{t(`settings-new.savegame-upload-note.headline`)}</h3>
                 {t(`settings-new.savegame-upload-note.description`)}
             </Status>

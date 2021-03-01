@@ -5,8 +5,8 @@ import { debounce } from "throttle-debounce";
 import { PaginatedList } from "../class/PaginatedList";
 import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
-import { Route } from "../const/route";
 import { EntityData, SearchResultsData } from "../type/transfer";
+import { RouteName } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
 
 const emptySearchResults: SearchResultsData = {
@@ -56,7 +56,7 @@ export class SearchStore {
             updateSearchQuery: action,
         });
 
-        router.addRoute(Route.Search, "/search/:query", this.handleRouteChange.bind(this));
+        router.addRoute(RouteName.Search, "/search/:query", this.handleRouteChange.bind(this));
         router.addGlobalChangeHandler(this.handleGlobalRouteChange.bind(this));
     }
 
@@ -80,7 +80,7 @@ export class SearchStore {
     }
 
     private handleGlobalRouteChange(state: State) {
-        if (state.name !== Route.Search && !this.isInputFocused) {
+        if (state.name !== RouteName.Search && !this.isInputFocused) {
             this.searchQuery = "";
             this.requestedSearchQuery = "";
         }
@@ -122,7 +122,7 @@ export class SearchStore {
 
         this.requestedSearchQuery = query;
         this.isLoading = true;
-        this.router.navigateTo(Route.Search, { query: query });
+        this.router.navigateTo(RouteName.Search, { query: query });
     }
 }
 

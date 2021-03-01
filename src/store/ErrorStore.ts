@@ -2,8 +2,7 @@ import { action, computed, makeObservable, observable } from "mobx";
 import { createContext } from "react";
 import { constants, State } from "router5";
 import { router, Router } from "../class/Router";
-import { PageError, PageNotFoundError } from "../error/error";
-import { ErrorSeverity } from "../error/severity";
+import { ErrorSeverity, PageError, PageNotFoundError } from "../error/page";
 
 export class ErrorStore {
     /** The error which is currently present. */

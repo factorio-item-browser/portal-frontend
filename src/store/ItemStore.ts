@@ -4,8 +4,8 @@ import { State } from "router5";
 import { PaginatedList } from "../class/PaginatedList";
 import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
-import { Route } from "../const/route";
 import { EntityData, ItemRecipesData, ItemType } from "../type/transfer";
+import { RouteName } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
 import { sidebarStore, SidebarStore } from "./SidebarStore";
 
@@ -55,7 +55,7 @@ export class ItemStore {
             handleRouteChange: action,
         });
 
-        router.addRoute(Route.ItemDetails, "/:type<item|fluid>/:name", this.handleRouteChange.bind(this));
+        router.addRoute(RouteName.ItemDetails, "/:type<item|fluid>/:name", this.handleRouteChange.bind(this));
     }
 
     private async handleRouteChange(state: State): Promise<void> {

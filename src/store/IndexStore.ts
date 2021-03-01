@@ -2,8 +2,8 @@ import { action, makeObservable, observable, runInAction } from "mobx";
 import { createContext } from "react";
 import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
-import { Route } from "../const/route";
 import { EntityData } from "../type/transfer";
+import { RouteName } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
 
 export class IndexStore {
@@ -27,7 +27,7 @@ export class IndexStore {
             randomizeItems: action,
         });
 
-        router.addRoute(Route.Index, "/", this.handleRouteChange.bind(this));
+        router.addRoute(RouteName.Index, "/", this.handleRouteChange.bind(this));
     }
 
     private async handleRouteChange(): Promise<void> {

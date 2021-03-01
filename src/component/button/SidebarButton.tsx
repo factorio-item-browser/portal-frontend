@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 import { RouteParams } from "../../class/Router";
+import { RouteName } from "../../util/const";
 import Link from "../link/Link";
 
 import "./Button.scss";
@@ -11,7 +12,7 @@ import "./SidebarButton.scss";
 
 type Props = {
     label: string;
-    route: string;
+    route: RouteName;
     params?: RouteParams;
     icon: IconProp;
     primary?: boolean;

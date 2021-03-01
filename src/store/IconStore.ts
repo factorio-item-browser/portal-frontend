@@ -3,7 +3,7 @@ import { createContext } from "react";
 import { State } from "router5";
 import { iconManager, IconManager } from "../class/IconManager";
 import { router, Router } from "../class/Router";
-import { Route } from "../const/route";
+import { RouteName } from "../util/const";
 
 type Entity = {
     type: string;
@@ -34,14 +34,14 @@ export class IconStore {
 
     private handleGlobalRouteChange(state: State): void {
         switch (state.name) {
-            case Route.ItemDetails:
+            case RouteName.ItemDetails:
                 this.highlightedEntity = {
                     type: state.params.type,
                     name: state.params.name,
                 };
                 break;
 
-            case Route.RecipeDetails:
+            case RouteName.RecipeDetails:
                 this.highlightedEntity = {
                     type: "recipe",
                     name: state.params.name,

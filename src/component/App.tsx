@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, ReactNode, useContext, useEffect } from "react";
-import { Route } from "../const/route";
 import { errorStoreContext } from "../store/ErrorStore";
 import { globalStoreContext } from "../store/GlobalStore";
+import { RouteName } from "../util/const";
 import LoadingCircle from "./common/LoadingCircle";
 import Tooltip from "./common/Tooltip";
 import ErrorBoundary from "./error/ErrorBoundary";
@@ -25,13 +25,13 @@ import TemporarySettingStatus from "./status/TemporarySettingStatus";
 import "./App.scss";
 
 const PAGE_BY_ROUTES: { [key: string]: ReactNode } = {
-    [Route.Index]: <IndexPage />,
-    [Route.ItemDetails]: <ItemDetailsPage />,
-    [Route.ItemList]: <ItemListPage />,
-    [Route.RecipeDetails]: <RecipeDetailsPage />,
-    [Route.Search]: <SearchResultsPage />,
-    [Route.Settings]: <SettingsPage />,
-    [Route.SettingsNew]: <SettingsNewPage />,
+    [RouteName.Index]: <IndexPage />,
+    [RouteName.ItemDetails]: <ItemDetailsPage />,
+    [RouteName.ItemList]: <ItemListPage />,
+    [RouteName.RecipeDetails]: <RecipeDetailsPage />,
+    [RouteName.Search]: <SearchResultsPage />,
+    [RouteName.Settings]: <SettingsPage />,
+    [RouteName.SettingsNew]: <SettingsNewPage />,
 };
 
 /**

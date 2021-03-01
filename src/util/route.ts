@@ -1,13 +1,13 @@
-import { ROUTE_INDEX, ROUTE_ITEM_DETAILS, ROUTE_RECIPE_DETAILS } from "../const/route";
+import { RouteName } from "./const";
 
-const MAP_ENTITY_TYPE_TO_ROUTE: { [key: string]: string } = {
-    item: ROUTE_ITEM_DETAILS,
-    fluid: ROUTE_ITEM_DETAILS,
-    recipe: ROUTE_RECIPE_DETAILS,
+const entityTypeToRouteNameMap: { [key: string]: RouteName } = {
+    item: RouteName.ItemDetails,
+    fluid: RouteName.ItemDetails,
+    recipe: RouteName.RecipeDetails,
 };
 
 type RouteAndParams = {
-    route: string;
+    route: RouteName;
     params: { [key: string]: unknown };
 };
 
@@ -15,7 +15,7 @@ type RouteAndParams = {
  * Returns the route and params used to link to the entity.
  */
 export function getRouteAndParamsForEntity(type: string, name: string): RouteAndParams {
-    const route = MAP_ENTITY_TYPE_TO_ROUTE[type];
+    const route = entityTypeToRouteNameMap[type];
     if (route) {
         return {
             route: route,
@@ -24,7 +24,7 @@ export function getRouteAndParamsForEntity(type: string, name: string): RouteAnd
     }
 
     return {
-        route: ROUTE_INDEX,
+        route: RouteName.Index,
         params: {},
     };
 }

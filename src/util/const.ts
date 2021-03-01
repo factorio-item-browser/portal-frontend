@@ -1,0 +1,39 @@
+export enum BoxStatus {
+    Error = "error",
+    Info = "info",
+    Pending = "pending",
+    Success = "success",
+    Warning = "warning",
+}
+
+export enum Breakpoint {
+    Small = 0,
+    Medium = 800,
+    Large = 1200,
+    Huge = 1500,
+}
+
+export enum RecipeMode {
+    Hybrid = "hybrid",
+    Normal = "normal",
+    Expensive = "expensive",
+}
+
+export enum RouteName {
+    Empty = "",
+    Index = "index",
+    ItemDetails = "itemDetails",
+    ItemList = "itemList",
+    RecipeDetails = "recipeDetails",
+    Search = "search",
+    Settings = "settings",
+    SettingsNew = "settingsNew",
+}
+
+export enum SettingStatus {
+    Available = "available",
+    Errored = "errored",
+    Loading = "loading",
+    Pending = "pending",
+    Unknown = "unknown",
+}

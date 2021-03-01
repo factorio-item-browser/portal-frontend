@@ -4,10 +4,9 @@ import { observer } from "mobx-react-lite";
 import React, { FC, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
-import { BREAKPOINT_LARGE } from "../../const/breakpoint";
-import { Route, ROUTE_ITEM_LIST, ROUTE_SETTINGS } from "../../const/route";
 import { globalStoreContext } from "../../store/GlobalStore";
 import { sidebarStoreContext } from "../../store/SidebarStore";
+import { Breakpoint, RouteName } from "../../util/const";
 import { getTranslatedSettingName } from "../../util/setting";
 import SidebarButton from "../button/SidebarButton";
 import PinnedEntityList from "./sidebar/PinnedEntityList";
@@ -24,7 +23,7 @@ const Sidebar: FC = () => {
     const { t } = useTranslation();
     const globalStore = useContext(globalStoreContext);
     const sidebarStore = useContext(sidebarStoreContext);
-    const isLarge = useMediaQuery({ minWidth: BREAKPOINT_LARGE });
+    const isLarge = useMediaQuery({ minWidth: Breakpoint.Large });
 
     const classes = classNames({
         "sidebar": true,
@@ -41,15 +40,15 @@ const Sidebar: FC = () => {
                 {isLarge ? null : <SidebarCloseIcon />}
                 <SidebarButton
                     primary
-                    route={ROUTE_SETTINGS}
+                    route={RouteName.Settings}
                     icon={faCogs}
                     label={t("sidebar.setting", { name: getTranslatedSettingName(globalStore.setting) })}
                 />
                 <SidebarButton
-                    route={ROUTE_ITEM_LIST}
+                    route={RouteName.ItemList}
                     icon={faTh}
                     label={t("sidebar.all-items")}
-                    highlighted={globalStore.currentRoute === Route.ItemList}
+                    highlighted={globalStore.currentRoute === RouteName.ItemList}
                 />
 
                 <PinnedEntityList />

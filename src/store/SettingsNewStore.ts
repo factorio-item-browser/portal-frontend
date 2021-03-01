@@ -4,18 +4,12 @@ import { CombinationId } from "../class/CombinationId";
 import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import { SaveGameReader } from "../class/SaveGameReader";
-import { RECIPE_MODE_HYBRID } from "../const/recipeMode";
-import { Route } from "../const/route";
-import {
-    SETTING_STATUS_AVAILABLE,
-    SETTING_STATUS_LOADING,
-    SETTING_STATUS_PENDING,
-    SETTING_STATUS_UNKNOWN,
-} from "../const/settingStatus";
+import { SavegameError } from "../error/savegame";
 import { SettingOptionsData, SettingStatusData } from "../type/transfer";
+import { RouteName, RecipeMode, SettingStatus } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
 
-const VALID_SETTING_STATUS = [SETTING_STATUS_AVAILABLE, SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN];
+const validSettingStatus = [SettingStatus.Available, SettingStatus.Pending, SettingStatus.Unknown];
 
 class SettingsNewStore {
     private readonly errorStore: ErrorStore;
@@ -27,13 +21,13 @@ class SettingsNewStore {
     /** The mods from the savegame. */
     public saveGameModNames: string[] = [];
     /** The error of processing the savegame. */
-    public saveGameError = "";
+    public saveGameError: SavegameError | null = null;
     /** The status of the new setting. */
     public settingStatus: SettingStatusData | null = null;
     /** The options for the new setting. */
     public newOptions: SettingOptionsData = {
         name: "",
-        recipeMode: RECIPE_MODE_HYBRID,
+        recipeMode: RecipeMode.Hybrid,
         locale: "en",
     };
     /** Whether we are currently saving the setting. */
@@ -64,12 +58,12 @@ class SettingsNewStore {
             showSaveGameStep: computed,
         });
 
-        this.router.addRoute(Route.SettingsNew, "/settings/new", this.handleRouteChange.bind(this));
+        this.router.addRoute(RouteName.SettingsNew, "/settings/new", this.handleRouteChange.bind(this));
     }
 
     private async handleRouteChange(): Promise<void> {
         this.saveGameModNames = [];
-        this.saveGameError = "";
+        this.saveGameError = null;
         this.settingStatus = null;
     }
 
@@ -94,7 +88,7 @@ class SettingsNewStore {
         return (
             this.showDataAvailabilityStep &&
             this.settingStatus !== null &&
-            VALID_SETTING_STATUS.indexOf(this.settingStatus.status) !== -1
+            validSettingStatus.indexOf(this.settingStatus.status as SettingStatus) !== -1
         );
     }
 
@@ -118,7 +112,7 @@ class SettingsNewStore {
     public async processSaveGame(file: File): Promise<void> {
         this.isSaveGameProcessing = true;
         this.saveGameModNames = [];
-        this.saveGameError = "";
+        this.saveGameError = null;
         this.newOptions.name = file.name.endsWith(".zip") ? file.name.substr(0, file.name.length - 4) : file.name;
 
         const reader = new SaveGameReader();
@@ -136,13 +130,14 @@ class SettingsNewStore {
             runInAction(() => {
                 this.isSaveGameProcessing = false;
                 this.saveGameError = e;
+                console.error(e);
             });
         }
     }
 
     private async requestSettingStatus(modNames: string[]): Promise<void> {
         this.settingStatus = {
-            status: SETTING_STATUS_LOADING,
+            status: SettingStatus.Loading,
         };
 
         try {

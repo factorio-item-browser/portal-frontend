@@ -3,8 +3,8 @@ import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
-import { BREAKPOINT_MEDIUM } from "../../../const/breakpoint";
 import { RecipeData } from "../../../type/transfer";
+import { Breakpoint } from "../../../util/const";
 import RecipeItemList from "./RecipeItemList";
 import RecipeItemSeparator from "./RecipeItemSeparator";
 
@@ -18,7 +18,7 @@ type Props = {
  * The component representing the recipe details.
  */
 const RecipeDetails: FC<Props> = ({ recipe }) => {
-    const isMedium = useMediaQuery({ minWidth: BREAKPOINT_MEDIUM });
+    const isMedium = useMediaQuery({ minWidth: Breakpoint.Medium });
     const { t } = useTranslation();
 
     if (!recipe) {

@@ -3,8 +3,8 @@ import { createContext } from "react";
 import { PaginatedList } from "../class/PaginatedList";
 import { portalApi, PortalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
-import { Route } from "../const/route";
 import { ItemListData, ItemMetaData } from "../type/transfer";
+import { RouteName } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
 
 const emptyItemList: ItemListData = {
@@ -32,7 +32,7 @@ export class ItemListStore {
             this.errorStore.createPaginatesListErrorHandler(emptyItemList),
         );
 
-        router.addRoute(Route.ItemList, "/items", this.handleRouteChange.bind(this));
+        router.addRoute(RouteName.ItemList, "/items", this.handleRouteChange.bind(this));
     }
 
     private async handleRouteChange(): Promise<void> {

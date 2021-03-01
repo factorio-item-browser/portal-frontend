@@ -2,8 +2,8 @@ import { faArrowRight, faMinus, faPlus, faSave } from "@fortawesome/free-solid-s
 import { observer } from "mobx-react-lite";
 import React, { FC, useCallback, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { ROUTE_SETTINGS_NEW } from "../../const/route";
 import { settingsStoreContext } from "../../store/SettingsStore";
+import { RouteName } from "../../util/const";
 import { useDocumentTitle } from "../../util/hooks";
 import ActionButton from "../button/ActionButton";
 import ButtonGroup from "../button/ButtonGroup";
@@ -78,7 +78,7 @@ const SettingsPage: FC = () => {
                     <LinkedButton
                         label={t("settings.current-setting.add-new-setting")}
                         icon={faPlus}
-                        route={ROUTE_SETTINGS_NEW}
+                        route={RouteName.SettingsNew}
                     />
                 </ButtonGroup>
             </Section>

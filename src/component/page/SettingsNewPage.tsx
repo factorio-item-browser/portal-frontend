@@ -2,9 +2,9 @@ import { faArrowRight, faSave, faTimes } from "@fortawesome/free-solid-svg-icons
 import { observer } from "mobx-react-lite";
 import React, { FC, Fragment, useCallback, useContext, useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { ROUTE_SETTINGS } from "../../const/route";
 import { settingsNewStoreContext } from "../../store/SettingsNewStore";
 import { settingsStoreContext } from "../../store/SettingsStore";
+import { RouteName } from "../../util/const";
 import { useDocumentTitle } from "../../util/hooks";
 import ActionButton from "../button/ActionButton";
 import ButtonGroup from "../button/ButtonGroup";
@@ -82,7 +82,7 @@ const SettingsNewPage: FC = () => {
             {settingsNewStore.showAdditionalOptionsStep ? <AdditionalOptionsStep /> : null}
 
             <ButtonGroup spacing>
-                <LinkedButton label={t("settings-new.cancel")} icon={faTimes} route={ROUTE_SETTINGS} />
+                <LinkedButton label={t("settings-new.cancel")} icon={faTimes} route={RouteName.Settings} />
                 <ActionButton
                     primary
                     label={label}

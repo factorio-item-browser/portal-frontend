@@ -5,9 +5,8 @@ import { IconManager, iconManager } from "../class/IconManager";
 import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import { storageManager, StorageManager } from "../class/StorageManager";
-import { RECIPE_MODE_HYBRID } from "../const/recipeMode";
-import { Route } from "../const/route";
 import { SettingDetailsData, SettingMetaData, SettingOptionsData } from "../type/transfer";
+import { RouteName, RecipeMode } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
 
 const emptySettingDetails: SettingDetailsData = {
@@ -42,7 +41,7 @@ export class SettingsStore {
     public selectedOptions: SettingOptionsData = {
         name: "",
         locale: "en",
-        recipeMode: RECIPE_MODE_HYBRID,
+        recipeMode: RecipeMode.Hybrid,
     };
     /** Whether we are currently loading the setting details. */
     public isLoadingSettingDetails = false;
@@ -86,7 +85,7 @@ export class SettingsStore {
             selectedCombinationId: observable,
         });
 
-        this.router.addRoute(Route.Settings, "/settings", this.handleRouteChange.bind(this));
+        this.router.addRoute(RouteName.Settings, "/settings", this.handleRouteChange.bind(this));
     }
 
     private async handleRouteChange(): Promise<void> {

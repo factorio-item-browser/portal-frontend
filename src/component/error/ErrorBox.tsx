@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { PageError } from "../../error/error";
+import { PageError } from "../../error/page";
 
 import "./ErrorBox.scss";
 

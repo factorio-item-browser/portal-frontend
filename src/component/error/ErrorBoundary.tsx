@@ -1,5 +1,5 @@
 import { Component, ContextType, ReactNode } from "react";
-import { RenderError } from "../../error/error";
+import { RenderError } from "../../error/page";
 import { errorStoreContext } from "../../store/ErrorStore";
 
 type Props = {

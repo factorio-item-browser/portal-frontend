@@ -4,9 +4,9 @@ import { observer } from "mobx-react-lite";
 import React, { FC, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
-import { BREAKPOINT_LARGE } from "../../../const/breakpoint";
 import { globalStoreContext } from "../../../store/GlobalStore";
 import { searchStoreContext } from "../../../store/SearchStore";
+import { Breakpoint } from "../../../util/const";
 
 import "./HeaderSearch.scss";
 
@@ -17,7 +17,7 @@ const HeaderSearch: FC = () => {
     const globalStore = useContext(globalStoreContext);
     const searchStore = useContext(searchStoreContext);
 
-    const isLarge = useMediaQuery({ minWidth: BREAKPOINT_LARGE });
+    const isLarge = useMediaQuery({ minWidth: Breakpoint.Large });
     const { t } = useTranslation();
 
     let searchIcon = <FontAwesomeIcon icon={faSearch} />;

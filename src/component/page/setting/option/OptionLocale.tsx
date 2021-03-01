@@ -1,20 +1,11 @@
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { LOCALES } from "../../../../const/locale";
+import locales from "../../../../locale/meta.json";
 import SelectOption, { Item } from "./SelectOption";
 
-function createSortedLocaleItems(locales: { [key: string]: string }): Item[] {
-    const items = Object.keys(locales).map(
-        (locale: string): Item => ({
-            value: locale,
-            label: locales[locale],
-        }),
-    );
-    items.sort((left: Item, right: Item): number => left.label.localeCompare(right.label));
-    return items;
-}
-const localeItems = createSortedLocaleItems(LOCALES);
+const localeItems: Item[] = Object.entries(locales).map(([value, label]) => ({ value, label }));
+localeItems.sort((left, right) => left.label.localeCompare(right.label));
 
 type Props = {
     value: string;

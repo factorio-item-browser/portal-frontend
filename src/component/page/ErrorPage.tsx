@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
-import { PageError } from "../../error/error";
+import { PageError } from "../../error/page";
 import { useDocumentTitle } from "../../util/hooks";
 import ErrorBox from "../error/ErrorBox";
 

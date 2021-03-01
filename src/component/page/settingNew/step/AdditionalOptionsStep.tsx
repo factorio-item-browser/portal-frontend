@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { STATUS_INFO } from "../../../../const/status";
 import { settingsNewStoreContext } from "../../../../store/SettingsNewStore";
+import { BoxStatus } from "../../../../util/const";
 import Section from "../../../common/Section";
 import Status from "../../../status/Status";
 import OptionLocale from "../../setting/option/OptionLocale";
@@ -20,7 +20,7 @@ const AdditionalOptionsStep: FC = () => {
     return (
         <Section headline={t("settings-new.step.additional-options")}>
             {settingsNewStore.hasExistingSetting ? (
-                <Status status={STATUS_INFO}>
+                <Status status={BoxStatus.Info}>
                     <h3>{t("settings-new.existing-setting.headline")}</h3>
                     {t("settings-new.existing-setting.description")}
                 </Status>

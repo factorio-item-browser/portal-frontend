@@ -3,10 +3,9 @@ import { observer } from "mobx-react-lite";
 import React, { FC, useCallback, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { CombinationId } from "../../class/CombinationId";
-import { ROUTE_SETTINGS } from "../../const/route";
-import { STATUS_WARNING } from "../../const/status";
 import { globalStoreContext } from "../../store/GlobalStore";
 import { SettingMetaData } from "../../type/transfer";
+import { BoxStatus, RouteName } from "../../util/const";
 import Button from "../button/Button";
 import ButtonGroup from "../button/ButtonGroup";
 import LinkedButton from "../button/LinkedButton";
@@ -29,7 +28,7 @@ const TemporarySettingStatus: FC<Props> = ({ setting, lastUsedSetting }) => {
     }
 
     return (
-        <Status status={STATUS_WARNING}>
+        <Status status={BoxStatus.Warning}>
             <h3>{t("temporary-setting.headline")}</h3>
             {t("temporary-setting.description-1")}
             <br />
@@ -42,7 +41,12 @@ const TemporarySettingStatus: FC<Props> = ({ setting, lastUsedSetting }) => {
                     onClick={handleRevertClick}
                     secondary
                 />
-                <LinkedButton route={ROUTE_SETTINGS} label={t("temporary-setting.button-add")} icon={faPlus} primary />
+                <LinkedButton
+                    route={RouteName.Settings}
+                    label={t("temporary-setting.button-add")}
+                    icon={faPlus}
+                    primary
+                />
             </ButtonGroup>
         </Status>
     );
