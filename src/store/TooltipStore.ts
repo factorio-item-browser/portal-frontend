@@ -1,8 +1,8 @@
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import { createContext, RefObject } from "react";
-import { PortalApi, portalApi } from "../class/PortalApi";
+import { PortalApi, portalApi } from "../api/PortalApi";
+import { EntityData } from "../api/transfer";
 import { router, Router } from "../class/Router";
-import { EntityData } from "../type/transfer";
 
 export class TooltipStore {
     private readonly portalApi: PortalApi;

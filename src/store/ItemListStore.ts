@@ -1,9 +1,9 @@
 import { makeObservable, observable } from "mobx";
 import { createContext } from "react";
+import { PortalApi, portalApi } from "../api/PortalApi";
+import { ItemListData, ItemMetaData } from "../api/transfer";
 import { PaginatedList } from "../class/PaginatedList";
-import { portalApi, PortalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
-import { ItemListData, ItemMetaData } from "../type/transfer";
 import { RouteName } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
 

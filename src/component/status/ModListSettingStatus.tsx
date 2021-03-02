@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { SettingDetailsData } from "../../type/transfer";
+import { SettingDetailsData } from "../../api/transfer";
 import { BoxStatus, SettingStatus } from "../../util/const";
 import Status from "./Status";
 

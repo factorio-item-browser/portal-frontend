@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { ResultsData } from "../../api/transfer";
 import { PaginatedList } from "../../class/PaginatedList";
-import { ResultsData } from "../../type/transfer";
 import { useScrollEffect } from "../../util/hooks";
 import ActionButton from "./ActionButton";
 

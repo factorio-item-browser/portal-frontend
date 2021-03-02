@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { MachineData } from "../../type/transfer";
+import { MachineData } from "../../api/transfer";
 import { formatCraftingSpeed, formatMachineSlots } from "../../util/format";
 import Icon from "../icon/Icon";
 

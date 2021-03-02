@@ -1,8 +1,8 @@
 import { debounce } from "throttle-debounce";
-import { IconsStyleData } from "../type/transfer";
+import { PortalApi, portalApi } from "../api/PortalApi";
+import { IconsStyleData } from "../api/transfer";
 import { Config } from "../util/config";
 import { NamesByTypesSet } from "./NamesByTypesSet";
-import { portalApi, PortalApi } from "./PortalApi";
 
 export class IconManager {
     private readonly portalApi: PortalApi;

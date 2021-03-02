@@ -1,6 +1,6 @@
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
+import { ResultsData } from "../api/transfer";
 import { PageError } from "../error/page";
-import { ResultsData } from "../type/transfer";
 
 type DataFetcher<T> = (page: number) => Promise<T>;
 type ErrorHandler<T> = (error: PageError) => T;

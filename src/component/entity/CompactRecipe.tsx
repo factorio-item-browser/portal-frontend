@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React, { FC, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { RecipeData, RecipeItemData } from "../../type/transfer";
+import { RecipeData, RecipeItemData } from "../../api/transfer";
 import { formatCraftingTime } from "../../util/format";
 import CompactRecipeIcon from "../icon/CompactRecipeIcon";
 

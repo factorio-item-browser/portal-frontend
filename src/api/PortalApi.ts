@@ -1,5 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import { StorageManager, storageManager } from "../class/StorageManager";
 import { ClientFailureError, PageNotFoundError, ServerFailureError, ServiceNotAvailableError } from "../error/page";
+import { Config } from "../util/config";
 import {
     EntityData,
     IconsStyleData,
@@ -17,9 +19,7 @@ import {
     SettingsListData,
     SettingStatusData,
     SidebarEntityData,
-} from "../type/transfer";
-import { Config } from "../util/config";
-import { storageManager, StorageManager } from "./StorageManager";
+} from "./transfer";
 
 type ServerError = {
     error: {

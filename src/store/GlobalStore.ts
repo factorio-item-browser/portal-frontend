@@ -2,11 +2,11 @@ import { action, computed, makeObservable, observable, runInAction } from "mobx"
 import { createContext, RefObject } from "react";
 import { getI18n } from "react-i18next";
 import { State } from "router5";
+import { PortalApi, portalApi } from "../api/PortalApi";
+import { InitData, SettingMetaData } from "../api/transfer";
 import { CombinationId } from "../class/CombinationId";
-import { portalApi, PortalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import { storageManager, StorageManager } from "../class/StorageManager";
-import { InitData, SettingMetaData } from "../type/transfer";
 import { RouteName, SettingStatus } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
 

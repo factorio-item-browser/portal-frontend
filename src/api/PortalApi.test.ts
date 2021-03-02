@@ -1,8 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { SettingCreateData, SettingOptionsData, SidebarEntityData } from "../type/transfer";
-import { CombinationId } from "./CombinationId";
+import { CombinationId } from "../class/CombinationId";
+import { storageManager } from "../class/StorageManager";
 import { PortalApi } from "./PortalApi";
-import { storageManager } from "./StorageManager";
+import { SettingCreateData, SettingOptionsData, SidebarEntityData } from "./transfer";
 
 async function catchRequest<T>(responseData: T): Promise<AxiosRequestConfig> {
     return new Promise((resolve) => {

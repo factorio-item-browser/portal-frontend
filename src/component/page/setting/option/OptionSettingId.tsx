@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { SettingMetaData } from "../../../../type/transfer";
+import { SettingMetaData } from "../../../../api/transfer";
 import { getTranslatedSettingName } from "../../../../util/setting";
 import SelectOption, { Item } from "./SelectOption";
 

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { ModData } from "../../type/transfer";
+import { ModData } from "../../api/transfer";
 import Icon from "../icon/Icon";
 import ExternalLink from "../link/ExternalLink";
 

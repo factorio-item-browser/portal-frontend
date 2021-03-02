@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
-import { RecipeItemData } from "../../../type/transfer";
+import { RecipeItemData } from "../../../api/transfer";
 import RecipeItem from "./RecipeItem";
 import RecipeItemTime from "./RecipeItemTime";
 

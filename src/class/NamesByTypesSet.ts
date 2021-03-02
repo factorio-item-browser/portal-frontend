@@ -1,4 +1,4 @@
-import { NamesByTypes } from "../type/transfer";
+import { NamesByTypes } from "../api/transfer";
 
 export class NamesByTypesSet {
     private readonly values = new Map<string, Set<string>>();

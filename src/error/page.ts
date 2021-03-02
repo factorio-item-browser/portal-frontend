@@ -7,7 +7,7 @@ export enum ErrorName {
 
 export enum ErrorSeverity {
     Danger = "danger",
-    Fatal = "fata",
+    Fatal = "fatal",
     Warning = "warning",
 }
 

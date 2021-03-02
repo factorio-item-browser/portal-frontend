@@ -2,10 +2,10 @@ import { action, makeObservable, observable, runInAction } from "mobx";
 import { createContext } from "react";
 import { State } from "router5";
 import { debounce } from "throttle-debounce";
+import { PortalApi, portalApi } from "../api/PortalApi";
+import { EntityData, SearchResultsData } from "../api/transfer";
 import { PaginatedList } from "../class/PaginatedList";
-import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
-import { EntityData, SearchResultsData } from "../type/transfer";
 import { RouteName } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
 

@@ -1,9 +1,9 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import { createContext } from "react";
-import { PortalApi, portalApi } from "../class/PortalApi";
+import { PortalApi, portalApi } from "../api/PortalApi";
+import { InitData, SidebarEntityData, SidebarEntityType } from "../api/transfer";
 import { router, Router } from "../class/Router";
 import { StorageManager, storageManager } from "../class/StorageManager";
-import { InitData, SidebarEntityData, SidebarEntityType } from "../type/transfer";
 import { globalStore, GlobalStore } from "./GlobalStore";
 import { TooltipStore, tooltipStore } from "./TooltipStore";
 

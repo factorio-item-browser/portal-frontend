@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, useRef } from "react";
-import { RecipeItemData } from "../../../type/transfer";
+import { RecipeItemData } from "../../../api/transfer";
 import { formatAmount } from "../../../util/format";
 import { useTooltip } from "../../../util/hooks";
 import Icon from "../../icon/Icon";

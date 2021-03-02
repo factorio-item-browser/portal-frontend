@@ -1,11 +1,11 @@
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import { createContext } from "react";
+import { PortalApi, portalApi } from "../api/PortalApi";
+import { SettingOptionsData, SettingStatusData } from "../api/transfer";
 import { CombinationId } from "../class/CombinationId";
-import { PortalApi, portalApi } from "../class/PortalApi";
 import { router, Router } from "../class/Router";
 import { SaveGameReader } from "../class/SaveGameReader";
 import { SavegameError } from "../error/savegame";
-import { SettingOptionsData, SettingStatusData } from "../type/transfer";
 import { RouteName, RecipeMode, SettingStatus } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
 

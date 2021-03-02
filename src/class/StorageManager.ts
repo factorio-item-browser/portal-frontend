@@ -1,4 +1,4 @@
-import { SidebarEntityData } from "../type/transfer";
+import { SidebarEntityData } from "../api/transfer";
 import { Config } from "../util/config";
 import { CombinationId } from "./CombinationId";
 

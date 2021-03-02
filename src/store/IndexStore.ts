@@ -1,8 +1,8 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { createContext } from "react";
-import { PortalApi, portalApi } from "../class/PortalApi";
+import { PortalApi, portalApi } from "../api/PortalApi";
+import { EntityData } from "../api/transfer";
 import { router, Router } from "../class/Router";
-import { EntityData } from "../type/transfer";
 import { RouteName } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
 

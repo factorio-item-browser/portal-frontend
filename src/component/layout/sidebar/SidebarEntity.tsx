@@ -4,10 +4,10 @@ import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React, { FC, ReactNode, useContext, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { SidebarEntityData } from "../../../api/transfer";
 import { iconStoreContext } from "../../../store/IconStore";
 import { sidebarStoreContext } from "../../../store/SidebarStore";
 import { tooltipStoreContext } from "../../../store/TooltipStore";
-import { SidebarEntityData } from "../../../type/transfer";
 import Icon from "../../icon/Icon";
 import EntityLink from "../../link/EntityLink";
 

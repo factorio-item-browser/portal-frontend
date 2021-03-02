@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { ForwardRefRenderFunction } from "react";
 import { useTranslation } from "react-i18next";
-import { EntityData, RecipeData } from "../../type/transfer";
+import { EntityData, RecipeData } from "../../api/transfer";
 import { Config } from "../../util/config";
 import EntityLink from "../link/EntityLink";
 import CompactRecipe from "./CompactRecipe";

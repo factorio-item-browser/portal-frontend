@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
-import { RecipeData } from "../../../type/transfer";
+import { RecipeData } from "../../../api/transfer";
 import { Breakpoint } from "../../../util/const";
 import RecipeItemList from "./RecipeItemList";
 import RecipeItemSeparator from "./RecipeItemSeparator";
