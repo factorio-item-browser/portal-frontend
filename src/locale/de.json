@@ -221,6 +221,11 @@
             "description-global": "Du betrachtest die unmodifizierten Daten von Vanilla. Der Datenexport von deinen Mods ist fehlgeschlagen. Sorry, aber die benötigten Daten können aktuell nicht zur Verfügung gestellt werden.",
             "description-setting": "Der Datenexport für diese Einstellung ist fehlgeschlagen. Nur die unmodifizierten Daten von Vanilla sind verfügbar. Sorry, aber die benötigten Daten können aktuell nicht zur Verfügung gestellt werden."
         },
+        "invalid": {
+            "headline": "Die Kombination der Mods ist nicht gültig.",
+            "description-1": "Dein Spielstand enthält eine ungültige Combination an Mods. Die folgenden Probleme wurden festgestellt:",
+            "description-2": "Deswegen können die Daten für die Kombination nicht bereitgestellt werden."
+        },
         "loading": {
             "headline": "Datenverfügbarkeit wird geprüft...",
             "description": ""
@@ -234,6 +239,12 @@
         "unknown": {
             "headline": "Daten sind aktuell nicht verfügbar.",
             "description": "Die Daten für diese Kombination an Mods sind aktuell nicht verfügbar und ein Datenexport wird angelegt, sobald du die neue Einstellung speicherst."
+        },
+        "validation-problem": {
+            "conflict": "Die Mod \"{{mod}}\" steht im Konflikt mit einer anderen Mod: {{dependency}}",
+            "missingDependency": "Der Mod \"{{mod}}\" fehlt eine benötigte Abhängigkeit: {{dependency}}",
+            "noRelease": "Die Mod \"{{mod}}\" besitzt kein Release auf dem Factorio Mod Portal, welches mit der neuesten Version von Factorio kompatibel ist.",
+            "unknownMod": "Die Mod \"{{mod}}\" ist auf dem Factorio Mod Portal nicht verfügbar."
         }
     },
     "sidebar": {

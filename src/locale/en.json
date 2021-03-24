@@ -222,6 +222,11 @@
             "description-global": "You are viewing the unmodded Vanilla data. The data export of your mods has failed. Sorry, but the required data cannot be made available at this point.",
             "description-setting": "The data export for this setting has failed. Only the unmodded Vanilla data is available. Sorry, but the required data cannot be made available at this point."
         },
+        "invalid": {
+            "headline": "The combination of mods is not valid.",
+            "description-1": "Your savegame does not represent a valid combination of mods. The following problems have been encountered:",
+            "description-2": "Because of this, the data for this combination cannot be made available."
+        },
         "loading": {
             "headline": "Checking data availability...",
             "description": ""
@@ -235,6 +240,12 @@
         "unknown": {
             "headline": "Data is currently not available.",
             "description": "The data for these mods is currently not available and a data export gets triggered when saving the new setting."
+        },
+        "validation-problem": {
+            "conflict": "The mod \"{{mod}}\" is in conflict with another mod: {{dependency}}",
+            "missingDependency": "The mod \"{{mod}}\" is missing a required dependency: {{dependency}}",
+            "noRelease": "The mod \"{{mod}}\" does not have a release on the Factorio Mod Portal, which supports the latest version of Factorio.",
+            "unknownMod": "The mod \"{{mod}}\" is not available on the Factorio Mod Portal."
         }
     },
     "sidebar": {

@@ -21,19 +21,39 @@ const DataAvailabilityStep: FC = () => {
     const { t } = useTranslation();
     const settingsNewStore = useContext(settingsNewStoreContext);
 
-    const status = settingsNewStore.validatedSetting?.status;
-    if (!status) {
+    const validatedSetting = settingsNewStore.validatedSetting;
+    if (!validatedSetting) {
         return null;
     }
 
-    return (
-        <Section headline={t("settings-new.step.data-availability")}>
-            <Status status={settingStatusToBoxStatusMap[status]}>
-                <h3>{t(`setting-status.${status}.headline`)}</h3>
-                {t(`setting-status.${status}.description`)}
+    let statusElement;
+    if (validatedSetting.status !== SettingStatus.Loading && !validatedSetting.isValid) {
+        statusElement = (
+            <Status status={BoxStatus.Error}>
+                <h3>{t("setting-status.invalid.headline")}</h3>
+                {t("setting-status.invalid.description-1")}
+                <ol>
+                    {validatedSetting.validationProblems.map((problem, index) => {
+                        const label = t(`setting-status.validation-problem.${problem.type}`, {
+                            mod: problem.mod,
+                            dependency: problem.dependency,
+                        });
+                        return <li key={index}>{label}</li>;
+                    })}
+                </ol>
+                {t("setting-status.invalid.description-2")}
             </Status>
-        </Section>
-    );
+        );
+    } else {
+        statusElement = (
+            <Status status={settingStatusToBoxStatusMap[validatedSetting.status]}>
+                <h3>{t(`setting-status.${validatedSetting.status}.headline`)}</h3>
+                {t(`setting-status.${validatedSetting.status}.description`)}
+            </Status>
+        );
+    }
+
+    return <Section headline={t("settings-new.step.data-availability")}>{statusElement}</Section>;
 };
 
 export default observer(DataAvailabilityStep);
