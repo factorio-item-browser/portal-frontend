@@ -9,9 +9,8 @@ import ActionButton from "../button/ActionButton";
 import ButtonGroup from "../button/ButtonGroup";
 import LinkedButton from "../button/LinkedButton";
 import Section from "../common/Section";
-import EntityList from "../entity/EntityList";
-import Mod from "../entity/Mod";
-import ModListSettingStatus from "../status/ModListSettingStatus";
+import SelectedSettingStatus from "../status/SelectedSettingStatus";
+import ModList from "./setting/ModList";
 import OptionCombinationId from "./setting/option/OptionCombinationId";
 import OptionLocale from "./setting/option/OptionLocale";
 import OptionRecipeMode from "./setting/option/OptionRecipeMode";
@@ -25,8 +24,8 @@ import OptionsList from "./setting/option/OptionsList";
 const SettingsPage: FC = () => {
     const settingsStore = useContext(settingsStoreContext);
     const { t } = useTranslation();
-    const selectedSettingDetails = settingsStore.selectedSettingDetails;
-    const isTemporary = selectedSettingDetails.isTemporary;
+    const selectedSetting = settingsStore.selectedSetting;
+    const isTemporary = selectedSetting.isTemporary;
     const areOptionsChanged = settingsStore.isChangeButtonVisible;
 
     useDocumentTitle("settings.title");
@@ -46,18 +45,20 @@ const SettingsPage: FC = () => {
             <Section headline={t("settings.headline.settings")}>
                 <OptionsList>
                     <OptionSettingId
-                        settings={settingsStore.availableSettings}
+                        settings={settingsStore.settings}
                         value={settingsStore.selectedCombinationId}
                         onChange={(settingId) => settingsStore.changeCombinationId(settingId)}
-                        loading={settingsStore.isLoadingSettingDetails}
+                        loading={settingsStore.isLoadingMods}
                     />
                 </OptionsList>
+
+                <SelectedSettingStatus setting={selectedSetting} />
 
                 <ActionButton
                     primary
                     spacing
-                    label={t("settings.change-to-setting", { name: selectedSettingDetails.name })}
-                    loadingLabel={t("settings.changing-to-setting", { name: selectedSettingDetails.name })}
+                    label={t("settings.change-to-setting", { name: selectedSetting.name })}
+                    loadingLabel={t("settings.changing-to-setting", { name: selectedSetting.name })}
                     icon={faArrowRight}
                     isVisible={settingsStore.isChangeButtonVisible}
                     isLoading={settingsStore.isChangingToSetting}
@@ -65,9 +66,9 @@ const SettingsPage: FC = () => {
                 />
                 <ButtonGroup right spacing>
                     <ActionButton
-                        label={t("settings.current-setting.delete-setting", { name: selectedSettingDetails.name })}
+                        label={t("settings.current-setting.delete-setting", { name: selectedSetting.name })}
                         loadingLabel={t("settings.current-setting.deleting-setting", {
-                            name: selectedSettingDetails.name,
+                            name: selectedSetting.name,
                         })}
                         icon={faMinus}
                         isVisible={settingsStore.isDeleteButtonVisible}
@@ -85,7 +86,7 @@ const SettingsPage: FC = () => {
 
             <Section
                 headline={t(isTemporary ? "settings.headline.options-temporary" : "settings.headline.options", {
-                    name: selectedSettingDetails.name,
+                    name: selectedSetting.name,
                 })}
             >
                 <OptionsList>
@@ -123,12 +124,12 @@ const SettingsPage: FC = () => {
                         primary
                         spacing
                         label={t(areOptionsChanged ? "settings.save-and-change" : "settings.save-options", {
-                            name: selectedSettingDetails.name,
+                            name: selectedSetting.name,
                         })}
                         loadingLabel={t(
                             areOptionsChanged ? "settings.saving-and-changing" : "settings.saving-options",
                             {
-                                name: selectedSettingDetails.name,
+                                name: selectedSetting.name,
                             },
                         )}
                         icon={faSave}
@@ -139,19 +140,7 @@ const SettingsPage: FC = () => {
                 )}
             </Section>
 
-            <Section
-                headline={t(isTemporary ? "settings.headline.mod-list-temporary" : "settings.headline.mod-list", {
-                    count: selectedSettingDetails.mods.length,
-                    name: selectedSettingDetails.name,
-                })}
-            >
-                <ModListSettingStatus setting={selectedSettingDetails} />
-                <EntityList>
-                    {selectedSettingDetails.mods.map((mod) => {
-                        return <Mod key={mod.name} mod={mod} />;
-                    })}
-                </EntityList>
-            </Section>
+            <ModList />
         </>
     );
 };

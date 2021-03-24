@@ -3,7 +3,8 @@ import { createContext, RefObject } from "react";
 import { getI18n } from "react-i18next";
 import { State } from "router5";
 import { PortalApi, portalApi } from "../api/PortalApi";
-import { InitData, SettingMetaData } from "../api/transfer";
+import { emptySettingData } from "../api/empty";
+import { InitData, SettingData } from "../api/transfer";
 import { CombinationId } from "../class/CombinationId";
 import { router, Router } from "../class/Router";
 import { storageManager, StorageManager } from "../class/StorageManager";
@@ -13,12 +14,6 @@ import { errorStore, ErrorStore } from "./ErrorStore";
 type InitHandler = (initData: InitData) => void | Promise<void>;
 
 const regexPathCombinationId = /^\/([0-9a-zA-Z]{22})(\/|$)/;
-const emptySetting: SettingMetaData = {
-    combinationId: "",
-    name: "Vanilla",
-    status: SettingStatus.Available,
-    isTemporary: false,
-};
 
 export class GlobalStore {
     private readonly errorStore: ErrorStore;
@@ -34,9 +29,9 @@ export class GlobalStore {
     public loadingCircleTarget: RefObject<Element> | null = null;
 
     /** The currently loaded setting. */
-    public setting: SettingMetaData = emptySetting;
+    public setting: SettingData = emptySettingData;
     /** The last used setting in case the current one is temporary. */
-    public lastUsedSetting: SettingMetaData = emptySetting;
+    public lastUsedSetting: SettingData = emptySettingData;
 
     public constructor(errorStore: ErrorStore, portalApi: PortalApi, router: Router, storageManager: StorageManager) {
         this.errorStore = errorStore;
@@ -72,7 +67,7 @@ export class GlobalStore {
         this.setting = initData.setting;
         this.lastUsedSetting = initData.lastUsedSetting || initData.setting;
 
-        await getI18n().changeLanguage(initData.locale);
+        await getI18n().changeLanguage(initData.setting.locale);
     }
 
     /**
@@ -142,12 +137,12 @@ export class GlobalStore {
     public async checkSettingStatus(): Promise<void> {
         if ([SettingStatus.Pending, SettingStatus.Unknown].includes(this.setting.status as SettingStatus)) {
             try {
-                const settingStatus = await this.portalApi.getSettingStatus();
-                if (settingStatus.status === SettingStatus.Available) {
+                const setting = await this.portalApi.getSetting(this.setting.combinationId);
+                if (setting.status === SettingStatus.Available) {
                     window.location.reload();
                 } else {
                     runInAction(() => {
-                        this.setting.status = settingStatus.status;
+                        this.setting = setting;
                     });
                 }
             } catch (e) {

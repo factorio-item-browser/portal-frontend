@@ -2,7 +2,7 @@ import { faPlus, faUndo } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
 import React, { FC, useCallback, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { SettingMetaData } from "../../api/transfer";
+import { SettingData } from "../../api/transfer";
 import { CombinationId } from "../../class/CombinationId";
 import { globalStoreContext } from "../../store/GlobalStore";
 import { BoxStatus, RouteName } from "../../util/const";
@@ -12,8 +12,8 @@ import LinkedButton from "../button/LinkedButton";
 import Status from "./Status";
 
 type Props = {
-    setting: SettingMetaData;
-    lastUsedSetting: SettingMetaData;
+    setting: SettingData;
+    lastUsedSetting: SettingData;
 };
 
 const TemporarySettingStatus: FC<Props> = ({ setting, lastUsedSetting }) => {

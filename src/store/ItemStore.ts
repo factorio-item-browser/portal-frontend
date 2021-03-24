@@ -2,6 +2,7 @@ import { action, makeObservable, observable, runInAction } from "mobx";
 import { createContext } from "react";
 import { State } from "router5";
 import { PortalApi, portalApi } from "../api/PortalApi";
+import { emptyItemRecipesData } from "../api/empty";
 import { EntityData, ItemRecipesData, ItemType } from "../api/transfer";
 import { PaginatedList } from "../class/PaginatedList";
 import { router, Router } from "../class/Router";
@@ -21,14 +22,6 @@ const emptyItem: Item = {
     name: "",
     label: "",
     description: "",
-};
-const emptyItemRecipes: ItemRecipesData = {
-    type: "item",
-    name: "",
-    label: "",
-    description: "",
-    results: [],
-    numberOfResults: 0,
 };
 
 export class ItemStore {
@@ -63,11 +56,11 @@ export class ItemStore {
 
         const newProductsList = new PaginatedList<EntityData, ItemRecipesData>(
             (page) => this.portalApi.getItemProductRecipes(type, name, page),
-            this.errorStore.createPaginatesListErrorHandler(emptyItemRecipes),
+            this.errorStore.createPaginatesListErrorHandler(emptyItemRecipesData),
         );
         const newIngredientsList = new PaginatedList<EntityData, ItemRecipesData>(
             (page) => this.portalApi.getItemIngredientRecipes(type, name, page),
-            this.errorStore.createPaginatesListErrorHandler(emptyItemRecipes),
+            this.errorStore.createPaginatesListErrorHandler(emptyItemRecipesData),
         );
 
         const [productsData] = await Promise.all([

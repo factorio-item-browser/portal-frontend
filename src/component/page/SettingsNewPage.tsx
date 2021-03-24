@@ -31,17 +31,13 @@ const SettingsNewPage: FC = () => {
         });
     }, []);
     const handleSaveClick = useCallback(async (): Promise<void> => {
-        if (settingsNewStore.hasExistingSetting) {
-            await settingsNewStore.changeToSetting();
-        } else {
-            await settingsNewStore.saveNewSetting();
-        }
+        await settingsNewStore.saveNewSetting();
     }, []);
 
     let label;
     let loadingLabel;
     if (settingsNewStore.hasExistingSetting) {
-        const settingName = settingsNewStore.settingStatus?.existingSetting?.name;
+        const settingName = settingsNewStore.validatedSetting?.existingSetting?.name;
         label = t("settings-new.change-to-setting", { name: settingName });
         loadingLabel = t("settings-new.changing-to-setting", { name: settingName });
     } else {

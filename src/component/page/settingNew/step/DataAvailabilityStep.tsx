@@ -21,7 +21,7 @@ const DataAvailabilityStep: FC = () => {
     const { t } = useTranslation();
     const settingsNewStore = useContext(settingsNewStoreContext);
 
-    const status = settingsNewStore.settingStatus?.status;
+    const status = settingsNewStore.validatedSetting?.status;
     if (!status) {
         return null;
     }

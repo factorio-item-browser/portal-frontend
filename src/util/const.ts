@@ -37,3 +37,10 @@ export enum SettingStatus {
     Pending = "pending",
     Unknown = "unknown",
 }
+
+export enum ValidationProblemType {
+    Conflict = "conflict",
+    MissingDependency = "missingDependency",
+    NoRelease = "noRelease",
+    UnknownMod = "unknownMod",
+}

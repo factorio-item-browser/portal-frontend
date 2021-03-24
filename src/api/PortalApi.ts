@@ -9,15 +9,14 @@ import {
     ItemListData,
     ItemRecipesData,
     ItemType,
+    ModData,
     NamesByTypes,
     RecipeDetailsData,
     RecipeMachinesData,
     SearchResultsData,
-    SettingCreateData,
-    SettingDetailsData,
+    SettingData,
     SettingOptionsData,
-    SettingsListData,
-    SettingStatusData,
+    SettingValidationData,
     SidebarEntityData,
 } from "./transfer";
 
@@ -81,29 +80,6 @@ export class PortalApi {
      */
     public async initializeSession(): Promise<InitData> {
         const response = await this.client.post<InitData>("/init");
-        return response.data;
-    }
-
-    /**
-     * Executes a search with the specified query.
-     */
-    public async search(query: string, page: number): Promise<SearchResultsData> {
-        return this.withCache(`search-${query}-${page}`, () => {
-            return this.client.get<SearchResultsData>("/search", {
-                params: {
-                    query: query,
-                    indexOfFirstResult: (page - 1) * Config.numberOfSearchResultsPerPage,
-                    numberOfResults: Config.numberOfSearchResultsPerPage,
-                },
-            });
-        });
-    }
-
-    /**
-     * Fetches the style of the icons with the specified types and names.
-     */
-    public async getIconsStyle(namesByTypes: NamesByTypes): Promise<IconsStyleData> {
-        const response = await this.client.post<IconsStyleData>("/style/icons", namesByTypes);
         return response.data;
     }
 
@@ -184,31 +160,41 @@ export class PortalApi {
     }
 
     /**
+     * Executes a search with the specified query.
+     */
+    public async search(query: string, page: number): Promise<SearchResultsData> {
+        return this.withCache(`search-${query}-${page}`, () => {
+            return this.client.get<SearchResultsData>("/search", {
+                params: {
+                    query: query,
+                    indexOfFirstResult: (page - 1) * Config.numberOfSearchResultsPerPage,
+                    numberOfResults: Config.numberOfSearchResultsPerPage,
+                },
+            });
+        });
+    }
+
+    /**
      * Fetches the settings available for the current user.
      */
-    public async getSettings(): Promise<SettingsListData> {
-        const response = await this.client.get<SettingsListData>("/settings");
+    public async getSettings(): Promise<SettingData[]> {
+        const response = await this.client.get<SettingData[]>("/settings");
+        return response.data;
+    }
+
+    /**
+     * Validates the setting using the specified mod names.
+     */
+    public async validateSetting(modNames: string[]): Promise<SettingValidationData> {
+        const response = await this.client.post("/setting/validate", modNames);
         return response.data;
     }
 
     /**
      * Fetches the details to a specific setting.
      */
-    public async getSetting(combinationId: string): Promise<SettingDetailsData> {
-        const response = await this.client.get<SettingDetailsData>(`/settings/${encodeURI(combinationId)}`);
-        return response.data;
-    }
-
-    /**
-     * Fetches the status of the specified combination of mods, or the current setting.
-     */
-    public async getSettingStatus(modNames?: string[]): Promise<SettingStatusData> {
-        if (Array.isArray(modNames)) {
-            const response = await this.client.post<SettingStatusData>("/settings/status", modNames);
-            return response.data;
-        }
-
-        const response = await this.client.get<SettingStatusData>("/settings/status");
+    public async getSetting(combinationId: string): Promise<SettingData> {
+        const response = await this.client.get<SettingData>(`/setting/${encodeURI(combinationId)}`);
         return response.data;
     }
 
@@ -216,21 +202,31 @@ export class PortalApi {
      * Save the setting with the options.
      */
     public async saveSetting(combinationId: string, options: SettingOptionsData): Promise<void> {
-        await this.client.put<void>(`/settings/${encodeURI(combinationId)}`, options);
-    }
-
-    /**
-     * Creates a new setting with the specified data.
-     */
-    public async createSetting(settingData: SettingCreateData): Promise<void> {
-        await this.client.put<void>("/settings", settingData);
+        await this.client.put<void>(`/setting/${encodeURI(combinationId)}`, options);
     }
 
     /**
      * Deletes the setting with the specified combination.
      */
     public async deleteSetting(combinationId: string): Promise<void> {
-        await this.client.delete<void>(`/settings/${encodeURI(combinationId)}`);
+        await this.client.delete<void>(`/setting/${encodeURI(combinationId)}`);
+    }
+
+    /**
+     * Fetches the mods of the setting.
+     */
+    public async getSettingMods(combinationId: string): Promise<ModData[]> {
+        return this.withCache(`setting-${combinationId}-mods`, () => {
+            return this.client.get<ModData[]>(`/setting/${combinationId}/mods`);
+        });
+    }
+
+    /**
+     * Fetches the style of the icons with the specified types and names.
+     */
+    public async getIconsStyle(namesByTypes: NamesByTypes): Promise<IconsStyleData> {
+        const response = await this.client.post<IconsStyleData>("/style/icons", namesByTypes);
+        return response.data;
     }
 
     /**

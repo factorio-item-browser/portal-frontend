@@ -2,6 +2,7 @@ import { action, makeObservable, observable, runInAction } from "mobx";
 import { createContext } from "react";
 import { State } from "router5";
 import { PortalApi, portalApi } from "../api/PortalApi";
+import { emptyRecipeDetailsData, emptyRecipeMachinesData } from "../api/empty";
 import { MachineData, RecipeDetailsData, RecipeMachinesData } from "../api/transfer";
 import { PaginatedList } from "../class/PaginatedList";
 import { router, Router } from "../class/Router";
@@ -9,23 +10,13 @@ import { RouteName } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
 import { sidebarStore, SidebarStore } from "./SidebarStore";
 
-const emptyRecipeDetails: RecipeDetailsData = {
-    name: "",
-    label: "",
-    description: "",
-};
-const emptyRecipeMachines: RecipeMachinesData = {
-    results: [],
-    numberOfResults: 0,
-};
-
 export class RecipeStore {
     private readonly errorStore: ErrorStore;
     private readonly portalApi: PortalApi;
     private readonly sidebarStore: SidebarStore;
 
     /** The recipe details to be shown. */
-    public recipeDetails: RecipeDetailsData = emptyRecipeDetails;
+    public recipeDetails: RecipeDetailsData = emptyRecipeDetailsData;
     /** The paginated list of machines to show. */
     public paginatedMachinesList: PaginatedList<MachineData, RecipeMachinesData> | null = null;
 
@@ -48,7 +39,7 @@ export class RecipeStore {
 
         const newMachinesList = new PaginatedList<MachineData, RecipeMachinesData>(
             (page) => this.portalApi.getRecipeMachines(name, page),
-            this.errorStore.createPaginatesListErrorHandler(emptyRecipeMachines),
+            this.errorStore.createPaginatesListErrorHandler(emptyRecipeMachinesData),
         );
 
         try {

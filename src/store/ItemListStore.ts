@@ -1,16 +1,12 @@
 import { makeObservable, observable } from "mobx";
 import { createContext } from "react";
 import { PortalApi, portalApi } from "../api/PortalApi";
+import { emptyItemListData } from "../api/empty";
 import { ItemListData, ItemMetaData } from "../api/transfer";
 import { PaginatedList } from "../class/PaginatedList";
 import { router, Router } from "../class/Router";
 import { RouteName } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
-
-const emptyItemList: ItemListData = {
-    results: [],
-    numberOfResults: 0,
-};
 
 export class ItemListStore {
     private readonly errorStore: ErrorStore;
@@ -29,7 +25,7 @@ export class ItemListStore {
 
         this.paginatedItemList = new PaginatedList(
             (page) => this.portalApi.getItemList(page),
-            this.errorStore.createPaginatesListErrorHandler(emptyItemList),
+            this.errorStore.createPaginatesListErrorHandler(emptyItemListData),
         );
 
         router.addRoute(RouteName.ItemList, "/items", this.handleRouteChange.bind(this));

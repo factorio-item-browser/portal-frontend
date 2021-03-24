@@ -3,17 +3,12 @@ import { createContext } from "react";
 import { State } from "router5";
 import { debounce } from "throttle-debounce";
 import { PortalApi, portalApi } from "../api/PortalApi";
+import { emptySearchResultsData } from "../api/empty";
 import { EntityData, SearchResultsData } from "../api/transfer";
 import { PaginatedList } from "../class/PaginatedList";
 import { router, Router } from "../class/Router";
 import { RouteName } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
-
-const emptySearchResults: SearchResultsData = {
-    query: "",
-    results: [],
-    numberOfResults: 0,
-};
 
 export class SearchStore {
     private readonly errorStore: ErrorStore;
@@ -64,7 +59,7 @@ export class SearchStore {
         const { query } = state.params;
         const newPaginatedList = new PaginatedList<EntityData, SearchResultsData>(
             (page) => this.portalApi.search(query, page),
-            this.errorStore.createPaginatesListErrorHandler(emptySearchResults),
+            this.errorStore.createPaginatesListErrorHandler(emptySearchResultsData),
         );
 
         const searchResultsData = await newPaginatedList.requestNextPage();

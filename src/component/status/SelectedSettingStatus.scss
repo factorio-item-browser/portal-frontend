@@ -1,0 +1,5 @@
+@import "../../style/import";
+
+.selected-setting-status {
+    @include dynamic-spacing(margin, default large large large);
+}
