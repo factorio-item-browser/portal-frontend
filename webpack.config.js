@@ -83,7 +83,7 @@ module.exports = (env, argv) => {
                     exclude: /inline/,
                     type: "asset/resource",
                     generator: {
-                        filename: "asset/image/[name].[ext]",
+                        filename: "asset/image/[name][ext]",
                     },
                     use: [
                         {
