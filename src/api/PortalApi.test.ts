@@ -420,14 +420,17 @@ describe("PortalApi", (): void => {
         });
 
         test("getIconsStyle", async (): Promise<void> => {
-            const namesByTypes = {
-                abc: ["def", "ghi"],
+            const request = {
+                cssSelector: ".foo",
+                entities: {
+                    abc: ["def", "ghi"],
+                },
             };
 
             const expectedRequest: AxiosRequestConfig = {
                 baseURL: "portal-api-server",
                 url: "/style/icons",
-                data: JSON.stringify(namesByTypes),
+                data: JSON.stringify(request),
                 method: "post",
                 headers: {
                     "Combination-Id": combinationId,
@@ -438,7 +441,7 @@ describe("PortalApi", (): void => {
 
             const requestPromise = catchRequest(responseData);
             const portalApi = new PortalApi(storageManager);
-            const result = await portalApi.getIconsStyle(namesByTypes);
+            const result = await portalApi.getIconsStyle(request);
 
             expect(result).toEqual(responseData);
             return expect(requestPromise).resolves.toMatchObject(expectedRequest);

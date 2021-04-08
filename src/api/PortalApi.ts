@@ -6,12 +6,12 @@ import { Config } from "../util/config";
 import {
     EntityData,
     IconsStyleData,
+    IconsStyleRequestData,
     InitData,
     ItemListData,
     ItemRecipesData,
     ItemType,
     ModData,
-    NamesByTypes,
     RecipeDetailsData,
     RecipeMachinesData,
     SearchResultsData,
@@ -233,8 +233,8 @@ export class PortalApi {
     /**
      * Fetches the style of the icons with the specified types and names.
      */
-    public async getIconsStyle(namesByTypes: NamesByTypes): Promise<IconsStyleData> {
-        const response = await this.client.post<IconsStyleData>("/style/icons", namesByTypes);
+    public async getIconsStyle(request: IconsStyleRequestData): Promise<IconsStyleData> {
+        const response = await this.client.post<IconsStyleData>("/style/icons", request);
         return response.data;
     }
 

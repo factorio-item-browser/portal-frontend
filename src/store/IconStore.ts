@@ -1,7 +1,6 @@
 import { action, makeObservable, observable } from "mobx";
 import { createContext } from "react";
 import { State } from "router5";
-import { iconManager, IconManager } from "../class/IconManager";
 import { router, Router } from "../class/Router";
 import { RouteName } from "../util/const";
 
@@ -16,14 +15,10 @@ const emptyEntity: Entity = {
 };
 
 export class IconStore {
-    private readonly iconManager: IconManager;
-
     /** The entity which should currently be highlighted. */
     public highlightedEntity: Entity = emptyEntity;
 
-    public constructor(iconManager: IconManager, router: Router) {
-        this.iconManager = iconManager;
-
+    public constructor(router: Router) {
         makeObservable<this, "handleGlobalRouteChange">(this, {
             handleGlobalRouteChange: action,
             highlightedEntity: observable,
@@ -55,5 +50,5 @@ export class IconStore {
     }
 }
 
-export const iconStore = new IconStore(iconManager, router);
+export const iconStore = new IconStore(router);
 export const iconStoreContext = createContext(iconStore);

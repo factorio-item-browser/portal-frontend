@@ -2,7 +2,6 @@ import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React, { ForwardRefRenderFunction, useEffect } from "react";
 import { modIconManager } from "../../class/IconManager";
-import { formatIconClass } from "../../util/format";
 
 import "./Icon.scss";
 
@@ -21,7 +20,7 @@ const ModIcon: ForwardRefRenderFunction<HTMLDivElement, Props> = ({ combinationI
 
     const classes = classNames({
         icon: true,
-        [formatIconClass("mod", name)]: true,
+        [modIconManager.buildCssClass(combinationId, name)]: true,
     });
 
     return <div className={classes} ref={ref} />;

@@ -17,6 +17,11 @@ export type EntityData = {
     numberOfRecipes: number;
 };
 
+export type IconsStyleRequestData = {
+    cssSelector: string;
+    entities: NamesByTypes;
+};
+
 export type IconsStyleData = {
     processedEntities: NamesByTypes;
     style: string;
