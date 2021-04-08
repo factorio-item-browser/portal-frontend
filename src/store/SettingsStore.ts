@@ -4,7 +4,6 @@ import { PortalApi, portalApi } from "../api/PortalApi";
 import { emptySettingData } from "../api/empty";
 import { InitData, ModData, SettingData, SettingOptionsData } from "../api/transfer";
 import { CombinationId } from "../class/CombinationId";
-import { IconManager, iconManager } from "../class/IconManager";
 import { router, Router } from "../class/Router";
 import { storageManager, StorageManager } from "../class/StorageManager";
 import { RecipeMode, RouteName, SettingStatus } from "../util/const";
@@ -13,7 +12,6 @@ import { globalStore, GlobalStore } from "./GlobalStore";
 
 export class SettingsStore {
     private readonly errorStore: ErrorStore;
-    private readonly iconManager: IconManager;
     private readonly portalApi: PortalApi;
     private readonly router: Router;
     private readonly storageManager: StorageManager;
@@ -44,13 +42,11 @@ export class SettingsStore {
     public constructor(
         errorStore: ErrorStore,
         globalStore: GlobalStore,
-        iconManager: IconManager,
         portalApi: PortalApi,
         router: Router,
         storageManager: StorageManager,
     ) {
         this.errorStore = errorStore;
-        this.iconManager = iconManager;
         this.portalApi = portalApi;
         this.router = router;
         this.storageManager = storageManager;
@@ -238,5 +234,5 @@ export class SettingsStore {
     }
 }
 
-export const settingsStore = new SettingsStore(errorStore, globalStore, iconManager, portalApi, router, storageManager);
+export const settingsStore = new SettingsStore(errorStore, globalStore, portalApi, router, storageManager);
 export const settingsStoreContext = createContext(settingsStore);

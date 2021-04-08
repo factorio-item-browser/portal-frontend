@@ -3,14 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { ModData } from "../../api/transfer";
-import Icon from "../icon/Icon";
+import { ModData, SettingData } from "../../api/transfer";
+import ModIcon from "../icon/ModIcon";
 import ExternalLink from "../link/ExternalLink";
 
 import "./Mod.scss";
 
 type Props = {
     mod: ModData;
+    setting: SettingData;
 };
 
 function buildExternalModLink(mod: ModData): string {
@@ -23,13 +24,13 @@ function buildExternalModLink(mod: ModData): string {
 /**
  * The component representing a mod pn the settings page.
  */
-const Mod: FC<Props> = ({ mod }) => {
+const Mod: FC<Props> = ({ mod, setting }) => {
     const { t } = useTranslation();
 
     return (
         <ExternalLink className="entity mod-entity" url={buildExternalModLink(mod)}>
             <div className="mod-icon">
-                <Icon type="mod" name={mod.name} />
+                <ModIcon combinationId={setting.combinationId} name={mod.name} />
             </div>
 
             <div className="mod-content">

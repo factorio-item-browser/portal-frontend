@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import { CombinationId } from "../class/CombinationId";
 import { StorageManager, storageManager } from "../class/StorageManager";
 import { ClientFailureError, PageNotFoundError, ServerFailureError, ServiceNotAvailableError } from "../error/page";
 import { Config } from "../util/config";
@@ -31,10 +32,12 @@ type ServerError = {
  */
 export class PortalApi {
     private readonly client: AxiosInstance;
+    private readonly combinationId?: CombinationId;
     private readonly storageManager: StorageManager;
 
-    public constructor(storageManager: StorageManager) {
+    public constructor(storageManager: StorageManager, combinationId?: CombinationId) {
         this.storageManager = storageManager;
+        this.combinationId = combinationId;
 
         this.client = axios.create({
             baseURL: Config.portalApiUrl,
@@ -44,8 +47,14 @@ export class PortalApi {
         this.client.interceptors.response.use(undefined, this.prepareResponseError.bind(this));
     }
 
+    public withCombinationId(combinationId: CombinationId): PortalApi {
+        return new PortalApi(this.storageManager, combinationId);
+    }
+
     private prepareRequest(request: AxiosRequestConfig): AxiosRequestConfig {
-        if (this.storageManager.combinationId !== null) {
+        if (this.combinationId) {
+            request.headers["Combination-Id"] = this.combinationId.toFull();
+        } else if (this.storageManager.combinationId !== null) {
             request.headers["Combination-Id"] = this.storageManager.combinationId.toFull();
         }
         if (request.data) {

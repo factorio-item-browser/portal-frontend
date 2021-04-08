@@ -1,18 +1,17 @@
 import { debounce } from "throttle-debounce";
 import { PortalApi, portalApi } from "../api/PortalApi";
-import { IconsStyleData } from "../api/transfer";
 import { Config } from "../util/config";
+import { CombinationId } from "./CombinationId";
 import { NamesByTypesSet } from "./NamesByTypesSet";
 
-export class IconManager {
+class IconManager {
     private readonly portalApi: PortalApi;
 
     private readonly styleElement: HTMLElement;
     private readonly debounceRequestStyle: () => void;
-    private readonly additionalStyleElements = new Map<string, Text>();
-    private readonly requestedEntities = new NamesByTypesSet();
-    private readonly pendingEntities = new NamesByTypesSet();
-    private readonly processedEntities = new NamesByTypesSet();
+
+    private readonly requestedIcons = new NamesByTypesSet();
+    private readonly processedIcons = new NamesByTypesSet();
 
     public constructor(portalApi: PortalApi) {
         this.portalApi = portalApi;
@@ -24,57 +23,119 @@ export class IconManager {
     }
 
     public requestIcon(type: string, name: string): void {
-        if (
-            this.requestedEntities.has(type, name) ||
-            this.pendingEntities.has(type, name) ||
-            this.processedEntities.has(type, name)
-        ) {
+        if (this.processedIcons.has(type, name)) {
             return;
         }
 
-        this.requestedEntities.add(type, name);
-        if (this.requestedEntities.size > Config.numberOfIconsPerRequest) {
+        this.processedIcons.add(type, name);
+        this.requestedIcons.add(type, name);
+
+        if (this.requestedIcons.size > Config.numberOfIconsPerRequest) {
             this.requestStyle();
+        } else {
+            this.debounceRequestStyle();
         }
-        this.debounceRequestStyle();
     }
 
     private requestStyle(): void {
-        if (this.requestedEntities.size === 0) {
+        if (this.requestedIcons.size === 0) {
             return;
         }
 
-        const namesByTypes = this.requestedEntities.getData();
-        this.pendingEntities.merge(namesByTypes);
-        this.requestedEntities.clear();
+        const namesByTypes = this.requestedIcons.getData();
+        this.requestedIcons.clear();
 
-        (async (): Promise<void> => {
+        (async () => {
             try {
                 const response = await this.portalApi.getIconsStyle(namesByTypes);
-                this.appendStyle(response.style);
-                this.processedEntities.merge(response.processedEntities);
+                this.styleElement.appendChild(document.createTextNode(response.style));
+                this.processedIcons.merge(response.processedEntities);
             } catch (e) {
-                // Ignore any failures to failed style requests.
+                // Ignore any failures while loading icons.
             }
         })();
     }
+}
 
-    private appendStyle(style: string): void {
-        this.styleElement.appendChild(document.createTextNode(style));
+class ModIconManager {
+    private readonly portalApi: PortalApi;
+
+    private readonly styleElements = new Map<string, HTMLElement>();
+    private readonly debounceRequestStyle: () => void;
+
+    private readonly requestedIcons = new NamesByTypesSet();
+    private readonly processedIcons = new NamesByTypesSet();
+
+    public constructor(portalApi: PortalApi) {
+        this.portalApi = portalApi;
+
+        this.debounceRequestStyle = debounce(10, this.requestStyle.bind(this));
     }
 
-    public addAdditionalStyle(name: string, style: IconsStyleData): void {
-        let element = this.additionalStyleElements.get(name);
-        if (element) {
-            element.textContent = style.style;
-        } else {
-            element = document.createTextNode(style.style);
-            this.additionalStyleElements.set(name, element);
-            this.styleElement.appendChild(element);
+    public requestIcon(combinationId: string, modName: string): void {
+        this.switchStyle(combinationId);
+        if (this.processedIcons.has(combinationId, modName)) {
+            return;
         }
 
-        this.processedEntities.merge(style.processedEntities);
+        this.processedIcons.add(combinationId, modName);
+        this.requestedIcons.add(combinationId, modName);
+
+        if (this.requestedIcons.size > Config.numberOfIconsPerRequest) {
+            this.requestStyle();
+        } else {
+            this.debounceRequestStyle();
+        }
+    }
+
+    private requestStyle(): void {
+        if (this.requestedIcons.size === 0) {
+            return;
+        }
+
+        const data = this.requestedIcons.getData();
+        this.requestedIcons.clear();
+
+        (async () => {
+            const requests: Promise<void>[] = [];
+            for (const [combinationId, modNames] of Object.entries(data)) {
+                requests.push(this.requestStyleOfMod(combinationId, modNames));
+            }
+
+            await Promise.allSettled(requests);
+        })();
+    }
+
+    private async requestStyleOfMod(combinationId: string, modNames: string[]): Promise<void> {
+        try {
+            const portalApi = this.portalApi.withCombinationId(CombinationId.fromFull(combinationId));
+            const response = await portalApi.getIconsStyle({ mod: modNames });
+            this.getStyleElement(combinationId).appendChild(document.createTextNode(response.style));
+            this.processedIcons.merge({ [combinationId]: response.processedEntities.mod || [] });
+        } catch {
+            // Ignore any failures while loading icons.
+        }
+    }
+
+    private switchStyle(combinationId: string): void {
+        this.styleElements.forEach((element) => {
+            if (element.parentElement) {
+                element.parentElement.removeChild(element);
+            }
+        });
+
+        document.head.appendChild(this.getStyleElement(combinationId));
+    }
+
+    private getStyleElement(combinationId: string): HTMLElement {
+        let element = this.styleElements.get(combinationId);
+        if (!element) {
+            element = document.createElement("style");
+            this.styleElements.set(combinationId, element);
+        }
+        return element;
     }
 }
 
 export const iconManager = new IconManager(portalApi);
+export const modIconManager = new ModIconManager(portalApi);

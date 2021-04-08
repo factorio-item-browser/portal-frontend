@@ -27,7 +27,7 @@ const ModList: FC = () => {
         >
             <EntityList>
                 {mods.map((mod) => {
-                    return <Mod key={mod.name} mod={mod} />;
+                    return <Mod key={mod.name} mod={mod} setting={setting} />;
                 })}
             </EntityList>
         </Section>
