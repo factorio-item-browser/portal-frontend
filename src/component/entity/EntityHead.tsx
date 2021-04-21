@@ -18,7 +18,7 @@ const EntityHead: FC<Props> = ({ type, name, label }) => {
     return (
         <EntityLink type={type} name={name} className="entity-head">
             <Icon type={type} name={name} />
-            <h3>{label}</h3>
+            <h3>{label || name}</h3>
         </EntityLink>
     );
 };

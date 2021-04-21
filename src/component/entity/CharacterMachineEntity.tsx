@@ -19,7 +19,7 @@ const CharacterMachineEntity: FC<Props> = ({ machine }) => {
         <div className="entity machine-entity">
             <div className="entity-head">
                 <Icon type="machine" name={machine.name} />
-                <h3>{machine.label}</h3>
+                <h3>{machine.label || machine.name}</h3>
             </div>
 
             <div className="machine-details">

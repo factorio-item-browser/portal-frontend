@@ -16,14 +16,14 @@ const ItemDetailsPage: FC = () => {
     const { t } = useTranslation();
     const item = itemStore.item;
 
-    useDocumentTitle(item.label ? `item-details.title.${item.type}` : "", { label: item.label ?? item.name });
+    useDocumentTitle(`item-details.title.${item.type || "item"}`, { label: item.label || item.name });
 
     return (
         <Fragment>
             <DetailsHead
                 type={item.type}
                 name={item.name}
-                title={t(`item-details.headline.${item.type}`, { label: item.label ?? item.name })}
+                title={t(`item-details.headline.${item.type}`, { label: item.label || item.name })}
             >
                 <Detail hidden={!item.description}>{item.description}</Detail>
                 <Detail>

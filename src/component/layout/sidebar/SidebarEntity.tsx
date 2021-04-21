@@ -89,7 +89,7 @@ const SidebarEntity: FC<Props> = ({ entity }) => {
             }}
         >
             <Icon type={entity.type} name={entity.name} ref={iconRef} />
-            <span className="label">{entity.label}</span>
+            <span className="label">{entity.label || entity.name}</span>
 
             {entity.pinnedPosition > 0 ? renderUnpinAction(entity) : renderPinAction(entity)}
             <div className="type">{t(`box-label.${entity.type}`)}</div>

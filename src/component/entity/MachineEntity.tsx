@@ -32,7 +32,7 @@ const MachineEntity: FC<Props> = ({ machine }) => {
                 onMouseLeave={hideTooltip}
             >
                 <Icon type="machine" name={machine.name} ref={iconRef} />
-                <h3>{machine.label}</h3>
+                <h3>{machine.label || machine.name}</h3>
             </EntityLink>
 
             <div className="machine-details">

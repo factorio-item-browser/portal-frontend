@@ -17,14 +17,14 @@ const RecipeDetailsPage: FC = () => {
     const { t } = useTranslation();
     const details = recipeStore.recipeDetails;
 
-    useDocumentTitle(details.label ? "recipe-details.title" : "", { label: details.label });
+    useDocumentTitle("recipe-details.title", { label: details.label || details.name });
 
     return (
         <Fragment>
             <DetailsHead
                 type="recipe"
                 name={details.name}
-                title={t("recipe-details.headline", { label: details.label })}
+                title={t("recipe-details.headline", { label: details.label || details.name })}
             >
                 <Detail hidden={!details.description}>{details.description}</Detail>
                 <Detail>
