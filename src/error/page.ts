@@ -24,6 +24,15 @@ export class ClientFailureError extends PageError {
     }
 }
 
+export class CombinationNotFoundError extends PageError {
+    public constructor(message: string) {
+        super(message);
+
+        this.name = ErrorName.PageNotFound;
+        this.severity = ErrorSeverity.Fatal;
+    }
+}
+
 export class PageNotFoundError extends PageError {
     public constructor(message: string) {
         super(message);

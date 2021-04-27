@@ -8,6 +8,7 @@ import { InitData, SettingData } from "../api/transfer";
 import { CombinationId } from "../class/CombinationId";
 import { router, Router } from "../class/Router";
 import { storageManager, StorageManager } from "../class/StorageManager";
+import { CombinationNotFoundError, PageNotFoundError } from "../error/page";
 import { RouteName, SettingStatus } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
 
@@ -120,7 +121,11 @@ export class GlobalStore {
                 window.location.reload();
             }
         } catch (e) {
-            this.errorStore.handleError(e);
+            if (e instanceof PageNotFoundError) {
+                this.errorStore.handleError(new CombinationNotFoundError(e.message));
+            } else {
+                this.errorStore.handleError(e);
+            }
         }
     }
 
