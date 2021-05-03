@@ -29,7 +29,7 @@ const RecipeItem: FC<Props> = ({ item }) => {
         >
             <div className="amount">{formatAmount(item.amount)}</div>
             <Icon type={item.type} name={item.name} ref={iconRef} />
-            <div className="label">{item.label}</div>
+            <div className="label">{item.label || item.name}</div>
         </EntityLink>
     );
 };
