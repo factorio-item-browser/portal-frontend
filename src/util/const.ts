@@ -1,4 +1,5 @@
 export enum BoxStatus {
+    Discord = "discord", // Pseudo-status to have a link to discord look the same as a status box.
     Error = "error",
     Info = "info",
     Pending = "pending",

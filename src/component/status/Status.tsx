@@ -1,3 +1,4 @@
+import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import { faCheck, faExclamation, faInfo, faSpinner, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
@@ -8,6 +9,7 @@ import { BoxStatus } from "../../util/const";
 import "./Status.scss";
 
 const ICON_MAP: { [key: string]: ReactNode } = {
+    [BoxStatus.Discord]: <FontAwesomeIcon icon={faDiscord} />,
     [BoxStatus.Error]: <FontAwesomeIcon icon={faTimes} />,
     [BoxStatus.Info]: <FontAwesomeIcon icon={faInfo} />,
     [BoxStatus.Pending]: <FontAwesomeIcon icon={faSpinner} spin />,

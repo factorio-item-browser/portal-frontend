@@ -4,13 +4,16 @@ import React, { FC, Fragment, useCallback, useContext, useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { settingsNewStoreContext } from "../../store/SettingsNewStore";
 import { settingsStoreContext } from "../../store/SettingsStore";
-import { RouteName } from "../../util/const";
+import { Config } from "../../util/config";
+import { BoxStatus, RouteName } from "../../util/const";
 import { useDocumentTitle } from "../../util/hooks";
 import ActionButton from "../button/ActionButton";
 import ButtonGroup from "../button/ButtonGroup";
 import LinkedButton from "../button/LinkedButton";
 import Section from "../common/Section";
 import TextBox from "../common/TextBox";
+import ExternalLink from "../link/ExternalLink";
+import Status from "../status/Status";
 import AdditionalOptionsStep from "./settingNew/step/AdditionalOptionsStep";
 import DataAvailabilityStep from "./settingNew/step/DataAvailabilityStep";
 import SaveGameStep from "./settingNew/step/SaveGameStep";
@@ -71,6 +74,13 @@ const SettingsNewPage: FC = () => {
                         </Trans>
                     </p>
                 </TextBox>
+
+                <ExternalLink url={Config.discordLink}>
+                    <Status status={BoxStatus.Discord}>
+                        <h3>{t("settings-new.discord.label")}</h3>
+                        {t("settings-new.discord.description")}
+                    </Status>
+                </ExternalLink>
             </Section>
 
             {settingsNewStore.showSaveGameStep ? <SaveGameStep /> : null}

@@ -5,6 +5,8 @@ import { settingsNewStoreContext } from "../../../../store/SettingsNewStore";
 import { BoxStatus, SettingStatus } from "../../../../util/const";
 import Section from "../../../common/Section";
 import Status from "../../../status/Status";
+import OptionCombinationId from "../../setting/option/OptionCombinationId";
+import OptionsList from "../../setting/option/OptionsList";
 
 const settingStatusToBoxStatusMap: { [key: string]: BoxStatus } = {
     [SettingStatus.Available]: BoxStatus.Success,
@@ -53,7 +55,21 @@ const DataAvailabilityStep: FC = () => {
         );
     }
 
-    return <Section headline={t("settings-new.step.data-availability")}>{statusElement}</Section>;
+    let combinationIdElement;
+    if (validatedSetting.combinationId) {
+        combinationIdElement = (
+            <OptionsList>
+                <OptionCombinationId value={validatedSetting.combinationId} />
+            </OptionsList>
+        );
+    }
+
+    return (
+        <Section headline={t("settings-new.step.data-availability")}>
+            {statusElement}
+            {combinationIdElement}
+        </Section>
+    );
 };
 
 export default observer(DataAvailabilityStep);
