@@ -52,7 +52,9 @@ export class Router {
 
     private handleChangeEvent(state: SubscribeState): void {
         this.currentState = state.route;
-        this.executeGlobalChangeHandlers(state.route);
+        for (const handler of this.globalChangeHandlers) {
+            handler(state.route);
+        }
     }
 
     private unifyRouteName(name: string): string {
@@ -61,12 +63,6 @@ export class Router {
         }
 
         return name;
-    }
-
-    private executeGlobalChangeHandlers(state: State): void {
-        for (const handler of this.globalChangeHandlers) {
-            handler(state);
-        }
     }
 
     public start(combinationId: CombinationId): void {

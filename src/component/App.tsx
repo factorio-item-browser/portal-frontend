@@ -47,8 +47,8 @@ const App: FC = () => {
         })();
     }, []);
 
-    if (errorStore.error !== null && errorStore.isFatalError) {
-        return <FatalError error={errorStore.error} />;
+    if (errorStore.fatalError !== null) {
+        return <FatalError error={errorStore.fatalError} />;
     }
 
     if (globalStore.isInitiallyLoading) {
