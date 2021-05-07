@@ -15,7 +15,7 @@ import { errorStore, ErrorStore } from "./ErrorStore";
 type InitHandler = (initData: InitData) => void | Promise<void>;
 
 const regexPathCombinationIdShort = /^\/([0-9a-zA-Z]{22})(\/|$)/;
-//const regexPathCombinationIdFull = /^/;
+const regexPathCombinationIdFull = /^\/([0-9a-f-]{36})(\/|$)/;
 
 export class GlobalStore {
     private readonly errorStore: ErrorStore;
@@ -158,10 +158,24 @@ export class GlobalStore {
     }
 
     private detectInitialCombinationId(): void {
-        const match = window.location.pathname.match(regexPathCombinationIdShort);
-        if (match && match[1]) {
-            this.storageManager.combinationId = CombinationId.fromShort(match[1]);
+        const combinationId = this.matchCombinationId(window.location.pathname);
+        if (combinationId !== null) {
+            this.storageManager.combinationId = combinationId;
         }
+    }
+
+    private matchCombinationId(path: string): CombinationId | null {
+        let match = path.match(regexPathCombinationIdShort);
+        if (match && match[1]) {
+            return CombinationId.fromShort(match[1]);
+        }
+
+        match = path.match(regexPathCombinationIdFull);
+        if (match && match[1]) {
+            return CombinationId.fromFull(match[1]);
+        }
+
+        return null;
     }
 
     private hasCurrentScriptVersion(requiredScriptVersion: string): boolean {

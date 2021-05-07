@@ -27,7 +27,8 @@ export class ErrorStore {
 
     private handleGlobalRouteChange(state: State): void {
         if (state.name === constants.UNKNOWN_ROUTE) {
-            this.handleError(new PageNotFoundError(`unknown path: ${state.path}`));
+            this.error = new PageNotFoundError(`unknown path: ${state.path}`);
+            console.error(this.error);
         } else {
             this.error = this.nextError;
             this.nextError = null;
