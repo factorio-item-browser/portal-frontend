@@ -24,18 +24,16 @@ const PaginatedListButton = <TEntity, TData extends ResultsData<TEntity>>({
     const ref = useRef<HTMLDivElement>(null);
 
     if (loadOnScroll) {
-        useScrollEffect(
-            async (): Promise<void> => {
-                if (
-                    ref.current &&
-                    paginatedList.hasNextPage &&
-                    !paginatedList.isLoading &&
-                    window.scrollY + window.innerHeight > ref.current.offsetTop - window.innerHeight * 0.1
-                ) {
-                    await paginatedList.requestNextPage();
-                }
-            },
-        );
+        useScrollEffect(async (): Promise<void> => {
+            if (
+                ref.current &&
+                paginatedList.hasNextPage &&
+                !paginatedList.isLoading &&
+                window.scrollY + window.innerHeight > ref.current.offsetTop - window.innerHeight * 0.1
+            ) {
+                await paginatedList.requestNextPage();
+            }
+        });
     }
 
     const handleClick = useCallback(async (): Promise<void> => {

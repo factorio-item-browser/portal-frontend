@@ -37,15 +37,13 @@ export class PaginatedList<TEntity, TData extends ResultsData<TEntity>> {
         try {
             const newPage = this.currentPage + 1;
             const data = await this.dataFetcher(newPage);
-            return runInAction(
-                (): TData => {
-                    this.isLoading = false;
-                    this.currentPage = newPage;
-                    this.results.push(...data.results);
-                    this.numberOfResults = data.numberOfResults;
-                    return data;
-                },
-            );
+            return runInAction((): TData => {
+                this.isLoading = false;
+                this.currentPage = newPage;
+                this.results.push(...data.results);
+                this.numberOfResults = data.numberOfResults;
+                return data;
+            });
         } catch (e) {
             return this.errorHandler(e);
         }

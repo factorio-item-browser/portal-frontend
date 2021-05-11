@@ -15,12 +15,9 @@ const GlobalSettingStatus: FC = () => {
     const globalStore = useContext(globalStoreContext);
     const setting = globalStore.setting;
 
-    useInterval(
-        Config.intervalCheckSettingStatus * 1000,
-        async (): Promise<void> => {
-            await globalStore.checkSettingStatus();
-        },
-    );
+    useInterval(Config.intervalCheckSettingStatus * 1000, async (): Promise<void> => {
+        await globalStore.checkSettingStatus();
+    });
 
     if (!setting) {
         return null;
