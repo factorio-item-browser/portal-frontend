@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.4.0 - 2021-05-11
+
+### Added
+
+- Validation of uploaded mod list against the Portal API, showing reasons why the combination is invalid before it
+  actually gets triggered for an export.
+- More links to the Discord server to help users which may experience problems.
+- Support for the full combination id in the URL.
+
+### Changed
+
+- Refactored some parts of the project, like the stores.
+- Use entity name if translated label is empty.
+- Settings related requests to match new Portal API version 1.5.0.
+
 ## 1.3.1 - 2021-02-01
 
 ### Fixed
