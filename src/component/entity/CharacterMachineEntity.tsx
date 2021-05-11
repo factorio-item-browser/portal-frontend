@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { MachineData } from "../../type/transfer";
+import { MachineData } from "../../api/transfer";
 import { formatCraftingSpeed, formatMachineSlots } from "../../util/format";
 import Icon from "../icon/Icon";
 
@@ -19,7 +19,7 @@ const CharacterMachineEntity: FC<Props> = ({ machine }) => {
         <div className="entity machine-entity">
             <div className="entity-head">
                 <Icon type="machine" name={machine.name} />
-                <h3>{machine.label}</h3>
+                <h3>{machine.label || machine.name}</h3>
             </div>
 
             <div className="machine-details">

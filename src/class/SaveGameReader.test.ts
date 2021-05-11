@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { ERROR_SAVEGAME_INVALID_FILE, ERROR_SAVEGAME_UNSUPPORTED_VERSION } from "../const/error";
+import { InvalidFileError, UnsupportedVersionError } from "../error/savegame";
 import { SaveGameReader } from "./SaveGameReader";
 
 describe("SaveGameReader", () => {
@@ -99,16 +99,12 @@ describe("SaveGameReader", () => {
 
     describe("invalid savegames", () => {
         test.each([
-            [
-                "missing level.dat file",
-                "test/asset/savegame/invalid/missing-level-dat.zip",
-                ERROR_SAVEGAME_INVALID_FILE,
-            ],
-            ["invalid archive file", "test/asset/savegame/invalid/invalid-archive.zip", ERROR_SAVEGAME_INVALID_FILE],
+            ["missing level.dat file", "test/asset/savegame/invalid/missing-level-dat.zip", InvalidFileError],
+            ["invalid archive file", "test/asset/savegame/invalid/invalid-archive.zip", InvalidFileError],
             [
                 "unsupported version 0.17",
                 "test/asset/savegame/invalid/unsupported-version.zip",
-                ERROR_SAVEGAME_UNSUPPORTED_VERSION,
+                UnsupportedVersionError,
             ],
         ])("%s", async (name, file, expectedError) => {
             const savegame = fs.readFileSync(file);
@@ -116,7 +112,7 @@ describe("SaveGameReader", () => {
 
             jest.spyOn(reader, "readUploadedFile").mockImplementation(() => Promise.resolve(savegame));
 
-            await expect(reader.read(new Blob([savegame]))).rejects.toEqual(expectedError);
+            await expect(reader.read(new Blob([savegame]))).rejects.toBeInstanceOf(expectedError);
         });
     });
 });

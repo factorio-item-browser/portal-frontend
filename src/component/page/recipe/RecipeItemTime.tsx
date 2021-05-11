@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { CRAFTING_TIME_INFINITE } from "../../../const/config";
+import { Config } from "../../../util/config";
 import { formatCraftingTime } from "../../../util/format";
 
 import "./RecipeItem.scss";
@@ -17,7 +17,7 @@ const RecipeItemTime: FC<Props> = ({ craftingTime }) => {
     const { t } = useTranslation();
 
     let amount;
-    if (craftingTime >= CRAFTING_TIME_INFINITE) {
+    if (craftingTime >= Config.craftingTimeInfinite) {
         amount = <div className="amount infinite">∞</div>;
     } else {
         amount = <div className="amount">{formatCraftingTime(craftingTime)}</div>;

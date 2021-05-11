@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React, { ForwardRefRenderFunction } from "react";
 import { useTranslation } from "react-i18next";
-import { NUMBER_OF_RECIPES_PER_ENTITY } from "../../const/config";
-import { EntityData, RecipeData } from "../../type/transfer";
+import { EntityData, RecipeData } from "../../api/transfer";
+import { Config } from "../../util/config";
 import EntityLink from "../link/EntityLink";
 import CompactRecipe from "./CompactRecipe";
 import EntityHead from "./EntityHead";
@@ -20,10 +20,10 @@ const Entity: ForwardRefRenderFunction<HTMLDivElement, Props> = ({ entity }, ref
     const { t } = useTranslation();
 
     let moreRecipes = null;
-    if (entity.numberOfRecipes > NUMBER_OF_RECIPES_PER_ENTITY) {
+    if (entity.numberOfRecipes > Config.numberOfRecipesPerEntity) {
         moreRecipes = (
             <EntityLink className="more-recipes" type={entity.type} name={entity.name}>
-                {t("entity.more-recipes", { count: entity.numberOfRecipes - NUMBER_OF_RECIPES_PER_ENTITY })}
+                {t("entity.more-recipes", { count: entity.numberOfRecipes - Config.numberOfRecipesPerEntity })}
             </EntityLink>
         );
     }

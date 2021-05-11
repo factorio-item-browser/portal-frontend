@@ -1,6 +1,6 @@
 import ByteBuffer from "byte-buffer";
 import { Unzip, UnzipInflate, decompressSync } from "fflate";
-import { ERROR_SAVEGAME_INVALID_FILE, ERROR_SAVEGAME_UNSUPPORTED_VERSION } from "../const/error";
+import { InvalidFileError, UnsupportedVersionError } from "../error/savegame";
 import { SaveGameMod } from "../type/savegame";
 
 class SaveGameBuffer {
@@ -76,7 +76,7 @@ export class SaveGameReader {
         const buffer = await this.extractLevelDatFile(file);
         const version = buffer.readVersion(false);
         if (version.compareTo(new Version(0, 18, 0)) < 0) {
-            throw ERROR_SAVEGAME_UNSUPPORTED_VERSION;
+            throw new UnsupportedVersionError(version.toString());
         }
 
         this.seekPosition(buffer);
@@ -96,7 +96,7 @@ export class SaveGameReader {
                 if (file.name.endsWith("/level.dat0") || file.name.endsWith("/level.dat")) {
                     file.ondata = (error: Error, data: Uint8Array): void => {
                         if (error) {
-                            return reject(ERROR_SAVEGAME_INVALID_FILE);
+                            return reject(new InvalidFileError(`error while reading ${file.name}`));
                         }
                         if (file.name.endsWith("/level.dat0")) {
                             data = decompressSync(data);
@@ -107,7 +107,7 @@ export class SaveGameReader {
                 }
             };
             unzipper.push(fileContent, true);
-            reject(ERROR_SAVEGAME_INVALID_FILE);
+            reject(new InvalidFileError("missing level.dat or level.dat0 files"));
         });
     }
 
@@ -118,7 +118,7 @@ export class SaveGameReader {
                 resolve(new Uint8Array(fileReader.result as Uint8Array));
             };
             fileReader.onerror = (): void => {
-                reject(ERROR_SAVEGAME_INVALID_FILE);
+                reject(new InvalidFileError("error while reading selected file"));
             };
             fileReader.readAsArrayBuffer(file);
         });

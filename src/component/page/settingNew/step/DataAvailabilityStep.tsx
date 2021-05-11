@@ -1,27 +1,19 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import {
-    SETTING_STATUS_AVAILABLE,
-    SETTING_STATUS_ERRORED,
-    SETTING_STATUS_LOADING,
-    SETTING_STATUS_PENDING,
-    SETTING_STATUS_UNKNOWN,
-} from "../../../../const/settingStatus";
-import { STATUS_ERROR, STATUS_PENDING, STATUS_SUCCESS, STATUS_WARNING } from "../../../../const/status";
 import { settingsNewStoreContext } from "../../../../store/SettingsNewStore";
+import { BoxStatus, SettingStatus } from "../../../../util/const";
 import Section from "../../../common/Section";
 import Status from "../../../status/Status";
+import OptionCombinationId from "../../setting/option/OptionCombinationId";
+import OptionsList from "../../setting/option/OptionsList";
 
-/**
- * The map of the setting status to the actual box status.
- */
-const STATUS_MAP: { [key: string]: string } = {
-    [SETTING_STATUS_AVAILABLE]: STATUS_SUCCESS,
-    [SETTING_STATUS_ERRORED]: STATUS_ERROR,
-    [SETTING_STATUS_LOADING]: STATUS_PENDING,
-    [SETTING_STATUS_PENDING]: STATUS_WARNING,
-    [SETTING_STATUS_UNKNOWN]: STATUS_WARNING,
+const settingStatusToBoxStatusMap: { [key: string]: BoxStatus } = {
+    [SettingStatus.Available]: BoxStatus.Success,
+    [SettingStatus.Errored]: BoxStatus.Error,
+    [SettingStatus.Loading]: BoxStatus.Pending,
+    [SettingStatus.Pending]: BoxStatus.Warning,
+    [SettingStatus.Unknown]: BoxStatus.Warning,
 };
 
 /**
@@ -31,17 +23,51 @@ const DataAvailabilityStep: FC = () => {
     const { t } = useTranslation();
     const settingsNewStore = useContext(settingsNewStoreContext);
 
-    const status = settingsNewStore.settingStatus?.status;
-    if (!status) {
+    const validatedSetting = settingsNewStore.validatedSetting;
+    if (!validatedSetting) {
         return null;
+    }
+
+    let statusElement;
+    if (validatedSetting.status !== SettingStatus.Loading && !validatedSetting.isValid) {
+        statusElement = (
+            <Status status={BoxStatus.Error}>
+                <h3>{t("setting-status.invalid.headline")}</h3>
+                {t("setting-status.invalid.description-1")}
+                <ol>
+                    {validatedSetting.validationProblems.map((problem, index) => {
+                        const label = t(`setting-status.validation-problem.${problem.type}`, {
+                            mod: problem.mod,
+                            dependency: problem.dependency,
+                        });
+                        return <li key={index}>{label}</li>;
+                    })}
+                </ol>
+                {t("setting-status.invalid.description-2")}
+            </Status>
+        );
+    } else {
+        statusElement = (
+            <Status status={settingStatusToBoxStatusMap[validatedSetting.status]}>
+                <h3>{t(`setting-status.${validatedSetting.status}.headline`)}</h3>
+                {t(`setting-status.${validatedSetting.status}.description`)}
+            </Status>
+        );
+    }
+
+    let combinationIdElement;
+    if (validatedSetting.combinationId) {
+        combinationIdElement = (
+            <OptionsList>
+                <OptionCombinationId value={validatedSetting.combinationId} />
+            </OptionsList>
+        );
     }
 
     return (
         <Section headline={t("settings-new.step.data-availability")}>
-            <Status status={STATUS_MAP[status]}>
-                <h3>{t(`setting-status.${status}.headline`)}</h3>
-                {t(`setting-status.${status}.description`)}
-            </Status>
+            {statusElement}
+            {combinationIdElement}
         </Section>
     );
 };

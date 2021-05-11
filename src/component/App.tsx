@@ -1,15 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, ReactNode, useContext, useEffect } from "react";
-import {
-    ROUTE_INDEX,
-    ROUTE_ITEM_DETAILS,
-    ROUTE_SETTINGS_NEW,
-    ROUTE_RECIPE_DETAILS,
-    ROUTE_SEARCH,
-    ROUTE_SETTINGS,
-    ROUTE_ITEM_LIST,
-} from "../const/route";
-import { RouteStore, routeStoreContext } from "../store/RouteStore";
+import { errorStoreContext } from "../store/ErrorStore";
+import { globalStoreContext } from "../store/GlobalStore";
+import { RouteName } from "../util/const";
 import LoadingCircle from "./common/LoadingCircle";
 import Tooltip from "./common/Tooltip";
 import ErrorBoundary from "./error/ErrorBoundary";
@@ -18,10 +11,10 @@ import LoadingBox from "./error/LoadingBox";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Sidebar from "./layout/Sidebar";
+import ErrorPage from "./page/ErrorPage";
 import IndexPage from "./page/IndexPage";
 import ItemDetailsPage from "./page/ItemDetailsPage";
 import ItemListPage from "./page/ItemListPage";
-import NotFoundPage from "./page/NotFoundPage";
 import RecipeDetailsPage from "./page/RecipeDetailsPage";
 import SearchResultsPage from "./page/SearchResultsPage";
 import SettingsNewPage from "./page/SettingsNewPage";
@@ -32,40 +25,41 @@ import TemporarySettingStatus from "./status/TemporarySettingStatus";
 import "./App.scss";
 
 const PAGE_BY_ROUTES: { [key: string]: ReactNode } = {
-    [ROUTE_INDEX]: <IndexPage />,
-    [ROUTE_ITEM_DETAILS]: <ItemDetailsPage />,
-    [ROUTE_ITEM_LIST]: <ItemListPage />,
-    [ROUTE_RECIPE_DETAILS]: <RecipeDetailsPage />,
-    [ROUTE_SEARCH]: <SearchResultsPage />,
-    [ROUTE_SETTINGS]: <SettingsPage />,
-    [ROUTE_SETTINGS_NEW]: <SettingsNewPage />,
+    [RouteName.Index]: <IndexPage />,
+    [RouteName.ItemDetails]: <ItemDetailsPage />,
+    [RouteName.ItemList]: <ItemListPage />,
+    [RouteName.RecipeDetails]: <RecipeDetailsPage />,
+    [RouteName.Search]: <SearchResultsPage />,
+    [RouteName.Settings]: <SettingsPage />,
+    [RouteName.SettingsNew]: <SettingsNewPage />,
 };
 
 /**
  * The component representing the whole application.
  */
 const App: FC = () => {
-    const routeStore = useContext<RouteStore>(routeStoreContext);
+    const errorStore = useContext(errorStoreContext);
+    const globalStore = useContext(globalStoreContext);
 
     useEffect(() => {
         (async () => {
-            await routeStore.initializeSession();
+            await globalStore.initialize();
         })();
     }, []);
 
-    if (routeStore.fatalError) {
-        return <FatalError type={routeStore.fatalError} />;
+    if (errorStore.fatalError !== null) {
+        return <FatalError error={errorStore.fatalError} />;
     }
 
-    if (routeStore.isInitiallyLoading) {
+    if (globalStore.isInitiallyLoading) {
         return <LoadingBox />;
     }
 
     let page;
-    if (routeStore.hasUnknownRoute) {
-        page = <NotFoundPage />;
+    if (errorStore.error !== null) {
+        page = <ErrorPage error={errorStore.error} />;
     } else {
-        page = PAGE_BY_ROUTES[routeStore.currentRoute];
+        page = PAGE_BY_ROUTES[globalStore.currentRoute];
     }
 
     return (
@@ -74,11 +68,11 @@ const App: FC = () => {
             <div className="content-wrapper">
                 <Sidebar />
                 <div className="content">
-                    {routeStore.showGlobalSettingStatus ? (
+                    {globalStore.isGlobalSettingStatusShown ? (
                         <>
                             <TemporarySettingStatus
-                                setting={routeStore.setting}
-                                lastUsedSetting={routeStore.lastUsedSetting}
+                                setting={globalStore.setting}
+                                lastUsedSetting={globalStore.lastUsedSetting}
                             />
                             <GlobalSettingStatus />
                         </>
@@ -88,7 +82,7 @@ const App: FC = () => {
             </div>
             <Footer />
 
-            <LoadingCircle target={routeStore.loadingCircleTarget} />
+            <LoadingCircle target={globalStore.loadingCircleTarget} />
             <Tooltip />
         </ErrorBoundary>
     );

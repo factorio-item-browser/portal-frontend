@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, ReactNode } from "react";
-import { ROUTE_INDEX } from "../../const/route";
+import { RouteName } from "../../util/const";
 import Link from "./Link";
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
  */
 const IndexLink: FC<Props> = ({ children, ...props }) => {
     return (
-        <Link {...props} route={ROUTE_INDEX}>
+        <Link {...props} route={RouteName.Index}>
             {children}
         </Link>
     );

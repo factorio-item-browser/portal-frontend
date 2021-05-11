@@ -1,10 +1,9 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { INTERVAL_CHECK_SETTING_STATUS } from "../../const/config";
-import { SETTING_STATUS_ERRORED, SETTING_STATUS_PENDING, SETTING_STATUS_UNKNOWN } from "../../const/settingStatus";
-import { STATUS_ERROR, STATUS_WARNING } from "../../const/status";
-import { routeStoreContext } from "../../store/RouteStore";
+import { globalStoreContext } from "../../store/GlobalStore";
+import { Config } from "../../util/config";
+import { BoxStatus, SettingStatus } from "../../util/const";
 import { useInterval } from "../../util/hooks";
 import Status from "./Status";
 
@@ -13,32 +12,29 @@ import Status from "./Status";
  */
 const GlobalSettingStatus: FC = () => {
     const { t } = useTranslation();
-    const routeStore = useContext(routeStoreContext);
-    const setting = routeStore.setting;
+    const globalStore = useContext(globalStoreContext);
+    const setting = globalStore.setting;
 
-    useInterval(
-        INTERVAL_CHECK_SETTING_STATUS * 1000,
-        async (): Promise<void> => {
-            await routeStore.checkSettingStatus();
-        },
-    );
+    useInterval(Config.intervalCheckSettingStatus * 1000, async (): Promise<void> => {
+        await globalStore.checkSettingStatus();
+    });
 
     if (!setting) {
         return null;
     }
 
-    if (setting.status === SETTING_STATUS_PENDING || setting.status === SETTING_STATUS_UNKNOWN) {
+    if (setting.status === SettingStatus.Pending || setting.status === SettingStatus.Unknown) {
         return (
-            <Status status={STATUS_WARNING}>
+            <Status status={BoxStatus.Warning}>
                 <h3>{t("setting-status.pending.headline")}</h3>
                 {t("setting-status.pending.description-global")}
             </Status>
         );
     }
 
-    if (setting.status === SETTING_STATUS_ERRORED) {
+    if (setting.status === SettingStatus.Errored) {
         return (
-            <Status status={STATUS_ERROR}>
+            <Status status={BoxStatus.Error}>
                 <h3>{t("setting-status.errored.headline")}</h3>
                 {t("setting-status.errored.description-global")}
             </Status>

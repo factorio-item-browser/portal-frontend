@@ -1,3 +1,5 @@
+import { RecipeMode, SettingStatus, ValidationProblemType } from "../util/const";
+
 export type ItemType = "item" | "fluid" | string;
 export type NamesByTypes = { [key: string]: string[] };
 export type SidebarEntityType = "item" | "fluid" | "recipe" | string;
@@ -15,15 +17,19 @@ export type EntityData = {
     numberOfRecipes: number;
 };
 
+export type IconsStyleRequestData = {
+    cssSelector: string;
+    entities: NamesByTypes;
+};
+
 export type IconsStyleData = {
     processedEntities: NamesByTypes;
     style: string;
 };
 
 export type InitData = {
-    setting: SettingMetaData;
-    lastUsedSetting?: SettingMetaData;
-    locale: string;
+    setting: SettingData;
+    lastUsedSetting?: SettingData;
     sidebarEntities: SidebarEntityData[];
     scriptVersion: string;
 };
@@ -88,20 +94,12 @@ export type SearchResultsData = ResultsData<EntityData> & {
     query: string;
 };
 
-export type SettingCreateData = SettingOptionsData & {
-    modNames: string[];
-};
-
-export type SettingDetailsData = SettingMetaData &
-    SettingOptionsData & {
-        mods: ModData[];
-        modIconsStyle: IconsStyleData;
-    };
-
-export type SettingMetaData = {
+export type SettingData = {
     combinationId: string;
     name: string;
-    status: string;
+    locale: string;
+    recipeMode: RecipeMode;
+    status: SettingStatus;
     isTemporary: boolean;
 };
 
@@ -111,15 +109,12 @@ export type SettingOptionsData = {
     recipeMode: string;
 };
 
-export type SettingStatusData = {
-    status: string;
-    exportTime?: string;
-    existingSetting?: SettingDetailsData;
-};
-
-export type SettingsListData = {
-    settings: SettingMetaData[];
-    currentSetting: SettingDetailsData;
+export type SettingValidationData = {
+    combinationId: string;
+    status: SettingStatus;
+    isValid: boolean;
+    validationProblems: ValidationProblemData[];
+    existingSetting?: SettingData;
 };
 
 export type SidebarEntityData = {
@@ -128,4 +123,11 @@ export type SidebarEntityData = {
     label: string;
     pinnedPosition: number;
     lastViewTime: string;
+};
+
+export type ValidationProblemData = {
+    mod: string;
+    version: string;
+    type: ValidationProblemType;
+    dependency: string;
 };

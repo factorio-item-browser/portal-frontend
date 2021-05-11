@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { FC, useContext, useEffect, useLayoutEffect, useRef } from "react";
 import { useMediaQuery } from "react-responsive";
-import { BREAKPOINT_MEDIUM } from "../../const/breakpoint";
 import { tooltipStoreContext } from "../../store/TooltipStore";
+import { Breakpoint } from "../../util/const";
 import Entity from "../entity/Entity";
 
 import "./Tooltip.scss";
@@ -54,7 +54,7 @@ function calculatePosition(target: Element, content: Element, chevron: Element):
  */
 const Tooltip: FC = () => {
     const tooltipStore = useContext(tooltipStoreContext);
-    const isMedium = useMediaQuery({ minWidth: BREAKPOINT_MEDIUM });
+    const isMedium = useMediaQuery({ minWidth: Breakpoint.Medium });
 
     const chevronRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);

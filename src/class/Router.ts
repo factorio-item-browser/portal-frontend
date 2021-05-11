@@ -1,20 +1,30 @@
 import { createRouter, Middleware, Router as Router5, State, SubscribeState } from "router5";
 import browserPluginFactory from "router5-plugin-browser";
-import { ROUTE_INDEX } from "../const/route";
+import { PageError } from "../error/page";
+import { RouteName } from "../util/const";
 import { CombinationId } from "./CombinationId";
 
 type ChangeHandler = (state: State) => void | Promise<void>;
+type ErrorHandler = (error: PageError) => void;
 export type RouteParams = { [key: string]: string };
 
 const PARAM_COMBINATION_ID = "combinationId";
-const SHORT_ROUTE_SUFFIX = "_short";
+enum RouteSuffix {
+    MissingId = "_missing",
+    LongId = "_long",
+}
 
 export class Router {
-    private readonly router = this.createRouter();
+    private readonly router: Router5;
     private readonly changeHandlers = new Map<string, ChangeHandler>();
     private readonly globalChangeHandlers = new Set<ChangeHandler>();
     private combinationId: CombinationId | null = null;
     private currentState: State | null = null;
+    private errorHandler: ErrorHandler | null = null;
+
+    public constructor() {
+        this.router = this.createRouter();
+    }
 
     private createRouter(): Router5 {
         const router = createRouter();
@@ -25,51 +35,58 @@ export class Router {
         return router;
     }
 
+    /**
+     * Injects the callback to handle errors by forwarding it.
+     */
+    public injectErrorHandler(errorHandler: ErrorHandler): void {
+        this.errorHandler = errorHandler;
+    }
+
     private getDataFetcherMiddleware(): Middleware {
         return (toState: State) => {
-            const handler = this.changeHandlers.get(this.unifyRouteName(toState.name));
+            const handler = this.changeHandlers.get(toState.name);
             if (handler) {
                 return handler(toState);
             }
-
             return true;
         };
     }
 
     private handleChangeEvent(state: SubscribeState): void {
         this.currentState = state.route;
-        this.executeGlobalChangeHandlers(state.route);
+        if (this.getRouteSuffix(state.route.name) === null) {
+            for (const handler of this.globalChangeHandlers) {
+                handler(state.route);
+            }
+        }
     }
 
-    private unifyRouteName(name: string): string {
-        if (name.endsWith(SHORT_ROUTE_SUFFIX)) {
-            return name.substr(0, name.length - SHORT_ROUTE_SUFFIX.length);
+    private getRouteSuffix(stateName: string): RouteSuffix | null {
+        for (const suffix of Object.values(RouteSuffix)) {
+            if (stateName.endsWith(suffix)) {
+                return suffix;
+            }
         }
-
-        return name;
-    }
-
-    private executeGlobalChangeHandlers(state: State): void {
-        for (const handler of this.globalChangeHandlers) {
-            handler(state);
-        }
+        return null;
     }
 
     public start(combinationId: CombinationId): void {
         this.combinationId = combinationId;
         this.router.start((err?: unknown, state?: State): void => {
-            if (state && state.name.endsWith(SHORT_ROUTE_SUFFIX)) {
-                this.navigateTo(this.unifyRouteName(state.name), state.params);
+            if (state) {
+                const suffix = this.getRouteSuffix(state.name);
+                if (suffix !== null) {
+                    this.router.navigate(
+                        state.name.substr(0, state.name.length - suffix.length),
+                        {
+                            ...state.params,
+                            [PARAM_COMBINATION_ID]: combinationId.toShort(),
+                        },
+                        { replace: true },
+                    );
+                }
             }
         });
-    }
-
-    public get currentRoute(): string {
-        if (!this.currentState) {
-            return ROUTE_INDEX;
-        }
-
-        return this.unifyRouteName(this.currentState.name);
     }
 
     public addGlobalChangeHandler(handler: ChangeHandler): void {
@@ -80,11 +97,15 @@ export class Router {
         this.router.add([
             {
                 name: name,
-                path: `/:${PARAM_COMBINATION_ID}${path}`,
+                path: `/:${PARAM_COMBINATION_ID}<[0-9a-zA-Z]{22}>${path}`,
             },
             {
-                name: name + SHORT_ROUTE_SUFFIX,
+                name: name + RouteSuffix.MissingId,
                 path: path,
+            },
+            {
+                name: name + RouteSuffix.LongId,
+                path: `/:${PARAM_COMBINATION_ID}<[0-9a-f-]{36}>${path}`,
             },
         ]);
 
@@ -94,10 +115,7 @@ export class Router {
     }
 
     public isActive(route: string, params?: RouteParams): boolean {
-        return (
-            this.router.isActive(route, this.prepareParams(params)) ||
-            this.router.isActive(route + SHORT_ROUTE_SUFFIX, params)
-        );
+        return this.router.isActive(route, this.prepareParams(params));
     }
 
     public navigateTo(route: string, params?: RouteParams): void {
@@ -108,12 +126,8 @@ export class Router {
         return this.router.buildPath(route, this.prepareParams(params));
     }
 
-    public redirectToIndex(combinationId?: CombinationId): void {
-        if (combinationId) {
-            location.assign(this.buildPath(ROUTE_INDEX, { [PARAM_COMBINATION_ID]: combinationId.toShort() }));
-        } else {
-            location.assign(this.buildPath(ROUTE_INDEX + SHORT_ROUTE_SUFFIX));
-        }
+    public redirectToIndex(combinationId: CombinationId): void {
+        location.assign(this.buildPath(RouteName.Index, { [PARAM_COMBINATION_ID]: combinationId.toShort() }));
     }
 
     private prepareParams(params?: RouteParams): RouteParams {
@@ -122,6 +136,15 @@ export class Router {
             params[PARAM_COMBINATION_ID] = this.combinationId.toShort();
         }
         return params;
+    }
+
+    /**
+     * Handles the error, forwarding it to the error store to trigger an error page.
+     */
+    public handleError(error: PageError): void {
+        if (this.errorHandler) {
+            this.errorHandler(error);
+        }
     }
 }
 

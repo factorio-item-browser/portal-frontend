@@ -40,6 +40,18 @@
         }
     }
 
+    &.discord {
+        @include transition-default(background);
+
+        background: color($color-box-sidebar, $lightness-box-background, $alpha-box-content);
+        color: color($color-box-sidebar, $lightness-text-primary);
+        cursor: pointer;
+
+        &:hover {
+            background: color($color-box-sidebar, $lightness-box-background);
+        }
+    }
+
     &.error {
         background: $color-status-error;
         color: color($color-status-error, $lightness-text-primary);

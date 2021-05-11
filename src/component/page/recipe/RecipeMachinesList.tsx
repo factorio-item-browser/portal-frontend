@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
+import { MachineData, RecipeMachinesData } from "../../../api/transfer";
 import { PaginatedList } from "../../../class/PaginatedList";
-import { MachineData, RecipeMachinesData } from "../../../type/transfer";
 import PaginatedListButton from "../../button/PaginatedListButton";
 import Section from "../../common/Section";
 import CharacterMachineEntity from "../../entity/CharacterMachineEntity";

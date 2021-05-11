@@ -22,7 +22,7 @@ const UnpinnedEntityList: FC = () => {
 
     const items = sidebarStore.unpinnedEntities.map((entity) => {
         return {
-            id: sidebarStore.getIdForEntity(entity),
+            id: sidebarStore.buildIdForEntity(entity),
             entity: entity,
         };
     });

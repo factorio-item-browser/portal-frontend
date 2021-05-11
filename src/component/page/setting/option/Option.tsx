@@ -9,7 +9,7 @@ import "./Option.scss";
 
 type Props = {
     label: string;
-    description?: string;
+    description?: string | ReactNode;
     children: ReactNode;
     fullWidth?: boolean;
     error?: boolean;

@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import React, { FC, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FOOTER_ICONS } from "../../../const/config";
+import { Config } from "../../../util/config";
 import ExternalLink from "../../link/ExternalLink";
 
 import "./ExternalLinkIcons.scss";
@@ -19,7 +19,7 @@ const ExternalLinkIcons: FC = () => {
     }, []);
 
     const links = [];
-    for (const { name, url, icon } of FOOTER_ICONS) {
+    for (const { name, url, icon } of Config.footerIcons) {
         const handleMouseEnter = useCallback(() => {
             setCurrentLabel(name);
         }, [name]);

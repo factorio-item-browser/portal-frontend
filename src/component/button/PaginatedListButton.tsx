@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { ResultsData } from "../../api/transfer";
 import { PaginatedList } from "../../class/PaginatedList";
-import { ResultsData } from "../../type/transfer";
 import { useScrollEffect } from "../../util/hooks";
 import ActionButton from "./ActionButton";
 
@@ -24,18 +24,16 @@ const PaginatedListButton = <TEntity, TData extends ResultsData<TEntity>>({
     const ref = useRef<HTMLDivElement>(null);
 
     if (loadOnScroll) {
-        useScrollEffect(
-            async (): Promise<void> => {
-                if (
-                    ref.current &&
-                    paginatedList.hasNextPage &&
-                    !paginatedList.isLoading &&
-                    window.scrollY + window.innerHeight > ref.current.offsetTop - window.innerHeight * 0.1
-                ) {
-                    await paginatedList.requestNextPage();
-                }
-            },
-        );
+        useScrollEffect(async (): Promise<void> => {
+            if (
+                ref.current &&
+                paginatedList.hasNextPage &&
+                !paginatedList.isLoading &&
+                window.scrollY + window.innerHeight > ref.current.offsetTop - window.innerHeight * 0.1
+            ) {
+                await paginatedList.requestNextPage();
+            }
+        });
     }
 
     const handleClick = useCallback(async (): Promise<void> => {

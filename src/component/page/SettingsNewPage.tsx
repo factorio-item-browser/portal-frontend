@@ -2,15 +2,18 @@ import { faArrowRight, faSave, faTimes } from "@fortawesome/free-solid-svg-icons
 import { observer } from "mobx-react-lite";
 import React, { FC, Fragment, useCallback, useContext, useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { ROUTE_SETTINGS } from "../../const/route";
 import { settingsNewStoreContext } from "../../store/SettingsNewStore";
 import { settingsStoreContext } from "../../store/SettingsStore";
+import { Config } from "../../util/config";
+import { BoxStatus, RouteName } from "../../util/const";
 import { useDocumentTitle } from "../../util/hooks";
 import ActionButton from "../button/ActionButton";
 import ButtonGroup from "../button/ButtonGroup";
 import LinkedButton from "../button/LinkedButton";
 import Section from "../common/Section";
 import TextBox from "../common/TextBox";
+import ExternalLink from "../link/ExternalLink";
+import Status from "../status/Status";
 import AdditionalOptionsStep from "./settingNew/step/AdditionalOptionsStep";
 import DataAvailabilityStep from "./settingNew/step/DataAvailabilityStep";
 import SaveGameStep from "./settingNew/step/SaveGameStep";
@@ -31,17 +34,13 @@ const SettingsNewPage: FC = () => {
         });
     }, []);
     const handleSaveClick = useCallback(async (): Promise<void> => {
-        if (settingsNewStore.hasExistingSetting) {
-            await settingsNewStore.changeToSetting();
-        } else {
-            await settingsNewStore.saveNewSetting();
-        }
+        await settingsNewStore.saveNewSetting();
     }, []);
 
     let label;
     let loadingLabel;
     if (settingsNewStore.hasExistingSetting) {
-        const settingName = settingsNewStore.settingStatus?.existingSetting?.name;
+        const settingName = settingsNewStore.validatedSetting?.existingSetting?.name;
         label = t("settings-new.change-to-setting", { name: settingName });
         loadingLabel = t("settings-new.changing-to-setting", { name: settingName });
     } else {
@@ -75,6 +74,13 @@ const SettingsNewPage: FC = () => {
                         </Trans>
                     </p>
                 </TextBox>
+
+                <ExternalLink url={Config.discordLink}>
+                    <Status status={BoxStatus.Discord}>
+                        <h3>{t("settings-new.discord.label")}</h3>
+                        {t("settings-new.discord.description")}
+                    </Status>
+                </ExternalLink>
             </Section>
 
             {settingsNewStore.showSaveGameStep ? <SaveGameStep /> : null}
@@ -82,7 +88,7 @@ const SettingsNewPage: FC = () => {
             {settingsNewStore.showAdditionalOptionsStep ? <AdditionalOptionsStep /> : null}
 
             <ButtonGroup spacing>
-                <LinkedButton label={t("settings-new.cancel")} icon={faTimes} route={ROUTE_SETTINGS} />
+                <LinkedButton label={t("settings-new.cancel")} icon={faTimes} route={RouteName.Settings} />
                 <ActionButton
                     primary
                     label={label}

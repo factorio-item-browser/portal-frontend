@@ -4,9 +4,9 @@ import { observer } from "mobx-react-lite";
 import React, { FC, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
-import { BREAKPOINT_LARGE } from "../../../const/breakpoint";
-import { routeStoreContext } from "../../../store/RouteStore";
+import { globalStoreContext } from "../../../store/GlobalStore";
 import { searchStoreContext } from "../../../store/SearchStore";
+import { Breakpoint } from "../../../util/const";
 
 import "./HeaderSearch.scss";
 
@@ -14,10 +14,10 @@ import "./HeaderSearch.scss";
  * The component representing the header search element.
  */
 const HeaderSearch: FC = () => {
-    const routeStore = useContext(routeStoreContext);
+    const globalStore = useContext(globalStoreContext);
     const searchStore = useContext(searchStoreContext);
 
-    const isLarge = useMediaQuery({ minWidth: BREAKPOINT_LARGE });
+    const isLarge = useMediaQuery({ minWidth: Breakpoint.Large });
     const { t } = useTranslation();
 
     let searchIcon = <FontAwesomeIcon icon={faSearch} />;
@@ -26,7 +26,7 @@ const HeaderSearch: FC = () => {
     }
 
     let closeIcon = null;
-    if (!isLarge && !routeStore.useBigHeader) {
+    if (!isLarge && !globalStore.useBigHeader) {
         closeIcon = (
             <div
                 className="close-icon"
@@ -58,7 +58,7 @@ const HeaderSearch: FC = () => {
                     type="search"
                     value={searchStore.searchQuery}
                     onChange={async (event) => {
-                        return searchStore.setSearchQuery(event.target.value);
+                        return searchStore.updateSearchQuery(event.target.value);
                     }}
                     onFocus={() => {
                         searchStore.isInputFocused = true;

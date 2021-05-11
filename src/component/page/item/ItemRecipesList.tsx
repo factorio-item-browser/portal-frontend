@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
+import { EntityData, ItemRecipesData } from "../../../api/transfer";
 import { PaginatedList } from "../../../class/PaginatedList";
-import { EntityData, ItemRecipesData } from "../../../type/transfer";
 import PaginatedListButton from "../../button/PaginatedListButton";
 import Section from "../../common/Section";
 import Entity from "../../entity/Entity";

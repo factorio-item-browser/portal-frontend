@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { MachineData } from "../../type/transfer";
+import { MachineData } from "../../api/transfer";
 import { formatCraftingSpeed, formatEnergyUsage, formatMachineSlots } from "../../util/format";
 import { useTooltip } from "../../util/hooks";
 import Icon from "../icon/Icon";
@@ -32,7 +32,7 @@ const MachineEntity: FC<Props> = ({ machine }) => {
                 onMouseLeave={hideTooltip}
             >
                 <Icon type="machine" name={machine.name} ref={iconRef} />
-                <h3>{machine.label}</h3>
+                <h3>{machine.label || machine.name}</h3>
             </EntityLink>
 
             <div className="machine-details">

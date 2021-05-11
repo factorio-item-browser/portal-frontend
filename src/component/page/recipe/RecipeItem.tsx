@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, useRef } from "react";
-import { RecipeItemData } from "../../../type/transfer";
+import { RecipeItemData } from "../../../api/transfer";
 import { formatAmount } from "../../../util/format";
 import { useTooltip } from "../../../util/hooks";
 import Icon from "../../icon/Icon";
@@ -29,7 +29,7 @@ const RecipeItem: FC<Props> = ({ item }) => {
         >
             <div className="amount">{formatAmount(item.amount)}</div>
             <Icon type={item.type} name={item.name} ref={iconRef} />
-            <div className="label">{item.label}</div>
+            <div className="label">{item.label || item.name}</div>
         </EntityLink>
     );
 };

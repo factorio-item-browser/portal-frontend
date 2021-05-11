@@ -1,10 +1,11 @@
 import { observer } from "mobx-react-lite";
 import React, { ForwardRefRenderFunction, ReactNode, useCallback, useContext, useRef } from "react";
 import { RouteParams } from "../../class/Router";
-import { routeStoreContext } from "../../store/RouteStore";
+import { globalStoreContext } from "../../store/GlobalStore";
+import { RouteName } from "../../util/const";
 
 type Props = {
-    route: string;
+    route: RouteName;
     params?: RouteParams;
     children?: ReactNode;
     [key: string]: unknown;
@@ -14,8 +15,8 @@ type Props = {
  * The component creating a link to another route.
  */
 const Link: ForwardRefRenderFunction<HTMLAnchorElement, Props> = ({ route, params, children, ...props }, ref) => {
-    const routeStore = useContext(routeStoreContext);
-    const path = routeStore.router.buildPath(route, params);
+    const globalStore = useContext(globalStoreContext);
+    const path = globalStore.router.buildPath(route, params);
 
     ref = ref || useRef<HTMLAnchorElement>(null);
 
@@ -23,11 +24,11 @@ const Link: ForwardRefRenderFunction<HTMLAnchorElement, Props> = ({ route, param
         (event) => {
             event.preventDefault();
             event.stopPropagation();
-            if (!routeStore.router.isActive(route, params)) {
+            if (!globalStore.router.isActive(route, params)) {
                 if (ref && "current" in ref) {
-                    routeStore.showLoadingCircle(ref);
+                    globalStore.showLoadingCircle(ref);
                 }
-                routeStore.router.navigateTo(route, params);
+                globalStore.router.navigateTo(route, params);
             }
             return false;
         },

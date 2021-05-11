@@ -4,9 +4,10 @@ import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React, { FC, ReactNode, useContext, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { SidebarEntityData } from "../../../api/transfer";
+import { iconStoreContext } from "../../../store/IconStore";
 import { sidebarStoreContext } from "../../../store/SidebarStore";
 import { tooltipStoreContext } from "../../../store/TooltipStore";
-import { SidebarEntityData } from "../../../type/transfer";
 import Icon from "../../icon/Icon";
 import EntityLink from "../../link/EntityLink";
 
@@ -61,14 +62,16 @@ type Props = {
  */
 const SidebarEntity: FC<Props> = ({ entity }) => {
     const { t } = useTranslation();
+    const iconStore = useContext(iconStoreContext);
     const sidebarStore = useContext(sidebarStoreContext);
     const tooltipStore = useContext(tooltipStoreContext);
 
     const iconRef = useRef<HTMLDivElement>(null);
-    const entityId = sidebarStore.getIdForEntity(entity);
+    const entityId = sidebarStore.buildIdForEntity(entity);
+    const highlightedEntity = iconStore.highlightedEntity;
     const classes = classNames({
         "sidebar-entity": true,
-        "highlighted": entityId === sidebarStore.highlightedEntityId,
+        "highlighted": entity.type === highlightedEntity.type && entity.name === highlightedEntity.name,
     });
 
     return (
@@ -86,7 +89,7 @@ const SidebarEntity: FC<Props> = ({ entity }) => {
             }}
         >
             <Icon type={entity.type} name={entity.name} ref={iconRef} />
-            <span className="label">{entity.label}</span>
+            <span className="label">{entity.label || entity.name}</span>
 
             {entity.pinnedPosition > 0 ? renderUnpinAction(entity) : renderPinAction(entity)}
             <div className="type">{t(`box-label.${entity.type}`)}</div>

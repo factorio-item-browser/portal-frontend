@@ -1,23 +1,24 @@
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { SettingMetaData } from "../../../../type/transfer";
+import { SettingData } from "../../../../api/transfer";
 import { getTranslatedSettingName } from "../../../../util/setting";
 import SelectOption, { Item } from "./SelectOption";
 
-function createSettingItems(settings: SettingMetaData[]): Item[] {
-    const items = settings.map(
-        (setting: SettingMetaData): Item => ({
+function createSettingItems(settings: Map<string, SettingData>): Item[] {
+    const items: Item[] = [];
+    for (const setting of settings.values()) {
+        items.push({
             value: setting.combinationId,
             label: getTranslatedSettingName(setting),
-        }),
-    );
+        });
+    }
     items.sort((left: Item, right: Item): number => left.label.localeCompare(right.label));
     return items;
 }
 
 type Props = {
-    settings: SettingMetaData[];
+    settings: Map<string, SettingData>;
     value: string;
     onChange: (value: string) => void | Promise<void>;
     loading?: boolean;

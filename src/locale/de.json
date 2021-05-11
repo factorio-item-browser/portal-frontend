@@ -45,7 +45,7 @@
     "footer": {
         "copyright-disclaimer": "Inhalte und Bilder sind Eigentum von <1>Wube Software</1> bzw. der <3>Mod-Authoren</3>.",
         "external-link": {
-            "discord": "Verursacht die Seite Probleme oder hast du Feedback? Dann tritt dem Discord-Server des Projektes bei!"
+            "discord": "Verursacht die Seite Probleme oder hast du Feedback? Dann tritt dem Discord-Server bei!"
         }
     },
     "header": {
@@ -123,7 +123,8 @@
         "change-to-setting": "Zu \"{{name}}\" wechseln",
         "changing-to-setting": "Wechsle zu \"{{name}}\"...",
         "combination-id": {
-            "label": "Kombinations-Id:"
+            "label": "Kombinations-Id:",
+            "description": "Diese ID identifiziert die Kombination der Mods, die du verwendest. Wenn du auf ein Problem stößt, <1>trete dem Discord-Server bei</1> und gib diese ID in deiner Fehlerbeschreibung an."
         },
         "current-setting": {
             "add-new-setting": "Neue Einstellung hinzufügen",
@@ -172,6 +173,10 @@
         "cancel": "Abbrechen",
         "change-to-setting": "Zu \"{{name}}\" wechseln",
         "changing-to-setting": "Wechsle zu \"{{name}}\"...",
+        "discord": {
+            "label": "Tritt dem Discord-Server bei, wenn du Hilfe benötigst.",
+            "description": "Sollte dein Spielstand nicht funktionieren, oder solltest du auf ein anderes Problem mit deiner Kombination von Mods stoßen, dann tritt dem Discord-Server bei und frage nach Unterstützung."
+        },
         "existing-setting": {
             "headline": "Du hast bereits eine Einstellung mit diesen Mods.",
             "description": "Es ist nicht möglich, mehrere Einstellungen mit denselben Mods zu haben. Bitte nutze stattdessen die vorhandene Einstellung."
@@ -198,7 +203,7 @@
             "headline_plural": "{{count}} Mods erkannt:"
         },
         "savegame-upload-note": {
-            "headline": "Die Datei wird nicht auf den Server hochgeladen!",
+            "headline": "Die Datei wird nicht auf den Server hochgeladen.",
             "description": "Der ausgewählte Spielstand wird direkt in deinem Browser verarbeitet und nur die ermittelte Liste an Mods wird durch das Internet geschickt. Der Spielstand wird dein System nicht verlassen."
         },
         "saving-new-setting": "Speichere neue Einstellung...",
@@ -221,6 +226,11 @@
             "description-global": "Du betrachtest die unmodifizierten Daten von Vanilla. Der Datenexport von deinen Mods ist fehlgeschlagen. Sorry, aber die benötigten Daten können aktuell nicht zur Verfügung gestellt werden.",
             "description-setting": "Der Datenexport für diese Einstellung ist fehlgeschlagen. Nur die unmodifizierten Daten von Vanilla sind verfügbar. Sorry, aber die benötigten Daten können aktuell nicht zur Verfügung gestellt werden."
         },
+        "invalid": {
+            "headline": "Die Kombination der Mods ist nicht gültig.",
+            "description-1": "Dein Spielstand enthält eine ungültige Combination an Mods. Die folgenden Probleme wurden festgestellt:",
+            "description-2": "Deswegen können die Daten für die Kombination nicht bereitgestellt werden."
+        },
         "loading": {
             "headline": "Datenverfügbarkeit wird geprüft...",
             "description": ""
@@ -234,6 +244,12 @@
         "unknown": {
             "headline": "Daten sind aktuell nicht verfügbar.",
             "description": "Die Daten für diese Kombination an Mods sind aktuell nicht verfügbar und ein Datenexport wird angelegt, sobald du die neue Einstellung speicherst."
+        },
+        "validation-problem": {
+            "conflict": "Die Mod \"{{mod}}\" steht im Konflikt mit einer anderen Mod: {{dependency}}",
+            "missingDependency": "Der Mod \"{{mod}}\" fehlt eine benötigte Abhängigkeit: {{dependency}}",
+            "noRelease": "Die Mod \"{{mod}}\" besitzt kein Release auf dem Factorio Mod Portal, welches mit der neuesten Version von Factorio kompatibel ist.",
+            "unknownMod": "Die Mod \"{{mod}}\" ist auf dem Factorio Mod Portal nicht verfügbar."
         }
     },
     "sidebar": {

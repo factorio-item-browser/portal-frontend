@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { debounce } from "throttle-debounce";
 import { iconManager } from "../class/IconManager";
 import { tooltipStoreContext } from "../store/TooltipStore";
-import { formatIconClass } from "./format";
 
 /**
  * Uses the specified title as the document title. If no title is specified, then the default title will be used.
@@ -24,7 +23,7 @@ export function useIcon(type: string, name: string): string {
         iconManager.requestIcon(type, name);
     }, [type, name]);
 
-    return formatIconClass(type, name);
+    return iconManager.buildCssClass(type, name);
 }
 
 /**
