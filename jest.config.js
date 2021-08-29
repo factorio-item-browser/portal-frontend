@@ -6,4 +6,5 @@ dotenv.config({
 module.exports = {
     clearMocks: true,
     resetMocks: true,
-}
+    testEnvironment: "jsdom",
+};

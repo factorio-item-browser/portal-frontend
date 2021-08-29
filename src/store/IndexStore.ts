@@ -3,6 +3,7 @@ import { createContext } from "react";
 import { PortalApi, portalApi } from "../api/PortalApi";
 import { EntityData } from "../api/transfer";
 import { router, Router } from "../class/Router";
+import { PageError } from "../error/page";
 import { RouteName } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
 
@@ -52,7 +53,7 @@ export class IndexStore {
                 this.randomItems = randomItems;
             });
         } catch (e) {
-            this.errorStore.handleError(e);
+            this.errorStore.handleError(e as PageError);
         }
     }
 }
