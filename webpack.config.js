@@ -123,15 +123,17 @@ module.exports = (env, argv) => {
             new HtmlInlineCSSWebpackPlugin({
                 filter(fileName) {
                     return isProduction && (fileName === "index.html" || fileName.includes("main"));
-                }
+                },
             }),
             new AsyncCssPlugin(),
         ],
         devServer: {
-            contentBase: "./build",
+            static: {
+                directory: "./build",
+            },
             host: "0.0.0.0",
             hot: true,
-            historyApiFallback: true
+            historyApiFallback: true,
         },
         devtool: isProduction ? false : "source-map",
     };

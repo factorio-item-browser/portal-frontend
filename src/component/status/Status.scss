@@ -22,7 +22,7 @@
 
         flex-shrink: 0;
         text-align: center;
-        width: ($text-size-setting-status-icon + $spacing-large);
+        width: ($text-size-setting-status-icon + 2 * $spacing-large);
 
         svg {
             font-size: $text-size-setting-status-icon;

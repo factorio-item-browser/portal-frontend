@@ -6,6 +6,7 @@ import { emptyRecipeDetailsData, emptyRecipeMachinesData } from "../api/empty";
 import { MachineData, RecipeDetailsData, RecipeMachinesData } from "../api/transfer";
 import { PaginatedList } from "../class/PaginatedList";
 import { router, Router } from "../class/Router";
+import { PageError } from "../error/page";
 import { RouteName } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
 import { sidebarStore, SidebarStore } from "./SidebarStore";
@@ -55,7 +56,7 @@ export class RecipeStore {
                 this.sidebarStore.addViewedEntity("recipe", recipeDetails.name, recipeDetails.label);
             });
         } catch (e) {
-            this.errorStore.handleError(e);
+            this.errorStore.handleError(e as PageError);
         }
     }
 }

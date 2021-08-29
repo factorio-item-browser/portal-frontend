@@ -45,7 +45,7 @@ export class PaginatedList<TEntity, TData extends ResultsData<TEntity>> {
                 return data;
             });
         } catch (e) {
-            return this.errorHandler(e);
+            return this.errorHandler(e as PageError);
         }
     }
 }

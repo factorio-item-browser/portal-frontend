@@ -5,6 +5,7 @@ import { SettingOptionsData, SettingValidationData } from "../api/transfer";
 import { CombinationId } from "../class/CombinationId";
 import { router, Router } from "../class/Router";
 import { SaveGameReader } from "../class/SaveGameReader";
+import { PageError } from "../error/page";
 import { SavegameError } from "../error/savegame";
 import { RecipeMode, RouteName, SettingStatus } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
@@ -122,7 +123,7 @@ class SettingsNewStore {
         } catch (e) {
             runInAction(() => {
                 this.isSaveGameProcessing = false;
-                this.saveGameError = e;
+                this.saveGameError = e as SavegameError;
                 console.error(e);
             });
         }
@@ -148,7 +149,7 @@ class SettingsNewStore {
                 }
             });
         } catch (e) {
-            this.errorStore.handleError(e);
+            this.errorStore.handleError(e as PageError);
         }
     }
 
@@ -175,7 +176,7 @@ class SettingsNewStore {
             await this.portalApi.saveSetting(this.validatedSetting.combinationId, this.newOptions);
             this.router.redirectToIndex(CombinationId.fromFull(this.validatedSetting.combinationId));
         } catch (e) {
-            this.errorStore.handleError(e);
+            this.errorStore.handleError(e as PageError);
         }
     }
 }

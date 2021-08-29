@@ -6,6 +6,7 @@ import { InitData, ModData, SettingData, SettingOptionsData } from "../api/trans
 import { CombinationId } from "../class/CombinationId";
 import { router, Router } from "../class/Router";
 import { storageManager, StorageManager } from "../class/StorageManager";
+import { PageError } from "../error/page";
 import { RecipeMode, RouteName, SettingStatus } from "../util/const";
 import { errorStore, ErrorStore } from "./ErrorStore";
 import { globalStore, GlobalStore } from "./GlobalStore";
@@ -95,7 +96,7 @@ export class SettingsStore {
                     }
                 });
             } catch (e) {
-                this.errorStore.handleError(e);
+                this.errorStore.handleError(e as PageError);
             }
         }
 
@@ -185,7 +186,7 @@ export class SettingsStore {
             await this.portalApi.saveSetting(this.selectedCombinationId, this.selectedOptions);
             this.router.redirectToIndex(combinationId);
         } catch (e) {
-            this.errorStore.handleError(e);
+            this.errorStore.handleError(e as PageError);
         }
     }
 
@@ -205,7 +206,7 @@ export class SettingsStore {
                 this.applySelectedSetting();
             });
         } catch (e) {
-            this.errorStore.handleError(e);
+            this.errorStore.handleError(e as PageError);
         }
     }
 
@@ -228,7 +229,7 @@ export class SettingsStore {
                     this.isLoadingMods = false;
                 });
             } catch (e) {
-                this.errorStore.handleError(e);
+                this.errorStore.handleError(e as PageError);
             }
         }
     }
