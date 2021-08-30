@@ -1,5 +1,8 @@
 {
     "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "warnOnUnsupportedTypeScriptVersion": false
+    },
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended",

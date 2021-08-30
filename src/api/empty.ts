@@ -41,6 +41,7 @@ export const emptySearchResultsData: SearchResultsData = {
 
 export const emptySettingData: SettingData = {
     combinationId: "",
+    combinationHash: "",
     name: "Vanilla",
     locale: "en",
     recipeMode: RecipeMode.Hybrid,

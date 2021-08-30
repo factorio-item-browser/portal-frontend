@@ -96,6 +96,7 @@ export type SearchResultsData = ResultsData<EntityData> & {
 
 export type SettingData = {
     combinationId: string;
+    combinationHash: string;
     name: string;
     locale: string;
     recipeMode: RecipeMode;
