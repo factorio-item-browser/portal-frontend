@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.1 - 2021-09-05
+
+### Added
+
+- Deleting local cache when a combination changed on the server.
+
 ## 1.4.0 - 2021-05-11
 
 ### Added
