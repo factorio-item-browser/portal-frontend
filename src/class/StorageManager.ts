@@ -2,9 +2,10 @@ import { SidebarEntityData } from "../api/transfer";
 import { Config } from "../util/config";
 import { CombinationId } from "./CombinationId";
 
+const KEY_CACHE = "cache";
 const KEY_SCRIPT_VERSION = "script-version";
 const KEY_SIDEBAR_ENTITIES = "sidebar-entities";
-const KEY_CACHE = "cache";
+const KEY_HASH = "hash";
 
 interface CacheItem<T> {
     data: T;
@@ -133,6 +134,19 @@ export class StorageManager {
 
     public get scriptVersion(): string {
         return this.storage.getItem(KEY_SCRIPT_VERSION) || "";
+    }
+
+    public set hash(combinationHash: string) {
+        const key = this.buildStorageKey(KEY_HASH);
+        if (!key || !this.combinationId) {
+            return;
+        }
+
+        const existingHash = this.storage.getItem(key) || "";
+        if (existingHash !== combinationHash) {
+            this.clearCombination(this.combinationId);
+            this.storage.setItem(key, combinationHash);
+        }
     }
 
     public set sidebarEntities(sidebarEntities: SidebarEntityData[]) {
