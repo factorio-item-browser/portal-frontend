@@ -52,6 +52,10 @@ export class PortalApi {
     }
 
     private prepareRequest(request: AxiosRequestConfig): AxiosRequestConfig {
+        if (!request.headers) {
+            request.headers = {};
+        }
+
         if (this.combinationId) {
             request.headers["Combination-Id"] = this.combinationId.toFull();
         } else if (this.storageManager.combinationId !== null) {
@@ -195,7 +199,10 @@ export class PortalApi {
      * Validates the setting using the specified mod names.
      */
     public async validateSetting(modNames: string[]): Promise<SettingValidationData> {
-        const response = await this.client.post("/setting/validate", modNames);
+        const response = await this.client.post<string[], AxiosResponse<SettingValidationData>>(
+            "/setting/validate",
+            modNames,
+        );
         return response.data;
     }
 
@@ -211,7 +218,7 @@ export class PortalApi {
      * Save the setting with the options.
      */
     public async saveSetting(combinationId: string, options: SettingOptionsData): Promise<void> {
-        await this.client.put<void>(`/setting/${encodeURI(combinationId)}`, options);
+        await this.client.put<SettingOptionsData, void>(`/setting/${encodeURI(combinationId)}`, options);
     }
 
     /**
@@ -234,7 +241,10 @@ export class PortalApi {
      * Fetches the style of the icons with the specified types and names.
      */
     public async getIconsStyle(request: IconsStyleRequestData): Promise<IconsStyleData> {
-        const response = await this.client.post<IconsStyleData>("/style/icons", request);
+        const response = await this.client.post<IconsStyleRequestData, AxiosResponse<IconsStyleData>>(
+            "/style/icons",
+            request,
+        );
         return response.data;
     }
 
@@ -251,7 +261,7 @@ export class PortalApi {
      * Sends the sidebar entities to the Portal API for persisting.
      */
     public async sendSidebarEntities(sidebarEntities: SidebarEntityData[]): Promise<void> {
-        await this.client.put<void>("/sidebar/entities", sidebarEntities);
+        await this.client.put<SidebarEntityData[], void>("/sidebar/entities", sidebarEntities);
     }
 
     private async withCache<T>(cacheKey: string, handler: () => Promise<AxiosResponse<T>>): Promise<T> {

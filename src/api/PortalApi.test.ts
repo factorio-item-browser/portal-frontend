@@ -6,13 +6,13 @@ import { SettingOptionsData, SidebarEntityData } from "./transfer";
 
 async function catchRequest<T>(responseData: T): Promise<AxiosRequestConfig> {
     return new Promise((resolve) => {
-        axios.defaults.adapter = async (request: AxiosRequestConfig): Promise<AxiosResponse> => {
+        axios.defaults.adapter = async (request: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
             resolve(request);
             return Promise.resolve({
                 data: responseData,
                 status: 200,
                 statusText: "OK",
-                headers: [],
+                headers: {},
                 config: request,
             });
         };

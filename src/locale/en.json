@@ -17,8 +17,8 @@
         }
     },
     "entity": {
-        "more-recipes": "{{count}} more recipe",
-        "more-recipes_plural": "{{count}} more recipes"
+        "more-recipes_one": "{{count}} more recipe",
+        "more-recipes_other": "{{count}} more recipes"
     },
     "error": {
         "client-failure": {
@@ -65,14 +65,14 @@
             "item": "Item: {{label}}",
             "fluid": "Fluid: {{label}}"
         },
-        "ingredient-in": "Ingredient in {{count}} recipe",
-        "ingredient-in_plural": "Ingredient in {{count}} recipes",
+        "ingredient-in_one": "Ingredient in {{count}} recipe",
+        "ingredient-in_other": "Ingredient in {{count}} recipes",
         "more-recipes": {
             "load": "Load more recipes",
             "loading": "Loading more recipes..."
         },
-        "product-of": "Result of {{count}} recipe",
-        "product-of_plural": "Result of {{count}} recipes",
+        "product-of_one": "Result of {{count}} recipe",
+        "product-of_other": "Result of {{count}} recipes",
         "title": {
             "item": "Item: {{label}} - Factorio Item Browser",
             "fluid": "Fluid: {{label}} - Factorio Item Browser"
@@ -90,8 +90,8 @@
             "crafting-speed": "Crafting speed:",
             "energy-usage": "Energy usage:",
             "fluids": "Fluids:",
-            "headline": "Producible in {{count}} machine",
-            "headline_plural": "Producible in {{count}} machines",
+            "headline_one": "Producible in {{count}} machine",
+            "headline_other": "Producible in {{count}} machines",
             "items": "Items:",
             "modules": "Modules:",
             "more-machines": {
@@ -106,8 +106,8 @@
         "title": "Recipe: {{label}} - Factorio Item Browser"
     },
     "search-results": {
-        "headline": "{{count}} search result for \"{{query}}\"",
-        "headline_plural": "{{count}} search results for \"{{query}}\"",
+        "headline_one": "{{count}} search result for \"{{query}}\"",
+        "headline_other": "{{count}} search results for \"{{query}}\"",
         "more-results": {
             "load": "Load more results",
             "loading": "Loading more results..."
@@ -133,10 +133,10 @@
             "label": "Current setting:"
         },
         "headline": {
-            "mod-list": "\"{{name}}\" uses {{count}} mod",
-            "mod-list_plural": "\"{{name}}\" uses {{count}} mods",
-            "mod-list-temporary": "Temporary setting uses {{count}} mod",
-            "mod-list-temporary_plural": "Temporary setting uses {{count}} mods",
+            "mod-list_one": "\"{{name}}\" uses {{count}} mod",
+            "mod-list_other": "\"{{name}}\" uses {{count}} mods",
+            "mod-list-temporary_one": "Temporary setting uses {{count}} mod",
+            "mod-list-temporary_other": "Temporary setting uses {{count}} mods",
             "options": "Options for \"{{name}}\"",
             "options-temporary": "Options for temporary setting",
             "settings": "Settings"
@@ -200,8 +200,8 @@
             }
         },
         "savegame-modlist": {
-            "headline": "Detected {{count}} mod:",
-            "headline_plural": "Detected {{count}} mods:"
+            "headline_one": "Detected {{count}} mod:",
+            "headline_other": "Detected {{count}} mods:"
         },
         "savegame-upload-note": {
             "headline": "The file is not uploaded to the server.",

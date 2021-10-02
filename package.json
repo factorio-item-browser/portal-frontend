@@ -79,7 +79,7 @@
     "html-inline-css-webpack-plugin": "^1.11",
     "html-webpack-plugin": "^5.3",
     "html-webpack-skip-assets-plugin": "^1.0",
-    "i18next": "^20.6",
+    "i18next": "^21.2",
     "image-webpack-loader": "^8.0",
     "jest": "^27.1",
     "mini-css-extract-plugin": "^2.2",

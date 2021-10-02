@@ -17,8 +17,8 @@
         }
     },
     "entity": {
-        "more-recipes": "{{count}} weiteres Rezept",
-        "more-recipes_plural": "{{count}} weitere Rezepte"
+        "more-recipes_one": "{{count}} weiteres Rezept",
+        "more-recipes_other": "{{count}} weitere Rezepte"
     },
     "error": {
         "client-failure": {
@@ -65,14 +65,14 @@
             "item": "Item: {{label}}",
             "fluid": "Flüssigkeit: {{label}}"
         },
-        "ingredient-in": "Zutat in {{count}} Rezept",
-        "ingredient-in_plural": "Zutat in {{count}} Rezepten",
+        "ingredient-in_one": "Zutat in {{count}} Rezept",
+        "ingredient-in_other": "Zutat in {{count}} Rezepten",
         "more-recipes": {
             "load": "Weitere Rezepte laden",
             "loading": "Lade weitere Rezepte..."
         },
-        "product-of": "Ergebnis von {{count}} Rezept",
-        "product-of_plural": "Ergebnis von {{count}} Rezepten",
+        "product-of_one": "Ergebnis von {{count}} Rezept",
+        "product-of_other": "Ergebnis von {{count}} Rezepten",
         "title": {
             "item": "Item: {{label}} - Factorio Item Browser",
             "fluid": "Flüssigkeit: {{label}} - Factorio Item Browser"
@@ -90,8 +90,8 @@
             "crafting-speed": "Geschwindigkeit:",
             "energy-usage": "Energieverbrauch:",
             "fluids": "Flüssigkeiten:",
-            "headline": "Herstellbar in {{count}} Maschine",
-            "headline_plural": "Herstellbar in {{count}} Maschinen",
+            "headline_one": "Herstellbar in {{count}} Maschine",
+            "headline_other": "Herstellbar in {{count}} Maschinen",
             "items": "Items:",
             "modules": "Modul-Slots:",
             "more-machines": {
@@ -106,8 +106,8 @@
         "title": "Rezept: {{label}} - Factorio Item Browser"
     },
     "search-results": {
-        "headline": "{{count}} Suchergebnis für \"{{query}}\"",
-        "headline_plural": "{{count}} Suchergebnisse für \"{{query}}\"",
+        "headline_one": "{{count}} Suchergebnis für \"{{query}}\"",
+        "headline_other": "{{count}} Suchergebnisse für \"{{query}}\"",
         "more-results": {
             "load": "Weitere Ergebnisse laden",
             "loading": "Lade weitere Ergebnisse..."
@@ -133,10 +133,10 @@
             "label": "Aktuelle Einstellung:"
         },
         "headline": {
-            "mod-list": "\"{{name}}\" verwendet {{count}} Mod",
-            "mod-list_plural": "\"{{name}}\" verwendet {{count}} Mods",
-            "mod-list-temporary": "Temporäre Einstellung  verwendet {{count}} Mod",
-            "mod-list-temporary_plural": "Temporäre Einstellung verwendet {{count}} Mods",
+            "mod-list_one": "\"{{name}}\" verwendet {{count}} Mod",
+            "mod-list_other": "\"{{name}}\" verwendet {{count}} Mods",
+            "mod-list-temporary_one": "Temporäre Einstellung  verwendet {{count}} Mod",
+            "mod-list-temporary_other": "Temporäre Einstellung verwendet {{count}} Mods",
             "options": "Optionen für \"{{name}}\"",
             "options-temporary": "Optionen für temporäre Einstellung",
             "settings": "Einstellungen"
@@ -199,8 +199,8 @@
             }
         },
         "savegame-modlist": {
-            "headline": "{{count}} Mod erkannt:",
-            "headline_plural": "{{count}} Mods erkannt:"
+            "headline_one": "{{count}} Mod erkannt:",
+            "headline_other": "{{count}} Mods erkannt:"
         },
         "savegame-upload-note": {
             "headline": "Die Datei wird nicht auf den Server hochgeladen.",
