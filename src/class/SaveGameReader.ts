@@ -75,7 +75,7 @@ export class SaveGameReader {
     public async read(file: Blob): Promise<SaveGameMod[]> {
         const buffer = await this.extractLevelDatFile(file);
         const version = buffer.readVersion(false);
-        if (version.compareTo(new Version(0, 18, 0)) < 0) {
+        if (version.compareTo(new Version(0, 18, 0)) < 0 || version.compareTo(new Version(2, 0, 0)) >= 0) {
             throw new UnsupportedVersionError(version.toString());
         }
 
