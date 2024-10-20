@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.2 - 2024-10-20
+
+### Added
+
+- Added a note informing about not supporting Factorio 2.x and the Space Age expansion.
+
 ## 1.4.1 - 2021-09-05
 
 ### Added
